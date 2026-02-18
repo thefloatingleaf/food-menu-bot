@@ -1,0 +1,179 @@
+{
+  "meta": {
+    "title": "Lunar + Panchang Reference",
+    "coverage_start": "2026-01-15",
+    "coverage_end": "2027-03-31",
+    "notes": "User-provided reference for lunar month structure, sankranti, amavasya, purnima, ekadashi, and partial daily month-wise tables."
+  },
+  "lunar_months_with_paksha": [
+    {
+      "label": "Pausha",
+      "details": "Krishna Paksha from 15 Jan 2026",
+      "ends": "2026-01-17"
+    },
+    {
+      "label": "Magha",
+      "shukla": {
+        "start": "2026-01-18",
+        "end": "2026-02-01"
+      },
+      "krishna": {
+        "start": "2026-02-02",
+        "end": "2026-02-16"
+      }
+    },
+    {
+      "label": "Phalguna",
+      "shukla": {
+        "start": "2026-02-17",
+        "end": "2026-03-01"
+      },
+      "krishna": {
+        "start": "2026-03-02",
+        "end": "2026-03-17"
+      }
+    },
+    {
+      "label": "Chaitra",
+      "shukla": {
+        "start": "2026-03-18",
+        "end": "2026-03-31"
+      },
+      "krishna_notes": "Krishna continues into April"
+    }
+  ],
+  "sankranti": [
+    {"date": "2026-01-14", "name": "Makar Sankranti"},
+    {"date": "2026-02-13", "name": "Kumbha"},
+    {"date": "2026-03-14", "name": "Meena"},
+    {"date": "2026-04-14", "name": "Mesha"},
+    {"date": "2026-05-15", "name": "Vrishabha"},
+    {"date": "2026-06-15", "name": "Mithuna"},
+    {"date": "2026-07-16", "name": "Karka"},
+    {"date": "2026-08-17", "name": "Simha"},
+    {"date": "2026-09-17", "name": "Kanya"},
+    {"date": "2026-10-17", "name": "Tula"},
+    {"date": "2026-11-16", "name": "Vrischika"},
+    {"date": "2026-12-15", "name": "Dhanu"},
+    {"date": "2027-01-14", "name": "Makar"},
+    {"date": "2027-02-12", "name": "Kumbha"},
+    {"date": "2027-03-14", "name": "Meena"}
+  ],
+  "amavasya": [
+    "2026-01-17", "2026-02-16", "2026-03-17", "2026-04-15", "2026-05-15",
+    "2026-06-14", "2026-07-13", "2026-08-11", "2026-09-09", "2026-10-09",
+    "2026-11-07", "2026-12-06", "2027-01-04", "2027-02-02", "2027-03-04"
+  ],
+  "purnima": [
+    "2026-02-01", "2026-03-01", "2026-03-31", "2026-04-29", "2026-05-29",
+    "2026-06-28", "2026-07-27", "2026-08-25", "2026-09-24", "2026-10-23",
+    "2026-11-22", "2026-12-21", "2027-01-20", "2027-02-18", "2027-03-20"
+  ],
+  "ekadashi_reference": [
+    {"date": "2026-01-29", "name": "Shattila Ekadashi"},
+    {"date": "2026-02-14", "name": "Jaya Ekadashi"},
+    {"date": "2026-02-27", "name": "Vijaya Ekadashi"},
+    {"date": "2026-03-14", "name": "Amalaki Ekadashi"},
+    {"date": "2026-03-28", "name": "Papmochini Ekadashi"},
+    {"date": "2026-04-12", "name": "Kamada Ekadashi"},
+    {"date": "2026-04-27", "name": "Varuthini Ekadashi"},
+    {"date": "2026-05-11", "name": "Mohini Ekadashi"},
+    {"date": "2026-05-25", "name": "Apara Ekadashi"},
+    {"date": "2026-06-09", "name": "Nirjala Ekadashi"},
+    {"date": "2026-06-24", "name": "Yogini Ekadashi"},
+    {"date": "2026-07-08", "name": "Devshayani Ekadashi"},
+    {"date": "2026-07-23", "name": "Kamika Ekadashi"},
+    {"date": "2026-08-06", "name": "Putrada Ekadashi"},
+    {"date": "2026-08-21", "name": "Aja Ekadashi"},
+    {"date": "2026-09-04", "name": "Parivartini Ekadashi"},
+    {"date": "2026-09-19", "name": "Indira Ekadashi"},
+    {"date": "2026-10-03", "name": "Papankusha Ekadashi"},
+    {"date": "2026-10-18", "name": "Rama Ekadashi"},
+    {"date": "2026-11-01", "name": "Devutthana Ekadashi"},
+    {"date": "2026-11-16", "name": "Utpanna Ekadashi"},
+    {"date": "2026-11-30", "name": "Mokshada Ekadashi"},
+    {"date": "2026-12-15", "name": "Safala Ekadashi"},
+    {"date": "2026-12-29", "name": "Pausha Putrada Ekadashi"},
+    {"date": "2027-01-13", "name": "Shattila Ekadashi"},
+    {"date": "2027-01-28", "name": "Jaya Ekadashi"},
+    {"date": "2027-02-12", "name": "Vijaya Ekadashi"},
+    {"date": "2027-02-27", "name": "Amalaki Ekadashi"},
+    {"date": "2027-03-14", "name": "Papmochini Ekadashi"},
+    {"date": "2027-03-25", "name": "Kamada Ekadashi"}
+  ],
+  "daily_panchang_tables_partial": {
+    "january_2026_from_15": [
+      {"date": "2026-01-15", "tithi": "Pausha Krishna Trayodashi", "maas": "Pausha", "nakshatra": "Jyeshtha"},
+      {"date": "2026-01-16", "tithi": "Krishna Chaturdashi", "maas": "Pausha", "nakshatra": "Mula"},
+      {"date": "2026-01-17", "tithi": "Amavasya", "maas": "Pausha", "nakshatra": "Purvashadha"},
+      {"date": "2026-01-18", "tithi": "Magha Shukla Pratipada", "maas": "Magha", "nakshatra": "Uttarashadha"},
+      {"date": "2026-01-19", "tithi": "Shukla Dwitiya", "maas": "Magha", "nakshatra": "Shravana"},
+      {"date": "2026-01-20", "tithi": "Shukla Tritiya", "maas": "Magha", "nakshatra": "Dhanishta"},
+      {"date": "2026-01-21", "tithi": "Shukla Chaturthi", "maas": "Magha", "nakshatra": "Shatabhisha"},
+      {"date": "2026-01-22", "tithi": "Shukla Panchami", "maas": "Magha", "nakshatra": "Purvabhadra"},
+      {"date": "2026-01-23", "tithi": "Shukla Shashthi", "maas": "Magha", "nakshatra": "Uttarabhadra"},
+      {"date": "2026-01-24", "tithi": "Shukla Saptami", "maas": "Magha", "nakshatra": "Revati"},
+      {"date": "2026-01-25", "tithi": "Shukla Ashtami", "maas": "Magha", "nakshatra": "Ashwini"},
+      {"date": "2026-01-26", "tithi": "Shukla Navami", "maas": "Magha", "nakshatra": "Bharani"},
+      {"date": "2026-01-27", "tithi": "Shukla Dashami", "maas": "Magha", "nakshatra": "Krittika"},
+      {"date": "2026-01-28", "tithi": "Shukla Ekadashi", "maas": "Magha", "nakshatra": "Rohini"},
+      {"date": "2026-01-29", "tithi": "Shukla Dwadashi", "maas": "Magha", "nakshatra": "Mrigashira"},
+      {"date": "2026-01-30", "tithi": "Shukla Trayodashi", "maas": "Magha", "nakshatra": "Ardra"},
+      {"date": "2026-01-31", "tithi": "Shukla Chaturdashi", "maas": "Magha", "nakshatra": "Punarvasu"}
+    ],
+    "february_2026_partial": [
+      {"date": "2026-02-01", "tithi": "Purnima", "maas": "Magha", "nakshatra": "Pushya"},
+      {"date": "2026-02-02", "tithi": "Krishna Pratipada", "maas": "Phalguna", "nakshatra": "Ashlesha"},
+      {"date": "2026-02-03", "tithi": "Krishna Dwitiya", "maas": "Phalguna", "nakshatra": "Magha"},
+      {"date": "2026-02-04", "tithi": "Krishna Tritiya", "maas": "Phalguna", "nakshatra": "Purvaphalguni"},
+      {"date": "2026-02-05", "tithi": "Krishna Chaturthi", "maas": "Phalguna", "nakshatra": "Uttaraphalguni"},
+      {"date": "2026-02-06", "tithi": "Krishna Panchami", "maas": "Phalguna", "nakshatra": "Hasta"},
+      {"date": "2026-02-07", "tithi": "Krishna Shashthi", "maas": "Phalguna", "nakshatra": "Chitra"},
+      {"date": "2026-02-08", "tithi": "Krishna Saptami", "maas": "Phalguna", "nakshatra": "Swati"},
+      {"date": "2026-02-09", "tithi": "Krishna Ashtami", "maas": "Phalguna", "nakshatra": "Vishakha"},
+      {"date": "2026-02-10", "tithi": "Krishna Navami", "maas": "Phalguna", "nakshatra": "Anuradha"},
+      {"date": "2026-02-11", "tithi": "Krishna Dashami", "maas": "Phalguna", "nakshatra": "Jyeshtha"},
+      {"date": "2026-02-12", "tithi": "Krishna Ekadashi", "maas": "Phalguna", "nakshatra": "Mula"},
+      {"date": "2026-02-13", "tithi": "Krishna Dwadashi", "maas": "Phalguna", "nakshatra": "Purvashadha"},
+      {"date": "2026-02-14", "tithi": "Krishna Trayodashi", "maas": "Phalguna", "nakshatra": "Uttarashadha"},
+      {"date": "2026-02-15", "tithi": "Krishna Chaturdashi", "maas": "Phalguna", "nakshatra": "Shravana"},
+      {"date": "2026-02-16", "tithi": "Amavasya", "maas": "Phalguna", "nakshatra": "Dhanishta"},
+      {"date": "2026-02-17", "tithi": "Chaitra Shukla Pratipada", "maas": "Chaitra", "nakshatra": "Shatabhisha"},
+      {"date": "2026-02-18", "tithi": "Shukla Dwitiya", "maas": "Chaitra", "nakshatra": "Purvabhadra"},
+      {"date": "2026-03-01", "tithi": "Purnima", "maas": "Chaitra", "nakshatra": "Uttara Phalguni"}
+    ],
+    "march_2027_till_31": [
+      {"date": "2027-03-01", "tithi": "Phalguna Krishna Dwitiya", "maas": "Phalguna", "nakshatra": "Magha"},
+      {"date": "2027-03-02", "tithi": "Krishna Tritiya", "maas": "Phalguna", "nakshatra": "Purvaphalguni"},
+      {"date": "2027-03-03", "tithi": "Krishna Chaturthi", "maas": "Phalguna", "nakshatra": "Uttaraphalguni"},
+      {"date": "2027-03-04", "tithi": "Krishna Panchami", "maas": "Phalguna", "nakshatra": "Hasta"},
+      {"date": "2027-03-05", "tithi": "Krishna Shashthi", "maas": "Phalguna", "nakshatra": "Chitra"},
+      {"date": "2027-03-06", "tithi": "Krishna Saptami", "maas": "Phalguna", "nakshatra": "Swati"},
+      {"date": "2027-03-07", "tithi": "Krishna Ashtami", "maas": "Phalguna", "nakshatra": "Vishakha"},
+      {"date": "2027-03-08", "tithi": "Krishna Navami", "maas": "Phalguna", "nakshatra": "Anuradha"},
+      {"date": "2027-03-09", "tithi": "Krishna Dashami", "maas": "Phalguna", "nakshatra": "Jyeshtha"},
+      {"date": "2027-03-10", "tithi": "Krishna Ekadashi", "maas": "Phalguna", "nakshatra": "Mula"},
+      {"date": "2027-03-11", "tithi": "Krishna Dwadashi", "maas": "Phalguna", "nakshatra": "Purvashadha"},
+      {"date": "2027-03-12", "tithi": "Krishna Trayodashi", "maas": "Phalguna", "nakshatra": "Uttarashadha"},
+      {"date": "2027-03-13", "tithi": "Krishna Chaturdashi", "maas": "Phalguna", "nakshatra": "Shravana"},
+      {"date": "2027-03-14", "tithi": "Amavasya", "maas": "Phalguna", "nakshatra": "Dhanishta"},
+      {"date": "2027-03-15", "tithi": "Chaitra Shukla Pratipada", "maas": "Chaitra", "nakshatra": "Shatabhisha"},
+      {"date": "2027-03-16", "tithi": "Shukla Dwitiya", "maas": "Chaitra", "nakshatra": "Purvabhadra"},
+      {"date": "2027-03-17", "tithi": "Shukla Tritiya", "maas": "Chaitra", "nakshatra": "Uttarabhadra"},
+      {"date": "2027-03-18", "tithi": "Shukla Chaturthi", "maas": "Chaitra", "nakshatra": "Revati"},
+      {"date": "2027-03-19", "tithi": "Shukla Panchami", "maas": "Chaitra", "nakshatra": "Ashwini"},
+      {"date": "2027-03-20", "tithi": "Shukla Shashthi", "maas": "Chaitra", "nakshatra": "Bharani"},
+      {"date": "2027-03-21", "tithi": "Shukla Saptami", "maas": "Chaitra", "nakshatra": "Krittika"},
+      {"date": "2027-03-22", "tithi": "Shukla Ashtami", "maas": "Chaitra", "nakshatra": "Rohini"},
+      {"date": "2027-03-23", "tithi": "Shukla Navami", "maas": "Chaitra", "nakshatra": "Mrigashira"},
+      {"date": "2027-03-24", "tithi": "Shukla Dashami", "maas": "Chaitra", "nakshatra": "Ardra"},
+      {"date": "2027-03-25", "tithi": "Shukla Ekadashi", "maas": "Chaitra", "nakshatra": "Punarvasu"},
+      {"date": "2027-03-26", "tithi": "Shukla Dwadashi", "maas": "Chaitra", "nakshatra": "Pushya"},
+      {"date": "2027-03-27", "tithi": "Shukla Trayodashi", "maas": "Chaitra", "nakshatra": "Ashlesha"},
+      {"date": "2027-03-28", "tithi": "Shukla Chaturdashi", "maas": "Chaitra", "nakshatra": "Magha"},
+      {"date": "2027-03-29", "tithi": "Purnima", "maas": "Chaitra", "nakshatra": "Purvaphalguni"},
+      {"date": "2027-03-30", "tithi": "Krishna Pratipada", "maas": "Vaishakh", "nakshatra": "Uttaraphalguni"},
+      {"date": "2027-03-31", "tithi": "Krishna Dwitiya", "maas": "Vaishakh", "nakshatra": "Hasta"}
+    ]
+  }
+}

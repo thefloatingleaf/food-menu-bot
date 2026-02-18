@@ -52,6 +52,7 @@ python3 generate_menu.py --bootstrap-weather-tags
 - `festivals_2026_27.json`
 - `menu_weather_tags.json`
 - `manual_weather_override.json`
+- `lunar_calendar_2026_2027.json` (reference calendar: lunar months, sankranti, amavasya, purnima, ekadashi, partial daily tables)
 - `config.json`
 
 ## Festivals data format (Hindu + Sikh)
