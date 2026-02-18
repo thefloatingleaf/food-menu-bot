@@ -17,6 +17,7 @@ BASE_DIR = Path(__file__).resolve().parent
 BREAKFAST_FILE = BASE_DIR / "breakfast_shishir.json"
 MENU_FILE = BASE_DIR / "menu_shishir.json"
 EKADASHI_FILE = BASE_DIR / "ekadashi_2026_27.json"
+PANCHANG_FILE = BASE_DIR / "panchang_2026_27.json"
 CONFIG_FILE = BASE_DIR / "config.json"
 HISTORY_FILE = BASE_DIR / "history.json"
 OUTPUT_FILE = BASE_DIR / "daily_menu.txt"
@@ -26,6 +27,30 @@ OUTPUT_FILE = BASE_DIR / "daily_menu.txt"
 class EkadashiInfo:
     is_ekadashi: bool
     name_hi: str | None
+    lunar_month_hi: str | None
+
+
+@dataclass
+class PanchangInfo:
+    ritu_hi: str
+    maah_hi: str
+    tithi_hi: str
+
+
+GREGORIAN_MONTH_HI = {
+    1: "जनवरी",
+    2: "फरवरी",
+    3: "मार्च",
+    4: "अप्रैल",
+    5: "मई",
+    6: "जून",
+    7: "जुलाई",
+    8: "अगस्त",
+    9: "सितंबर",
+    10: "अक्टूबर",
+    11: "नवंबर",
+    12: "दिसंबर",
+}
 
 
 def load_json(path: Path) -> Any:
@@ -51,10 +76,49 @@ def resolve_date(date_arg: str | None, timezone_name: str) -> datetime.date:
 def get_ekadashi_info(target_date: str, ekadashi_data: dict[str, Any]) -> EkadashiInfo:
     matches = [e for e in ekadashi_data.get("ekadashi_list", []) if e.get("date") == target_date]
     if not matches:
-        return EkadashiInfo(False, None)
+        return EkadashiInfo(False, None, None)
     non_gauna = next((m for m in matches if not m.get("is_gauna", False)), None)
     chosen = non_gauna or matches[0]
-    return EkadashiInfo(True, chosen.get("name_hi"))
+    return EkadashiInfo(True, chosen.get("name_hi"), chosen.get("lunar_month_hi"))
+
+
+def get_panchang_entry_for_date(target_date: str, panchang_data: Any) -> dict[str, Any] | None:
+    if isinstance(panchang_data, dict):
+        direct = panchang_data.get(target_date)
+        if isinstance(direct, dict):
+            return direct
+
+        entries = panchang_data.get("entries")
+        if isinstance(entries, list):
+            for row in entries:
+                if isinstance(row, dict) and row.get("date") == target_date:
+                    return row
+
+    if isinstance(panchang_data, list):
+        for row in panchang_data:
+            if isinstance(row, dict) and row.get("date") == target_date:
+                return row
+    return None
+
+
+def resolve_panchang_info(
+    target_date: datetime.date,
+    ekadashi: EkadashiInfo,
+    panchang_data: Any,
+    default_ritu: str,
+) -> PanchangInfo:
+    target_date_str = target_date.strftime("%Y-%m-%d")
+    row = get_panchang_entry_for_date(target_date_str, panchang_data)
+
+    if row:
+        ritu_hi = str(row.get("ritu_hi", default_ritu)).strip() or default_ritu
+        maah_hi = str(row.get("maah_hi", ekadashi.lunar_month_hi or GREGORIAN_MONTH_HI[target_date.month])).strip()
+        tithi_hi = str(row.get("tithi_hi", "अज्ञात")).strip() or "अज्ञात"
+        return PanchangInfo(ritu_hi=ritu_hi, maah_hi=maah_hi, tithi_hi=tithi_hi)
+
+    maah_hi = ekadashi.lunar_month_hi or GREGORIAN_MONTH_HI[target_date.month]
+    tithi_hi = "एकादशी" if ekadashi.is_ekadashi else "अज्ञात"
+    return PanchangInfo(ritu_hi=default_ritu, maah_hi=maah_hi, tithi_hi=tithi_hi)
 
 
 def is_blocked_item(item: str, keywords: list[str]) -> bool:
@@ -175,12 +239,14 @@ def main() -> int:
     breakfast_items = validate_menu_list(load_json(BREAKFAST_FILE), "breakfast_shishir.json")
     meal_items = validate_menu_list(load_json(MENU_FILE), "menu_shishir.json")
     ekadashi_data = load_json(EKADASHI_FILE)
+    panchang_data = load_json(PANCHANG_FILE) if PANCHANG_FILE.exists() else {}
     history = normalize_history(load_json(HISTORY_FILE))
 
     timezone_name = config.get("timezone", "Asia/Kolkata")
     repeat_window_days = int(config.get("repeat_window_days", 7))
     fallback_policy = config.get("empty_filtered_pool_policy", "fallback_full_menu")
     keywords = config.get("ekadashi_block_keywords", [])
+    default_ritu = config.get("ritu_hi", "शिशिर")
 
     if not isinstance(keywords, list) or not all(isinstance(k, str) for k in keywords):
         raise ValueError("ekadashi_block_keywords must be an array of strings")
@@ -189,6 +255,7 @@ def main() -> int:
     target_date_str = target_date.strftime("%Y-%m-%d")
 
     ekadashi = get_ekadashi_info(target_date_str, ekadashi_data)
+    panchang_info = resolve_panchang_info(target_date, ekadashi, panchang_data, default_ritu)
     breakfast_recent = recent_items(history, target_date, repeat_window_days, "breakfast")
     meal_recent = recent_items(history, target_date, repeat_window_days, "meal")
 
@@ -217,6 +284,9 @@ def main() -> int:
 
     lines = [
         f"*तिथि:* {target_date_str}",
+        f"*ऋतु:* {panchang_info.ritu_hi}",
+        f"*माह:* {panchang_info.maah_hi}",
+        f"*तिथि (पंचांग):* {panchang_info.tithi_hi}",
         f"*सुबह का नाश्ता:* {selected_breakfast}",
         f"*आज का भोजन:* {selected_meal}",
     ]

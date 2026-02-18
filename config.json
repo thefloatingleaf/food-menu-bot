@@ -1,5 +1,6 @@
 {
   "timezone": "Asia/Kolkata",
+  "ritu_hi": "शिशिर",
   "repeat_window_days": 7,
   "empty_filtered_pool_policy": "fallback_full_menu",
   "ekadashi_block_keywords": [

@@ -16,17 +16,36 @@ python3 generate_menu.py --date 2026-02-27
 
 ## Output format
 
-- `तिथि: YYYY-MM-DD`
-- `सुबह का नाश्ता: <item>`
-- `आज का भोजन: <item>`
-- `एकादशी: <name_hi>` (only on Ekadashi/Gauna dates)
+- `*तिथि:* YYYY-MM-DD`
+- `*ऋतु:* <value>`
+- `*माह:* <value>`
+- `*तिथि (पंचांग):* <value>`
+- `*सुबह का नाश्ता:* <item>`
+- `*आज का भोजन:* <item>`
+- `*एकादशी:* <name_hi>` (only on Ekadashi/Gauna dates)
 
 ## Data files
 
 - `breakfast_shishir.json`
 - `menu_shishir.json`
 - `ekadashi_2026_27.json`
+- `panchang_2026_27.json` (daily tithi/month/ritu mapping)
 - `config.json`
+
+## Panchang data format
+
+```json
+{
+  "entries": [
+    {
+      "date": "2026-02-18",
+      "ritu_hi": "शिशिर",
+      "maah_hi": "फाल्गुन",
+      "tithi_hi": "प्रतिपदा"
+    }
+  ]
+}
+```
 
 ## GitHub Action schedule
 
