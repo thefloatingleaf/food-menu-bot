@@ -39,6 +39,8 @@ python3 generate_menu.py --bootstrap-weather-tags
 - `menu_shishir.json`
 - `breakfast_vasant.json`
 - `menu_vasant.json`
+- `breakfast_grishm.json`
+- `menu_grishm.json`
 - `ekadashi_2026_27.json`
 - `panchang_2026_27.json`
 - `festivals_2026_27.json`
@@ -76,6 +78,13 @@ python3 generate_menu.py --bootstrap-weather-tags
 3. Otherwise, script uses Shishir files:
    - `breakfast_shishir.json`
    - `menu_shishir.json`
+4. If पंचांग ऋतु is `ग्रीष्म` or `ग्रीष्म ऋतु`, the script uses:
+   - `breakfast_grishm.json`
+   - `menu_grishm.json`
+5. For ग्रीष्म days, output also includes:
+   - `*ग्रीष्म नाश्ता अनिवार्य साथ:* छाछ (काफ़ी पतली) / पुदीना की चटनी`
+   - `*ग्रीष्म भोजन अनिवार्य साथ:* छाछ (काफ़ी पतली) / पुदीना की चटनी / खीरा और ककड़ी`
+6. `breakfast_grishm.json` duplicate entries are deduplicated (first occurrence kept) before random selection.
 
 ## Manual weather override format
 

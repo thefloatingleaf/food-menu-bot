@@ -22,6 +22,8 @@ BREAKFAST_SHISHIR_FILE = BASE_DIR / "breakfast_shishir.json"
 MENU_SHISHIR_FILE = BASE_DIR / "menu_shishir.json"
 BREAKFAST_VASANT_FILE = BASE_DIR / "breakfast_vasant.json"
 MENU_VASANT_FILE = BASE_DIR / "menu_vasant.json"
+BREAKFAST_GRISHM_FILE = BASE_DIR / "breakfast_grishm.json"
+MENU_GRISHM_FILE = BASE_DIR / "menu_grishm.json"
 EKADASHI_FILE = BASE_DIR / "ekadashi_2026_27.json"
 PANCHANG_FILE = BASE_DIR / "panchang_2026_27.json"
 FESTIVALS_FILE = BASE_DIR / "festivals_2026_27.json"
@@ -76,6 +78,17 @@ VASANT_REQUIRED_SIDES = [
     "तीखा अचार (खट्टा नहीं)",
     "मूंग दाल पापड़",
     "मसाला छाछ (जीरा, अजवाइन, कढ़ी पत्ता, हींग, घी का तड़का)",
+]
+
+GRISHM_BREAKFAST_REQUIRED_SIDES = [
+    "छाछ (काफ़ी पतली)",
+    "पुदीना की चटनी",
+]
+
+GRISHM_MEAL_REQUIRED_SIDES = [
+    "छाछ (काफ़ी पतली)",
+    "पुदीना की चटनी",
+    "खीरा और ककड़ी",
 ]
 
 
@@ -576,8 +589,20 @@ def validate_menu_list(menu: Any, file_label: str) -> list[str]:
     return menu
 
 
+def dedupe_preserve_order(items: list[str]) -> list[str]:
+    seen: set[str] = set()
+    out: list[str] = []
+    for item in items:
+        if item not in seen:
+            seen.add(item)
+            out.append(item)
+    return out
+
+
 def normalize_ritu_key(ritu_hi: str) -> str:
     cleaned = ritu_hi.replace(" ", "")
+    if "ग्रीष्मऋतु" in cleaned or "ग्रीष्म" in cleaned:
+        return "grishm"
     if "वसंत" in cleaned or "बसंत" in cleaned:
         return "vasant"
     return "shishir"
@@ -615,12 +640,29 @@ def main() -> int:
         if MENU_VASANT_FILE.exists()
         else []
     )
+    breakfast_grishm_items = (
+        dedupe_preserve_order(validate_menu_list(load_json(BREAKFAST_GRISHM_FILE), "breakfast_grishm.json"))
+        if BREAKFAST_GRISHM_FILE.exists()
+        else []
+    )
+    meal_grishm_items = (
+        validate_menu_list(load_json(MENU_GRISHM_FILE), "menu_grishm.json")
+        if MENU_GRISHM_FILE.exists()
+        else []
+    )
     ekadashi_data = load_json(EKADASHI_FILE)
     panchang_data = load_json(PANCHANG_FILE) if PANCHANG_FILE.exists() else {}
     festivals_data = load_json(FESTIVALS_FILE) if FESTIVALS_FILE.exists() else {}
     history = normalize_history(load_json(HISTORY_FILE))
 
-    all_items = breakfast_shishir_items + meal_shishir_items + breakfast_vasant_items + meal_vasant_items
+    all_items = (
+        breakfast_shishir_items
+        + meal_shishir_items
+        + breakfast_vasant_items
+        + meal_vasant_items
+        + breakfast_grishm_items
+        + meal_grishm_items
+    )
 
     if args.bootstrap_weather_tags:
         write_json(WEATHER_TAGS_FILE, bootstrap_weather_tags(all_items))
@@ -658,7 +700,10 @@ def main() -> int:
     festival_info = resolve_festival_info(target_date_str, festivals_data)
     ritu_key = normalize_ritu_key(panchang_info.ritu_hi)
 
-    if ritu_key == "vasant":
+    if ritu_key == "grishm":
+        breakfast_items = breakfast_grishm_items or breakfast_shishir_items
+        meal_items = meal_grishm_items or meal_shishir_items
+    elif ritu_key == "vasant":
         breakfast_items = breakfast_vasant_items or breakfast_shishir_items
         meal_items = meal_vasant_items or meal_shishir_items
     else:
@@ -723,6 +768,9 @@ def main() -> int:
 
     if ritu_key == "vasant":
         lines.append("*वसंत अनिवार्य साथ:* " + " / ".join(VASANT_REQUIRED_SIDES))
+    if ritu_key == "grishm":
+        lines.append("*ग्रीष्म नाश्ता अनिवार्य साथ:* " + " / ".join(GRISHM_BREAKFAST_REQUIRED_SIDES))
+        lines.append("*ग्रीष्म भोजन अनिवार्य साथ:* " + " / ".join(GRISHM_MEAL_REQUIRED_SIDES))
 
     output_text = "\r\n\r\n".join(lines)
 
