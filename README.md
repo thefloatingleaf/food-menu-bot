@@ -147,6 +147,17 @@ python3 generate_menu.py --bootstrap-weather-tags
 }
 ```
 
+## ऋतु auto-detect fallback
+
+If a date is missing in `panchang_2026_27.json`, script now auto-detects ऋतु by date window:
+
+- 15 Jan - 14 Mar: `शिशिर`
+- 15 Mar - 14 May: `वसंत`
+- 15 May - 14 Jul: `ग्रीष्म`
+- 15 Jul - 14 Sep: `वर्षा`
+- 15 Sep - 14 Nov: `शरद`
+- 15 Nov - 14 Jan: `हेमंत`
+
 ## GitHub Action schedule
 
 - Workflow file: `.github/workflows/daily-menu.yml`

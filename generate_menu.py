@@ -162,6 +162,22 @@ GREGORIAN_MONTH_HI = {
 }
 
 
+def infer_ritu_hi_from_date(target_date: datetime.date) -> str:
+    month_day = (target_date.month, target_date.day)
+    # Traditional seasonal windows (approx.) used as fallback when panchang date entry is missing.
+    if (month_day >= (1, 15) and month_day <= (3, 14)):
+        return "शिशिर"
+    if (month_day >= (3, 15) and month_day <= (5, 14)):
+        return "वसंत"
+    if (month_day >= (5, 15) and month_day <= (7, 14)):
+        return "ग्रीष्म"
+    if (month_day >= (7, 15) and month_day <= (9, 14)):
+        return "वर्षा"
+    if (month_day >= (9, 15) and month_day <= (11, 14)):
+        return "शरद"
+    return "हेमंत"
+
+
 def load_json(path: Path) -> Any:
     with path.open("r", encoding="utf-8") as f:
         return json.load(f)
@@ -236,9 +252,10 @@ def resolve_panchang_info(
         tithi_hi = str(row.get("tithi_hi", "अज्ञात")).strip() or "अज्ञात"
         return PanchangInfo(ritu_hi=ritu_hi, maah_hi=maah_hi, tithi_hi=tithi_hi)
 
+    inferred_ritu = infer_ritu_hi_from_date(target_date)
     maah_hi = ekadashi.lunar_month_hi or GREGORIAN_MONTH_HI[target_date.month]
     tithi_hi = "एकादशी" if ekadashi.is_ekadashi else "अज्ञात"
-    return PanchangInfo(ritu_hi=default_ritu, maah_hi=maah_hi, tithi_hi=tithi_hi)
+    return PanchangInfo(ritu_hi=inferred_ritu or default_ritu, maah_hi=maah_hi, tithi_hi=tithi_hi)
 
 
 def get_festival_entry_for_date(target_date: str, festivals_data: Any) -> dict[str, Any] | None:
