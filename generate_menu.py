@@ -192,15 +192,14 @@ def resolve_festival_info(target_date: str, festivals_data: Any) -> FestivalInfo
     return FestivalInfo(hindu_hi=hindu, sikh_hi=sikh)
 
 
-def format_festival_line(festival_info: FestivalInfo) -> str:
-    labels: list[str] = []
-    if festival_info.hindu_hi:
-        labels.append("हिन्दू: " + " / ".join(festival_info.hindu_hi))
-    if festival_info.sikh_hi:
-        labels.append("सिख: " + " / ".join(festival_info.sikh_hi))
-    if not labels:
-        return "*पर्व/त्योहार:* कोई प्रमुख पर्व नहीं"
-    return "*पर्व/त्योहार:* " + " | ".join(labels)
+def format_festival_line(festival_info: FestivalInfo) -> str | None:
+    combined: list[str] = []
+    for name in festival_info.hindu_hi + festival_info.sikh_hi:
+        if name not in combined:
+            combined.append(name)
+    if not combined:
+        return None
+    return "*पर्व/त्योहार:* " + " / ".join(combined)
 
 
 def is_blocked_item(item: str, keywords: list[str]) -> bool:
@@ -671,10 +670,12 @@ def main() -> int:
         f"*ऋतु:* {panchang_info.ritu_hi}",
         f"*माह:* {panchang_info.maah_hi}",
         f"*तिथि (पंचांग):* {panchang_info.tithi_hi}",
-        format_festival_line(festival_info),
         f"*सुबह का नाश्ता:* {selected_breakfast}",
         f"*आज का भोजन:* {selected_meal}",
     ]
+    festival_line = format_festival_line(festival_info)
+    if festival_line:
+        lines.insert(4, festival_line)
 
     if ekadashi.is_ekadashi and ekadashi.name_hi:
         lines.append(f"*एकादशी:* {ekadashi.name_hi}")
