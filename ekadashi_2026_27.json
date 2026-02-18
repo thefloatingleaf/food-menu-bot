@@ -1,0 +1,227 @@
+{
+  "meta": {
+    "location_basis": "New Delhi, India (as per Drik Panchang calendar pages)",
+    "range_start": "2026-01-01",
+    "range_end": "2027-02-19",
+    "date_format": "yyyy-MM-dd"
+  },
+  "ekadashi_list": [
+    {
+      "date": "2026-01-14",
+      "name_hi": "षट्तिला एकादशी",
+      "lunar_month_hi": "माघ",
+      "paksha_hi": "कृष्ण पक्ष",
+      "is_gauna": false
+    },
+    {
+      "date": "2026-01-29",
+      "name_hi": "जया एकादशी",
+      "lunar_month_hi": "माघ",
+      "paksha_hi": "शुक्ल पक्ष",
+      "is_gauna": false
+    },
+    {
+      "date": "2026-02-13",
+      "name_hi": "विजया एकादशी",
+      "lunar_month_hi": "फाल्गुन",
+      "paksha_hi": "कृष्ण पक्ष",
+      "is_gauna": false
+    },
+    {
+      "date": "2026-02-27",
+      "name_hi": "आमलकी एकादशी",
+      "lunar_month_hi": "फाल्गुन",
+      "paksha_hi": "शुक्ल पक्ष",
+      "is_gauna": false
+    },
+    {
+      "date": "2026-03-15",
+      "name_hi": "पापमोचनी एकादशी",
+      "lunar_month_hi": "चैत्र",
+      "paksha_hi": "कृष्ण पक्ष",
+      "is_gauna": false
+    },
+    {
+      "date": "2026-03-29",
+      "name_hi": "कामदा एकादशी",
+      "lunar_month_hi": "चैत्र",
+      "paksha_hi": "शुक्ल पक्ष",
+      "is_gauna": false
+    },
+    {
+      "date": "2026-04-13",
+      "name_hi": "वरूथिनी एकादशी",
+      "lunar_month_hi": "वैशाख",
+      "paksha_hi": "कृष्ण पक्ष",
+      "is_gauna": false
+    },
+    {
+      "date": "2026-04-27",
+      "name_hi": "मोहिनी एकादशी",
+      "lunar_month_hi": "वैशाख",
+      "paksha_hi": "शुक्ल पक्ष",
+      "is_gauna": false
+    },
+    {
+      "date": "2026-05-13",
+      "name_hi": "अपरा एकादशी",
+      "lunar_month_hi": "ज्येष्ठ",
+      "paksha_hi": "कृष्ण पक्ष",
+      "is_gauna": false
+    },
+    {
+      "date": "2026-05-27",
+      "name_hi": "पद्मिनी एकादशी",
+      "lunar_month_hi": "ज्येष्ठ (अधिक)",
+      "paksha_hi": "शुक्ल पक्ष",
+      "is_gauna": false
+    },
+    {
+      "date": "2026-06-11",
+      "name_hi": "परमा एकादशी",
+      "lunar_month_hi": "ज्येष्ठ (अधिक)",
+      "paksha_hi": "कृष्ण पक्ष",
+      "is_gauna": false
+    },
+    {
+      "date": "2026-06-25",
+      "name_hi": "निर्जला एकादशी",
+      "lunar_month_hi": "ज्येष्ठ",
+      "paksha_hi": "शुक्ल पक्ष",
+      "is_gauna": false
+    },
+    {
+      "date": "2026-07-10",
+      "name_hi": "योगिनी एकादशी",
+      "lunar_month_hi": "आषाढ़",
+      "paksha_hi": "कृष्ण पक्ष",
+      "is_gauna": false
+    },
+    {
+      "date": "2026-07-11",
+      "name_hi": "योगिनी एकादशी",
+      "lunar_month_hi": "आषाढ़",
+      "paksha_hi": "कृष्ण पक्ष",
+      "is_gauna": true
+    },
+    {
+      "date": "2026-07-25",
+      "name_hi": "देवशयनी एकादशी",
+      "lunar_month_hi": "आषाढ़",
+      "paksha_hi": "शुक्ल पक्ष",
+      "is_gauna": false
+    },
+    {
+      "date": "2026-08-09",
+      "name_hi": "कामिका एकादशी",
+      "lunar_month_hi": "श्रावण",
+      "paksha_hi": "कृष्ण पक्ष",
+      "is_gauna": false
+    },
+    {
+      "date": "2026-08-23",
+      "name_hi": "श्रावण पुत्रदा एकादशी",
+      "lunar_month_hi": "श्रावण",
+      "paksha_hi": "शुक्ल पक्ष",
+      "is_gauna": false
+    },
+    {
+      "date": "2026-09-07",
+      "name_hi": "अजा एकादशी",
+      "lunar_month_hi": "भाद्रपद",
+      "paksha_hi": "कृष्ण पक्ष",
+      "is_gauna": false
+    },
+    {
+      "date": "2026-09-22",
+      "name_hi": "पार्श्व एकादशी",
+      "lunar_month_hi": "भाद्रपद",
+      "paksha_hi": "शुक्ल पक्ष",
+      "is_gauna": false
+    },
+    {
+      "date": "2026-10-06",
+      "name_hi": "इन्दिरा एकादशी",
+      "lunar_month_hi": "आश्विन",
+      "paksha_hi": "कृष्ण पक्ष",
+      "is_gauna": false
+    },
+    {
+      "date": "2026-10-22",
+      "name_hi": "पापांकुशा एकादशी",
+      "lunar_month_hi": "आश्विन",
+      "paksha_hi": "शुक्ल पक्ष",
+      "is_gauna": false
+    },
+    {
+      "date": "2026-11-05",
+      "name_hi": "रमा एकादशी",
+      "lunar_month_hi": "कार्तिक",
+      "paksha_hi": "कृष्ण पक्ष",
+      "is_gauna": false
+    },
+    {
+      "date": "2026-11-20",
+      "name_hi": "देवउठनी (देवोत्थान) एकादशी",
+      "lunar_month_hi": "कार्तिक",
+      "paksha_hi": "शुक्ल पक्ष",
+      "is_gauna": false
+    },
+    {
+      "date": "2026-11-21",
+      "name_hi": "देवउठनी (देवोत्थान) एकादशी",
+      "lunar_month_hi": "कार्तिक",
+      "paksha_hi": "शुक्ल पक्ष",
+      "is_gauna": true
+    },
+    {
+      "date": "2026-12-04",
+      "name_hi": "उत्पन्ना एकादशी",
+      "lunar_month_hi": "मार्गशीर्ष",
+      "paksha_hi": "कृष्ण पक्ष",
+      "is_gauna": false
+    },
+    {
+      "date": "2026-12-20",
+      "name_hi": "मोक्षदा एकादशी",
+      "lunar_month_hi": "मार्गशीर्ष",
+      "paksha_hi": "शुक्ल पक्ष",
+      "is_gauna": false
+    },
+    {
+      "date": "2027-01-03",
+      "name_hi": "सफल एकादशी",
+      "lunar_month_hi": "पौष",
+      "paksha_hi": "कृष्ण पक्ष",
+      "is_gauna": false
+    },
+    {
+      "date": "2027-01-18",
+      "name_hi": "पौष पुत्रदा एकादशी",
+      "lunar_month_hi": "पौष",
+      "paksha_hi": "शुक्ल पक्ष",
+      "is_gauna": false
+    },
+    {
+      "date": "2027-01-19",
+      "name_hi": "पौष पुत्रदा एकादशी",
+      "lunar_month_hi": "पौष",
+      "paksha_hi": "शुक्ल पक्ष",
+      "is_gauna": true
+    },
+    {
+      "date": "2027-02-02",
+      "name_hi": "षट्तिला एकादशी",
+      "lunar_month_hi": "माघ",
+      "paksha_hi": "कृष्ण पक्ष",
+      "is_gauna": false
+    },
+    {
+      "date": "2027-02-17",
+      "name_hi": "जया एकादशी",
+      "lunar_month_hi": "माघ",
+      "paksha_hi": "शुक्ल पक्ष",
+      "is_gauna": false
+    }
+  ]
+}
