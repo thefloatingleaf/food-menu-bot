@@ -8,5 +8,18 @@
     "पोहा",
     "मीठे चावल",
     "तहरी"
-  ]
+  ],
+  "weather_enabled": true,
+  "weather_city_hi": "लखनऊ",
+  "weather_lat": 26.8467,
+  "weather_lon": 80.9462,
+  "weather_timezone": "Asia/Kolkata",
+  "weather_show_mode": "rain_or_extreme_only",
+  "weather_thresholds": {
+    "cold_max_c": 18,
+    "hot_min_c": 30,
+    "extreme_cold_max_c": 10,
+    "extreme_hot_min_c": 35,
+    "rain_probability_high_pct": 50
+  }
 }

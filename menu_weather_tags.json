@@ -1,0 +1,217 @@
+{
+  "गेहूं के आटे में मूली की रोटी (बारीक कटे हुए मूली के पत्ते के साथ) की रोटी (बनाते हुए नमक को एक एक रोटी कर के डालना, वरना मूली पानी छोड़ देती है), (गुड़, शहद, छाछ, मक्खन, त्रिकटु साथ देना।)": [
+    "comfort_hot",
+    "hydrating",
+    "light"
+  ],
+  "गोभी की रोटी, (गुड़, शहद, छाछ, मक्खन, त्रिकटु साथ देना।)": [
+    "comfort_hot",
+    "hydrating",
+    "light"
+  ],
+  "मेथी की रोटी, गेहूँ के आटे में (गुड़, शहद, छाछ, मक्खन, त्रिकटु साथ देना।)": [
+    "comfort_hot",
+    "hydrating",
+    "light",
+    "winter_friendly"
+  ],
+  "आलू बथुआ की रोटी (गुड़, शहद, छाछ, मक्खन, त्रिकटु साथ देना।)": [
+    "comfort_hot",
+    "hydrating",
+    "light"
+  ],
+  "बाजरा का पराठा (बनने की विधि: https://www.youtube.com/watch?v=HkmT1t3bMY0) (गुड़, शहद, छाछ, मक्खन, त्रिकटु साथ देना।)": [
+    "comfort_hot",
+    "fried",
+    "heavy",
+    "hydrating",
+    "winter_friendly"
+  ],
+  "मटर की रोटी, (गुड़, शहद, छाछ, मक्खन, त्रिकटु साथ देना।)": [
+    "comfort_hot",
+    "hydrating",
+    "light"
+  ],
+  "मक्की के आटे में मूली और मेथी  की रोटी (बारीक कटे हुए मूली के पत्ते के साथ) (गुड़, शहद, छाछ, मक्खन, त्रिकटु साथ देना।) (विधि: https://www.youtube.com/watch?v=M_tlU1ZfWf4&feature=shared)": [
+    "comfort_hot",
+    "hydrating",
+    "light",
+    "winter_friendly"
+  ],
+  "चने उड़द दाल के पकौड़े (गुड़, छाछ, त्रिकटु साथ देना।) साथ में अमरूद की चटनी। (पकौड़े बनाने की विधि: https://www.youtube.com/watch?v=nZzSfUi_isg) (अमरूद की चटनी बनाने की विधि: https://www.youtube.com/watch?v=-xsL-HVbBOY&feature=shared)": [
+    "comfort_hot",
+    "fried",
+    "hydrating",
+    "light",
+    "rain_friendly"
+  ],
+  "उपमा सांभर और नारियल की चटनी": [
+    "comfort_hot",
+    "hydrating",
+    "light",
+    "rain_friendly",
+    "summer_friendly"
+  ],
+  "छोले, आलू, मेथी की पूरी (गुड़, शहद, छाछ, मक्खन, त्रिकटु साथ देना।)": [
+    "comfort_hot",
+    "hydrating",
+    "winter_friendly"
+  ],
+  "छोले, आलू टमाटर की सब्जी, उड़द दाल की पीठी वाली कचौड़ी (गुड़, शहद, छाछ, मक्खन, त्रिकटु साथ देना।)": [
+    "comfort_hot",
+    "fried",
+    "heavy",
+    "hydrating",
+    "light"
+  ],
+  "पूरण पोली (गुड़, शहद, छाछ, मक्खन, त्रिकटु साथ देना।) (विधि: https://www.youtube.com/watch?v=oTl_DYNAP0o)": [
+    "hydrating"
+  ],
+  "चना दाल वड़ा और *सूखे* नारियल की चटनी (विधि: https://www.youtube.com/watch?v=7pkH4xg98iQ)": [
+    "comfort_hot",
+    "fried",
+    "hydrating",
+    "light",
+    "summer_friendly"
+  ],
+  "मेथी की रोटी, मक्की के आटे में (पूरे आटे में एक आलू डाल लें। इससे रोटी नरम हो जाती है), (गुड़, शहद, छाछ, मक्खन, त्रिकटु साथ देना।)": [
+    "comfort_hot",
+    "hydrating",
+    "light",
+    "winter_friendly"
+  ],
+  "दाल बाटी चूरमा (गुड़, शहद, छाछ, मक्खन, त्रिकटु साथ देना।)": [
+    "comfort_hot",
+    "heavy",
+    "hydrating",
+    "light"
+  ],
+  "सरसों का साग, मक्की की रोटी, (गुड़, शहद, छाछ, मक्खन, त्रिकटु साथ देना।)": [
+    "comfort_hot",
+    "hydrating",
+    "light",
+    "winter_friendly"
+  ],
+  "धुली उड़द दाल - गेहूँ रोटी और चकुंदर का रायता": [
+    "comfort_hot",
+    "hydrating",
+    "light",
+    "summer_friendly"
+  ],
+  "माँ (खड़ी) उड़द दाल - दाल बुखारा - गेहूं रोटी": [
+    "comfort_hot",
+    "light"
+  ],
+  "पालक-चने की दाल और गेहू रोटी और बथुआ का रायता": [
+    "comfort_hot",
+    "hydrating",
+    "light",
+    "summer_friendly"
+  ],
+  "गंगा जमुना दाल (छिलके वाली उड़द की दाल 75% और चना दाल कम रहेगी का मिश्रण 25%, अदरक प्याज़ का तड़का) (ज़्यादा उबालनी होती है यह दाल)और गेहू रोटी": [
+    "comfort_hot",
+    "light"
+  ],
+  "कद्दू की सब्ज़ी और गेहू का पराठा, और बथुआ का रायता": [
+    "fried",
+    "heavy",
+    "hydrating",
+    "summer_friendly"
+  ],
+  "उड़द दाल की बाड़ियाँ और आलू की सब्जी और गेहू की रोटी": [
+    "comfort_hot",
+    "light"
+  ],
+  "आलू मेथी की सब्जी और मक्की की रोटी और चकुंदर का रायता": [
+    "comfort_hot",
+    "hydrating",
+    "light",
+    "summer_friendly",
+    "winter_friendly"
+  ],
+  "सरसों का साग और मक्के की रोटी": [
+    "comfort_hot",
+    "light",
+    "winter_friendly"
+  ],
+  "आलू, गोभी, मटर, गाजर, की मिक्स सब्ज़ी और रोटी": [
+    "comfort_hot",
+    "light"
+  ],
+  "तुअर दाल और गेहू की रोटी, और बथुआ का रायता": [
+    "comfort_hot",
+    "hydrating",
+    "light",
+    "summer_friendly"
+  ],
+  "कुलथी की दाल और चावल": [
+    "comfort_hot",
+    "heavy",
+    "light"
+  ],
+  "छोले और कुलचे, और बथुआ का रायता": [
+    "heavy",
+    "hydrating",
+    "summer_friendly"
+  ],
+  "तहरी और बथुआ का रायता": [
+    "hydrating",
+    "summer_friendly"
+  ],
+  "छोले और चावल और चकुंदर का रायता": [
+    "heavy",
+    "hydrating",
+    "summer_friendly"
+  ],
+  "छोले और गेहू का पराठा": [
+    "fried",
+    "heavy"
+  ],
+  "मूली के पत्ते और आलू की सब्जी और गेहू की रोटी और बथुआ का रायता": [
+    "comfort_hot",
+    "hydrating",
+    "light",
+    "summer_friendly"
+  ],
+  "चोखा (बैंगन का भर्ता),दाल और बाटी चूरमा (गुड़, शहद, छाछ, मक्खन, त्रिकटु साथ देना।)": [
+    "comfort_hot",
+    "heavy",
+    "hydrating",
+    "light"
+  ],
+  "मेथी मटर मसाला और गेहू का पराठा, और बथुआ का रायता": [
+    "comfort_hot",
+    "fried",
+    "heavy",
+    "hydrating",
+    "summer_friendly",
+    "winter_friendly"
+  ],
+  "काजू बादाम की सब्जी और गेहू का पराठा": [
+    "fried",
+    "heavy"
+  ],
+  "मीठे चावल (गन्ने के रस में) और सादा दही": [
+    "heavy",
+    "hydrating",
+    "summer_friendly"
+  ],
+  "पालक कॉर्न (विधि: https://www.youtube.com/watch?v=kCk_XWXsTJs&feature=shared) और रोटी": [
+    "comfort_hot",
+    "light"
+  ],
+  "बाजरे की खिचड़ी (बाजरा रात को भिगो दें) (गुड़, शहद, छाछ, मक्खन, त्रिकटु साथ देना।) (विधि: https://www.youtube.com/watch?v=oB3cVpEVd5g&feature=shared)": [
+    "comfort_hot",
+    "heavy",
+    "hydrating",
+    "rain_friendly",
+    "winter_friendly"
+  ],
+  "छिलके वाली उड़द दाल की खिचड़ी (केवल नमक डाल के) (गुड़, शहद, छाछ, मक्खन, त्रिकटु साथ देना।)": [
+    "comfort_hot",
+    "heavy",
+    "hydrating",
+    "light",
+    "rain_friendly"
+  ]
+}

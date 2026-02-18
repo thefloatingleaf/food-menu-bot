@@ -3,10 +3,14 @@ import argparse
 import hashlib
 import json
 import random
+import sys
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any
+from urllib.error import URLError
+from urllib.parse import urlencode
+from urllib.request import urlopen
 
 try:
     from zoneinfo import ZoneInfo
@@ -21,6 +25,8 @@ PANCHANG_FILE = BASE_DIR / "panchang_2026_27.json"
 CONFIG_FILE = BASE_DIR / "config.json"
 HISTORY_FILE = BASE_DIR / "history.json"
 OUTPUT_FILE = BASE_DIR / "daily_menu.txt"
+WEATHER_TAGS_FILE = BASE_DIR / "menu_weather_tags.json"
+MANUAL_WEATHER_FILE = BASE_DIR / "manual_weather_override.json"
 
 
 @dataclass
@@ -35,6 +41,23 @@ class PanchangInfo:
     ritu_hi: str
     maah_hi: str
     tithi_hi: str
+
+
+@dataclass
+class WeatherInfo:
+    morning_temp_c: float
+    max_temp_c: float
+    rain_probability_pct: float
+    is_rainy: bool
+    is_extreme_cold: bool
+    is_extreme_hot: bool
+    source_hi: str
+
+
+@dataclass
+class WeatherRules:
+    preferred_tags: set[str]
+    avoid_tags: set[str]
 
 
 GREGORIAN_MONTH_HI = {
@@ -58,9 +81,20 @@ def load_json(path: Path) -> Any:
         return json.load(f)
 
 
+def write_json(path: Path, value: Any) -> None:
+    with path.open("w", encoding="utf-8") as f:
+        json.dump(value, f, ensure_ascii=False, indent=2)
+        f.write("\n")
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Generate daily food menu")
     parser.add_argument("--date", help="Date in YYYY-MM-DD format")
+    parser.add_argument(
+        "--bootstrap-weather-tags",
+        action="store_true",
+        help="Create or refresh weather tags file from keyword heuristics",
+    )
     return parser.parse_args()
 
 
@@ -144,7 +178,6 @@ def normalize_history(raw: Any) -> list[dict[str, str]]:
             cleaned.append({"date": date_val, "breakfast": breakfast_val, "meal": meal_val})
             continue
 
-        # Backward compatibility with old history format.
         old_item = row.get("item")
         if isinstance(old_item, str):
             cleaned.append({"date": date_val, "meal": old_item})
@@ -169,6 +202,254 @@ def recent_items(
     return blocked
 
 
+def apply_repeat_rule(pool: list[str], recent_block_set: set[str]) -> list[str]:
+    filtered = [item for item in pool if item not in recent_block_set]
+    return filtered if filtered else pool[:]
+
+
+def parse_weather_thresholds(config: dict[str, Any]) -> dict[str, float]:
+    raw = config.get("weather_thresholds", {})
+    if not isinstance(raw, dict):
+        raw = {}
+    return {
+        "cold_max_c": float(raw.get("cold_max_c", 18)),
+        "hot_min_c": float(raw.get("hot_min_c", 30)),
+        "extreme_cold_max_c": float(raw.get("extreme_cold_max_c", 10)),
+        "extreme_hot_min_c": float(raw.get("extreme_hot_min_c", 35)),
+        "rain_probability_high_pct": float(raw.get("rain_probability_high_pct", 50)),
+    }
+
+
+def load_manual_weather(target_date: str, thresholds: dict[str, float]) -> WeatherInfo | None:
+    if not MANUAL_WEATHER_FILE.exists():
+        return None
+
+    data = load_json(MANUAL_WEATHER_FILE)
+    if not isinstance(data, dict):
+        return None
+
+    row = data.get(target_date)
+    if not isinstance(row, dict):
+        return None
+
+    try:
+        morning_temp = float(row["morning_temp_c"])
+        max_temp = float(row["max_temp_c"])
+        rain_pct = float(row.get("rain_probability_pct", 0))
+    except (KeyError, TypeError, ValueError):
+        return None
+
+    source_hi = str(row.get("source_hi", "मैनुअल अनुमान"))
+    return WeatherInfo(
+        morning_temp_c=morning_temp,
+        max_temp_c=max_temp,
+        rain_probability_pct=rain_pct,
+        is_rainy=rain_pct >= thresholds["rain_probability_high_pct"],
+        is_extreme_cold=max_temp <= thresholds["extreme_cold_max_c"],
+        is_extreme_hot=max_temp >= thresholds["extreme_hot_min_c"],
+        source_hi=source_hi,
+    )
+
+
+def fetch_open_meteo_weather(target_date: str, config: dict[str, Any], thresholds: dict[str, float]) -> WeatherInfo | None:
+    lat = config.get("weather_lat")
+    lon = config.get("weather_lon")
+    timezone_name = config.get("weather_timezone", config.get("timezone", "Asia/Kolkata"))
+
+    if lat is None or lon is None:
+        return None
+
+    params = {
+        "latitude": str(lat),
+        "longitude": str(lon),
+        "hourly": "temperature_2m",
+        "daily": "temperature_2m_max,precipitation_probability_max",
+        "timezone": timezone_name,
+        "start_date": target_date,
+        "end_date": target_date,
+    }
+    url = "https://api.open-meteo.com/v1/forecast?" + urlencode(params)
+
+    try:
+        with urlopen(url, timeout=12) as response:
+            payload = json.loads(response.read().decode("utf-8"))
+    except (URLError, TimeoutError, json.JSONDecodeError):
+        return None
+
+    daily = payload.get("daily", {}) if isinstance(payload, dict) else {}
+    hourly = payload.get("hourly", {}) if isinstance(payload, dict) else {}
+
+    try:
+        max_temp = float(daily.get("temperature_2m_max", [None])[0])
+    except (TypeError, ValueError, IndexError):
+        return None
+
+    try:
+        rain_pct = float(daily.get("precipitation_probability_max", [0])[0])
+    except (TypeError, ValueError, IndexError):
+        rain_pct = 0.0
+
+    hourly_times = hourly.get("time", []) if isinstance(hourly, dict) else []
+    hourly_temps = hourly.get("temperature_2m", []) if isinstance(hourly, dict) else []
+
+    morning_temp = None
+    target_hour = f"{target_date}T08:00"
+    for idx, val in enumerate(hourly_times):
+        if isinstance(val, str) and val == target_hour:
+            try:
+                morning_temp = float(hourly_temps[idx])
+            except (TypeError, ValueError, IndexError):
+                morning_temp = None
+            break
+
+    if morning_temp is None:
+        for idx, val in enumerate(hourly_times):
+            if isinstance(val, str) and val.startswith(f"{target_date}T"):
+                try:
+                    morning_temp = float(hourly_temps[idx])
+                    break
+                except (TypeError, ValueError, IndexError):
+                    continue
+
+    if morning_temp is None:
+        morning_temp = max_temp
+
+    return WeatherInfo(
+        morning_temp_c=morning_temp,
+        max_temp_c=max_temp,
+        rain_probability_pct=rain_pct,
+        is_rainy=rain_pct >= thresholds["rain_probability_high_pct"],
+        is_extreme_cold=max_temp <= thresholds["extreme_cold_max_c"],
+        is_extreme_hot=max_temp >= thresholds["extreme_hot_min_c"],
+        source_hi="Open-Meteo",
+    )
+
+
+def resolve_weather_info(target_date: str, config: dict[str, Any], thresholds: dict[str, float]) -> WeatherInfo | None:
+    manual = load_manual_weather(target_date, thresholds)
+    if manual:
+        return manual
+    return fetch_open_meteo_weather(target_date, config, thresholds)
+
+
+def derive_weather_rules(weather: WeatherInfo, thresholds: dict[str, float]) -> WeatherRules:
+    preferred: set[str] = set()
+    avoid: set[str] = set()
+
+    if weather.is_rainy:
+        preferred.update({"rain_friendly", "comfort_hot"})
+        avoid.update({"cold_served"})
+
+    if weather.max_temp_c <= thresholds["extreme_cold_max_c"]:
+        preferred.update({"comfort_hot", "winter_friendly", "heavy"})
+        avoid.update({"cold_served", "cooling"})
+    elif weather.max_temp_c <= thresholds["cold_max_c"]:
+        preferred.update({"comfort_hot", "winter_friendly"})
+        avoid.update({"cold_served"})
+
+    if weather.max_temp_c >= thresholds["hot_min_c"]:
+        preferred.update({"light", "hydrating", "summer_friendly"})
+        avoid.update({"heavy", "fried", "very_spicy"})
+
+    if weather.max_temp_c >= thresholds["extreme_hot_min_c"]:
+        preferred.update({"light", "hydrating", "summer_friendly"})
+        avoid.update({"heavy", "fried", "very_spicy", "comfort_hot"})
+
+    return WeatherRules(preferred_tags=preferred, avoid_tags=avoid)
+
+
+def infer_tags_for_item(item: str) -> list[str]:
+    tags: set[str] = set()
+    text = item.lower()
+
+    if any(word in text for word in ["खिचड़ी", "पराठा", "बाटी", "कचौड़ी", "पुरी", "कुलचे", "चूरमा", "चावल"]):
+        tags.add("heavy")
+    if any(word in text for word in ["पकौड़े", "वड़ा", "पुरी", "कचौड़ी", "पराठा"]):
+        tags.add("fried")
+    if any(word in text for word in ["छाछ", "रायता", "दही", "नारियल", "चटनी"]):
+        tags.add("hydrating")
+    if any(word in text for word in ["सांभर", "दाल", "साग", "उपमा", "रोटी", "मेथी", "सरसों", "बाजरा", "मक्की"]):
+        tags.add("comfort_hot")
+    if any(word in text for word in ["मेथी", "सरसों", "बाजरा", "मक्की"]):
+        tags.add("winter_friendly")
+    if any(word in text for word in ["रायता", "दही", "नारियल", "उपमा"]):
+        tags.add("summer_friendly")
+    if any(word in text for word in ["उपमा", "खिचड़ी", "सांभर", "पकौड़े"]):
+        tags.add("rain_friendly")
+    if any(word in text for word in ["उपमा", "दाल", "रोटी"]):
+        tags.add("light")
+
+    return sorted(tags)
+
+
+def bootstrap_weather_tags(items: list[str]) -> dict[str, list[str]]:
+    return {item: infer_tags_for_item(item) for item in items}
+
+
+def load_weather_tags(items: list[str]) -> dict[str, list[str]]:
+    if not WEATHER_TAGS_FILE.exists():
+        data = bootstrap_weather_tags(items)
+        write_json(WEATHER_TAGS_FILE, data)
+        return data
+
+    raw = load_json(WEATHER_TAGS_FILE)
+    if not isinstance(raw, dict):
+        return bootstrap_weather_tags(items)
+
+    normalized: dict[str, list[str]] = {}
+    for item in items:
+        tags = raw.get(item, [])
+        if isinstance(tags, list):
+            normalized[item] = sorted({str(t).strip() for t in tags if isinstance(t, str) and t.strip()})
+        else:
+            normalized[item] = []
+    return normalized
+
+
+def apply_weather_filter(
+    pool: list[str],
+    weather_rules: WeatherRules,
+    weather_tags: dict[str, list[str]],
+    warn_bucket: set[str],
+) -> list[str]:
+    preferred = weather_rules.preferred_tags
+    avoid = weather_rules.avoid_tags
+
+    def tags_for(item: str) -> set[str]:
+        tags = set(weather_tags.get(item, []))
+        if not tags:
+            warn_bucket.add(item)
+        return tags
+
+    def in_stage_1(item: str) -> bool:
+        tags = tags_for(item)
+        if not tags:
+            return True
+        has_avoid = bool(tags & avoid)
+        has_pref = bool(tags & preferred)
+        if preferred:
+            return has_pref and not has_avoid
+        return not has_avoid
+
+    stage1 = [item for item in pool if in_stage_1(item)]
+    if stage1:
+        return stage1
+
+    def in_stage_2(item: str) -> bool:
+        tags = tags_for(item)
+        if not tags:
+            return True
+        if preferred:
+            return bool(tags & preferred)
+        return True
+
+    stage2 = [item for item in pool if in_stage_2(item)]
+    if stage2:
+        return stage2
+
+    return pool[:]
+
+
 def choose_item(
     items: list[str],
     ekadashi: EkadashiInfo,
@@ -176,6 +457,9 @@ def choose_item(
     keywords: list[str],
     fallback_policy: str,
     seed_key: str,
+    weather_rules: WeatherRules | None,
+    weather_tags: dict[str, list[str]],
+    warn_bucket: set[str],
 ) -> str:
     full_pool = items[:]
 
@@ -184,17 +468,18 @@ def choose_item(
     else:
         base_pool = full_pool[:]
 
-    pool = [item for item in base_pool if item not in recent_block_set]
-    if not pool:
-        pool = base_pool[:]
+    if not base_pool and ekadashi.is_ekadashi and fallback_policy == "fallback_full_menu":
+        base_pool = full_pool[:]
 
-    if not pool and ekadashi.is_ekadashi and fallback_policy == "fallback_full_menu":
-        pool = [item for item in full_pool if item not in recent_block_set]
-        if not pool:
-            pool = full_pool[:]
-
-    if not pool:
+    if not base_pool:
         raise RuntimeError("No menu item available after applying rules")
+
+    pool = apply_repeat_rule(base_pool, recent_block_set)
+
+    if weather_rules is not None:
+        weather_pool = apply_weather_filter(pool, weather_rules, weather_tags, warn_bucket)
+        if weather_pool:
+            pool = weather_pool
 
     seed_int = int(hashlib.sha256(seed_key.encode("utf-8")).hexdigest(), 16)
     rng = random.Random(seed_int)
@@ -232,6 +517,22 @@ def validate_menu_list(menu: Any, file_label: str) -> list[str]:
     return menu
 
 
+def should_show_weather_line(weather: WeatherInfo, mode: str) -> bool:
+    if mode == "always":
+        return True
+    if mode == "never":
+        return False
+    return weather.is_rainy or weather.is_extreme_cold or weather.is_extreme_hot
+
+
+def build_weather_line(weather: WeatherInfo, city_hi: str) -> str:
+    return (
+        f"*मौसम:* {city_hi} - सुबह {weather.morning_temp_c:.1f}°C, "
+        f"अधिकतम {weather.max_temp_c:.1f}°C, वर्षा संभावना {weather.rain_probability_pct:.0f}% "
+        f"({weather.source_hi})"
+    )
+
+
 def main() -> int:
     args = parse_args()
 
@@ -241,6 +542,13 @@ def main() -> int:
     ekadashi_data = load_json(EKADASHI_FILE)
     panchang_data = load_json(PANCHANG_FILE) if PANCHANG_FILE.exists() else {}
     history = normalize_history(load_json(HISTORY_FILE))
+
+    all_items = breakfast_items + meal_items
+
+    if args.bootstrap_weather_tags:
+        write_json(WEATHER_TAGS_FILE, bootstrap_weather_tags(all_items))
+        print(f"Weather tags generated at {WEATHER_TAGS_FILE}")
+        return 0
 
     timezone_name = config.get("timezone", "Asia/Kolkata")
     repeat_window_days = int(config.get("repeat_window_days", 7))
@@ -254,10 +562,26 @@ def main() -> int:
     target_date = resolve_date(args.date, timezone_name)
     target_date_str = target_date.strftime("%Y-%m-%d")
 
+    weather_enabled = bool(config.get("weather_enabled", True))
+    weather_mode = str(config.get("weather_show_mode", "rain_or_extreme_only"))
+    weather_city_hi = str(config.get("weather_city_hi", "लखनऊ"))
+    thresholds = parse_weather_thresholds(config)
+
+    weather_info: WeatherInfo | None = None
+    weather_rules: WeatherRules | None = None
+    if weather_enabled:
+        weather_info = resolve_weather_info(target_date_str, config, thresholds)
+        if weather_info is not None:
+            weather_rules = derive_weather_rules(weather_info, thresholds)
+
+    weather_tags = load_weather_tags(all_items)
+
     ekadashi = get_ekadashi_info(target_date_str, ekadashi_data)
     panchang_info = resolve_panchang_info(target_date, ekadashi, panchang_data, default_ritu)
     breakfast_recent = recent_items(history, target_date, repeat_window_days, "breakfast")
     meal_recent = recent_items(history, target_date, repeat_window_days, "meal")
+
+    warning_items: set[str] = set()
 
     selected_breakfast = choose_item(
         items=breakfast_items,
@@ -266,6 +590,9 @@ def main() -> int:
         keywords=keywords,
         fallback_policy=fallback_policy,
         seed_key=f"{target_date_str}:breakfast",
+        weather_rules=weather_rules,
+        weather_tags=weather_tags,
+        warn_bucket=warning_items,
     )
 
     selected_meal = choose_item(
@@ -275,12 +602,19 @@ def main() -> int:
         keywords=keywords,
         fallback_policy=fallback_policy,
         seed_key=f"{target_date_str}:meal",
+        weather_rules=weather_rules,
+        weather_tags=weather_tags,
+        warn_bucket=warning_items,
     )
 
+    if warning_items:
+        print(
+            "WARN: Untagged items were included in weather filtering: " + ", ".join(sorted(warning_items)),
+            file=sys.stderr,
+        )
+
     new_history = update_history(history, target_date_str, selected_breakfast, selected_meal, repeat_window_days)
-    with HISTORY_FILE.open("w", encoding="utf-8") as f:
-        json.dump(new_history, f, ensure_ascii=False, indent=2)
-        f.write("\n")
+    write_json(HISTORY_FILE, new_history)
 
     lines = [
         f"*तिथि:* {target_date_str}",
@@ -290,8 +624,12 @@ def main() -> int:
         f"*सुबह का नाश्ता:* {selected_breakfast}",
         f"*आज का भोजन:* {selected_meal}",
     ]
+
     if ekadashi.is_ekadashi and ekadashi.name_hi:
         lines.append(f"*एकादशी:* {ekadashi.name_hi}")
+
+    if weather_info is not None and should_show_weather_line(weather_info, weather_mode):
+        lines.append(build_weather_line(weather_info, weather_city_hi))
 
     output_text = "\r\n\r\n".join(lines)
 

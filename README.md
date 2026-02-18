@@ -14,6 +14,12 @@ python3 generate_menu.py
 python3 generate_menu.py --date 2026-02-27
 ```
 
+## Bootstrap weather tags (one-time)
+
+```bash
+python3 generate_menu.py --bootstrap-weather-tags
+```
+
 ## Output format
 
 - `*तिथि:* YYYY-MM-DD`
@@ -23,14 +29,36 @@ python3 generate_menu.py --date 2026-02-27
 - `*सुबह का नाश्ता:* <item>`
 - `*आज का भोजन:* <item>`
 - `*एकादशी:* <name_hi>` (only on Ekadashi/Gauna dates)
+- `*मौसम:* <details>` (only rainy/extreme days)
 
 ## Data files
 
 - `breakfast_shishir.json`
 - `menu_shishir.json`
 - `ekadashi_2026_27.json`
-- `panchang_2026_27.json` (daily tithi/month/ritu mapping)
+- `panchang_2026_27.json`
+- `menu_weather_tags.json`
+- `manual_weather_override.json`
 - `config.json`
+
+## Weather flow (free)
+
+1. Use manual override if date exists in `manual_weather_override.json`
+2. Else fetch Open-Meteo forecast for configured coordinates
+3. Else continue without weather filter (menu generation never fails)
+
+## Manual weather override format
+
+```json
+{
+  "2026-02-19": {
+    "morning_temp_c": 14,
+    "max_temp_c": 27,
+    "rain_probability_pct": 20,
+    "source_hi": "मैनुअल अनुमान"
+  }
+}
+```
 
 ## Panchang data format
 
