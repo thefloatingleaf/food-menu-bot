@@ -765,6 +765,7 @@ def main() -> int:
     panchang_data = load_json(PANCHANG_FILE) if PANCHANG_FILE.exists() else {}
     festivals_data = load_json(FESTIVALS_FILE) if FESTIVALS_FILE.exists() else {}
     history = normalize_history(load_json(HISTORY_FILE))
+    missing_data_notes: list[str] = []
 
     all_items = (
         breakfast_shishir_items
@@ -809,6 +810,8 @@ def main() -> int:
         weather_info = resolve_weather_info(target_date_str, config, thresholds)
         if weather_info is not None:
             weather_rules = derive_weather_rules(weather_info, thresholds)
+        else:
+            missing_data_notes.append("मौसम डेटा उपलब्ध नहीं (मैनुअल/ओपन-मेटियो)")
 
     weather_tags = load_weather_tags(all_items)
 
@@ -816,22 +819,45 @@ def main() -> int:
     panchang_info = resolve_panchang_info(target_date, ekadashi, panchang_data, default_ritu)
     festival_info = resolve_festival_info(target_date_str, festivals_data)
     ritu_key = normalize_ritu_key(panchang_info.ritu_hi)
+    panchang_row = get_panchang_entry_for_date(target_date_str, panchang_data)
+    if panchang_row is None:
+        missing_data_notes.append("पंचांग डेटा उपलब्ध नहीं (इस तिथि के लिए)")
+    if panchang_info.tithi_hi == "अज्ञात":
+        missing_data_notes.append("तिथि (पंचांग) डेटा उपलब्ध नहीं")
 
     if ritu_key == "grishm":
         breakfast_items = breakfast_grishm_items or breakfast_shishir_items
         meal_items = meal_grishm_items or meal_shishir_items
+        if not meal_grishm_items:
+            missing_data_notes.append("ग्रीष्म भोजन सूची उपलब्ध नहीं (fallback: शिशिर)")
     elif ritu_key == "hemant":
         breakfast_items = breakfast_hemant_items or breakfast_shishir_items
         meal_items = meal_hemant_items or meal_shishir_items
+        if not meal_hemant_items:
+            missing_data_notes.append("हेमंत भोजन सूची उपलब्ध नहीं (fallback: शिशिर)")
+        if not breakfast_hemant_items:
+            missing_data_notes.append("हेमंत नाश्ता सूची उपलब्ध नहीं (fallback: शिशिर)")
     elif ritu_key == "sharad":
         breakfast_items = breakfast_sharad_items or breakfast_shishir_items
         meal_items = meal_sharad_items or meal_shishir_items
+        if not meal_sharad_items:
+            missing_data_notes.append("शरद भोजन सूची उपलब्ध नहीं (fallback: शिशिर)")
+        if not breakfast_sharad_items:
+            missing_data_notes.append("शरद नाश्ता सूची उपलब्ध नहीं (fallback: शिशिर)")
     elif ritu_key == "varsha":
         breakfast_items = breakfast_varsha_items or breakfast_shishir_items
         meal_items = meal_varsha_items or meal_shishir_items
+        if not meal_varsha_items:
+            missing_data_notes.append("वर्षा भोजन सूची उपलब्ध नहीं (fallback: शिशिर)")
+        if not breakfast_varsha_items:
+            missing_data_notes.append("वर्षा नाश्ता सूची उपलब्ध नहीं (fallback: शिशिर)")
     elif ritu_key == "vasant":
         breakfast_items = breakfast_vasant_items or breakfast_shishir_items
         meal_items = meal_vasant_items or meal_shishir_items
+        if not meal_vasant_items:
+            missing_data_notes.append("वसंत भोजन सूची उपलब्ध नहीं (fallback: शिशिर)")
+        if not breakfast_vasant_items:
+            missing_data_notes.append("वसंत नाश्ता सूची उपलब्ध नहीं (fallback: शिशिर)")
     else:
         breakfast_items = breakfast_shishir_items
         meal_items = meal_shishir_items
@@ -924,6 +950,13 @@ def main() -> int:
     if ritu_key == "hemant":
         lines.append("*हेमंत पूर्णतया निषिद्ध:* बासमती, मैदा, डिब्बा बंद, मोठ, दोबारा गर्म की हुई दाल/सब्ज़ी, जीरा, इमली, सॉस, अचार, कड़वा, कसैला, रिफाइंड, पनीर, एनर्जी ड्रिंक, प्याज़, दुबारा गर्म किया पानी")
         lines.append("*हेमंत जल नियम:* हमेशा गुनगुना, पीतल या तांबे में")
+
+    if missing_data_notes:
+        unique_notes: list[str] = []
+        for note in missing_data_notes:
+            if note not in unique_notes:
+                unique_notes.append(note)
+        lines.append("*डेटा अलर्ट:* " + " | ".join(unique_notes))
 
     output_text = "\r\n\r\n".join(lines)
 
