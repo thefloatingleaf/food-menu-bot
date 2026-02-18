@@ -223,7 +223,7 @@ def main() -> int:
     if ekadashi.is_ekadashi and ekadashi.name_hi:
         lines.append(f"*एकादशी:* {ekadashi.name_hi}")
 
-    output_text = "\n\n".join(lines)
+    output_text = "\r\n\r\n".join(lines)
 
     with OUTPUT_FILE.open("w", encoding="utf-8") as f:
         f.write(output_text + "\n")
