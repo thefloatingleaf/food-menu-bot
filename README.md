@@ -26,16 +26,19 @@ python3 generate_menu.py --bootstrap-weather-tags
 - `*ऋतु:* <value>`
 - `*माह:* <value>`
 - `*तिथि (पंचांग):* <value>`
-- `*पर्व/त्योहार:* <हिन्दू/सिख पर्व>`
+- `*पर्व/त्योहार:* <festival names>` (only when present on that date)
 - `*सुबह का नाश्ता:* <item>`
 - `*आज का भोजन:* <item>`
 - `*एकादशी:* <name_hi>` (only on Ekadashi/Gauna dates)
 - `*मौसम:* <details>` (only rainy/extreme days)
+- `*वसंत अनिवार्य साथ:* ...` (only when ऋतु is वसंत)
 
 ## Data files
 
 - `breakfast_shishir.json`
 - `menu_shishir.json`
+- `breakfast_vasant.json`
+- `menu_vasant.json`
 - `ekadashi_2026_27.json`
 - `panchang_2026_27.json`
 - `festivals_2026_27.json`
@@ -62,6 +65,17 @@ python3 generate_menu.py --bootstrap-weather-tags
 1. Use manual override if date exists in `manual_weather_override.json`
 2. Else fetch Open-Meteo forecast for configured coordinates
 3. Else continue without weather filter (menu generation never fails)
+
+## Seasonal menu behavior
+
+1. If पंचांग ऋतु is `वसंत`, the script uses:
+   - `breakfast_vasant.json`
+   - `menu_vasant.json`
+2. For वसंत days, output also includes:
+   - `*वसंत अनिवार्य साथ:* नीम की चटनी / पुदीना की चटनी / लहसुन की चटनी / तीखा अचार (खट्टा नहीं) / मूंग दाल पापड़ / मसाला छाछ ...`
+3. Otherwise, script uses Shishir files:
+   - `breakfast_shishir.json`
+   - `menu_shishir.json`
 
 ## Manual weather override format
 

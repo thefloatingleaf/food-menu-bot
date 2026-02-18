@@ -18,8 +18,10 @@ except ImportError as exc:  # pragma: no cover
     raise RuntimeError("Python 3.9+ is required (zoneinfo missing)") from exc
 
 BASE_DIR = Path(__file__).resolve().parent
-BREAKFAST_FILE = BASE_DIR / "breakfast_shishir.json"
-MENU_FILE = BASE_DIR / "menu_shishir.json"
+BREAKFAST_SHISHIR_FILE = BASE_DIR / "breakfast_shishir.json"
+MENU_SHISHIR_FILE = BASE_DIR / "menu_shishir.json"
+BREAKFAST_VASANT_FILE = BASE_DIR / "breakfast_vasant.json"
+MENU_VASANT_FILE = BASE_DIR / "menu_vasant.json"
 EKADASHI_FILE = BASE_DIR / "ekadashi_2026_27.json"
 PANCHANG_FILE = BASE_DIR / "panchang_2026_27.json"
 FESTIVALS_FILE = BASE_DIR / "festivals_2026_27.json"
@@ -65,6 +67,16 @@ class WeatherInfo:
 class WeatherRules:
     preferred_tags: set[str]
     avoid_tags: set[str]
+
+
+VASANT_REQUIRED_SIDES = [
+    "नीम की चटनी",
+    "पुदीना की चटनी",
+    "लहसुन की चटनी",
+    "तीखा अचार (खट्टा नहीं)",
+    "मूंग दाल पापड़",
+    "मसाला छाछ (जीरा, अजवाइन, कढ़ी पत्ता, हींग, घी का तड़का)",
+]
 
 
 GREGORIAN_MONTH_HI = {
@@ -564,6 +576,13 @@ def validate_menu_list(menu: Any, file_label: str) -> list[str]:
     return menu
 
 
+def normalize_ritu_key(ritu_hi: str) -> str:
+    cleaned = ritu_hi.replace(" ", "")
+    if "वसंत" in cleaned or "बसंत" in cleaned:
+        return "vasant"
+    return "shishir"
+
+
 def should_show_weather_line(weather: WeatherInfo, mode: str) -> bool:
     if mode == "always":
         return True
@@ -584,14 +603,24 @@ def main() -> int:
     args = parse_args()
 
     config = load_json(CONFIG_FILE)
-    breakfast_items = validate_menu_list(load_json(BREAKFAST_FILE), "breakfast_shishir.json")
-    meal_items = validate_menu_list(load_json(MENU_FILE), "menu_shishir.json")
+    breakfast_shishir_items = validate_menu_list(load_json(BREAKFAST_SHISHIR_FILE), "breakfast_shishir.json")
+    meal_shishir_items = validate_menu_list(load_json(MENU_SHISHIR_FILE), "menu_shishir.json")
+    breakfast_vasant_items = (
+        validate_menu_list(load_json(BREAKFAST_VASANT_FILE), "breakfast_vasant.json")
+        if BREAKFAST_VASANT_FILE.exists()
+        else []
+    )
+    meal_vasant_items = (
+        validate_menu_list(load_json(MENU_VASANT_FILE), "menu_vasant.json")
+        if MENU_VASANT_FILE.exists()
+        else []
+    )
     ekadashi_data = load_json(EKADASHI_FILE)
     panchang_data = load_json(PANCHANG_FILE) if PANCHANG_FILE.exists() else {}
     festivals_data = load_json(FESTIVALS_FILE) if FESTIVALS_FILE.exists() else {}
     history = normalize_history(load_json(HISTORY_FILE))
 
-    all_items = breakfast_items + meal_items
+    all_items = breakfast_shishir_items + meal_shishir_items + breakfast_vasant_items + meal_vasant_items
 
     if args.bootstrap_weather_tags:
         write_json(WEATHER_TAGS_FILE, bootstrap_weather_tags(all_items))
@@ -627,6 +656,15 @@ def main() -> int:
     ekadashi = get_ekadashi_info(target_date_str, ekadashi_data)
     panchang_info = resolve_panchang_info(target_date, ekadashi, panchang_data, default_ritu)
     festival_info = resolve_festival_info(target_date_str, festivals_data)
+    ritu_key = normalize_ritu_key(panchang_info.ritu_hi)
+
+    if ritu_key == "vasant":
+        breakfast_items = breakfast_vasant_items or breakfast_shishir_items
+        meal_items = meal_vasant_items or meal_shishir_items
+    else:
+        breakfast_items = breakfast_shishir_items
+        meal_items = meal_shishir_items
+
     breakfast_recent = recent_items(history, target_date, repeat_window_days, "breakfast")
     meal_recent = recent_items(history, target_date, repeat_window_days, "meal")
 
@@ -682,6 +720,9 @@ def main() -> int:
 
     if weather_info is not None and should_show_weather_line(weather_info, weather_mode):
         lines.append(build_weather_line(weather_info, weather_city_hi))
+
+    if ritu_key == "vasant":
+        lines.append("*वसंत अनिवार्य साथ:* " + " / ".join(VASANT_REQUIRED_SIDES))
 
     output_text = "\r\n\r\n".join(lines)
 
