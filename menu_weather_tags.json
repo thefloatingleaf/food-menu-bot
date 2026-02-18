@@ -986,5 +986,120 @@
   ],
   "मंगौड़े उबले हुए, धनिया पुदीना चटनी": [
     "hydrating"
+  ],
+  "पोहा और भुना हुआ मूँग तथा भुने हुए काला चना + नींबू + धनिया": [],
+  "बेसन का चिल्ला": [],
+  "Salty Dalia (नमकीन दलिया)": [],
+  "Sweet Dalia (मीठा दलिया)": [],
+  "नमक अजवाइन रोटी": [
+    "comfort_hot",
+    "light"
+  ],
+  "उपमा, नारियल की चटनी, मूंगफली की चटनी, सांभर": [
+    "comfort_hot",
+    "hydrating",
+    "light",
+    "rain_friendly",
+    "summer_friendly"
+  ],
+  "सूजी का हलवा और नामक आजवाइन वाली रोटी": [
+    "comfort_hot",
+    "light"
+  ],
+  "भिंडी की सब्ज़ी, गेहूँ की रोटी": [
+    "comfort_hot",
+    "light"
+  ],
+  "उबले मंगोड़े की रस्सेदार सब्ज़ी और गेहूं रोटी": [
+    "comfort_hot",
+    "light"
+  ],
+  "अरहर की दाल और गेहूं रोटी": [
+    "comfort_hot",
+    "light"
+  ],
+  "मूँग दाल की बड़ियाँ, जौ की रोटी": [
+    "comfort_hot",
+    "light"
+  ],
+  "परवल, गेहूँ की रोटी": [
+    "comfort_hot",
+    "light"
+  ],
+  "करेला, गेहूँ की रोटी": [
+    "comfort_hot",
+    "light"
+  ],
+  "मूँग की दाल, गेहूं रोटी": [
+    "comfort_hot",
+    "light"
+  ],
+  "मेथी दाने की सब्ज़ी, गेहूँ की रोटी": [
+    "comfort_hot",
+    "light",
+    "winter_friendly"
+  ],
+  "रागी मुद्दे (https://www.youtube.com/watch?v=epIQqNQvP2I) और साथ में धुली मूंग की दाल": [
+    "comfort_hot",
+    "light"
+  ],
+  "तोरई और गेहूँ की रोटी": [
+    "comfort_hot",
+    "light"
+  ],
+  "करोंदा और गेहूँ की रोटी": [
+    "comfort_hot",
+    "light"
+  ],
+  "उबले मंगोड़े की रस्सेदार सब्ज़ी और गेहूं की रोटी": [
+    "comfort_hot",
+    "light"
+  ],
+  "लेमन राइस": [],
+  "बीसी बेले भात (https://www.youtube.com/watch?v=v2A7o8xz85Q)": [],
+  "परिप्पू करी (https://www.youtube.com/watch?v=jezvvnkrIFk)": [],
+  "इमली चावल (https://www.youtube.com/watch?v=Ls1WdcBJ6Jg)": [
+    "heavy"
+  ],
+  "मोरू कली (मोर कूझ) (https://www.youtube.com/watch?v=xWue2xhKIuY)": [],
+  "मूँग दाल खिचड़ी": [
+    "comfort_hot",
+    "heavy",
+    "light",
+    "rain_friendly"
+  ],
+  "मूँग की दाल, चावल": [
+    "comfort_hot",
+    "heavy",
+    "light"
+  ],
+  "लौकी चने की दाल, परमल चावल": [
+    "comfort_hot",
+    "heavy",
+    "light"
+  ],
+  "उबले मंगोड़े की रस्सेदार सब्ज़ी और साथ में चावल": [
+    "heavy"
+  ],
+  "मूंग दाल खिलवां (अवधी दाल) और चावल": [
+    "comfort_hot",
+    "heavy",
+    "light"
+  ],
+  "पायथम पेझुक्कु (मूंग दाल) और चावल": [
+    "comfort_hot",
+    "heavy",
+    "light"
+  ],
+  "रोटी और आम अदा दिया भाजा मूँग दाल (Aam Ada Diya Bhaaja Moong Dal)": [
+    "comfort_hot",
+    "light"
+  ],
+  "रोटी और दाल की कलेजी (Dal ki Kaleji)": [
+    "comfort_hot",
+    "light"
+  ],
+  "चावल और मजीदा कढ़ी (Majjida Karhi)": [
+    "heavy"
   ]
 }

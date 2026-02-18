@@ -24,6 +24,8 @@ BREAKFAST_VASANT_FILE = BASE_DIR / "breakfast_vasant.json"
 MENU_VASANT_FILE = BASE_DIR / "menu_vasant.json"
 BREAKFAST_GRISHM_FILE = BASE_DIR / "breakfast_grishm.json"
 MENU_GRISHM_FILE = BASE_DIR / "menu_grishm.json"
+BREAKFAST_VARSHA_FILE = BASE_DIR / "breakfast_varsha.json"
+MENU_VARSHA_FILE = BASE_DIR / "menu_varsha.json"
 EKADASHI_FILE = BASE_DIR / "ekadashi_2026_27.json"
 PANCHANG_FILE = BASE_DIR / "panchang_2026_27.json"
 FESTIVALS_FILE = BASE_DIR / "festivals_2026_27.json"
@@ -89,6 +91,18 @@ GRISHM_MEAL_REQUIRED_SIDES = [
     "छाछ (काफ़ी पतली)",
     "पुदीना की चटनी",
     "खीरा और ककड़ी",
+]
+
+VARSHA_COMMON_REQUIRED_SIDES = [
+    "आचार",
+    "मिश्री-सौंफ़",
+    "छाछ त्रिकटु के साथ",
+]
+
+VARSHA_BANNED_KEYWORDS = [
+    "प्याज",
+    "प्याज़",
+    "दही",
 ]
 
 
@@ -527,6 +541,7 @@ def choose_item(
     ekadashi: EkadashiInfo,
     recent_block_set: set[str],
     keywords: list[str],
+    disallowed_keywords: list[str],
     fallback_policy: str,
     seed_key: str,
     weather_rules: WeatherRules | None,
@@ -539,6 +554,9 @@ def choose_item(
         base_pool = [item for item in full_pool if not is_blocked_item(item, keywords)]
     else:
         base_pool = full_pool[:]
+
+    if disallowed_keywords:
+        base_pool = [item for item in base_pool if not is_blocked_item(item, disallowed_keywords)]
 
     if not base_pool and ekadashi.is_ekadashi and fallback_policy == "fallback_full_menu":
         base_pool = full_pool[:]
@@ -601,6 +619,8 @@ def dedupe_preserve_order(items: list[str]) -> list[str]:
 
 def normalize_ritu_key(ritu_hi: str) -> str:
     cleaned = ritu_hi.replace(" ", "")
+    if "वर्षाऋतु" in cleaned or "वर्षा" in cleaned:
+        return "varsha"
     if "ग्रीष्मऋतु" in cleaned or "ग्रीष्म" in cleaned:
         return "grishm"
     if "वसंत" in cleaned or "बसंत" in cleaned:
@@ -650,6 +670,16 @@ def main() -> int:
         if MENU_GRISHM_FILE.exists()
         else []
     )
+    breakfast_varsha_items = (
+        validate_menu_list(load_json(BREAKFAST_VARSHA_FILE), "breakfast_varsha.json")
+        if BREAKFAST_VARSHA_FILE.exists()
+        else []
+    )
+    meal_varsha_items = (
+        validate_menu_list(load_json(MENU_VARSHA_FILE), "menu_varsha.json")
+        if MENU_VARSHA_FILE.exists()
+        else []
+    )
     ekadashi_data = load_json(EKADASHI_FILE)
     panchang_data = load_json(PANCHANG_FILE) if PANCHANG_FILE.exists() else {}
     festivals_data = load_json(FESTIVALS_FILE) if FESTIVALS_FILE.exists() else {}
@@ -662,6 +692,8 @@ def main() -> int:
         + meal_vasant_items
         + breakfast_grishm_items
         + meal_grishm_items
+        + breakfast_varsha_items
+        + meal_varsha_items
     )
 
     if args.bootstrap_weather_tags:
@@ -703,12 +735,17 @@ def main() -> int:
     if ritu_key == "grishm":
         breakfast_items = breakfast_grishm_items or breakfast_shishir_items
         meal_items = meal_grishm_items or meal_shishir_items
+    elif ritu_key == "varsha":
+        breakfast_items = breakfast_varsha_items or breakfast_shishir_items
+        meal_items = meal_varsha_items or meal_shishir_items
     elif ritu_key == "vasant":
         breakfast_items = breakfast_vasant_items or breakfast_shishir_items
         meal_items = meal_vasant_items or meal_shishir_items
     else:
         breakfast_items = breakfast_shishir_items
         meal_items = meal_shishir_items
+
+    disallowed_keywords = VARSHA_BANNED_KEYWORDS if ritu_key == "varsha" else []
 
     breakfast_recent = recent_items(history, target_date, repeat_window_days, "breakfast")
     meal_recent = recent_items(history, target_date, repeat_window_days, "meal")
@@ -720,6 +757,7 @@ def main() -> int:
         ekadashi=ekadashi,
         recent_block_set=breakfast_recent,
         keywords=keywords,
+        disallowed_keywords=disallowed_keywords,
         fallback_policy=fallback_policy,
         seed_key=f"{target_date_str}:breakfast",
         weather_rules=weather_rules,
@@ -732,6 +770,7 @@ def main() -> int:
         ekadashi=ekadashi,
         recent_block_set=meal_recent,
         keywords=keywords,
+        disallowed_keywords=disallowed_keywords,
         fallback_policy=fallback_policy,
         seed_key=f"{target_date_str}:meal",
         weather_rules=weather_rules,
@@ -771,6 +810,10 @@ def main() -> int:
     if ritu_key == "grishm":
         lines.append("*ग्रीष्म नाश्ता अनिवार्य साथ:* " + " / ".join(GRISHM_BREAKFAST_REQUIRED_SIDES))
         lines.append("*ग्रीष्म भोजन अनिवार्य साथ:* " + " / ".join(GRISHM_MEAL_REQUIRED_SIDES))
+    if ritu_key == "varsha":
+        lines.append("*वर्षा नाश्ता अनिवार्य साथ:* " + " / ".join(VARSHA_COMMON_REQUIRED_SIDES))
+        lines.append("*वर्षा भोजन अनिवार्य साथ:* " + " / ".join(VARSHA_COMMON_REQUIRED_SIDES))
+        lines.append("*वर्षा वर्जित:* प्याज और दही पूर्णतः मना है")
 
     output_text = "\r\n\r\n".join(lines)
 

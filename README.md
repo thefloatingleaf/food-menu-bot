@@ -41,6 +41,8 @@ python3 generate_menu.py --bootstrap-weather-tags
 - `menu_vasant.json`
 - `breakfast_grishm.json`
 - `menu_grishm.json`
+- `breakfast_varsha.json`
+- `menu_varsha.json`
 - `ekadashi_2026_27.json`
 - `panchang_2026_27.json`
 - `festivals_2026_27.json`
@@ -85,6 +87,14 @@ python3 generate_menu.py --bootstrap-weather-tags
    - `*ग्रीष्म नाश्ता अनिवार्य साथ:* छाछ (काफ़ी पतली) / पुदीना की चटनी`
    - `*ग्रीष्म भोजन अनिवार्य साथ:* छाछ (काफ़ी पतली) / पुदीना की चटनी / खीरा और ककड़ी`
 6. `breakfast_grishm.json` duplicate entries are deduplicated (first occurrence kept) before random selection.
+7. If पंचांग ऋतु is `वर्षा` or `वर्षा ऋतु`, the script uses:
+   - `breakfast_varsha.json`
+   - `menu_varsha.json`
+8. For वर्षा days, output also includes:
+   - `*वर्षा नाश्ता अनिवार्य साथ:* आचार / मिश्री-सौंफ़ / छाछ त्रिकटु के साथ`
+   - `*वर्षा भोजन अनिवार्य साथ:* आचार / मिश्री-सौंफ़ / छाछ त्रिकटु के साथ`
+   - `*वर्षा वर्जित:* प्याज और दही पूर्णतः मना है`
+9. वर्षा days enforce hard filtering for `प्याज`, `प्याज़`, `दही` in breakfast and भोजन selection.
 
 ## Manual weather override format
 
