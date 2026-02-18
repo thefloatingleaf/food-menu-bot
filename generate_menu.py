@@ -28,6 +28,8 @@ BREAKFAST_VARSHA_FILE = BASE_DIR / "breakfast_varsha.json"
 MENU_VARSHA_FILE = BASE_DIR / "menu_varsha.json"
 BREAKFAST_SHARAD_FILE = BASE_DIR / "breakfast_sharad.json"
 MENU_SHARAD_FILE = BASE_DIR / "menu_sharad.json"
+BREAKFAST_HEMANT_FILE = BASE_DIR / "breakfast_hemant.json"
+MENU_HEMANT_FILE = BASE_DIR / "menu_hemant.json"
 EKADASHI_FILE = BASE_DIR / "ekadashi_2026_27.json"
 PANCHANG_FILE = BASE_DIR / "panchang_2026_27.json"
 FESTIVALS_FILE = BASE_DIR / "festivals_2026_27.json"
@@ -121,6 +123,26 @@ SHARAD_BANNED_KEYWORDS = [
     "काली मिर्च",
     "गरम मसाला",
     "गर्म मसाला",
+]
+
+HEMANT_BANNED_KEYWORDS = [
+    "बासमती",
+    "मैदा",
+    "डिब्बा बंद",
+    "मोठ",
+    "दोबारा गर्म",
+    "जीरा",
+    "इमली",
+    "सॉस",
+    "अचार",
+    "कड़वा",
+    "कसैला",
+    "रिफाइंड",
+    "पनीर",
+    "एनर्जी ड्रिंक",
+    "प्याज",
+    "प्याज़",
+    "दुबारा गर्म किया पानी",
 ]
 
 
@@ -637,6 +659,8 @@ def dedupe_preserve_order(items: list[str]) -> list[str]:
 
 def normalize_ritu_key(ritu_hi: str) -> str:
     cleaned = ritu_hi.replace(" ", "")
+    if "हेमंतऋतु" in cleaned or "हेमन्तऋतु" in cleaned or "हेमंत" in cleaned or "हेमन्त" in cleaned:
+        return "hemant"
     if "शरदऋतु" in cleaned or "शरद" in cleaned:
         return "sharad"
     if "वर्षाऋतु" in cleaned or "वर्षा" in cleaned:
@@ -710,6 +734,16 @@ def main() -> int:
         if MENU_SHARAD_FILE.exists()
         else []
     )
+    breakfast_hemant_items = (
+        dedupe_preserve_order(validate_menu_list(load_json(BREAKFAST_HEMANT_FILE), "breakfast_hemant.json"))
+        if BREAKFAST_HEMANT_FILE.exists()
+        else []
+    )
+    meal_hemant_items = (
+        validate_menu_list(load_json(MENU_HEMANT_FILE), "menu_hemant.json")
+        if MENU_HEMANT_FILE.exists()
+        else []
+    )
     ekadashi_data = load_json(EKADASHI_FILE)
     panchang_data = load_json(PANCHANG_FILE) if PANCHANG_FILE.exists() else {}
     festivals_data = load_json(FESTIVALS_FILE) if FESTIVALS_FILE.exists() else {}
@@ -726,6 +760,8 @@ def main() -> int:
         + meal_varsha_items
         + breakfast_sharad_items
         + meal_sharad_items
+        + breakfast_hemant_items
+        + meal_hemant_items
     )
 
     if args.bootstrap_weather_tags:
@@ -767,6 +803,9 @@ def main() -> int:
     if ritu_key == "grishm":
         breakfast_items = breakfast_grishm_items or breakfast_shishir_items
         meal_items = meal_grishm_items or meal_shishir_items
+    elif ritu_key == "hemant":
+        breakfast_items = breakfast_hemant_items or breakfast_shishir_items
+        meal_items = meal_hemant_items or meal_shishir_items
     elif ritu_key == "sharad":
         breakfast_items = breakfast_sharad_items or breakfast_shishir_items
         meal_items = meal_sharad_items or meal_shishir_items
@@ -782,6 +821,8 @@ def main() -> int:
 
     if ritu_key == "varsha":
         disallowed_keywords = VARSHA_BANNED_KEYWORDS
+    elif ritu_key == "hemant":
+        disallowed_keywords = HEMANT_BANNED_KEYWORDS
     elif ritu_key == "sharad":
         disallowed_keywords = SHARAD_BANNED_KEYWORDS
     else:
@@ -863,6 +904,9 @@ def main() -> int:
         lines.append("*शरद कम उपयोग:* छोले, टिंडा, करेला, टमाटर, आलू, अरबी, सरसों, पपीता, सौंफ़, हरी मिर्च, लाल मिर्च, अदरक, सौंठ, सरसों का तेल, कढ़ी, दही, लस्सी, शहद")
         lines.append("*शरद जल नियम:* चाँदी के ग्लास या मटके का जल दें")
         lines.append("*शरद रस:* मीठा / कसैला / कड़वा")
+    if ritu_key == "hemant":
+        lines.append("*हेमंत पूर्णतया निषिद्ध:* बासमती, मैदा, डिब्बा बंद, मोठ, दोबारा गर्म की हुई दाल/सब्ज़ी, जीरा, इमली, सॉस, अचार, कड़वा, कसैला, रिफाइंड, पनीर, एनर्जी ड्रिंक, प्याज़, दुबारा गर्म किया पानी")
+        lines.append("*हेमंत जल नियम:* हमेशा गुनगुना, पीतल या तांबे में")
 
     output_text = "\r\n\r\n".join(lines)
 

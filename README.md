@@ -45,6 +45,8 @@ python3 generate_menu.py --bootstrap-weather-tags
 - `menu_varsha.json`
 - `breakfast_sharad.json`
 - `menu_sharad.json`
+- `breakfast_hemant.json`
+- `menu_hemant.json` (optional; if missing, food falls back to Shishir)
 - `ekadashi_2026_27.json`
 - `panchang_2026_27.json`
 - `festivals_2026_27.json`
@@ -109,6 +111,13 @@ python3 generate_menu.py --bootstrap-weather-tags
    - `*शरद जल नियम:* चाँदी के ग्लास या मटके का जल दें`
    - `*शरद रस:* मीठा / कसैला / कड़वा`
 12. शरद days enforce hard filtering for `इमली`, `लौंग`, `लहसुन`, `प्याज`, `प्याज़`, `काली मिर्च`, `गरम मसाला`, `गर्म मसाला`.
+13. If पंचांग ऋतु is `हेमंत`, `हेमन्त`, `हेमंत ऋतु`, or `हेमन्त ऋतु`, the script uses:
+   - `breakfast_hemant.json`
+   - `menu_hemant.json` (if available; otherwise fallback meal file is `menu_shishir.json`)
+14. For हेमंत days, output includes:
+   - `*हेमंत पूर्णतया निषिद्ध:* बासमती, मैदा, डिब्बा बंद, मोठ, दोबारा गर्म की हुई दाल/सब्ज़ी, जीरा, इमली, सॉस, अचार, कड़वा, कसैला, रिफाइंड, पनीर, एनर्जी ड्रिंक, प्याज़, दुबारा गर्म किया पानी`
+   - `*हेमंत जल नियम:* हमेशा गुनगुना, पीतल या तांबे में`
+15. हेमंत days enforce hard filtering for the same prohibited keywords listed above.
 
 ## Manual weather override format
 
