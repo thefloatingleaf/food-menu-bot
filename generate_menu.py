@@ -14,6 +14,7 @@ except ImportError as exc:  # pragma: no cover
     raise RuntimeError("Python 3.9+ is required (zoneinfo missing)") from exc
 
 BASE_DIR = Path(__file__).resolve().parent
+BREAKFAST_FILE = BASE_DIR / "breakfast_shishir.json"
 MENU_FILE = BASE_DIR / "menu_shishir.json"
 EKADASHI_FILE = BASE_DIR / "ekadashi_2026_27.json"
 CONFIG_FILE = BASE_DIR / "config.json"
@@ -51,7 +52,6 @@ def get_ekadashi_info(target_date: str, ekadashi_data: dict[str, Any]) -> Ekadas
     matches = [e for e in ekadashi_data.get("ekadashi_list", []) if e.get("date") == target_date]
     if not matches:
         return EkadashiInfo(False, None)
-    # Prefer non-gauna label if both are present on same date.
     non_gauna = next((m for m in matches if not m.get("is_gauna", False)), None)
     chosen = non_gauna or matches[0]
     return EkadashiInfo(True, chosen.get("name_hi"))
@@ -64,39 +64,56 @@ def is_blocked_item(item: str, keywords: list[str]) -> bool:
 def normalize_history(raw: Any) -> list[dict[str, str]]:
     if not isinstance(raw, list):
         return []
+
     cleaned: list[dict[str, str]] = []
     for row in raw:
         if not isinstance(row, dict):
             continue
         date_val = row.get("date")
-        item_val = row.get("item")
-        if isinstance(date_val, str) and isinstance(item_val, str):
-            cleaned.append({"date": date_val, "item": item_val})
+        if not isinstance(date_val, str):
+            continue
+
+        breakfast_val = row.get("breakfast")
+        meal_val = row.get("meal")
+
+        if isinstance(breakfast_val, str) and isinstance(meal_val, str):
+            cleaned.append({"date": date_val, "breakfast": breakfast_val, "meal": meal_val})
+            continue
+
+        # Backward compatibility with old history format.
+        old_item = row.get("item")
+        if isinstance(old_item, str):
+            cleaned.append({"date": date_val, "meal": old_item})
+
     return cleaned
 
 
-def recent_items(history: list[dict[str, str]], target_date: datetime.date, window_days: int) -> set[str]:
+def recent_items(
+    history: list[dict[str, str]], target_date: datetime.date, window_days: int, field: str
+) -> set[str]:
     earliest = target_date - timedelta(days=window_days)
     blocked: set[str] = set()
     for row in history:
         try:
             row_date = datetime.strptime(row["date"], "%Y-%m-%d").date()
-        except ValueError:
+        except (ValueError, KeyError):
             continue
         if earliest <= row_date < target_date:
-            blocked.add(row["item"])
+            value = row.get(field)
+            if isinstance(value, str) and value:
+                blocked.add(value)
     return blocked
 
 
-def choose_menu_item(
-    menu_items: list[str],
+def choose_item(
+    items: list[str],
     ekadashi: EkadashiInfo,
     recent_block_set: set[str],
     keywords: list[str],
     fallback_policy: str,
-    seed_date: str,
+    seed_key: str,
 ) -> str:
-    full_pool = menu_items[:]
+    full_pool = items[:]
 
     if ekadashi.is_ekadashi:
         base_pool = [item for item in full_pool if not is_blocked_item(item, keywords)]
@@ -115,14 +132,20 @@ def choose_menu_item(
     if not pool:
         raise RuntimeError("No menu item available after applying rules")
 
-    seed_int = int(hashlib.sha256(seed_date.encode("utf-8")).hexdigest(), 16)
+    seed_int = int(hashlib.sha256(seed_key.encode("utf-8")).hexdigest(), 16)
     rng = random.Random(seed_int)
     return rng.choice(pool)
 
 
-def update_history(history: list[dict[str, str]], target_date: str, item: str, keep_days: int) -> list[dict[str, str]]:
+def update_history(
+    history: list[dict[str, str]],
+    target_date: str,
+    breakfast_item: str,
+    meal_item: str,
+    keep_days: int,
+) -> list[dict[str, str]]:
     updated = [row for row in history if row.get("date") != target_date]
-    updated.append({"date": target_date, "item": item})
+    updated.append({"date": target_date, "breakfast": breakfast_item, "meal": meal_item})
 
     cutoff = datetime.strptime(target_date, "%Y-%m-%d").date() - timedelta(days=max(keep_days, 7) + 30)
 
@@ -130,7 +153,7 @@ def update_history(history: list[dict[str, str]], target_date: str, item: str, k
     for row in updated:
         try:
             row_date = datetime.strptime(row["date"], "%Y-%m-%d").date()
-        except ValueError:
+        except (ValueError, KeyError):
             continue
         if row_date >= cutoff:
             retained.append(row)
@@ -139,16 +162,20 @@ def update_history(history: list[dict[str, str]], target_date: str, item: str, k
     return retained
 
 
+def validate_menu_list(menu: Any, file_label: str) -> list[str]:
+    if not isinstance(menu, list) or not all(isinstance(i, str) and i.strip() for i in menu):
+        raise ValueError(f"{file_label} must be a non-empty array of strings")
+    return menu
+
+
 def main() -> int:
     args = parse_args()
 
     config = load_json(CONFIG_FILE)
-    menu_items = load_json(MENU_FILE)
+    breakfast_items = validate_menu_list(load_json(BREAKFAST_FILE), "breakfast_shishir.json")
+    meal_items = validate_menu_list(load_json(MENU_FILE), "menu_shishir.json")
     ekadashi_data = load_json(EKADASHI_FILE)
     history = normalize_history(load_json(HISTORY_FILE))
-
-    if not isinstance(menu_items, list) or not all(isinstance(i, str) and i.strip() for i in menu_items):
-        raise ValueError("menu_shishir.json must be a non-empty array of strings")
 
     timezone_name = config.get("timezone", "Asia/Kolkata")
     repeat_window_days = int(config.get("repeat_window_days", 7))
@@ -162,25 +189,36 @@ def main() -> int:
     target_date_str = target_date.strftime("%Y-%m-%d")
 
     ekadashi = get_ekadashi_info(target_date_str, ekadashi_data)
-    blocked_by_history = recent_items(history, target_date, repeat_window_days)
+    breakfast_recent = recent_items(history, target_date, repeat_window_days, "breakfast")
+    meal_recent = recent_items(history, target_date, repeat_window_days, "meal")
 
-    selected_item = choose_menu_item(
-        menu_items=menu_items,
+    selected_breakfast = choose_item(
+        items=breakfast_items,
         ekadashi=ekadashi,
-        recent_block_set=blocked_by_history,
+        recent_block_set=breakfast_recent,
         keywords=keywords,
         fallback_policy=fallback_policy,
-        seed_date=target_date_str,
+        seed_key=f"{target_date_str}:breakfast",
     )
 
-    new_history = update_history(history, target_date_str, selected_item, repeat_window_days)
+    selected_meal = choose_item(
+        items=meal_items,
+        ekadashi=ekadashi,
+        recent_block_set=meal_recent,
+        keywords=keywords,
+        fallback_policy=fallback_policy,
+        seed_key=f"{target_date_str}:meal",
+    )
+
+    new_history = update_history(history, target_date_str, selected_breakfast, selected_meal, repeat_window_days)
     with HISTORY_FILE.open("w", encoding="utf-8") as f:
         json.dump(new_history, f, ensure_ascii=False, indent=2)
         f.write("\n")
 
     lines = [
         f"तिथि: {target_date_str}",
-        f"आज का भोजन: {selected_item}",
+        f"सुबह का नाश्ता: {selected_breakfast}",
+        f"आज का भोजन: {selected_meal}",
     ]
     if ekadashi.is_ekadashi and ekadashi.name_hi:
         lines.append(f"एकादशी: {ekadashi.name_hi}")

@@ -17,8 +17,16 @@ python3 generate_menu.py --date 2026-02-27
 ## Output format
 
 - `तिथि: YYYY-MM-DD`
+- `सुबह का नाश्ता: <item>`
 - `आज का भोजन: <item>`
 - `एकादशी: <name_hi>` (only on Ekadashi/Gauna dates)
+
+## Data files
+
+- `breakfast_shishir.json`
+- `menu_shishir.json`
+- `ekadashi_2026_27.json`
+- `config.json`
 
 ## GitHub Action schedule
 
