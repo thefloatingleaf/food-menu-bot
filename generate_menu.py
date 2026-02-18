@@ -22,6 +22,7 @@ BREAKFAST_FILE = BASE_DIR / "breakfast_shishir.json"
 MENU_FILE = BASE_DIR / "menu_shishir.json"
 EKADASHI_FILE = BASE_DIR / "ekadashi_2026_27.json"
 PANCHANG_FILE = BASE_DIR / "panchang_2026_27.json"
+FESTIVALS_FILE = BASE_DIR / "festivals_2026_27.json"
 CONFIG_FILE = BASE_DIR / "config.json"
 HISTORY_FILE = BASE_DIR / "history.json"
 OUTPUT_FILE = BASE_DIR / "daily_menu.txt"
@@ -41,6 +42,12 @@ class PanchangInfo:
     ritu_hi: str
     maah_hi: str
     tithi_hi: str
+
+
+@dataclass
+class FestivalInfo:
+    hindu_hi: list[str]
+    sikh_hi: list[str]
 
 
 @dataclass
@@ -153,6 +160,47 @@ def resolve_panchang_info(
     maah_hi = ekadashi.lunar_month_hi or GREGORIAN_MONTH_HI[target_date.month]
     tithi_hi = "एकादशी" if ekadashi.is_ekadashi else "अज्ञात"
     return PanchangInfo(ritu_hi=default_ritu, maah_hi=maah_hi, tithi_hi=tithi_hi)
+
+
+def get_festival_entry_for_date(target_date: str, festivals_data: Any) -> dict[str, Any] | None:
+    if isinstance(festivals_data, dict):
+        direct = festivals_data.get(target_date)
+        if isinstance(direct, dict):
+            return direct
+        entries = festivals_data.get("entries")
+        if isinstance(entries, list):
+            for row in entries:
+                if isinstance(row, dict) and row.get("date") == target_date:
+                    return row
+    elif isinstance(festivals_data, list):
+        for row in festivals_data:
+            if isinstance(row, dict) and row.get("date") == target_date:
+                return row
+    return None
+
+
+def resolve_festival_info(target_date: str, festivals_data: Any) -> FestivalInfo:
+    row = get_festival_entry_for_date(target_date, festivals_data)
+    if not row:
+        return FestivalInfo(hindu_hi=[], sikh_hi=[])
+
+    hindu_hi = row.get("hindu_hi", [])
+    sikh_hi = row.get("sikh_hi", [])
+
+    hindu = [str(x).strip() for x in hindu_hi if isinstance(x, str) and str(x).strip()] if isinstance(hindu_hi, list) else []
+    sikh = [str(x).strip() for x in sikh_hi if isinstance(x, str) and str(x).strip()] if isinstance(sikh_hi, list) else []
+    return FestivalInfo(hindu_hi=hindu, sikh_hi=sikh)
+
+
+def format_festival_line(festival_info: FestivalInfo) -> str:
+    labels: list[str] = []
+    if festival_info.hindu_hi:
+        labels.append("हिन्दू: " + " / ".join(festival_info.hindu_hi))
+    if festival_info.sikh_hi:
+        labels.append("सिख: " + " / ".join(festival_info.sikh_hi))
+    if not labels:
+        return "*पर्व/त्योहार:* कोई प्रमुख पर्व नहीं"
+    return "*पर्व/त्योहार:* " + " | ".join(labels)
 
 
 def is_blocked_item(item: str, keywords: list[str]) -> bool:
@@ -541,6 +589,7 @@ def main() -> int:
     meal_items = validate_menu_list(load_json(MENU_FILE), "menu_shishir.json")
     ekadashi_data = load_json(EKADASHI_FILE)
     panchang_data = load_json(PANCHANG_FILE) if PANCHANG_FILE.exists() else {}
+    festivals_data = load_json(FESTIVALS_FILE) if FESTIVALS_FILE.exists() else {}
     history = normalize_history(load_json(HISTORY_FILE))
 
     all_items = breakfast_items + meal_items
@@ -578,6 +627,7 @@ def main() -> int:
 
     ekadashi = get_ekadashi_info(target_date_str, ekadashi_data)
     panchang_info = resolve_panchang_info(target_date, ekadashi, panchang_data, default_ritu)
+    festival_info = resolve_festival_info(target_date_str, festivals_data)
     breakfast_recent = recent_items(history, target_date, repeat_window_days, "breakfast")
     meal_recent = recent_items(history, target_date, repeat_window_days, "meal")
 
@@ -621,6 +671,7 @@ def main() -> int:
         f"*ऋतु:* {panchang_info.ritu_hi}",
         f"*माह:* {panchang_info.maah_hi}",
         f"*तिथि (पंचांग):* {panchang_info.tithi_hi}",
+        format_festival_line(festival_info),
         f"*सुबह का नाश्ता:* {selected_breakfast}",
         f"*आज का भोजन:* {selected_meal}",
     ]

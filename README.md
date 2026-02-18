@@ -26,6 +26,7 @@ python3 generate_menu.py --bootstrap-weather-tags
 - `*ऋतु:* <value>`
 - `*माह:* <value>`
 - `*तिथि (पंचांग):* <value>`
+- `*पर्व/त्योहार:* <हिन्दू/सिख पर्व>`
 - `*सुबह का नाश्ता:* <item>`
 - `*आज का भोजन:* <item>`
 - `*एकादशी:* <name_hi>` (only on Ekadashi/Gauna dates)
@@ -37,9 +38,24 @@ python3 generate_menu.py --bootstrap-weather-tags
 - `menu_shishir.json`
 - `ekadashi_2026_27.json`
 - `panchang_2026_27.json`
+- `festivals_2026_27.json`
 - `menu_weather_tags.json`
 - `manual_weather_override.json`
 - `config.json`
+
+## Festivals data format (Hindu + Sikh)
+
+```json
+{
+  "entries": [
+    {
+      "date": "2026-02-18",
+      "hindu_hi": ["महाशिवरात्रि"],
+      "sikh_hi": ["गुरु पर्व"]
+    }
+  ]
+}
+```
 
 ## Weather flow (free)
 
