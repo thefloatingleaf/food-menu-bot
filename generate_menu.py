@@ -26,6 +26,8 @@ BREAKFAST_GRISHM_FILE = BASE_DIR / "breakfast_grishm.json"
 MENU_GRISHM_FILE = BASE_DIR / "menu_grishm.json"
 BREAKFAST_VARSHA_FILE = BASE_DIR / "breakfast_varsha.json"
 MENU_VARSHA_FILE = BASE_DIR / "menu_varsha.json"
+BREAKFAST_SHARAD_FILE = BASE_DIR / "breakfast_sharad.json"
+MENU_SHARAD_FILE = BASE_DIR / "menu_sharad.json"
 EKADASHI_FILE = BASE_DIR / "ekadashi_2026_27.json"
 PANCHANG_FILE = BASE_DIR / "panchang_2026_27.json"
 FESTIVALS_FILE = BASE_DIR / "festivals_2026_27.json"
@@ -103,6 +105,22 @@ VARSHA_BANNED_KEYWORDS = [
     "प्याज",
     "प्याज़",
     "दही",
+]
+
+SHARAD_COMMON_REQUIRED_SIDES = [
+    "सौंफ-मिश्री की मिश्रण",
+    "छाछ त्रिकटु के साथ",
+]
+
+SHARAD_BANNED_KEYWORDS = [
+    "इमली",
+    "लौंग",
+    "लहसुन",
+    "प्याज",
+    "प्याज़",
+    "काली मिर्च",
+    "गरम मसाला",
+    "गर्म मसाला",
 ]
 
 
@@ -619,6 +637,8 @@ def dedupe_preserve_order(items: list[str]) -> list[str]:
 
 def normalize_ritu_key(ritu_hi: str) -> str:
     cleaned = ritu_hi.replace(" ", "")
+    if "शरदऋतु" in cleaned or "शरद" in cleaned:
+        return "sharad"
     if "वर्षाऋतु" in cleaned or "वर्षा" in cleaned:
         return "varsha"
     if "ग्रीष्मऋतु" in cleaned or "ग्रीष्म" in cleaned:
@@ -680,6 +700,16 @@ def main() -> int:
         if MENU_VARSHA_FILE.exists()
         else []
     )
+    breakfast_sharad_items = (
+        dedupe_preserve_order(validate_menu_list(load_json(BREAKFAST_SHARAD_FILE), "breakfast_sharad.json"))
+        if BREAKFAST_SHARAD_FILE.exists()
+        else []
+    )
+    meal_sharad_items = (
+        validate_menu_list(load_json(MENU_SHARAD_FILE), "menu_sharad.json")
+        if MENU_SHARAD_FILE.exists()
+        else []
+    )
     ekadashi_data = load_json(EKADASHI_FILE)
     panchang_data = load_json(PANCHANG_FILE) if PANCHANG_FILE.exists() else {}
     festivals_data = load_json(FESTIVALS_FILE) if FESTIVALS_FILE.exists() else {}
@@ -694,6 +724,8 @@ def main() -> int:
         + meal_grishm_items
         + breakfast_varsha_items
         + meal_varsha_items
+        + breakfast_sharad_items
+        + meal_sharad_items
     )
 
     if args.bootstrap_weather_tags:
@@ -735,6 +767,9 @@ def main() -> int:
     if ritu_key == "grishm":
         breakfast_items = breakfast_grishm_items or breakfast_shishir_items
         meal_items = meal_grishm_items or meal_shishir_items
+    elif ritu_key == "sharad":
+        breakfast_items = breakfast_sharad_items or breakfast_shishir_items
+        meal_items = meal_sharad_items or meal_shishir_items
     elif ritu_key == "varsha":
         breakfast_items = breakfast_varsha_items or breakfast_shishir_items
         meal_items = meal_varsha_items or meal_shishir_items
@@ -745,7 +780,12 @@ def main() -> int:
         breakfast_items = breakfast_shishir_items
         meal_items = meal_shishir_items
 
-    disallowed_keywords = VARSHA_BANNED_KEYWORDS if ritu_key == "varsha" else []
+    if ritu_key == "varsha":
+        disallowed_keywords = VARSHA_BANNED_KEYWORDS
+    elif ritu_key == "sharad":
+        disallowed_keywords = SHARAD_BANNED_KEYWORDS
+    else:
+        disallowed_keywords = []
 
     breakfast_recent = recent_items(history, target_date, repeat_window_days, "breakfast")
     meal_recent = recent_items(history, target_date, repeat_window_days, "meal")
@@ -814,6 +854,15 @@ def main() -> int:
         lines.append("*वर्षा नाश्ता अनिवार्य साथ:* " + " / ".join(VARSHA_COMMON_REQUIRED_SIDES))
         lines.append("*वर्षा भोजन अनिवार्य साथ:* " + " / ".join(VARSHA_COMMON_REQUIRED_SIDES))
         lines.append("*वर्षा वर्जित:* प्याज और दही पूर्णतः मना है")
+    if ritu_key == "sharad":
+        lines.append("*शरद अनिवार्य साथ:* " + " / ".join(SHARAD_COMMON_REQUIRED_SIDES))
+        if any(token in (selected_breakfast + " " + selected_meal) for token in ["चावल", "राइस"]):
+            lines.append("*शरद चावल नियम:* अगर चावल बन रहे हैं तो जीरा ज़रूर डालें")
+        lines.append("*शरद वर्जित:* इमली, लौंग, लहसुन, प्याज़, काली मिर्च और गर्म मसाले नहीं")
+        lines.append("*शरद अधिक उपयोग:* नारियल / खीर / पुदीना")
+        lines.append("*शरद कम उपयोग:* छोले, टिंडा, करेला, टमाटर, आलू, अरबी, सरसों, पपीता, सौंफ़, हरी मिर्च, लाल मिर्च, अदरक, सौंठ, सरसों का तेल, कढ़ी, दही, लस्सी, शहद")
+        lines.append("*शरद जल नियम:* चाँदी के ग्लास या मटके का जल दें")
+        lines.append("*शरद रस:* मीठा / कसैला / कड़वा")
 
     output_text = "\r\n\r\n".join(lines)
 

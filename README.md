@@ -43,6 +43,8 @@ python3 generate_menu.py --bootstrap-weather-tags
 - `menu_grishm.json`
 - `breakfast_varsha.json`
 - `menu_varsha.json`
+- `breakfast_sharad.json`
+- `menu_sharad.json`
 - `ekadashi_2026_27.json`
 - `panchang_2026_27.json`
 - `festivals_2026_27.json`
@@ -95,6 +97,18 @@ python3 generate_menu.py --bootstrap-weather-tags
    - `*वर्षा भोजन अनिवार्य साथ:* आचार / मिश्री-सौंफ़ / छाछ त्रिकटु के साथ`
    - `*वर्षा वर्जित:* प्याज और दही पूर्णतः मना है`
 9. वर्षा days enforce hard filtering for `प्याज`, `प्याज़`, `दही` in breakfast and भोजन selection.
+10. If पंचांग ऋतु is `शरद` or `शरद ऋतु`, the script uses:
+   - `breakfast_sharad.json`
+   - `menu_sharad.json`
+11. For शरद days, output also includes:
+   - `*शरद अनिवार्य साथ:* सौंफ-मिश्री की मिश्रण / छाछ त्रिकटु के साथ`
+   - `*शरद चावल नियम:* अगर चावल बन रहे हैं तो जीरा ज़रूर डालें` (only when selected items contain चावल)
+   - `*शरद वर्जित:* इमली, लौंग, लहसुन, प्याज़, काली मिर्च और गर्म मसाले नहीं`
+   - `*शरद अधिक उपयोग:* नारियल / खीर / पुदीना`
+   - `*शरद कम उपयोग:* छोले, टिंडा, करेला, टमाटर, आलू, अरबी, सरसों, पपीता, सौंफ़, हरी मिर्च, लाल मिर्च, अदरक, सौंठ, सरसों का तेल, कढ़ी, दही, लस्सी, शहद`
+   - `*शरद जल नियम:* चाँदी के ग्लास या मटके का जल दें`
+   - `*शरद रस:* मीठा / कसैला / कड़वा`
+12. शरद days enforce hard filtering for `इमली`, `लौंग`, `लहसुन`, `प्याज`, `प्याज़`, `काली मिर्च`, `गरम मसाला`, `गर्म मसाला`.
 
 ## Manual weather override format
 
