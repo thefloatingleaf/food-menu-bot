@@ -4,14 +4,15 @@ import hashlib
 import json
 import random
 import re
+import ssl
 import sys
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Any
 from urllib.error import URLError
 from urllib.parse import urlencode
-from urllib.request import urlopen
+from urllib.request import Request, urlopen
 
 try:
     from zoneinfo import ZoneInfo
@@ -832,6 +833,138 @@ def parse_weather_thresholds(config: dict[str, Any]) -> dict[str, float]:
     }
 
 
+def parse_imd_base_date(html: str) -> date | None:
+    heading_match = re.search(r"<h2>\s*([A-Za-z]+ [A-Za-z]+ \d{1,2}, \d{4})\s*</h2>", html, flags=re.IGNORECASE)
+    if heading_match:
+        date_text = re.sub(r"\s+", " ", heading_match.group(1).strip())
+        try:
+            return datetime.strptime(date_text, "%A %B %d, %Y").date()
+        except ValueError:
+            pass
+
+    observed_match = re.search(r"Maximum\s*:.*?\((\d{4}-\d{2}-\d{2})\)", html, flags=re.IGNORECASE | re.DOTALL)
+    if observed_match:
+        try:
+            return datetime.strptime(observed_match.group(1), "%Y-%m-%d").date()
+        except ValueError:
+            return None
+    return None
+
+
+def infer_rain_probability_from_imd_description(description: str) -> float:
+    text = description.lower()
+    if any(word in text for word in ["thunder", "storm", "shower", "drizzle", "rain"]):
+        return 75.0
+    if any(word in text for word in ["overcast", "cloud"]):
+        return 45.0
+    if any(word in text for word in ["fog", "mist", "haze"]):
+        return 25.0
+    return 15.0
+
+
+def parse_imd_forecast_payload(html: str) -> tuple[list[tuple[float, float]], list[str], float | None]:
+    pair_matches = re.findall(
+        r'<td\s+id="red">\s*([0-9]+(?:\.[0-9]+)?)\s*</td>\s*<td\s+id="blue">\s*([0-9]+(?:\.[0-9]+)?)\s*</td>',
+        html,
+        flags=re.IGNORECASE,
+    )
+    forecast_pairs: list[tuple[float, float]] = []
+    for max_text, min_text in pair_matches:
+        try:
+            forecast_pairs.append((float(max_text), float(min_text)))
+        except ValueError:
+            continue
+
+    icon_titles = [title.strip() for title in re.findall(r'TITLE="([^"]+)"', html, flags=re.IGNORECASE) if title.strip()]
+
+    past_rain_mm: float | None = None
+    rain_match = re.search(
+        r"Past24\s*Hrs\s*Rainfall[^:]*:\s*([A-Za-z0-9\.\-]+)",
+        html,
+        flags=re.IGNORECASE | re.DOTALL,
+    )
+    if rain_match:
+        rain_text = rain_match.group(1).strip()
+        if rain_text.upper() == "NIL":
+            past_rain_mm = 0.0
+        else:
+            try:
+                past_rain_mm = float(rain_text)
+            except ValueError:
+                past_rain_mm = None
+
+    return forecast_pairs, icon_titles, past_rain_mm
+
+
+def fetch_imd_city_weather(target_date: str, config: dict[str, Any], thresholds: dict[str, float]) -> WeatherInfo | None:
+    default_url = "https://city.imd.gov.in/citywx/new/new_tour1.php?id=42369"
+    imd_url = str(config.get("imd_city_forecast_url", default_url)).strip() or default_url
+    timezone_name = str(config.get("weather_timezone", config.get("timezone", "Asia/Kolkata")))
+
+    try:
+        target = datetime.strptime(target_date, "%Y-%m-%d").date()
+    except ValueError:
+        return None
+
+    request = Request(
+        imd_url,
+        headers={
+            "User-Agent": "Mozilla/5.0 (compatible; FoodMenuBot/1.0)",
+            "Accept-Language": "en-US,en;q=0.9",
+        },
+    )
+
+    try:
+        with urlopen(request, timeout=15) as response:
+            html = response.read().decode("utf-8", errors="ignore")
+    except URLError as exc:
+        if "CERTIFICATE_VERIFY_FAILED" not in str(exc):
+            return None
+        try:
+            insecure_ctx = ssl._create_unverified_context()
+            with urlopen(request, timeout=15, context=insecure_ctx) as response:
+                html = response.read().decode("utf-8", errors="ignore")
+        except (URLError, TimeoutError, UnicodeDecodeError):
+            return None
+    except (TimeoutError, UnicodeDecodeError):
+        return None
+
+    base_date = parse_imd_base_date(html)
+    if base_date is None:
+        try:
+            base_date = datetime.now(ZoneInfo(timezone_name)).date()
+        except Exception:
+            base_date = datetime.now(ZoneInfo("Asia/Kolkata")).date()
+
+    day_offset = (target - base_date).days
+    if day_offset < 0:
+        return None
+
+    forecast_pairs, icon_titles, past_rain_mm = parse_imd_forecast_payload(html)
+    if day_offset >= len(forecast_pairs):
+        return None
+
+    max_temp, min_temp = forecast_pairs[day_offset]
+    morning_temp = min_temp
+
+    if day_offset < len(icon_titles):
+        rain_pct = infer_rain_probability_from_imd_description(icon_titles[day_offset])
+    elif day_offset == 0 and past_rain_mm is not None:
+        rain_pct = 75.0 if past_rain_mm > 0 else 15.0
+    else:
+        rain_pct = 20.0
+
+    return WeatherInfo(
+        morning_temp_c=morning_temp,
+        max_temp_c=max_temp,
+        rain_probability_pct=rain_pct,
+        is_rainy=rain_pct >= thresholds["rain_probability_high_pct"],
+        is_extreme_cold=max_temp <= thresholds["extreme_cold_max_c"],
+        is_extreme_hot=max_temp >= thresholds["extreme_hot_min_c"],
+        source_hi="IMD (city.imd.gov.in)",
+    )
+
+
 def load_manual_weather(target_date: str, thresholds: dict[str, float]) -> WeatherInfo | None:
     if not MANUAL_WEATHER_FILE.exists():
         return None
@@ -941,7 +1074,27 @@ def resolve_weather_info(target_date: str, config: dict[str, Any], thresholds: d
     manual = load_manual_weather(target_date, thresholds)
     if manual:
         return manual
-    return fetch_open_meteo_weather(target_date, config, thresholds)
+
+    source_order_raw = config.get("weather_source_order", ["imd", "open_meteo"])
+    if isinstance(source_order_raw, list):
+        source_order = [str(src).strip().lower() for src in source_order_raw if str(src).strip()]
+    else:
+        source_order = ["imd", "open_meteo"]
+
+    if not source_order:
+        source_order = ["imd", "open_meteo"]
+
+    for source in source_order:
+        if source == "imd":
+            imd_weather = fetch_imd_city_weather(target_date, config, thresholds)
+            if imd_weather is not None:
+                return imd_weather
+        elif source in {"open_meteo", "open-meteo", "openmeteo"}:
+            meteo_weather = fetch_open_meteo_weather(target_date, config, thresholds)
+            if meteo_weather is not None:
+                return meteo_weather
+
+    return None
 
 
 def derive_weather_rules(weather: WeatherInfo, thresholds: dict[str, float]) -> WeatherRules:

@@ -10,6 +10,11 @@
     "तहरी"
   ],
   "weather_enabled": true,
+  "weather_source_order": [
+    "imd",
+    "open_meteo"
+  ],
+  "imd_city_forecast_url": "https://city.imd.gov.in/citywx/new/new_tour1.php?id=42369",
   "weather_city_hi": "लखनऊ",
   "weather_lat": 26.8467,
   "weather_lon": 80.9462,
