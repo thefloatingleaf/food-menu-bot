@@ -2,7 +2,8 @@ name: Daily Food Menu
 
 on:
   schedule:
-    - cron: "0 0 * * *"
+    # 19:00 Asia/Kolkata = 13:30 UTC
+    - cron: "30 13 * * *"
   workflow_dispatch:
 
 permissions:
@@ -20,8 +21,11 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Generate daily menu
-        run: python generate_menu.py
+      - name: Generate next-day menu (IST)
+        run: |
+          TARGET_DATE=$(TZ=Asia/Kolkata date -d "tomorrow" +%F)
+          echo "Generating menu for: $TARGET_DATE"
+          python generate_menu.py --date "$TARGET_DATE"
 
       - name: Commit daily output
         run: |
