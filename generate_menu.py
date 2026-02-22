@@ -6,6 +6,7 @@ import random
 import re
 import ssl
 import sys
+import time
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta
 from pathlib import Path
@@ -833,6 +834,34 @@ def parse_weather_thresholds(config: dict[str, Any]) -> dict[str, float]:
     }
 
 
+def fetch_url_text(
+    request_or_url: Request | str,
+    *,
+    timeout: int,
+    retries: int,
+    allow_insecure_ssl: bool,
+) -> str | None:
+    for attempt in range(retries + 1):
+        try:
+            with urlopen(request_or_url, timeout=timeout) as response:
+                return response.read().decode("utf-8", errors="ignore")
+        except URLError as exc:
+            if allow_insecure_ssl and "CERTIFICATE_VERIFY_FAILED" in str(exc):
+                try:
+                    insecure_ctx = ssl._create_unverified_context()
+                    with urlopen(request_or_url, timeout=timeout, context=insecure_ctx) as response:
+                        return response.read().decode("utf-8", errors="ignore")
+                except (URLError, TimeoutError, UnicodeDecodeError):
+                    pass
+        except (TimeoutError, UnicodeDecodeError):
+            pass
+
+        if attempt < retries:
+            time.sleep(0.35 * (attempt + 1))
+
+    return None
+
+
 def parse_imd_base_date(html: str) -> date | None:
     heading_match = re.search(r"<h2>\s*([A-Za-z]+ [A-Za-z]+ \d{1,2}, \d{4})\s*</h2>", html, flags=re.IGNORECASE)
     if heading_match:
@@ -914,19 +943,8 @@ def fetch_imd_city_weather(target_date: str, config: dict[str, Any], thresholds:
         },
     )
 
-    try:
-        with urlopen(request, timeout=15) as response:
-            html = response.read().decode("utf-8", errors="ignore")
-    except URLError as exc:
-        if "CERTIFICATE_VERIFY_FAILED" not in str(exc):
-            return None
-        try:
-            insecure_ctx = ssl._create_unverified_context()
-            with urlopen(request, timeout=15, context=insecure_ctx) as response:
-                html = response.read().decode("utf-8", errors="ignore")
-        except (URLError, TimeoutError, UnicodeDecodeError):
-            return None
-    except (TimeoutError, UnicodeDecodeError):
+    html = fetch_url_text(request, timeout=15, retries=2, allow_insecure_ssl=True)
+    if not html:
         return None
 
     base_date = parse_imd_base_date(html)
@@ -1015,10 +1033,19 @@ def fetch_open_meteo_weather(target_date: str, config: dict[str, Any], threshold
     }
     url = "https://api.open-meteo.com/v1/forecast?" + urlencode(params)
 
+    request = Request(
+        url,
+        headers={
+            "User-Agent": "Mozilla/5.0 (compatible; FoodMenuBot/1.0)",
+            "Accept-Language": "en-US,en;q=0.9",
+        },
+    )
+    payload_text = fetch_url_text(request, timeout=12, retries=2, allow_insecure_ssl=True)
+    if not payload_text:
+        return None
     try:
-        with urlopen(url, timeout=12) as response:
-            payload = json.loads(response.read().decode("utf-8"))
-    except (URLError, TimeoutError, json.JSONDecodeError):
+        payload = json.loads(payload_text)
+    except json.JSONDecodeError:
         return None
 
     daily = payload.get("daily", {}) if isinstance(payload, dict) else {}
