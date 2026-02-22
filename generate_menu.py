@@ -3,6 +3,7 @@ import argparse
 import hashlib
 import json
 import random
+import re
 import sys
 from dataclasses import dataclass
 from datetime import datetime, timedelta
@@ -61,6 +62,16 @@ class FestivalInfo:
 
 
 @dataclass
+class PanchangLookupResult:
+    row: dict[str, Any] | None
+    status: str
+    detail_hi: str
+    total_rows: int
+    valid_date_rows: int
+    invalid_date_rows: int
+
+
+@dataclass
 class WeatherInfo:
     morning_temp_c: float
     max_temp_c: float
@@ -75,6 +86,24 @@ class WeatherInfo:
 class WeatherRules:
     preferred_tags: set[str]
     avoid_tags: set[str]
+
+
+@dataclass
+class TransitionPlan:
+    active: bool
+    current_key: str
+    upcoming_key: str
+    days_to_next: int
+    selected_key: str
+    reason: str
+    prefer_lighter: bool
+
+
+@dataclass
+class ShringdharaInfo:
+    active: bool
+    reason_hi: str
+    missing_note_hi: str | None
 
 
 VASANT_REQUIRED_SIDES = [
@@ -102,6 +131,15 @@ VARSHA_COMMON_REQUIRED_SIDES = [
     "मिश्री-सौंफ़",
     "छाछ त्रिकटु के साथ",
 ]
+
+NEW_YEAR_KANJI_NOTE = (
+    "कृपया काली गाजर मँगवा लें और कांजी डाल लें। बनाने की विधि इस प्रकार है: "
+    "5 लीटर साफ पानी लो। आधा किलो काली गाजर धोकर छील लो और लंबे टुकड़ों में काट लो। "
+    "एक साफ बर्तन या काँच की बरनी लो, उसमें गाजर डाल दो। अब उसमें 4 चम्मच राई, 2 चम्मच नमक, "
+    "आधा चम्मच काली मिर्च और एक चुटकी लाल मिर्च डालो। फिर 5 लीटर पानी डालकर अच्छी तरह मिला दो। "
+    "बर्तन/बरनी को ढककर धूप में रख दो। रोज़ एक बार साफ चम्मच से हिला देना ताकि स्वाद अच्छे से आ जाए। "
+    "5 दिन बाद नमक चखकर देखो। अगर नमक कम लगे, तो थोड़ा और नमक डाल दो और फिर से अच्छी तरह मिला दो।"
+)
 
 VARSHA_BANNED_KEYWORDS = [
     "प्याज",
@@ -146,6 +184,66 @@ HEMANT_BANNED_KEYWORDS = [
 ]
 
 
+SEASON_ORDER = ["shishir", "vasant", "grishm", "varsha", "sharad", "hemant"]
+SEASON_HI = {
+    "shishir": "शिशिर",
+    "vasant": "वसंत",
+    "grishm": "ग्रीष्म",
+    "varsha": "वर्षा",
+    "sharad": "शरद",
+    "hemant": "हेमंत",
+}
+
+LUNAR_MAAS_TO_RITU_KEY = {
+    "चैत्र": "vasant",
+    "वैशाख": "vasant",
+    "ज्येष्ठ": "grishm",
+    "आषाढ़": "grishm",
+    "श्रावण": "varsha",
+    "भाद्रपद": "varsha",
+    "आश्विन": "sharad",
+    "कार्तिक": "sharad",
+    "मार्गशीर्ष": "hemant",
+    "पौष": "hemant",
+    "माघ": "shishir",
+    "फाल्गुन": "shishir",
+}
+
+TITHI_NUMBER_MAP = {
+    "प्रतिपदा": 1,
+    "प्रथमा": 1,
+    "द्वितीया": 2,
+    "तृतीया": 3,
+    "चतुर्थी": 4,
+    "पंचमी": 5,
+    "षष्ठी": 6,
+    "षष्ठि": 6,
+    "सप्तमी": 7,
+    "अष्टमी": 8,
+    "नवमी": 9,
+    "दशमी": 10,
+    "एकादशी": 11,
+    "द्वादशी": 12,
+    "त्रयोदशी": 13,
+    "चतुर्दशी": 14,
+    "पूर्णिमा": 15,
+    "अमावस्या": 15,
+}
+
+SHRINGDHARA_LIGHT_NOTE = "बताशा / खील / खिलौने (हल्का सेवन)"
+
+SHRINGDHARA_DAILY_REMINDER = "शृंगधारा (यमराज की दाड़) अवधि चल रही है। आज भोजन हल्का और कम रखें।"
+
+SEASON_START_MONTH_DAY = {
+    "shishir": (1, 15),
+    "vasant": (3, 15),
+    "grishm": (5, 15),
+    "varsha": (7, 15),
+    "sharad": (9, 15),
+    "hemant": (11, 15),
+}
+
+
 GREGORIAN_MONTH_HI = {
     1: "जनवरी",
     2: "फरवरी",
@@ -176,6 +274,228 @@ def infer_ritu_hi_from_date(target_date: datetime.date) -> str:
     if (month_day >= (9, 15) and month_day <= (11, 14)):
         return "शरद"
     return "हेमंत"
+
+
+def normalize_lunar_month_name(maah_hi: str) -> str | None:
+    if not isinstance(maah_hi, str):
+        return None
+    text = re.sub(r"\(.*?\)", "", maah_hi).strip()
+    text = text.replace(" ", "")
+    text = re.sub(r"[^\u0900-\u097F]", "", text)
+    text = text.replace("मास", "").replace("माह", "").replace("अधिक", "")
+    if not text:
+        return None
+
+    if "चैत्र" in text:
+        return "चैत्र"
+    if "वैशाख" in text:
+        return "वैशाख"
+    if "ज्येष्ठ" in text or "जेष्ट" in text:
+        return "ज्येष्ठ"
+    if "आषाढ़" in text or "आषाढ" in text:
+        return "आषाढ़"
+    if "श्रावण" in text or "सावन" in text:
+        return "श्रावण"
+    if "भाद्रपद" in text or "भादो" in text:
+        return "भाद्रपद"
+    if "आश्विन" in text or "क्वार" in text:
+        return "आश्विन"
+    if "कार्तिक" in text:
+        return "कार्तिक"
+    if "मार्गशीर्ष" in text or "मार्गशिर्ष" in text or "अगहन" in text:
+        return "मार्गशीर्ष"
+    if "पौष" in text or "पोष" in text or "पूस" in text:
+        return "पौष"
+    if "माघ" in text:
+        return "माघ"
+    if "फाल्गुन" in text or "फागुन" in text:
+        return "फाल्गुन"
+    return None
+
+
+def resolve_ritu_key_from_lunar_month(maah_hi: str) -> str | None:
+    canonical_maah = normalize_lunar_month_name(maah_hi)
+    if canonical_maah is None:
+        return None
+    return LUNAR_MAAS_TO_RITU_KEY.get(canonical_maah)
+
+
+def normalize_paksha_name(paksha_hi: str | None) -> str | None:
+    if not isinstance(paksha_hi, str):
+        return None
+    cleaned = paksha_hi.replace(" ", "")
+    if "कृष्ण" in cleaned:
+        return "कृष्ण"
+    if "शुक्ल" in cleaned:
+        return "शुक्ल"
+    return None
+
+
+def parse_tithi_and_paksha(tithi_hi: str, paksha_hint: str | None) -> tuple[str | None, int | None]:
+    paksha = normalize_paksha_name(paksha_hint)
+    if not isinstance(tithi_hi, str):
+        return paksha, None
+
+    text = tithi_hi.replace(" ", "")
+    if paksha is None:
+        if "कृष्ण" in text:
+            paksha = "कृष्ण"
+        elif "शुक्ल" in text:
+            paksha = "शुक्ल"
+
+    for token, number in TITHI_NUMBER_MAP.items():
+        if token in text:
+            if paksha is None:
+                if token == "अमावस्या":
+                    paksha = "कृष्ण"
+                elif token == "पूर्णिमा":
+                    paksha = "शुक्ल"
+            return paksha, number
+    return paksha, None
+
+
+def detect_shringdhara_observance(maah_hi: str, tithi_hi: str, paksha_hint: str | None) -> ShringdharaInfo:
+    month_name = normalize_lunar_month_name(maah_hi)
+    if month_name not in {"कार्तिक", "मार्गशीर्ष"}:
+        return ShringdharaInfo(False, "", None)
+
+    paksha, tithi_number = parse_tithi_and_paksha(tithi_hi, paksha_hint)
+    if paksha is None or tithi_number is None:
+        return ShringdharaInfo(
+            False,
+            "",
+            "[अनुपलब्ध] शृंगधारा जाँच हेतु कार्तिक/मार्गशीर्ष में पक्ष/तिथि डेटा पर्याप्त नहीं",
+        )
+
+    if month_name == "कार्तिक" and paksha == "कृष्ण" and tithi_number >= 8:
+        return ShringdharaInfo(True, "कार्तिक के अंतिम 8 दिन", None)
+    if month_name == "मार्गशीर्ष" and paksha == "शुक्ल" and tithi_number <= 8:
+        return ShringdharaInfo(True, "मार्गशीर्ष के प्रथम 8 दिन", None)
+    return ShringdharaInfo(False, "", None)
+
+
+def next_season_key(current_key: str) -> str:
+    if current_key not in SEASON_ORDER:
+        return "vasant"
+    return SEASON_ORDER[(SEASON_ORDER.index(current_key) + 1) % len(SEASON_ORDER)]
+
+
+def next_season_start_date(current_key: str, target_date: datetime.date) -> datetime.date:
+    upcoming_key = next_season_key(current_key)
+    month, day = SEASON_START_MONTH_DAY[upcoming_key]
+    candidate = datetime(target_date.year, month, day).date()
+    if candidate <= target_date:
+        candidate = datetime(target_date.year + 1, month, day).date()
+    return candidate
+
+
+def season_weather_fit_score(season_key: str, weather: WeatherInfo) -> float:
+    profiles = {
+        "shishir": {"temp_center": 16.0, "temp_span": 10.0, "rain_pref": 0.15},
+        "vasant": {"temp_center": 27.0, "temp_span": 9.0, "rain_pref": 0.30},
+        "grishm": {"temp_center": 38.0, "temp_span": 9.0, "rain_pref": 0.20},
+        "varsha": {"temp_center": 30.0, "temp_span": 7.0, "rain_pref": 0.80},
+        "sharad": {"temp_center": 29.0, "temp_span": 9.0, "rain_pref": 0.25},
+        "hemant": {"temp_center": 22.0, "temp_span": 9.0, "rain_pref": 0.20},
+    }
+    profile = profiles.get(season_key, profiles["shishir"])
+    rain_ratio = max(0.0, min(weather.rain_probability_pct / 100.0, 1.0))
+    temp_score = max(0.0, 1.0 - abs(weather.max_temp_c - profile["temp_center"]) / profile["temp_span"])
+    rain_score = max(0.0, 1.0 - abs(rain_ratio - profile["rain_pref"]))
+    return (0.7 * temp_score) + (0.3 * rain_score)
+
+
+def resolve_weather_priority_season(
+    current_key: str, upcoming_key: str, weather: WeatherInfo, thresholds: dict[str, float]
+) -> tuple[str | None, str]:
+    pair = {current_key, upcoming_key}
+    cold_keys = {"shishir", "hemant"}
+
+    if weather.is_rainy and "varsha" in pair:
+        return ("varsha", "मौसम प्राथमिक: वर्षा संकेत")
+    if weather.max_temp_c >= thresholds["hot_min_c"] and "grishm" in pair:
+        return ("grishm", "मौसम प्राथमिक: गर्मी संकेत")
+    if weather.max_temp_c >= thresholds["hot_min_c"]:
+        if current_key in cold_keys and upcoming_key not in cold_keys:
+            return (upcoming_key, "मौसम प्राथमिक: गर्मी संकेत")
+        if upcoming_key in cold_keys and current_key not in cold_keys:
+            return (current_key, "मौसम प्राथमिक: गर्मी संकेत")
+    if weather.max_temp_c <= thresholds["cold_max_c"] and (pair & cold_keys):
+        if current_key in cold_keys and upcoming_key not in cold_keys:
+            return (current_key, "मौसम प्राथमिक: ठंड संकेत")
+        if upcoming_key in cold_keys and current_key not in cold_keys:
+            return (upcoming_key, "मौसम प्राथमिक: ठंड संकेत")
+
+    current_score = season_weather_fit_score(current_key, weather)
+    upcoming_score = season_weather_fit_score(upcoming_key, weather)
+    if abs(current_score - upcoming_score) >= 0.10:
+        if upcoming_score > current_score:
+            return (upcoming_key, "मौसम प्राथमिक: आने वाली ऋतु अनुकूल")
+        return (current_key, "मौसम प्राथमिक: वर्तमान ऋतु अनुकूल")
+
+    return (None, "मौसम मिश्रित, स्पष्ट झुकाव नहीं")
+
+
+def resolve_alternating_transition_key(
+    target_date: datetime.date, days_to_next: int, current_key: str, upcoming_key: str
+) -> tuple[str, str]:
+    day_marker = target_date.toordinal()
+    if days_to_next >= 11:
+        selected = upcoming_key if day_marker % 3 == 0 else current_key
+        return (selected, "संक्रमण मिश्रण: वर्तमान ऋतु प्रधान क्रम")
+    if days_to_next >= 6:
+        selected = upcoming_key if day_marker % 2 == 0 else current_key
+        return (selected, "संक्रमण मिश्रण: दैनिक अदला-बदली")
+    selected = current_key if day_marker % 3 == 0 else upcoming_key
+    return (selected, "संक्रमण मिश्रण: आने वाली ऋतु प्रधान क्रम")
+
+
+def resolve_transition_plan(
+    target_date: datetime.date,
+    current_key: str,
+    weather: WeatherInfo | None,
+    thresholds: dict[str, float],
+    transition_window_days: int,
+) -> TransitionPlan:
+    active_current = current_key if current_key in SEASON_ORDER else "shishir"
+    upcoming_key = next_season_key(active_current)
+    next_start = next_season_start_date(active_current, target_date)
+    days_to_next = (next_start - target_date).days
+
+    if days_to_next > transition_window_days:
+        return TransitionPlan(
+            active=False,
+            current_key=active_current,
+            upcoming_key=upcoming_key,
+            days_to_next=days_to_next,
+            selected_key=active_current,
+            reason="संक्रमण विंडो के बाहर",
+            prefer_lighter=False,
+        )
+
+    if weather is not None:
+        weather_selected, reason = resolve_weather_priority_season(active_current, upcoming_key, weather, thresholds)
+        if weather_selected is not None:
+            return TransitionPlan(
+                active=True,
+                current_key=active_current,
+                upcoming_key=upcoming_key,
+                days_to_next=days_to_next,
+                selected_key=weather_selected,
+                reason=reason,
+                prefer_lighter=(weather_selected != active_current),
+            )
+
+    selected_key, reason = resolve_alternating_transition_key(target_date, days_to_next, active_current, upcoming_key)
+    return TransitionPlan(
+        active=True,
+        current_key=active_current,
+        upcoming_key=upcoming_key,
+        days_to_next=days_to_next,
+        selected_key=selected_key,
+        reason=reason,
+        prefer_lighter=True,
+    )
 
 
 def load_json(path: Path) -> Any:
@@ -218,38 +538,187 @@ def get_ekadashi_info(target_date: str, ekadashi_data: dict[str, Any]) -> Ekadas
     return EkadashiInfo(True, chosen.get("name_hi"), chosen.get("lunar_month_hi"))
 
 
-def get_panchang_entry_for_date(target_date: str, panchang_data: Any) -> dict[str, Any] | None:
-    if isinstance(panchang_data, dict):
-        direct = panchang_data.get(target_date)
-        if isinstance(direct, dict):
-            return direct
+def normalize_any_date_to_yyyy_mm_dd(raw_value: Any, timezone_name: str) -> str | None:
+    if isinstance(raw_value, datetime):
+        dt = raw_value
+        if dt.tzinfo is not None:
+            try:
+                dt = dt.astimezone(ZoneInfo(timezone_name))
+            except Exception:
+                dt = dt.astimezone(ZoneInfo("Asia/Kolkata"))
+        return dt.date().strftime("%Y-%m-%d")
 
+    if not isinstance(raw_value, str):
+        return None
+
+    text = raw_value.strip()
+    if not text:
+        return None
+
+    if re.fullmatch(r"\d{4}-\d{2}-\d{2}", text):
+        return text
+    if re.fullmatch(r"\d{4}/\d{2}/\d{2}", text):
+        return text.replace("/", "-")
+    if re.fullmatch(r"\d{1,2}-\d{1,2}-\d{4}", text):
+        day_str, month_str, year_str = text.split("-")
+        try:
+            parsed = datetime(int(year_str), int(month_str), int(day_str)).date()
+            return parsed.strftime("%Y-%m-%d")
+        except ValueError:
+            return None
+    if re.fullmatch(r"\d{1,2}/\d{1,2}/\d{4}", text):
+        day_str, month_str, year_str = text.split("/")
+        try:
+            parsed = datetime(int(year_str), int(month_str), int(day_str)).date()
+            return parsed.strftime("%Y-%m-%d")
+        except ValueError:
+            return None
+
+    iso_text = text.replace("Z", "+00:00") if text.endswith("Z") else text
+    try:
+        dt = datetime.fromisoformat(iso_text)
+        if dt.tzinfo is not None:
+            try:
+                dt = dt.astimezone(ZoneInfo(timezone_name))
+            except Exception:
+                dt = dt.astimezone(ZoneInfo("Asia/Kolkata"))
+        return dt.date().strftime("%Y-%m-%d")
+    except ValueError:
+        pass
+
+    date_token = text.split(" ")[0].split("T")[0]
+    if re.fullmatch(r"\d{4}-\d{2}-\d{2}", date_token):
+        return date_token
+    if re.fullmatch(r"\d{4}/\d{2}/\d{2}", date_token):
+        return date_token.replace("/", "-")
+
+    return None
+
+
+def extract_panchang_rows(panchang_data: Any) -> tuple[list[dict[str, Any]], str | None]:
+    rows: list[dict[str, Any]] = []
+
+    if isinstance(panchang_data, dict):
         entries = panchang_data.get("entries")
+        if "entries" in panchang_data and not isinstance(entries, list):
+            return [], "entries फ़ील्ड सूची (list) नहीं है"
+
         if isinstance(entries, list):
             for row in entries:
-                if isinstance(row, dict) and row.get("date") == target_date:
-                    return row
+                if isinstance(row, dict):
+                    rows.append(row)
+
+        for key, val in panchang_data.items():
+            if key == "entries":
+                continue
+            if not isinstance(val, dict):
+                continue
+            if not re.fullmatch(r"\d{4}[-/]\d{1,2}[-/]\d{1,2}", str(key).strip()):
+                continue
+            row_copy = dict(val)
+            row_copy.setdefault("date", key)
+            rows.append(row_copy)
+
+        if rows:
+            return rows, None
+        return [], "कोई मान्य प्रविष्टि नहीं मिली"
 
     if isinstance(panchang_data, list):
         for row in panchang_data:
-            if isinstance(row, dict) and row.get("date") == target_date:
-                return row
-    return None
+            if isinstance(row, dict):
+                rows.append(row)
+        if rows:
+            return rows, None
+        return [], "सूची में मान्य object प्रविष्टि नहीं मिली"
+
+    return [], "रूट JSON dict/list नहीं है"
+
+
+def lookup_panchang_entry_for_date(
+    target_date: datetime.date,
+    timezone_name: str,
+    panchang_data: Any,
+) -> PanchangLookupResult:
+    target_key = target_date.strftime("%Y-%m-%d")
+    try:
+        rows, shape_error = extract_panchang_rows(panchang_data)
+        if shape_error:
+            return PanchangLookupResult(
+                row=None,
+                status="source_invalid",
+                detail_hi=f"पंचांग डेटा संरचना समस्या: {shape_error}",
+                total_rows=0,
+                valid_date_rows=0,
+                invalid_date_rows=0,
+            )
+
+        indexed: dict[str, dict[str, Any]] = {}
+        valid_date_rows = 0
+        invalid_date_rows = 0
+
+        for row in rows:
+            normalized = normalize_any_date_to_yyyy_mm_dd(row.get("date"), timezone_name)
+            if normalized is None:
+                invalid_date_rows += 1
+                continue
+            valid_date_rows += 1
+            if normalized not in indexed:
+                indexed[normalized] = row
+
+        if target_key in indexed:
+            detail = "पंचांग प्रविष्टि मिली"
+            if invalid_date_rows > 0:
+                detail += f" (चेतावनी: {invalid_date_rows} प्रविष्टियों में date फ़ॉर्मैट अमान्य)"
+            return PanchangLookupResult(
+                row=indexed[target_key],
+                status="ok",
+                detail_hi=detail,
+                total_rows=len(rows),
+                valid_date_rows=valid_date_rows,
+                invalid_date_rows=invalid_date_rows,
+            )
+
+        if valid_date_rows == 0:
+            return PanchangLookupResult(
+                row=None,
+                status="mapping_error",
+                detail_hi="पंचांग की तारीख़ें पढ़ी नहीं जा सकीं (date mapping/parsing error)",
+                total_rows=len(rows),
+                valid_date_rows=0,
+                invalid_date_rows=invalid_date_rows,
+            )
+
+        return PanchangLookupResult(
+            row=None,
+            status="date_missing",
+            detail_hi="स्रोत पंचांग में इस तिथि की प्रविष्टि उपलब्ध नहीं",
+            total_rows=len(rows),
+            valid_date_rows=valid_date_rows,
+            invalid_date_rows=invalid_date_rows,
+        )
+    except Exception as exc:
+        return PanchangLookupResult(
+            row=None,
+            status="lookup_error",
+            detail_hi=f"पंचांग lookup त्रुटि: {exc}",
+            total_rows=0,
+            valid_date_rows=0,
+            invalid_date_rows=0,
+        )
 
 
 def resolve_panchang_info(
     target_date: datetime.date,
     ekadashi: EkadashiInfo,
-    panchang_data: Any,
+    panchang_row: dict[str, Any] | None,
     default_ritu: str,
 ) -> PanchangInfo:
-    target_date_str = target_date.strftime("%Y-%m-%d")
-    row = get_panchang_entry_for_date(target_date_str, panchang_data)
-
-    if row:
-        ritu_hi = str(row.get("ritu_hi", default_ritu)).strip() or default_ritu
-        maah_hi = str(row.get("maah_hi", ekadashi.lunar_month_hi or GREGORIAN_MONTH_HI[target_date.month])).strip()
-        tithi_hi = str(row.get("tithi_hi", "अज्ञात")).strip() or "अज्ञात"
+    if panchang_row:
+        ritu_hi = str(panchang_row.get("ritu_hi", default_ritu)).strip() or default_ritu
+        maah_hi = str(
+            panchang_row.get("maah_hi", ekadashi.lunar_month_hi or GREGORIAN_MONTH_HI[target_date.month])
+        ).strip()
+        tithi_hi = str(panchang_row.get("tithi_hi", "अज्ञात")).strip() or "अज्ञात"
         return PanchangInfo(ritu_hi=ritu_hi, maah_hi=maah_hi, tithi_hi=tithi_hi)
 
     inferred_ritu = infer_ritu_hi_from_date(target_date)
@@ -593,6 +1062,35 @@ def apply_weather_filter(
     return pool[:]
 
 
+def lightness_score(item: str, weather_tags: dict[str, list[str]]) -> int:
+    tags = set(weather_tags.get(item, []))
+    score = 0
+    if "heavy" in tags:
+        score += 3
+    if "fried" in tags:
+        score += 3
+    if "comfort_hot" in tags:
+        score += 1
+    if "winter_friendly" in tags:
+        score += 1
+    if "light" in tags:
+        score -= 3
+    if "hydrating" in tags:
+        score -= 1
+    if "summer_friendly" in tags:
+        score -= 1
+    return score
+
+
+def apply_lighter_preference(pool: list[str], weather_tags: dict[str, list[str]]) -> list[str]:
+    if len(pool) <= 1:
+        return pool
+    scored = [(lightness_score(item, weather_tags), item) for item in pool]
+    min_score = min(score for score, _ in scored)
+    lighter_pool = [item for score, item in scored if score == min_score]
+    return lighter_pool if lighter_pool else pool
+
+
 def choose_item(
     items: list[str],
     ekadashi: EkadashiInfo,
@@ -604,6 +1102,7 @@ def choose_item(
     weather_rules: WeatherRules | None,
     weather_tags: dict[str, list[str]],
     warn_bucket: set[str],
+    prefer_lighter: bool,
 ) -> str:
     full_pool = items[:]
 
@@ -627,6 +1126,9 @@ def choose_item(
         weather_pool = apply_weather_filter(pool, weather_rules, weather_tags, warn_bucket)
         if weather_pool:
             pool = weather_pool
+
+    if prefer_lighter:
+        pool = apply_lighter_preference(pool, weather_tags)
 
     seed_int = int(hashlib.sha256(seed_key.encode("utf-8")).hexdigest(), 16)
     rng = random.Random(seed_int)
@@ -762,7 +1264,15 @@ def main() -> int:
         else []
     )
     ekadashi_data = load_json(EKADASHI_FILE)
-    panchang_data = load_json(PANCHANG_FILE) if PANCHANG_FILE.exists() else {}
+    panchang_data: Any = {}
+    panchang_source_error_note: str | None = None
+    if PANCHANG_FILE.exists():
+        try:
+            panchang_data = load_json(PANCHANG_FILE)
+        except (OSError, json.JSONDecodeError) as exc:
+            panchang_source_error_note = f"[त्रुटि] पंचांग फ़ाइल पढ़ने/पार्सिंग में समस्या: {exc}"
+    else:
+        panchang_source_error_note = "[अनुपलब्ध] पंचांग फ़ाइल उपलब्ध नहीं"
     festivals_data = load_json(FESTIVALS_FILE) if FESTIVALS_FILE.exists() else {}
     history = normalize_history(load_json(HISTORY_FILE))
     missing_data_notes: list[str] = []
@@ -816,14 +1326,62 @@ def main() -> int:
     weather_tags = load_weather_tags(all_items)
 
     ekadashi = get_ekadashi_info(target_date_str, ekadashi_data)
-    panchang_info = resolve_panchang_info(target_date, ekadashi, panchang_data, default_ritu)
+    if panchang_source_error_note:
+        panchang_lookup = PanchangLookupResult(
+            row=None,
+            status="source_load_error",
+            detail_hi=panchang_source_error_note,
+            total_rows=0,
+            valid_date_rows=0,
+            invalid_date_rows=0,
+        )
+    else:
+        panchang_lookup = lookup_panchang_entry_for_date(target_date, timezone_name, panchang_data)
+
+    panchang_info = resolve_panchang_info(target_date, ekadashi, panchang_lookup.row, default_ritu)
     festival_info = resolve_festival_info(target_date_str, festivals_data)
-    ritu_key = normalize_ritu_key(panchang_info.ritu_hi)
-    panchang_row = get_panchang_entry_for_date(target_date_str, panchang_data)
-    if panchang_row is None:
-        missing_data_notes.append("पंचांग डेटा उपलब्ध नहीं (इस तिथि के लिए)")
-    if panchang_info.tithi_hi == "अज्ञात":
-        missing_data_notes.append("तिथि (पंचांग) डेटा उपलब्ध नहीं")
+
+    maah_mapped_ritu_key = resolve_ritu_key_from_lunar_month(panchang_info.maah_hi)
+    if maah_mapped_ritu_key is not None:
+        base_ritu_key = maah_mapped_ritu_key
+    else:
+        base_ritu_key = normalize_ritu_key(panchang_info.ritu_hi)
+        if panchang_lookup.status == "ok":
+            missing_data_notes.append("[त्रुटि] पंचांग माह नाम से ऋतु mapping नहीं हो सकी")
+        else:
+            missing_data_notes.append("[अनुपलब्ध] माह-आधारित ऋतु निर्धारण हेतु पंचांग माह डेटा उपलब्ध नहीं")
+
+    display_ritu_hi = SEASON_HI.get(base_ritu_key, panchang_info.ritu_hi)
+    paksha_hint = (
+        str(panchang_lookup.row.get("paksha_hi")).strip()
+        if panchang_lookup.row and isinstance(panchang_lookup.row.get("paksha_hi"), str)
+        else None
+    )
+    shringdhara_info = detect_shringdhara_observance(panchang_info.maah_hi, panchang_info.tithi_hi, paksha_hint)
+    if shringdhara_info.missing_note_hi:
+        missing_data_notes.append(shringdhara_info.missing_note_hi)
+
+    transition_window_days = int(config.get("season_transition_window_days", 15))
+    transition_plan = resolve_transition_plan(
+        target_date=target_date,
+        current_key=base_ritu_key,
+        weather=weather_info,
+        thresholds=thresholds,
+        transition_window_days=transition_window_days,
+    )
+    ritu_key = base_ritu_key if shringdhara_info.active else transition_plan.selected_key
+    if panchang_lookup.status == "date_missing":
+        missing_data_notes.append("[अनुपलब्ध] पंचांग स्रोत में इस तिथि की प्रविष्टि नहीं है")
+    elif panchang_lookup.status in {"source_load_error", "source_invalid", "mapping_error", "lookup_error"}:
+        missing_data_notes.append(panchang_lookup.detail_hi)
+
+    if panchang_lookup.invalid_date_rows > 0:
+        missing_data_notes.append(
+            f"[त्रुटि] पंचांग में {panchang_lookup.invalid_date_rows} प्रविष्टियों का date फ़ॉर्मैट अमान्य/अपठनीय है"
+        )
+
+    if panchang_info.tithi_hi == "अज्ञात" and panchang_lookup.status == "ok":
+        missing_data_notes.append("[अनुपलब्ध] पंचांग प्रविष्टि में 'तिथि (पंचांग)' अज्ञात/रिक्त है")
 
     if ritu_key == "grishm":
         breakfast_items = breakfast_grishm_items or breakfast_shishir_items
@@ -876,31 +1434,53 @@ def main() -> int:
 
     warning_items: set[str] = set()
 
-    selected_breakfast = choose_item(
-        items=breakfast_items,
-        ekadashi=ekadashi,
-        recent_block_set=breakfast_recent,
-        keywords=keywords,
-        disallowed_keywords=disallowed_keywords,
-        fallback_policy=fallback_policy,
-        seed_key=f"{target_date_str}:breakfast",
-        weather_rules=weather_rules,
-        weather_tags=weather_tags,
-        warn_bucket=warning_items,
-    )
+    selected_observance_item: str | None = None
+    if shringdhara_info.active:
+        observance_items = dedupe_preserve_order(breakfast_items + meal_items)
+        observance_recent = breakfast_recent | meal_recent
+        selected_observance_item = choose_item(
+            items=observance_items,
+            ekadashi=ekadashi,
+            recent_block_set=observance_recent,
+            keywords=keywords,
+            disallowed_keywords=disallowed_keywords,
+            fallback_policy=fallback_policy,
+            seed_key=f"{target_date_str}:shringdhara",
+            weather_rules=weather_rules,
+            weather_tags=weather_tags,
+            warn_bucket=warning_items,
+            prefer_lighter=True,
+        )
+        selected_breakfast = selected_observance_item
+        selected_meal = selected_observance_item
+    else:
+        selected_breakfast = choose_item(
+            items=breakfast_items,
+            ekadashi=ekadashi,
+            recent_block_set=breakfast_recent,
+            keywords=keywords,
+            disallowed_keywords=disallowed_keywords,
+            fallback_policy=fallback_policy,
+            seed_key=f"{target_date_str}:breakfast",
+            weather_rules=weather_rules,
+            weather_tags=weather_tags,
+            warn_bucket=warning_items,
+            prefer_lighter=transition_plan.prefer_lighter,
+        )
 
-    selected_meal = choose_item(
-        items=meal_items,
-        ekadashi=ekadashi,
-        recent_block_set=meal_recent,
-        keywords=keywords,
-        disallowed_keywords=disallowed_keywords,
-        fallback_policy=fallback_policy,
-        seed_key=f"{target_date_str}:meal",
-        weather_rules=weather_rules,
-        weather_tags=weather_tags,
-        warn_bucket=warning_items,
-    )
+        selected_meal = choose_item(
+            items=meal_items,
+            ekadashi=ekadashi,
+            recent_block_set=meal_recent,
+            keywords=keywords,
+            disallowed_keywords=disallowed_keywords,
+            fallback_policy=fallback_policy,
+            seed_key=f"{target_date_str}:meal",
+            weather_rules=weather_rules,
+            weather_tags=weather_tags,
+            warn_bucket=warning_items,
+            prefer_lighter=transition_plan.prefer_lighter,
+        )
 
     if warning_items:
         print(
@@ -913,15 +1493,27 @@ def main() -> int:
 
     lines = [
         f"*तिथि:* {target_date_str}",
-        f"*ऋतु:* {panchang_info.ritu_hi}",
+        f"*ऋतु:* {display_ritu_hi}",
         f"*माह:* {panchang_info.maah_hi}",
         f"*तिथि (पंचांग):* {panchang_info.tithi_hi}",
-        f"*सुबह का नाश्ता:* {selected_breakfast}",
-        f"*आज का भोजन:* {selected_meal}",
     ]
+    if transition_plan.active and not shringdhara_info.active:
+        lines.append(
+            f"*ऋतु संक्रमण:* {SEASON_HI[transition_plan.current_key]} -> {SEASON_HI[transition_plan.upcoming_key]} ({transition_plan.days_to_next} दिन शेष)"
+        )
+        lines.append(f"*आज का ऋतु-आधार:* {SEASON_HI[transition_plan.selected_key]} ({transition_plan.reason})")
     festival_line = format_festival_line(festival_info)
     if festival_line:
-        lines.insert(4, festival_line)
+        lines.append(festival_line)
+    if shringdhara_info.active:
+        lines.append("*विशेष अवधि:* शृंगधारा (यमराज की दाड़)")
+        lines.append(f"*अवधि विवरण:* {shringdhara_info.reason_hi}")
+        lines.append(f"*आज का हल्का सेवन:* {selected_observance_item}")
+        lines.append("*शृंगधारा स्मरण:* " + SHRINGDHARA_DAILY_REMINDER)
+        lines.append("*परंपरागत हल्का विकल्प:* " + SHRINGDHARA_LIGHT_NOTE)
+    else:
+        lines.append(f"*सुबह का नाश्ता:* {selected_breakfast}")
+        lines.append(f"*आज का भोजन:* {selected_meal}")
 
     if ekadashi.is_ekadashi and ekadashi.name_hi:
         lines.append(f"*एकादशी:* {ekadashi.name_hi}")
@@ -929,27 +1521,31 @@ def main() -> int:
     if weather_info is not None and should_show_weather_line(weather_info, weather_mode):
         lines.append(build_weather_line(weather_info, weather_city_hi))
 
-    if ritu_key == "vasant":
-        lines.append("*वसंत अनिवार्य साथ:* " + " / ".join(VASANT_REQUIRED_SIDES))
-    if ritu_key == "grishm":
-        lines.append("*ग्रीष्म नाश्ता अनिवार्य साथ:* " + " / ".join(GRISHM_BREAKFAST_REQUIRED_SIDES))
-        lines.append("*ग्रीष्म भोजन अनिवार्य साथ:* " + " / ".join(GRISHM_MEAL_REQUIRED_SIDES))
-    if ritu_key == "varsha":
-        lines.append("*वर्षा नाश्ता अनिवार्य साथ:* " + " / ".join(VARSHA_COMMON_REQUIRED_SIDES))
-        lines.append("*वर्षा भोजन अनिवार्य साथ:* " + " / ".join(VARSHA_COMMON_REQUIRED_SIDES))
-        lines.append("*वर्षा वर्जित:* प्याज और दही पूर्णतः मना है")
-    if ritu_key == "sharad":
-        lines.append("*शरद अनिवार्य साथ:* " + " / ".join(SHARAD_COMMON_REQUIRED_SIDES))
-        if any(token in (selected_breakfast + " " + selected_meal) for token in ["चावल", "राइस"]):
-            lines.append("*शरद चावल नियम:* अगर चावल बन रहे हैं तो जीरा ज़रूर डालें")
-        lines.append("*शरद वर्जित:* इमली, लौंग, लहसुन, प्याज़, काली मिर्च और गर्म मसाले नहीं")
-        lines.append("*शरद अधिक उपयोग:* नारियल / खीर / पुदीना")
-        lines.append("*शरद कम उपयोग:* छोले, टिंडा, करेला, टमाटर, आलू, अरबी, सरसों, पपीता, सौंफ़, हरी मिर्च, लाल मिर्च, अदरक, सौंठ, सरसों का तेल, कढ़ी, दही, लस्सी, शहद")
-        lines.append("*शरद जल नियम:* चाँदी के ग्लास या मटके का जल दें")
-        lines.append("*शरद रस:* मीठा / कसैला / कड़वा")
-    if ritu_key == "hemant":
-        lines.append("*हेमंत पूर्णतया निषिद्ध:* बासमती, मैदा, डिब्बा बंद, मोठ, दोबारा गर्म की हुई दाल/सब्ज़ी, जीरा, इमली, सॉस, अचार, कड़वा, कसैला, रिफाइंड, पनीर, एनर्जी ड्रिंक, प्याज़, दुबारा गर्म किया पानी")
-        lines.append("*हेमंत जल नियम:* हमेशा गुनगुना, पीतल या तांबे में")
+    if not shringdhara_info.active:
+        if ritu_key == "vasant":
+            lines.append("*वसंत अनिवार्य साथ:* " + " / ".join(VASANT_REQUIRED_SIDES))
+        if ritu_key == "grishm":
+            lines.append("*ग्रीष्म नाश्ता अनिवार्य साथ:* " + " / ".join(GRISHM_BREAKFAST_REQUIRED_SIDES))
+            lines.append("*ग्रीष्म भोजन अनिवार्य साथ:* " + " / ".join(GRISHM_MEAL_REQUIRED_SIDES))
+        if ritu_key == "varsha":
+            lines.append("*वर्षा नाश्ता अनिवार्य साथ:* " + " / ".join(VARSHA_COMMON_REQUIRED_SIDES))
+            lines.append("*वर्षा भोजन अनिवार्य साथ:* " + " / ".join(VARSHA_COMMON_REQUIRED_SIDES))
+            lines.append("*वर्षा वर्जित:* प्याज और दही पूर्णतः मना है")
+        if ritu_key == "sharad":
+            lines.append("*शरद अनिवार्य साथ:* " + " / ".join(SHARAD_COMMON_REQUIRED_SIDES))
+            if any(token in (selected_breakfast + " " + selected_meal) for token in ["चावल", "राइस"]):
+                lines.append("*शरद चावल नियम:* अगर चावल बन रहे हैं तो जीरा ज़रूर डालें")
+            lines.append("*शरद वर्जित:* इमली, लौंग, लहसुन, प्याज़, काली मिर्च और गर्म मसाले नहीं")
+            lines.append("*शरद अधिक उपयोग:* नारियल / खीर / पुदीना")
+            lines.append("*शरद कम उपयोग:* छोले, टिंडा, करेला, टमाटर, आलू, अरबी, सरसों, पपीता, सौंफ़, हरी मिर्च, लाल मिर्च, अदरक, सौंठ, सरसों का तेल, कढ़ी, दही, लस्सी, शहद")
+            lines.append("*शरद जल नियम:* चाँदी के ग्लास या मटके का जल दें")
+            lines.append("*शरद रस:* मीठा / कसैला / कड़वा")
+        if ritu_key == "hemant":
+            lines.append("*हेमंत पूर्णतया निषिद्ध:* बासमती, मैदा, डिब्बा बंद, मोठ, दोबारा गर्म की हुई दाल/सब्ज़ी, जीरा, इमली, सॉस, अचार, कड़वा, कसैला, रिफाइंड, पनीर, एनर्जी ड्रिंक, प्याज़, दुबारा गर्म किया पानी")
+            lines.append("*हेमंत जल नियम:* हमेशा गुनगुना, पीतल या तांबे में")
+
+    if target_date.month == 1 and target_date.day == 1:
+        lines.append("*वार्षिक स्मरण (1 जनवरी):* " + NEW_YEAR_KANJI_NOTE)
 
     if missing_data_notes:
         unique_notes: list[str] = []
