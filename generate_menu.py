@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import argparse
+import csv
 import hashlib
 import json
 import random
@@ -41,6 +42,7 @@ HISTORY_FILE = BASE_DIR / "history.json"
 OUTPUT_FILE = BASE_DIR / "daily_menu.txt"
 WEATHER_TAGS_FILE = BASE_DIR / "menu_weather_tags.json"
 MANUAL_WEATHER_FILE = BASE_DIR / "manual_weather_override.json"
+HEAVY_LIGHT_CLASSIFICATION_FILE = BASE_DIR / "heavy_light_classification_food_items_revised_paratha_rule.csv"
 
 
 @dataclass
@@ -142,6 +144,12 @@ NEW_YEAR_KANJI_NOTE = (
     "बर्तन/बरनी को ढककर धूप में रख दो। रोज़ एक बार साफ चम्मच से हिला देना ताकि स्वाद अच्छे से आ जाए। "
     "5 दिन बाद नमक चखकर देखो। अगर नमक कम लगे, तो थोड़ा और नमक डाल दो और फिर से अच्छी तरह मिला दो।"
 )
+
+DEFAULT_LIGHT_FALLBACK_ITEMS = [
+    "मूंग दाल की हल्की खिचड़ी",
+    "नमक अजवाइन की रोटी",
+    "दाल की रोटी (मूंग दाल)",
+]
 
 VARSHA_BANNED_KEYWORDS = [
     "प्याज",
@@ -509,6 +517,54 @@ def write_json(path: Path, value: Any) -> None:
     with path.open("w", encoding="utf-8") as f:
         json.dump(value, f, ensure_ascii=False, indent=2)
         f.write("\n")
+
+
+def normalize_item_key(item: str) -> str:
+    return re.sub(r"\s+", " ", item).strip()
+
+
+def load_heavy_light_classification(
+    path: Path,
+    valid_items: list[str],
+) -> tuple[dict[str, str], str | None]:
+    valid_keys = {normalize_item_key(item) for item in valid_items}
+    mapping: dict[str, str] = {}
+
+    if not path.exists():
+        return {}, "[अनुपलब्ध] heavy/light वर्गीकरण फ़ाइल उपलब्ध नहीं"
+
+    try:
+        with path.open("r", encoding="utf-8-sig", newline="") as f:
+            reader = csv.DictReader(f)
+            if reader.fieldnames is None:
+                return {}, "[त्रुटि] heavy/light वर्गीकरण CSV खाली है"
+            if "item" not in reader.fieldnames or "classification" not in reader.fieldnames:
+                return {}, "[त्रुटि] heavy/light वर्गीकरण CSV में item/classification कॉलम नहीं मिले"
+
+            bad_rows = 0
+            for row in reader:
+                item = normalize_item_key(str(row.get("item", "")))
+                classification = str(row.get("classification", "")).strip().lower()
+                if not item or classification not in {"heavy", "light"}:
+                    bad_rows += 1
+                    continue
+                if item not in valid_keys:
+                    continue
+                mapping[item] = classification
+
+    except OSError as exc:
+        return {}, f"[त्रुटि] heavy/light वर्गीकरण CSV पढ़ने में समस्या: {exc}"
+    except csv.Error as exc:
+        return {}, f"[त्रुटि] heavy/light वर्गीकरण CSV पार्सिंग समस्या: {exc}"
+
+    if not mapping:
+        return {}, "[अनुपलब्ध] heavy/light वर्गीकरण डेटा मेनू आइटम से मेल नहीं खा रहा"
+
+    missing_count = len(valid_keys - set(mapping.keys()))
+    if missing_count > 0:
+        return mapping, f"[अनुपलब्ध] {missing_count} आइटम का heavy/light वर्गीकरण CSV में नहीं मिला"
+
+    return mapping, None
 
 
 def parse_args() -> argparse.Namespace:
@@ -1242,7 +1298,19 @@ def apply_weather_filter(
     return pool[:]
 
 
-def lightness_score(item: str, weather_tags: dict[str, list[str]]) -> int:
+def lightness_score(
+    item: str,
+    weather_tags: dict[str, list[str]],
+    heavy_light_classification: dict[str, str] | None = None,
+) -> int:
+    if heavy_light_classification:
+        normalized_item = normalize_item_key(item)
+        manual = heavy_light_classification.get(normalized_item)
+        if manual == "heavy":
+            return 1
+        if manual == "light":
+            return -1
+
     tags = set(weather_tags.get(item, []))
     score = 0
     if "heavy" in tags:
@@ -1262,10 +1330,22 @@ def lightness_score(item: str, weather_tags: dict[str, list[str]]) -> int:
     return score
 
 
-def apply_lighter_preference(pool: list[str], weather_tags: dict[str, list[str]]) -> list[str]:
+def is_heavy_item(
+    item: str,
+    weather_tags: dict[str, list[str]],
+    heavy_light_classification: dict[str, str] | None = None,
+) -> bool:
+    return lightness_score(item, weather_tags, heavy_light_classification) > 0
+
+
+def apply_lighter_preference(
+    pool: list[str],
+    weather_tags: dict[str, list[str]],
+    heavy_light_classification: dict[str, str] | None = None,
+) -> list[str]:
     if len(pool) <= 1:
         return pool
-    scored = [(lightness_score(item, weather_tags), item) for item in pool]
+    scored = [(lightness_score(item, weather_tags, heavy_light_classification), item) for item in pool]
     min_score = min(score for score, _ in scored)
     lighter_pool = [item for score, item in scored if score == min_score]
     return lighter_pool if lighter_pool else pool
@@ -1283,8 +1363,11 @@ def choose_item(
     weather_tags: dict[str, list[str]],
     warn_bucket: set[str],
     prefer_lighter: bool,
+    light_fallback_items: list[str],
+    max_lightness_score: int | None = None,
+    heavy_light_classification: dict[str, str] | None = None,
 ) -> str:
-    full_pool = items[:]
+    full_pool = items[:] if items else light_fallback_items[:]
 
     if ekadashi.is_ekadashi:
         base_pool = [item for item in full_pool if not is_blocked_item(item, keywords)]
@@ -1298,6 +1381,9 @@ def choose_item(
         base_pool = full_pool[:]
 
     if not base_pool:
+        base_pool = light_fallback_items[:]
+
+    if not base_pool:
         raise RuntimeError("No menu item available after applying rules")
 
     pool = apply_repeat_rule(base_pool, recent_block_set)
@@ -1308,7 +1394,16 @@ def choose_item(
             pool = weather_pool
 
     if prefer_lighter:
-        pool = apply_lighter_preference(pool, weather_tags)
+        pool = apply_lighter_preference(pool, weather_tags, heavy_light_classification)
+
+    if max_lightness_score is not None:
+        capped_pool = [
+            item
+            for item in pool
+            if lightness_score(item, weather_tags, heavy_light_classification) <= max_lightness_score
+        ]
+        if capped_pool:
+            pool = capped_pool
 
     seed_int = int(hashlib.sha256(seed_key.encode("utf-8")).hexdigest(), 16)
     rng = random.Random(seed_int)
@@ -1493,6 +1588,13 @@ def main() -> int:
     weather_mode = str(config.get("weather_show_mode", "rain_or_extreme_only"))
     weather_city_hi = str(config.get("weather_city_hi", "लखनऊ"))
     thresholds = parse_weather_thresholds(config)
+    light_fallback_items_raw = config.get("light_fallback_items", DEFAULT_LIGHT_FALLBACK_ITEMS)
+    if isinstance(light_fallback_items_raw, list):
+        light_fallback_items = [str(item).strip() for item in light_fallback_items_raw if str(item).strip()]
+    else:
+        light_fallback_items = DEFAULT_LIGHT_FALLBACK_ITEMS[:]
+    if not light_fallback_items:
+        light_fallback_items = DEFAULT_LIGHT_FALLBACK_ITEMS[:]
 
     weather_info: WeatherInfo | None = None
     weather_rules: WeatherRules | None = None
@@ -1504,6 +1606,11 @@ def main() -> int:
             missing_data_notes.append("मौसम डेटा उपलब्ध नहीं (मैनुअल/ओपन-मेटियो)")
 
     weather_tags = load_weather_tags(all_items)
+    heavy_light_classification, classification_note = load_heavy_light_classification(
+        HEAVY_LIGHT_CLASSIFICATION_FILE, all_items
+    )
+    if classification_note:
+        missing_data_notes.append(classification_note)
 
     ekadashi = get_ekadashi_info(target_date_str, ekadashi_data)
     if panchang_source_error_note:
@@ -1564,41 +1671,52 @@ def main() -> int:
         missing_data_notes.append("[अनुपलब्ध] पंचांग प्रविष्टि में 'तिथि (पंचांग)' अज्ञात/रिक्त है")
 
     if ritu_key == "grishm":
-        breakfast_items = breakfast_grishm_items or breakfast_shishir_items
-        meal_items = meal_grishm_items or meal_shishir_items
+        breakfast_items = breakfast_grishm_items[:]
+        meal_items = meal_grishm_items[:]
         if not meal_grishm_items:
-            missing_data_notes.append("ग्रीष्म भोजन सूची उपलब्ध नहीं (fallback: शिशिर)")
+            missing_data_notes.append("ग्रीष्म भोजन सूची उपलब्ध नहीं (fallback: हल्का डिफ़ॉल्ट)")
+        if not breakfast_grishm_items:
+            missing_data_notes.append("ग्रीष्म नाश्ता सूची उपलब्ध नहीं (fallback: हल्का डिफ़ॉल्ट)")
     elif ritu_key == "hemant":
-        breakfast_items = breakfast_hemant_items or breakfast_shishir_items
-        meal_items = meal_hemant_items or meal_shishir_items
+        breakfast_items = breakfast_hemant_items[:]
+        meal_items = meal_hemant_items[:]
         if not meal_hemant_items:
-            missing_data_notes.append("हेमंत भोजन सूची उपलब्ध नहीं (fallback: शिशिर)")
+            missing_data_notes.append("हेमंत भोजन सूची उपलब्ध नहीं (fallback: हल्का डिफ़ॉल्ट)")
         if not breakfast_hemant_items:
-            missing_data_notes.append("हेमंत नाश्ता सूची उपलब्ध नहीं (fallback: शिशिर)")
+            missing_data_notes.append("हेमंत नाश्ता सूची उपलब्ध नहीं (fallback: हल्का डिफ़ॉल्ट)")
     elif ritu_key == "sharad":
-        breakfast_items = breakfast_sharad_items or breakfast_shishir_items
-        meal_items = meal_sharad_items or meal_shishir_items
+        breakfast_items = breakfast_sharad_items[:]
+        meal_items = meal_sharad_items[:]
         if not meal_sharad_items:
-            missing_data_notes.append("शरद भोजन सूची उपलब्ध नहीं (fallback: शिशिर)")
+            missing_data_notes.append("शरद भोजन सूची उपलब्ध नहीं (fallback: हल्का डिफ़ॉल्ट)")
         if not breakfast_sharad_items:
-            missing_data_notes.append("शरद नाश्ता सूची उपलब्ध नहीं (fallback: शिशिर)")
+            missing_data_notes.append("शरद नाश्ता सूची उपलब्ध नहीं (fallback: हल्का डिफ़ॉल्ट)")
     elif ritu_key == "varsha":
-        breakfast_items = breakfast_varsha_items or breakfast_shishir_items
-        meal_items = meal_varsha_items or meal_shishir_items
+        breakfast_items = breakfast_varsha_items[:]
+        meal_items = meal_varsha_items[:]
         if not meal_varsha_items:
-            missing_data_notes.append("वर्षा भोजन सूची उपलब्ध नहीं (fallback: शिशिर)")
+            missing_data_notes.append("वर्षा भोजन सूची उपलब्ध नहीं (fallback: हल्का डिफ़ॉल्ट)")
         if not breakfast_varsha_items:
-            missing_data_notes.append("वर्षा नाश्ता सूची उपलब्ध नहीं (fallback: शिशिर)")
+            missing_data_notes.append("वर्षा नाश्ता सूची उपलब्ध नहीं (fallback: हल्का डिफ़ॉल्ट)")
     elif ritu_key == "vasant":
-        breakfast_items = breakfast_vasant_items or breakfast_shishir_items
-        meal_items = meal_vasant_items or meal_shishir_items
+        breakfast_items = breakfast_vasant_items[:]
+        meal_items = meal_vasant_items[:]
         if not meal_vasant_items:
-            missing_data_notes.append("वसंत भोजन सूची उपलब्ध नहीं (fallback: शिशिर)")
+            missing_data_notes.append("वसंत भोजन सूची उपलब्ध नहीं (fallback: हल्का डिफ़ॉल्ट)")
         if not breakfast_vasant_items:
-            missing_data_notes.append("वसंत नाश्ता सूची उपलब्ध नहीं (fallback: शिशिर)")
+            missing_data_notes.append("वसंत नाश्ता सूची उपलब्ध नहीं (fallback: हल्का डिफ़ॉल्ट)")
     else:
         breakfast_items = breakfast_shishir_items
         meal_items = meal_shishir_items
+
+    if not breakfast_items:
+        breakfast_items = light_fallback_items[:]
+        if not any("नाश्ता सूची उपलब्ध नहीं" in note for note in missing_data_notes):
+            missing_data_notes.append("नाश्ता विकल्प उपलब्ध नहीं (fallback: हल्का डिफ़ॉल्ट)")
+    if not meal_items:
+        meal_items = light_fallback_items[:]
+        if not any("भोजन सूची उपलब्ध नहीं" in note for note in missing_data_notes):
+            missing_data_notes.append("भोजन विकल्प उपलब्ध नहीं (fallback: हल्का डिफ़ॉल्ट)")
 
     if ritu_key == "varsha":
         disallowed_keywords = VARSHA_BANNED_KEYWORDS
@@ -1616,7 +1734,7 @@ def main() -> int:
 
     selected_observance_item: str | None = None
     if shringdhara_info.active:
-        observance_items = dedupe_preserve_order(breakfast_items + meal_items)
+        observance_items = dedupe_preserve_order(meal_items if meal_items else breakfast_items)
         observance_recent = breakfast_recent | meal_recent
         selected_observance_item = choose_item(
             items=observance_items,
@@ -1630,6 +1748,8 @@ def main() -> int:
             weather_tags=weather_tags,
             warn_bucket=warning_items,
             prefer_lighter=True,
+            light_fallback_items=light_fallback_items,
+            heavy_light_classification=heavy_light_classification,
         )
         selected_breakfast = selected_observance_item
         selected_meal = selected_observance_item
@@ -1646,6 +1766,8 @@ def main() -> int:
             weather_tags=weather_tags,
             warn_bucket=warning_items,
             prefer_lighter=transition_plan.prefer_lighter,
+            light_fallback_items=light_fallback_items,
+            heavy_light_classification=heavy_light_classification,
         )
 
         selected_meal = choose_item(
@@ -1660,7 +1782,73 @@ def main() -> int:
             weather_tags=weather_tags,
             warn_bucket=warning_items,
             prefer_lighter=transition_plan.prefer_lighter,
+            light_fallback_items=light_fallback_items,
+            heavy_light_classification=heavy_light_classification,
         )
+
+        if is_heavy_item(selected_breakfast, weather_tags, heavy_light_classification) and is_heavy_item(
+            selected_meal, weather_tags, heavy_light_classification
+        ):
+            rebalanced_breakfast = choose_item(
+                items=breakfast_items,
+                ekadashi=ekadashi,
+                recent_block_set=breakfast_recent,
+                keywords=keywords,
+                disallowed_keywords=disallowed_keywords,
+                fallback_policy=fallback_policy,
+                seed_key=f"{target_date_str}:breakfast:light-balance",
+                weather_rules=weather_rules,
+                weather_tags=weather_tags,
+                warn_bucket=warning_items,
+                prefer_lighter=True,
+                light_fallback_items=light_fallback_items,
+                max_lightness_score=0,
+                heavy_light_classification=heavy_light_classification,
+            )
+            if not is_heavy_item(rebalanced_breakfast, weather_tags, heavy_light_classification):
+                selected_breakfast = rebalanced_breakfast
+            else:
+                rebalanced_meal = choose_item(
+                    items=meal_items,
+                    ekadashi=ekadashi,
+                    recent_block_set=meal_recent,
+                    keywords=keywords,
+                    disallowed_keywords=disallowed_keywords,
+                    fallback_policy=fallback_policy,
+                    seed_key=f"{target_date_str}:meal:light-balance",
+                    weather_rules=weather_rules,
+                    weather_tags=weather_tags,
+                    warn_bucket=warning_items,
+                    prefer_lighter=True,
+                    light_fallback_items=light_fallback_items,
+                    max_lightness_score=0,
+                    heavy_light_classification=heavy_light_classification,
+                )
+                if not is_heavy_item(rebalanced_meal, weather_tags, heavy_light_classification):
+                    selected_meal = rebalanced_meal
+                else:
+                    forced_light = choose_item(
+                        items=light_fallback_items,
+                        ekadashi=ekadashi,
+                        recent_block_set=set(),
+                        keywords=keywords,
+                        disallowed_keywords=disallowed_keywords,
+                        fallback_policy=fallback_policy,
+                        seed_key=f"{target_date_str}:forced-light",
+                        weather_rules=None,
+                        weather_tags=weather_tags,
+                        warn_bucket=warning_items,
+                        prefer_lighter=True,
+                        light_fallback_items=light_fallback_items,
+                        max_lightness_score=0,
+                        heavy_light_classification=heavy_light_classification,
+                    )
+                    if lightness_score(
+                        selected_breakfast, weather_tags, heavy_light_classification
+                    ) >= lightness_score(selected_meal, weather_tags, heavy_light_classification):
+                        selected_breakfast = forced_light
+                    else:
+                        selected_meal = forced_light
 
     if warning_items:
         print(
