@@ -584,7 +584,7 @@ def resolve_date(date_arg: str | None, timezone_name: str) -> datetime.date:
             return datetime.strptime(date_arg, "%Y-%m-%d").date()
         except ValueError as exc:
             raise ValueError("--date must be in YYYY-MM-DD format") from exc
-    return datetime.now(ZoneInfo(timezone_name)).date()
+    return datetime.now(ZoneInfo(timezone_name)).date() + timedelta(days=1)
 
 
 def get_ekadashi_info(target_date: str, ekadashi_data: dict[str, Any]) -> EkadashiInfo:
@@ -1860,7 +1860,7 @@ def main() -> int:
     write_json(HISTORY_FILE, new_history)
 
     lines = [
-        f"*तिथि:* {target_date_str}",
+        f"*{target_date_str} तिथि के लिए भोजन:*",
         f"*ऋतु:* {display_ritu_hi}",
         f"*माह:* {panchang_info.maah_hi}",
         f"*तिथि (पंचांग):* {panchang_info.tithi_hi}",
