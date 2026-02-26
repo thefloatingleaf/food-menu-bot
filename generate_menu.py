@@ -1583,6 +1583,7 @@ def main() -> int:
 
     target_date = resolve_date(args.date, timezone_name)
     target_date_str = target_date.strftime("%Y-%m-%d")
+    target_date_display_str = target_date.strftime("%d-%b-%Y")
 
     weather_enabled = bool(config.get("weather_enabled", True))
     weather_mode = str(config.get("weather_show_mode", "rain_or_extreme_only"))
@@ -1860,7 +1861,7 @@ def main() -> int:
     write_json(HISTORY_FILE, new_history)
 
     lines = [
-        f"*{target_date_str} तिथि के लिए भोजन:*",
+        f"*{target_date_display_str} तिथि के लिए भोजन:*",
         f"*ऋतु:* {display_ritu_hi}",
         f"*माह:* {panchang_info.maah_hi}",
         f"*तिथि (पंचांग):* {panchang_info.tithi_hi}",
