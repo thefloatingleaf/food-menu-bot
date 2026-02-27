@@ -1154,20 +1154,20 @@ def fetch_open_meteo_weather(target_date: str, config: dict[str, Any], threshold
 
 
 def resolve_weather_info(target_date: str, config: dict[str, Any], thresholds: dict[str, float]) -> WeatherInfo | None:
-    manual = load_manual_weather(target_date, thresholds)
-    if manual:
-        return manual
-
-    source_order_raw = config.get("weather_source_order", ["imd", "open_meteo"])
+    source_order_raw = config.get("weather_source_order", ["imd", "open_meteo", "manual"])
     if isinstance(source_order_raw, list):
         source_order = [str(src).strip().lower() for src in source_order_raw if str(src).strip()]
     else:
-        source_order = ["imd", "open_meteo"]
+        source_order = ["imd", "open_meteo", "manual"]
 
     if not source_order:
-        source_order = ["imd", "open_meteo"]
+        source_order = ["imd", "open_meteo", "manual"]
 
     for source in source_order:
+        if source in {"manual", "override"}:
+            manual_weather = load_manual_weather(target_date, thresholds)
+            if manual_weather is not None:
+                return manual_weather
         if source == "imd":
             imd_weather = fetch_imd_city_weather(target_date, config, thresholds)
             if imd_weather is not None:
@@ -1178,6 +1178,72 @@ def resolve_weather_info(target_date: str, config: dict[str, Any], thresholds: d
                 return meteo_weather
 
     return None
+
+
+def extract_date_strings_from_any(source: Any, timezone_name: str) -> set[str]:
+    dates: set[str] = set()
+
+    def collect_from_row(row: Any) -> None:
+        if isinstance(row, dict):
+            normalized = normalize_any_date_to_yyyy_mm_dd(row.get("date"), timezone_name)
+            if normalized:
+                dates.add(normalized)
+
+    if isinstance(source, dict):
+        for key, val in source.items():
+            normalized_key = normalize_any_date_to_yyyy_mm_dd(key, timezone_name)
+            if normalized_key:
+                dates.add(normalized_key)
+            if isinstance(val, dict):
+                collect_from_row(val)
+            elif isinstance(val, list):
+                for row in val:
+                    collect_from_row(row)
+        entries = source.get("entries")
+        if isinstance(entries, list):
+            for row in entries:
+                collect_from_row(row)
+    elif isinstance(source, list):
+        for row in source:
+            collect_from_row(row)
+    return dates
+
+
+def assess_next_30_day_data_coverage(
+    target_date: date,
+    timezone_name: str,
+    panchang_data: Any,
+    festivals_data: Any,
+    ekadashi_data: Any,
+) -> str | None:
+    start = target_date
+    end = target_date + timedelta(days=29)
+    expected_dates = {(start + timedelta(days=offset)).strftime("%Y-%m-%d") for offset in range(30)}
+
+    panchang_dates = extract_date_strings_from_any(panchang_data, timezone_name)
+    missing_panchang = sorted(expected_dates - panchang_dates)
+
+    festival_dates = extract_date_strings_from_any(festivals_data, timezone_name)
+    missing_festival_days = len(expected_dates - festival_dates)
+
+    ekadashi_dates = extract_date_strings_from_any(ekadashi_data, timezone_name)
+    ekadashi_in_window = sorted(d for d in ekadashi_dates if start.strftime("%Y-%m-%d") <= d <= end.strftime("%Y-%m-%d"))
+
+    parts: list[str] = []
+    if missing_panchang:
+        parts.append(f"पंचांग कवरेज कमी: अगले 30 दिनों में {len(missing_panchang)} तिथियां अनुपलब्ध")
+    if not festival_dates:
+        parts.append("त्योहार डेटा स्रोत अनुपलब्ध/अमान्य")
+    elif missing_festival_days == 30:
+        parts.append("अगले 30 दिनों में कोई त्योहार प्रविष्टि नहीं (सामान्य हो सकता है, डेटा जाँचें)")
+    if not ekadashi_dates:
+        parts.append("एकादशी डेटा स्रोत अनुपलब्ध/अमान्य")
+    elif not ekadashi_in_window:
+        parts.append("अगले 30 दिनों में एकादशी प्रविष्टि नहीं (डेटा जाँचें)")
+
+    if not parts:
+        return None
+    return " | ".join(parts)
 
 
 def derive_weather_rules(weather: WeatherInfo, thresholds: dict[str, float]) -> WeatherRules:
@@ -1657,6 +1723,15 @@ def main() -> int:
         thresholds=thresholds,
         transition_window_days=transition_window_days,
     )
+    coverage_note = assess_next_30_day_data_coverage(
+        target_date=target_date,
+        timezone_name=timezone_name,
+        panchang_data=panchang_data,
+        festivals_data=festivals_data,
+        ekadashi_data=ekadashi_data,
+    )
+    if coverage_note:
+        missing_data_notes.append(coverage_note)
     ritu_key = base_ritu_key if shringdhara_info.active else transition_plan.selected_key
     if panchang_lookup.status == "date_missing":
         missing_data_notes.append("[अनुपलब्ध] पंचांग स्रोत में इस तिथि की प्रविष्टि नहीं है")
@@ -1871,6 +1946,8 @@ def main() -> int:
             f"*ऋतु संक्रमण:* {SEASON_HI[transition_plan.current_key]} -> {SEASON_HI[transition_plan.upcoming_key]} ({transition_plan.days_to_next} दिन शेष)"
         )
         lines.append(f"*आज का ऋतु-आधार:* {SEASON_HI[transition_plan.selected_key]} ({transition_plan.reason})")
+        if weather_info is not None and transition_plan.reason.startswith("मौसम प्राथमिक"):
+            lines.append(f"*मौसम स्रोत:* {weather_info.source_hi}")
     festival_line = format_festival_line(festival_info)
     if festival_line:
         lines.append(festival_line)
