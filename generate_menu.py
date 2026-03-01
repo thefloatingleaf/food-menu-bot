@@ -1223,19 +1223,12 @@ def assess_next_30_day_data_coverage(
     panchang_dates = extract_date_strings_from_any(panchang_data, timezone_name)
     missing_panchang = sorted(expected_dates - panchang_dates)
 
-    festival_dates = extract_date_strings_from_any(festivals_data, timezone_name)
-    missing_festival_days = len(expected_dates - festival_dates)
-
     ekadashi_dates = extract_date_strings_from_any(ekadashi_data, timezone_name)
     ekadashi_in_window = sorted(d for d in ekadashi_dates if start.strftime("%Y-%m-%d") <= d <= end.strftime("%Y-%m-%d"))
 
     parts: list[str] = []
     if missing_panchang:
         parts.append(f"पंचांग कवरेज कमी: अगले 30 दिनों में {len(missing_panchang)} तिथियां अनुपलब्ध")
-    if not festival_dates:
-        parts.append("त्योहार डेटा स्रोत अनुपलब्ध/अमान्य")
-    elif missing_festival_days == 30:
-        parts.append("अगले 30 दिनों में कोई त्योहार प्रविष्टि नहीं (सामान्य हो सकता है, डेटा जाँचें)")
     if not ekadashi_dates:
         parts.append("एकादशी डेटा स्रोत अनुपलब्ध/अमान्य")
     elif not ekadashi_in_window:
@@ -1945,7 +1938,6 @@ def main() -> int:
         lines.append(
             f"*ऋतु संक्रमण:* {SEASON_HI[transition_plan.current_key]} -> {SEASON_HI[transition_plan.upcoming_key]} ({transition_plan.days_to_next} दिन शेष)"
         )
-        lines.append(f"*आज का ऋतु-आधार:* {SEASON_HI[transition_plan.selected_key]} ({transition_plan.reason})")
         if weather_info is not None and transition_plan.reason.startswith("मौसम प्राथमिक"):
             lines.append(f"*मौसम स्रोत:* {weather_info.source_hi}")
     festival_line = format_festival_line(festival_info)

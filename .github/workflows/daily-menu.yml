@@ -23,9 +23,7 @@ jobs:
 
       - name: Generate next-day menu (IST)
         run: |
-          TARGET_DATE=$(TZ=Asia/Kolkata date -d "tomorrow" +%F)
-          echo "Generating menu for: $TARGET_DATE"
-          python generate_menu.py --date "$TARGET_DATE"
+          python generate_menu.py
 
       - name: Commit daily output
         run: |
