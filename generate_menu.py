@@ -390,12 +390,26 @@ def next_season_key(current_key: str) -> str:
     return SEASON_ORDER[(SEASON_ORDER.index(current_key) + 1) % len(SEASON_ORDER)]
 
 
+def previous_season_key(current_key: str) -> str:
+    if current_key not in SEASON_ORDER:
+        return "hemant"
+    return SEASON_ORDER[(SEASON_ORDER.index(current_key) - 1) % len(SEASON_ORDER)]
+
+
 def next_season_start_date(current_key: str, target_date: datetime.date) -> datetime.date:
     upcoming_key = next_season_key(current_key)
     month, day = SEASON_START_MONTH_DAY[upcoming_key]
     candidate = datetime(target_date.year, month, day).date()
     if candidate <= target_date:
         candidate = datetime(target_date.year + 1, month, day).date()
+    return candidate
+
+
+def current_season_start_date(current_key: str, target_date: datetime.date) -> datetime.date:
+    month, day = SEASON_START_MONTH_DAY[current_key]
+    candidate = datetime(target_date.year, month, day).date()
+    if candidate > target_date:
+        candidate = datetime(target_date.year - 1, month, day).date()
     return candidate
 
 
@@ -465,18 +479,31 @@ def resolve_transition_plan(
     current_key: str,
     weather: WeatherInfo | None,
     thresholds: dict[str, float],
-    transition_window_days: int,
+    pre_transition_days: int,
+    post_transition_days: int,
 ) -> TransitionPlan:
     active_current = current_key if current_key in SEASON_ORDER else "shishir"
-    upcoming_key = next_season_key(active_current)
     next_start = next_season_start_date(active_current, target_date)
     days_to_next = (next_start - target_date).days
+    current_start = current_season_start_date(active_current, target_date)
+    days_since_current_start = (target_date - current_start).days
 
-    if days_to_next > transition_window_days:
+    in_pre_window = 0 <= days_to_next <= max(pre_transition_days, 0)
+    in_post_window = 0 <= days_since_current_start < max(post_transition_days, 0)
+
+    if in_pre_window:
+        transition_current = active_current
+        transition_upcoming = next_season_key(active_current)
+        display_days_remaining = days_to_next
+    elif in_post_window:
+        transition_current = previous_season_key(active_current)
+        transition_upcoming = active_current
+        display_days_remaining = max(post_transition_days - days_since_current_start, 0)
+    else:
         return TransitionPlan(
             active=False,
             current_key=active_current,
-            upcoming_key=upcoming_key,
+            upcoming_key=next_season_key(active_current),
             days_to_next=days_to_next,
             selected_key=active_current,
             reason="संक्रमण विंडो के बाहर",
@@ -484,24 +511,31 @@ def resolve_transition_plan(
         )
 
     if weather is not None:
-        weather_selected, reason = resolve_weather_priority_season(active_current, upcoming_key, weather, thresholds)
+        weather_selected, reason = resolve_weather_priority_season(
+            transition_current, transition_upcoming, weather, thresholds
+        )
         if weather_selected is not None:
             return TransitionPlan(
                 active=True,
-                current_key=active_current,
-                upcoming_key=upcoming_key,
-                days_to_next=days_to_next,
+                current_key=transition_current,
+                upcoming_key=transition_upcoming,
+                days_to_next=display_days_remaining,
                 selected_key=weather_selected,
                 reason=reason,
-                prefer_lighter=(weather_selected != active_current),
+                prefer_lighter=(weather_selected != transition_current),
             )
 
-    selected_key, reason = resolve_alternating_transition_key(target_date, days_to_next, active_current, upcoming_key)
+    selected_key, reason = resolve_alternating_transition_key(
+        target_date,
+        display_days_remaining,
+        transition_current,
+        transition_upcoming,
+    )
     return TransitionPlan(
         active=True,
-        current_key=active_current,
-        upcoming_key=upcoming_key,
-        days_to_next=days_to_next,
+        current_key=transition_current,
+        upcoming_key=transition_upcoming,
+        days_to_next=display_days_remaining,
         selected_key=selected_key,
         reason=reason,
         prefer_lighter=True,
@@ -1708,13 +1742,16 @@ def main() -> int:
     if shringdhara_info.missing_note_hi:
         missing_data_notes.append(shringdhara_info.missing_note_hi)
 
-    transition_window_days = int(config.get("season_transition_window_days", 15))
+    legacy_transition_window_days = int(config.get("season_transition_window_days", 7))
+    pre_transition_days = int(config.get("season_transition_pre_days", legacy_transition_window_days))
+    post_transition_days = int(config.get("season_transition_post_days", 8))
     transition_plan = resolve_transition_plan(
         target_date=target_date,
         current_key=base_ritu_key,
         weather=weather_info,
         thresholds=thresholds,
-        transition_window_days=transition_window_days,
+        pre_transition_days=pre_transition_days,
+        post_transition_days=post_transition_days,
     )
     coverage_note = assess_next_30_day_data_coverage(
         target_date=target_date,
@@ -1938,8 +1975,6 @@ def main() -> int:
         lines.append(
             f"*ऋतु संक्रमण:* {SEASON_HI[transition_plan.current_key]} -> {SEASON_HI[transition_plan.upcoming_key]} ({transition_plan.days_to_next} दिन शेष)"
         )
-        if weather_info is not None and transition_plan.reason.startswith("मौसम प्राथमिक"):
-            lines.append(f"*मौसम स्रोत:* {weather_info.source_hi}")
     festival_line = format_festival_line(festival_info)
     if festival_line:
         lines.append(festival_line)
