@@ -615,7 +615,7 @@ def parse_args() -> argparse.Namespace:
 def resolve_date(date_arg: str | None, timezone_name: str) -> datetime.date:
     if date_arg:
         try:
-            return datetime.strptime(date_arg, "%Y-%m-%d").date()
+            return datetime.strptime(date_arg, "%Y-%m-%d").date() + timedelta(days=1)
         except ValueError as exc:
             raise ValueError("--date must be in YYYY-MM-DD format") from exc
     return datetime.now(ZoneInfo(timezone_name)).date() + timedelta(days=1)
@@ -2027,7 +2027,12 @@ def main() -> int:
                 unique_notes.append(note)
         lines.append("*डेटा अलर्ट:* " + " | ".join(unique_notes))
 
-    output_text = "\r\n\r\n".join(lines)
+    if len(lines) >= 4:
+        header_block = "\r\n".join(lines[:4])
+        body_block = "\r\n\r\n".join(lines[4:])
+        output_text = header_block if not body_block else f"{header_block}\r\n\r\n{body_block}"
+    else:
+        output_text = "\r\n\r\n".join(lines)
 
     with OUTPUT_FILE.open("w", encoding="utf-8") as f:
         f.write(output_text + "\n")
