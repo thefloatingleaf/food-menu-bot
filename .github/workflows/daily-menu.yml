@@ -2,8 +2,9 @@ name: Daily Food Menu
 
 on:
   schedule:
-    # 19:00 Asia/Kolkata = 13:30 UTC
-    - cron: "30 13 * * *"
+    # Run earlier than 19:00 IST because GitHub scheduled workflows can be delayed.
+    # 16:00 Asia/Kolkata = 10:30 UTC
+    - cron: "30 10 * * *"
   workflow_dispatch:
 
 permissions:
