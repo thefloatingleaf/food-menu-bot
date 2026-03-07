@@ -269,6 +269,21 @@ GREGORIAN_MONTH_HI = {
     12: "दिसंबर",
 }
 
+LUNAR_MONTH_SEQUENCE = [
+    "चैत्र",
+    "वैशाख",
+    "ज्येष्ठ",
+    "आषाढ़",
+    "श्रावण",
+    "भाद्रपद",
+    "आश्विन",
+    "कार्तिक",
+    "मार्गशीर्ष",
+    "पौष",
+    "माघ",
+    "फाल्गुन",
+]
+
 
 def infer_ritu_hi_from_date(target_date: datetime.date) -> str:
     month_day = (target_date.month, target_date.day)
@@ -328,6 +343,24 @@ def resolve_ritu_key_from_lunar_month(maah_hi: str) -> str | None:
     if canonical_maah is None:
         return None
     return LUNAR_MAAS_TO_RITU_KEY.get(canonical_maah)
+
+
+def shift_lunar_month_name(maah_hi: str, offset: int) -> str:
+    canonical_maah = normalize_lunar_month_name(maah_hi)
+    if canonical_maah is None:
+        return maah_hi
+    try:
+        index = LUNAR_MONTH_SEQUENCE.index(canonical_maah)
+    except ValueError:
+        return canonical_maah
+    return LUNAR_MONTH_SEQUENCE[(index + offset) % len(LUNAR_MONTH_SEQUENCE)]
+
+
+def convert_lunar_month_to_amanta(maah_hi: str, paksha_hint: str | None) -> str:
+    paksha = normalize_paksha_name(paksha_hint)
+    if paksha == "शुक्ल":
+        return shift_lunar_month_name(maah_hi, 1)
+    return shift_lunar_month_name(maah_hi, 0)
 
 
 def normalize_paksha_name(paksha_hi: str | None) -> str | None:
@@ -804,12 +837,15 @@ def resolve_panchang_info(
     ekadashi: EkadashiInfo,
     panchang_row: dict[str, Any] | None,
     default_ritu: str,
+    lunar_month_system: str,
 ) -> PanchangInfo:
     if panchang_row:
         ritu_hi = str(panchang_row.get("ritu_hi", default_ritu)).strip() or default_ritu
         maah_hi = str(
             panchang_row.get("maah_hi", ekadashi.lunar_month_hi or GREGORIAN_MONTH_HI[target_date.month])
         ).strip()
+        if lunar_month_system == "amanta":
+            maah_hi = convert_lunar_month_to_amanta(maah_hi, panchang_row.get("paksha_hi"))
         tithi_hi = str(panchang_row.get("tithi_hi", "अज्ञात")).strip() or "अज्ञात"
         return PanchangInfo(ritu_hi=ritu_hi, maah_hi=maah_hi, tithi_hi=tithi_hi)
 
@@ -1670,6 +1706,7 @@ def main() -> int:
     fallback_policy = config.get("empty_filtered_pool_policy", "fallback_full_menu")
     keywords = config.get("ekadashi_block_keywords", [])
     default_ritu = config.get("ritu_hi", "शिशिर")
+    lunar_month_system = str(config.get("lunar_month_system", "amanta")).strip().lower() or "amanta"
 
     if not isinstance(keywords, list) or not all(isinstance(k, str) for k in keywords):
         raise ValueError("ekadashi_block_keywords must be an array of strings")
@@ -1719,7 +1756,13 @@ def main() -> int:
     else:
         panchang_lookup = lookup_panchang_entry_for_date(target_date, timezone_name, panchang_data)
 
-    panchang_info = resolve_panchang_info(target_date, ekadashi, panchang_lookup.row, default_ritu)
+    panchang_info = resolve_panchang_info(
+        target_date,
+        ekadashi,
+        panchang_lookup.row,
+        default_ritu,
+        lunar_month_system,
+    )
     festival_info = resolve_festival_info(target_date_str, festivals_data)
 
     maah_mapped_ritu_key = resolve_ritu_key_from_lunar_month(panchang_info.maah_hi)
