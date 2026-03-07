@@ -284,6 +284,21 @@ LUNAR_MONTH_SEQUENCE = [
     "फाल्गुन",
 ]
 
+AMANTA_MONTH_DATE_RANGES = [
+    (date(2026, 3, 19), date(2026, 4, 16), "चैत्र"),
+    (date(2026, 4, 17), date(2026, 5, 15), "वैशाख"),
+    (date(2026, 5, 16), date(2026, 6, 14), "ज्येष्ठ"),
+    (date(2026, 6, 15), date(2026, 7, 13), "आषाढ़"),
+    (date(2026, 7, 14), date(2026, 8, 12), "श्रावण"),
+    (date(2026, 8, 13), date(2026, 9, 10), "भाद्रपद"),
+    (date(2026, 9, 11), date(2026, 10, 9), "आश्विन"),
+    (date(2026, 10, 10), date(2026, 11, 7), "कार्तिक"),
+    (date(2026, 11, 8), date(2026, 12, 6), "मार्गशीर्ष"),
+    (date(2026, 12, 7), date(2027, 1, 4), "पौष"),
+    (date(2027, 1, 5), date(2027, 2, 3), "माघ"),
+    (date(2027, 2, 4), date(2027, 3, 4), "फाल्गुन"),
+]
+
 
 def infer_ritu_hi_from_date(target_date: datetime.date) -> str:
     month_day = (target_date.month, target_date.day)
@@ -361,6 +376,13 @@ def convert_lunar_month_to_amanta(maah_hi: str, paksha_hint: str | None) -> str:
     if paksha == "शुक्ल":
         return shift_lunar_month_name(maah_hi, 1)
     return shift_lunar_month_name(maah_hi, 0)
+
+
+def resolve_explicit_amanta_month(target_date: date) -> str | None:
+    for start_date, end_date, maah_hi in AMANTA_MONTH_DATE_RANGES:
+        if start_date <= target_date <= end_date:
+            return maah_hi
+    return None
 
 
 def normalize_paksha_name(paksha_hi: str | None) -> str | None:
@@ -845,7 +867,11 @@ def resolve_panchang_info(
             panchang_row.get("maah_hi", ekadashi.lunar_month_hi or GREGORIAN_MONTH_HI[target_date.month])
         ).strip()
         if lunar_month_system == "amanta":
-            maah_hi = convert_lunar_month_to_amanta(maah_hi, panchang_row.get("paksha_hi"))
+            explicit_amanta_month = resolve_explicit_amanta_month(target_date)
+            if explicit_amanta_month is not None:
+                maah_hi = explicit_amanta_month
+            else:
+                maah_hi = convert_lunar_month_to_amanta(maah_hi, panchang_row.get("paksha_hi"))
         tithi_hi = str(panchang_row.get("tithi_hi", "अज्ञात")).strip() or "अज्ञात"
         return PanchangInfo(ritu_hi=ritu_hi, maah_hi=maah_hi, tithi_hi=tithi_hi)
 
