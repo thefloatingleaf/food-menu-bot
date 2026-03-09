@@ -898,6 +898,30 @@ def get_festival_entry_for_date(target_date: str, festivals_data: Any) -> dict[s
     return None
 
 
+def resolve_ritu_override(target_date: date, config: dict[str, Any]) -> str | None:
+    raw_overrides = config.get("ritu_date_overrides", [])
+    if not isinstance(raw_overrides, list):
+        return None
+
+    for row in raw_overrides:
+        if not isinstance(row, dict):
+            continue
+        start_raw = row.get("start")
+        end_raw = row.get("end")
+        ritu_hi = str(row.get("ritu_hi", "")).strip()
+        if not start_raw or not end_raw or not ritu_hi:
+            continue
+        try:
+            start_date = date.fromisoformat(str(start_raw))
+            end_date = date.fromisoformat(str(end_raw))
+        except ValueError:
+            continue
+        if start_date <= target_date <= end_date:
+            return normalize_ritu_key(ritu_hi)
+
+    return None
+
+
 def resolve_festival_info(target_date: str, festivals_data: Any) -> FestivalInfo:
     row = get_festival_entry_for_date(target_date, festivals_data)
     if not row:
@@ -1800,6 +1824,10 @@ def main() -> int:
             missing_data_notes.append("[त्रुटि] पंचांग माह नाम से ऋतु mapping नहीं हो सकी")
         else:
             missing_data_notes.append("[अनुपलब्ध] माह-आधारित ऋतु निर्धारण हेतु पंचांग माह डेटा उपलब्ध नहीं")
+
+    override_ritu_key = resolve_ritu_override(target_date, config)
+    if override_ritu_key is not None:
+        base_ritu_key = override_ritu_key
 
     display_ritu_hi = SEASON_HI.get(base_ritu_key, panchang_info.ritu_hi)
     paksha_hint = (

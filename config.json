@@ -1,6 +1,13 @@
 {
   "timezone": "Asia/Kolkata",
   "lunar_month_system": "amanta",
+  "ritu_date_overrides": [
+    {
+      "start": "2026-03-09",
+      "end": "2026-05-15",
+      "ritu_hi": "वसंत"
+    }
+  ],
   "ritu_hi": "शिशिर",
   "repeat_window_days": 7,
   "empty_filtered_pool_policy": "fallback_full_menu",
