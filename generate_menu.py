@@ -898,8 +898,8 @@ def get_festival_entry_for_date(target_date: str, festivals_data: Any) -> dict[s
     return None
 
 
-def resolve_ritu_override(target_date: date, config: dict[str, Any]) -> str | None:
-    raw_overrides = config.get("ritu_date_overrides", [])
+def resolve_ritu_override(target_date: date, config: dict[str, Any], config_key: str) -> str | None:
+    raw_overrides = config.get(config_key, [])
     if not isinstance(raw_overrides, list):
         return None
 
@@ -1825,10 +1825,6 @@ def main() -> int:
         else:
             missing_data_notes.append("[अनुपलब्ध] माह-आधारित ऋतु निर्धारण हेतु पंचांग माह डेटा उपलब्ध नहीं")
 
-    override_ritu_key = resolve_ritu_override(target_date, config)
-    if override_ritu_key is not None:
-        base_ritu_key = override_ritu_key
-
     display_ritu_hi = SEASON_HI.get(base_ritu_key, panchang_info.ritu_hi)
     paksha_hint = (
         str(panchang_lookup.row.get("paksha_hi")).strip()
@@ -1859,7 +1855,11 @@ def main() -> int:
     )
     if coverage_note:
         missing_data_notes.append(coverage_note)
-    ritu_key = base_ritu_key if shringdhara_info.active else transition_plan.selected_key
+    menu_override_ritu_key = resolve_ritu_override(target_date, config, "menu_ritu_date_overrides")
+    if menu_override_ritu_key is not None:
+        ritu_key = menu_override_ritu_key
+    else:
+        ritu_key = base_ritu_key if shringdhara_info.active else transition_plan.selected_key
     if panchang_lookup.status == "date_missing":
         missing_data_notes.append("[अनुपलब्ध] पंचांग स्रोत में इस तिथि की प्रविष्टि नहीं है")
     elif panchang_lookup.status in {"source_load_error", "source_invalid", "mapping_error", "lookup_error"}:
