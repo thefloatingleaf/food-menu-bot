@@ -110,6 +110,27 @@ class ShringdharaInfo:
     missing_note_hi: str | None
 
 
+@dataclass
+class DayContext:
+    target_date: date
+    target_date_str: str
+    display_date_str: str
+    ekadashi: EkadashiInfo
+    panchang_lookup: PanchangLookupResult
+    panchang_info: PanchangInfo
+    festival_info: FestivalInfo
+    display_ritu_hi: str
+    shringdhara_info: ShringdharaInfo
+    transition_plan: TransitionPlan
+    ritu_key: str
+    breakfast_items: list[str]
+    meal_items: list[str]
+    disallowed_keywords: list[str]
+    weather_info: WeatherInfo | None
+    weather_rules: WeatherRules | None
+    breakfast_item_override: str | None
+
+
 VASANT_REQUIRED_SIDES = [
     "नीम की चटनी",
     "पुदीना की चटनी",
@@ -134,6 +155,11 @@ OVERNIGHT_BREAKFAST_ITEMS = {
     "पझैया सादम (Pazhaya Sadam): रात में 1 कटोरी कच्चे चावल अच्छी तरह धोकर सादा चावल पकाएँ। चावल पक जाने के बाद उन्हें मिट्टी या स्टील के बर्तन में निकालकर पूरी तरह ठंडा होने दें। ठंडा होने पर उसमें 2–3 कटोरी साफ पानी डालें ताकि चावल पूरी तरह पानी में डूब जाएँ। बर्तन ढककर इसे कमरे के तापमान पर पूरी रात (लगभग 10–12 घंटे) रहने दें। सुबह चावल और उसका पानी हल्का खट्टा हो जाएगा। उसी पानी सहित चावल को हाथ से हल्का मसल दें। इसमें ½ छोटी चम्मच नमक मिलाएँ। 4–5 छोटी कच्ची प्याज छीलकर डालें, 1–2 हरी मिर्च हल्की कुचलकर डालें। अब 2–3 बड़े चम्मच दही या लगभग ½ कटोरी पतली छाछ मिलाकर अच्छी तरह मिला दें। इसे ठंडा ही खाएँ। साथ में साधारण अचार रखें।",
     "पखाला भात (Pakhala Bhata): रात में 1 कटोरी कच्चे चावल धोकर सादा चावल पकाएँ। पकने के बाद चावल को मिट्टी या स्टील के बर्तन में निकालकर ठंडा होने दें। ठंडा होने पर उसमें 2–3 कटोरी पानी और 2 बड़े चम्मच दही डालें। बर्तन ढककर इसे कमरे के तापमान पर पूरी रात (लगभग 10–12 घंटे) रहने दें ताकि हल्का किण्वन हो जाए। सुबह इसमें ½ छोटी चम्मच नमक मिलाएँ। अब कढ़ाही में 1 छोटी चम्मच सरसों का तेल गरम करें। इसमें ½ छोटी चम्मच सरसों के दाने डालें। दाने चटकने पर 1 कटी हरी मिर्च और 4–5 करी पत्ते डालें। यह तड़का चावल पर डाल दें। ऊपर से ½ छोटी चम्मच भुना जीरा पाउडर डालें और हल्का मिला दें। इसे ठंडा परोसें। साथ में आलू भुजा, साग भुजा, उड़द की बड़ी या साधारण अचार रखें।",
 }
+OVERNIGHT_RICE_PREP_NOTE = (
+    "कल सुबह के नाश्ते के लिए आज चावल बनाएं और कम से कम 1 कटोरी कच्चे चावल के बराबर "
+    "अतिरिक्त पके हुए सादे चावल अलग रखें। इन्हें रात भर साफ पानी में डुबोकर रखें।"
+)
+RICE_ITEM_TOKENS = ("चावल", "राइस", "भात")
 
 VARSHA_COMMON_REQUIRED_SIDES = [
     "आचार",
@@ -975,7 +1001,7 @@ def normalize_history(raw: Any) -> list[dict[str, str]]:
     if not isinstance(raw, list):
         return []
 
-    cleaned: list[dict[str, str]] = []
+    cleaned: list[dict[str, Any]] = []
     for row in raw:
         if not isinstance(row, dict):
             continue
@@ -985,20 +1011,34 @@ def normalize_history(raw: Any) -> list[dict[str, str]]:
 
         breakfast_val = row.get("breakfast")
         meal_val = row.get("meal")
+        next_day_breakfast_lock = row.get("next_day_breakfast_lock")
+        next_day_requires_rice_prep = row.get("next_day_requires_rice_prep")
 
         if isinstance(breakfast_val, str) and isinstance(meal_val, str):
-            cleaned.append({"date": date_val, "breakfast": breakfast_val, "meal": meal_val})
+            normalized_row: dict[str, Any] = {"date": date_val, "breakfast": breakfast_val, "meal": meal_val}
+            if isinstance(next_day_breakfast_lock, str) and next_day_breakfast_lock.strip():
+                normalized_row["next_day_breakfast_lock"] = next_day_breakfast_lock.strip()
+                normalized_row["next_day_requires_rice_prep"] = True
+            elif isinstance(next_day_requires_rice_prep, bool):
+                normalized_row["next_day_requires_rice_prep"] = next_day_requires_rice_prep
+            cleaned.append(normalized_row)
             continue
 
         old_item = row.get("item")
         if isinstance(old_item, str):
-            cleaned.append({"date": date_val, "meal": old_item})
+            normalized_row = {"date": date_val, "meal": old_item}
+            if isinstance(next_day_breakfast_lock, str) and next_day_breakfast_lock.strip():
+                normalized_row["next_day_breakfast_lock"] = next_day_breakfast_lock.strip()
+                normalized_row["next_day_requires_rice_prep"] = True
+            elif isinstance(next_day_requires_rice_prep, bool):
+                normalized_row["next_day_requires_rice_prep"] = next_day_requires_rice_prep
+            cleaned.append(normalized_row)
 
     return cleaned
 
 
 def recent_items(
-    history: list[dict[str, str]], target_date: datetime.date, window_days: int, field: str
+    history: list[dict[str, Any]], target_date: datetime.date, window_days: int, field: str
 ) -> set[str]:
     earliest = target_date - timedelta(days=window_days)
     blocked: set[str] = set()
@@ -1017,6 +1057,37 @@ def recent_items(
 def apply_repeat_rule(pool: list[str], recent_block_set: set[str]) -> list[str]:
     filtered = [item for item in pool if item not in recent_block_set]
     return filtered if filtered else pool[:]
+
+
+def get_history_row(history: list[dict[str, Any]], target_date_str: str) -> dict[str, Any] | None:
+    for row in history:
+        if row.get("date") == target_date_str:
+            return row
+    return None
+
+
+def get_previous_day_breakfast_lock(history: list[dict[str, Any]], target_date: date) -> str | None:
+    previous_date_str = (target_date - timedelta(days=1)).isoformat()
+    row = get_history_row(history, previous_date_str)
+    if row is None:
+        return None
+    lock = row.get("next_day_breakfast_lock")
+    if isinstance(lock, str) and lock.strip():
+        return lock.strip()
+    return None
+
+
+def is_overnight_breakfast(item: str) -> bool:
+    return item in OVERNIGHT_BREAKFAST_ITEMS
+
+
+def exclude_overnight_breakfasts(items: list[str]) -> list[str]:
+    filtered = [item for item in items if item not in OVERNIGHT_BREAKFAST_ITEMS]
+    return filtered if filtered else items[:]
+
+
+def is_rice_item(item: str) -> bool:
+    return any(token in item for token in RICE_ITEM_TOKENS)
 
 
 def parse_weather_thresholds(config: dict[str, Any]) -> dict[str, float]:
@@ -1552,40 +1623,32 @@ def apply_lighter_preference(
     return lighter_pool if lighter_pool else pool
 
 
-def choose_item(
+def apply_hard_filters(
     items: list[str],
     ekadashi: EkadashiInfo,
-    recent_block_set: set[str],
     keywords: list[str],
     disallowed_keywords: list[str],
-    fallback_policy: str,
-    seed_key: str,
+) -> list[str]:
+    base_pool = items[:]
+    if ekadashi.is_ekadashi:
+        base_pool = [item for item in base_pool if not is_blocked_item(item, keywords)]
+    if disallowed_keywords:
+        base_pool = [item for item in base_pool if not is_blocked_item(item, disallowed_keywords)]
+    return base_pool
+
+
+def finalize_choice_pool(
+    base_pool: list[str],
+    recent_block_set: set[str],
     weather_rules: WeatherRules | None,
     weather_tags: dict[str, list[str]],
     warn_bucket: set[str],
     prefer_lighter: bool,
-    light_fallback_items: list[str],
     max_lightness_score: int | None = None,
     heavy_light_classification: dict[str, str] | None = None,
-) -> str:
-    full_pool = items[:] if items else light_fallback_items[:]
-
-    if ekadashi.is_ekadashi:
-        base_pool = [item for item in full_pool if not is_blocked_item(item, keywords)]
-    else:
-        base_pool = full_pool[:]
-
-    if disallowed_keywords:
-        base_pool = [item for item in base_pool if not is_blocked_item(item, disallowed_keywords)]
-
-    if not base_pool and ekadashi.is_ekadashi and fallback_policy == "fallback_full_menu":
-        base_pool = full_pool[:]
-
+) -> list[str]:
     if not base_pool:
-        base_pool = light_fallback_items[:]
-
-    if not base_pool:
-        raise RuntimeError("No menu item available after applying rules")
+        return []
 
     pool = apply_repeat_rule(base_pool, recent_block_set)
 
@@ -1606,24 +1669,80 @@ def choose_item(
         if capped_pool:
             pool = capped_pool
 
+    return pool
+
+
+def deterministic_choice(pool: list[str], seed_key: str) -> str:
+    if not pool:
+        raise RuntimeError("No menu item available after applying rules")
     seed_int = int(hashlib.sha256(seed_key.encode("utf-8")).hexdigest(), 16)
     rng = random.Random(seed_int)
     return rng.choice(pool)
 
 
+def choose_item(
+    items: list[str],
+    ekadashi: EkadashiInfo,
+    recent_block_set: set[str],
+    keywords: list[str],
+    disallowed_keywords: list[str],
+    fallback_policy: str,
+    seed_key: str,
+    weather_rules: WeatherRules | None,
+    weather_tags: dict[str, list[str]],
+    warn_bucket: set[str],
+    prefer_lighter: bool,
+    light_fallback_items: list[str],
+    max_lightness_score: int | None = None,
+    heavy_light_classification: dict[str, str] | None = None,
+) -> str:
+    full_pool = items[:] if items else light_fallback_items[:]
+
+    base_pool = apply_hard_filters(full_pool, ekadashi, keywords, disallowed_keywords)
+
+    if not base_pool and ekadashi.is_ekadashi and fallback_policy == "fallback_full_menu":
+        base_pool = full_pool[:]
+
+    if not base_pool:
+        base_pool = light_fallback_items[:]
+
+    if not base_pool:
+        raise RuntimeError("No menu item available after applying rules")
+
+    pool = finalize_choice_pool(
+        base_pool=base_pool,
+        recent_block_set=recent_block_set,
+        weather_rules=weather_rules,
+        weather_tags=weather_tags,
+        warn_bucket=warn_bucket,
+        prefer_lighter=prefer_lighter,
+        max_lightness_score=max_lightness_score,
+        heavy_light_classification=heavy_light_classification,
+    )
+    return deterministic_choice(pool, seed_key)
+
+
 def update_history(
-    history: list[dict[str, str]],
+    history: list[dict[str, Any]],
     target_date: str,
     breakfast_item: str,
     meal_item: str,
     keep_days: int,
-) -> list[dict[str, str]]:
+    next_day_breakfast_lock: str | None = None,
+    next_day_requires_rice_prep: bool = False,
+) -> list[dict[str, Any]]:
     updated = [row for row in history if row.get("date") != target_date]
-    updated.append({"date": target_date, "breakfast": breakfast_item, "meal": meal_item})
+    new_row: dict[str, Any] = {"date": target_date, "breakfast": breakfast_item, "meal": meal_item}
+    if isinstance(next_day_breakfast_lock, str) and next_day_breakfast_lock.strip():
+        new_row["next_day_breakfast_lock"] = next_day_breakfast_lock.strip()
+        new_row["next_day_requires_rice_prep"] = True
+    elif next_day_requires_rice_prep:
+        new_row["next_day_requires_rice_prep"] = True
+    updated.append(new_row)
 
     cutoff = datetime.strptime(target_date, "%Y-%m-%d").date() - timedelta(days=max(keep_days, 7) + 30)
 
-    retained: list[dict[str, str]] = []
+    retained: list[dict[str, Any]] = []
     for row in updated:
         try:
             row_date = datetime.strptime(row["date"], "%Y-%m-%d").date()
@@ -1680,6 +1799,245 @@ def build_weather_line(weather: WeatherInfo, city_hi: str) -> str:
         f"*मौसम:* {city_hi} - सुबह {weather.morning_temp_c:.1f}°C, "
         f"अधिकतम {weather.max_temp_c:.1f}°C, वर्षा संभावना {weather.rain_probability_pct:.0f}% "
         f"({weather.source_hi})"
+    )
+
+
+def get_disallowed_keywords(ritu_key: str) -> list[str]:
+    if ritu_key == "varsha":
+        return VARSHA_BANNED_KEYWORDS
+    if ritu_key == "hemant":
+        return HEMANT_BANNED_KEYWORDS
+    if ritu_key == "sharad":
+        return SHARAD_BANNED_KEYWORDS
+    return []
+
+
+def get_menu_lists_for_ritu(
+    ritu_key: str,
+    *,
+    breakfast_shishir_items: list[str],
+    meal_shishir_items: list[str],
+    breakfast_vasant_items: list[str],
+    meal_vasant_items: list[str],
+    breakfast_grishm_items: list[str],
+    meal_grishm_items: list[str],
+    breakfast_varsha_items: list[str],
+    meal_varsha_items: list[str],
+    breakfast_sharad_items: list[str],
+    meal_sharad_items: list[str],
+    breakfast_hemant_items: list[str],
+    meal_hemant_items: list[str],
+    light_fallback_items: list[str],
+    missing_data_notes: list[str] | None = None,
+) -> tuple[list[str], list[str]]:
+    if ritu_key == "grishm":
+        breakfast_items = breakfast_grishm_items[:]
+        meal_items = meal_grishm_items[:]
+        if missing_data_notes is not None:
+            if not meal_grishm_items:
+                missing_data_notes.append("ग्रीष्म भोजन सूची उपलब्ध नहीं (fallback: हल्का डिफ़ॉल्ट)")
+            if not breakfast_grishm_items:
+                missing_data_notes.append("ग्रीष्म नाश्ता सूची उपलब्ध नहीं (fallback: हल्का डिफ़ॉल्ट)")
+    elif ritu_key == "hemant":
+        breakfast_items = breakfast_hemant_items[:]
+        meal_items = meal_hemant_items[:]
+        if missing_data_notes is not None:
+            if not meal_hemant_items:
+                missing_data_notes.append("हेमंत भोजन सूची उपलब्ध नहीं (fallback: हल्का डिफ़ॉल्ट)")
+            if not breakfast_hemant_items:
+                missing_data_notes.append("हेमंत नाश्ता सूची उपलब्ध नहीं (fallback: हल्का डिफ़ॉल्ट)")
+    elif ritu_key == "sharad":
+        breakfast_items = breakfast_sharad_items[:]
+        meal_items = meal_sharad_items[:]
+        if missing_data_notes is not None:
+            if not meal_sharad_items:
+                missing_data_notes.append("शरद भोजन सूची उपलब्ध नहीं (fallback: हल्का डिफ़ॉल्ट)")
+            if not breakfast_sharad_items:
+                missing_data_notes.append("शरद नाश्ता सूची उपलब्ध नहीं (fallback: हल्का डिफ़ॉल्ट)")
+    elif ritu_key == "varsha":
+        breakfast_items = breakfast_varsha_items[:]
+        meal_items = meal_varsha_items[:]
+        if missing_data_notes is not None:
+            if not meal_varsha_items:
+                missing_data_notes.append("वर्षा भोजन सूची उपलब्ध नहीं (fallback: हल्का डिफ़ॉल्ट)")
+            if not breakfast_varsha_items:
+                missing_data_notes.append("वर्षा नाश्ता सूची उपलब्ध नहीं (fallback: हल्का डिफ़ॉल्ट)")
+    elif ritu_key == "vasant":
+        breakfast_items = breakfast_vasant_items[:]
+        meal_items = meal_vasant_items[:]
+        if missing_data_notes is not None:
+            if not meal_vasant_items:
+                missing_data_notes.append("वसंत भोजन सूची उपलब्ध नहीं (fallback: हल्का डिफ़ॉल्ट)")
+            if not breakfast_vasant_items:
+                missing_data_notes.append("वसंत नाश्ता सूची उपलब्ध नहीं (fallback: हल्का डिफ़ॉल्ट)")
+    else:
+        breakfast_items = breakfast_shishir_items[:]
+        meal_items = meal_shishir_items[:]
+
+    if not breakfast_items:
+        breakfast_items = light_fallback_items[:]
+        if missing_data_notes is not None and not any("नाश्ता सूची उपलब्ध नहीं" in note for note in missing_data_notes):
+            missing_data_notes.append("नाश्ता विकल्प उपलब्ध नहीं (fallback: हल्का डिफ़ॉल्ट)")
+    if not meal_items:
+        meal_items = light_fallback_items[:]
+        if missing_data_notes is not None and not any("भोजन सूची उपलब्ध नहीं" in note for note in missing_data_notes):
+            missing_data_notes.append("भोजन विकल्प उपलब्ध नहीं (fallback: हल्का डिफ़ॉल्ट)")
+
+    return breakfast_items, meal_items
+
+
+def build_day_context(
+    target_date: date,
+    *,
+    config: dict[str, Any],
+    timezone_name: str,
+    default_ritu: str,
+    lunar_month_system: str,
+    thresholds: dict[str, float],
+    weather_enabled: bool,
+    panchang_data: Any,
+    panchang_source_error_note: str | None,
+    festivals_data: Any,
+    ekadashi_data: dict[str, Any],
+    breakfast_shishir_items: list[str],
+    meal_shishir_items: list[str],
+    breakfast_vasant_items: list[str],
+    meal_vasant_items: list[str],
+    breakfast_grishm_items: list[str],
+    meal_grishm_items: list[str],
+    breakfast_varsha_items: list[str],
+    meal_varsha_items: list[str],
+    breakfast_sharad_items: list[str],
+    meal_sharad_items: list[str],
+    breakfast_hemant_items: list[str],
+    meal_hemant_items: list[str],
+    light_fallback_items: list[str],
+    missing_data_notes: list[str] | None = None,
+) -> DayContext:
+    target_date_str = target_date.strftime("%Y-%m-%d")
+    target_date_display_str = target_date.strftime("%d-%b-%Y")
+
+    weather_info: WeatherInfo | None = None
+    weather_rules: WeatherRules | None = None
+    if weather_enabled:
+        weather_info = resolve_weather_info(target_date_str, config, thresholds)
+        if weather_info is not None:
+            weather_rules = derive_weather_rules(weather_info, thresholds)
+        elif missing_data_notes is not None:
+            missing_data_notes.append("मौसम डेटा उपलब्ध नहीं (मैनुअल/ओपन-मेटियो)")
+
+    ekadashi = get_ekadashi_info(target_date_str, ekadashi_data)
+    if panchang_source_error_note:
+        panchang_lookup = PanchangLookupResult(
+            row=None,
+            status="source_load_error",
+            detail_hi=panchang_source_error_note,
+            total_rows=0,
+            valid_date_rows=0,
+            invalid_date_rows=0,
+        )
+    else:
+        panchang_lookup = lookup_panchang_entry_for_date(target_date, timezone_name, panchang_data)
+
+    panchang_info = resolve_panchang_info(
+        target_date,
+        ekadashi,
+        panchang_lookup.row,
+        default_ritu,
+        lunar_month_system,
+    )
+    festival_info = resolve_festival_info(target_date_str, festivals_data)
+
+    maah_mapped_ritu_key = resolve_ritu_key_from_lunar_month(panchang_info.maah_hi)
+    if maah_mapped_ritu_key is not None:
+        base_ritu_key = maah_mapped_ritu_key
+    else:
+        base_ritu_key = normalize_ritu_key(panchang_info.ritu_hi)
+        if missing_data_notes is not None:
+            if panchang_lookup.status == "ok":
+                missing_data_notes.append("[त्रुटि] पंचांग माह नाम से ऋतु mapping नहीं हो सकी")
+            else:
+                missing_data_notes.append("[अनुपलब्ध] माह-आधारित ऋतु निर्धारण हेतु पंचांग माह डेटा उपलब्ध नहीं")
+
+    display_ritu_hi = SEASON_HI.get(base_ritu_key, panchang_info.ritu_hi)
+    paksha_hint = (
+        str(panchang_lookup.row.get("paksha_hi")).strip()
+        if panchang_lookup.row and isinstance(panchang_lookup.row.get("paksha_hi"), str)
+        else None
+    )
+    shringdhara_info = detect_shringdhara_observance(panchang_info.maah_hi, panchang_info.tithi_hi, paksha_hint)
+    if missing_data_notes is not None and shringdhara_info.missing_note_hi:
+        missing_data_notes.append(shringdhara_info.missing_note_hi)
+
+    legacy_transition_window_days = int(config.get("season_transition_window_days", 7))
+    pre_transition_days = int(config.get("season_transition_pre_days", legacy_transition_window_days))
+    post_transition_days = int(config.get("season_transition_post_days", 8))
+    transition_plan = resolve_transition_plan(
+        target_date=target_date,
+        current_key=base_ritu_key,
+        weather=weather_info,
+        thresholds=thresholds,
+        pre_transition_days=pre_transition_days,
+        post_transition_days=post_transition_days,
+    )
+    menu_override_ritu_key = resolve_ritu_override(target_date, config, "menu_ritu_date_overrides")
+    if menu_override_ritu_key is not None:
+        ritu_key = menu_override_ritu_key
+    else:
+        ritu_key = base_ritu_key if shringdhara_info.active else transition_plan.selected_key
+
+    breakfast_item_override = resolve_item_date_override(target_date, config, "breakfast_item_date_overrides")
+
+    if missing_data_notes is not None:
+        if panchang_lookup.status == "date_missing":
+            missing_data_notes.append("[अनुपलब्ध] पंचांग स्रोत में इस तिथि की प्रविष्टि नहीं है")
+        elif panchang_lookup.status in {"source_load_error", "source_invalid", "mapping_error", "lookup_error"}:
+            missing_data_notes.append(panchang_lookup.detail_hi)
+
+        if panchang_lookup.invalid_date_rows > 0:
+            missing_data_notes.append(
+                f"[त्रुटि] पंचांग में {panchang_lookup.invalid_date_rows} प्रविष्टियों का date फ़ॉर्मैट अमान्य/अपठनीय है"
+            )
+
+        if panchang_info.tithi_hi == "अज्ञात" and panchang_lookup.status == "ok":
+            missing_data_notes.append("[अनुपलब्ध] पंचांग प्रविष्टि में 'तिथि (पंचांग)' अज्ञात/रिक्त है")
+
+    breakfast_items, meal_items = get_menu_lists_for_ritu(
+        ritu_key,
+        breakfast_shishir_items=breakfast_shishir_items,
+        meal_shishir_items=meal_shishir_items,
+        breakfast_vasant_items=breakfast_vasant_items,
+        meal_vasant_items=meal_vasant_items,
+        breakfast_grishm_items=breakfast_grishm_items,
+        meal_grishm_items=meal_grishm_items,
+        breakfast_varsha_items=breakfast_varsha_items,
+        meal_varsha_items=meal_varsha_items,
+        breakfast_sharad_items=breakfast_sharad_items,
+        meal_sharad_items=meal_sharad_items,
+        breakfast_hemant_items=breakfast_hemant_items,
+        meal_hemant_items=meal_hemant_items,
+        light_fallback_items=light_fallback_items,
+        missing_data_notes=missing_data_notes,
+    )
+
+    return DayContext(
+        target_date=target_date,
+        target_date_str=target_date_str,
+        display_date_str=target_date_display_str,
+        ekadashi=ekadashi,
+        panchang_lookup=panchang_lookup,
+        panchang_info=panchang_info,
+        festival_info=festival_info,
+        display_ritu_hi=display_ritu_hi,
+        shringdhara_info=shringdhara_info,
+        transition_plan=transition_plan,
+        ritu_key=ritu_key,
+        breakfast_items=breakfast_items,
+        meal_items=meal_items,
+        disallowed_keywords=get_disallowed_keywords(ritu_key),
+        weather_info=weather_info,
+        weather_rules=weather_rules,
+        breakfast_item_override=breakfast_item_override,
     )
 
 
@@ -1799,15 +2157,6 @@ def main() -> int:
     if not light_fallback_items:
         light_fallback_items = DEFAULT_LIGHT_FALLBACK_ITEMS[:]
 
-    weather_info: WeatherInfo | None = None
-    weather_rules: WeatherRules | None = None
-    if weather_enabled:
-        weather_info = resolve_weather_info(target_date_str, config, thresholds)
-        if weather_info is not None:
-            weather_rules = derive_weather_rules(weather_info, thresholds)
-        else:
-            missing_data_notes.append("मौसम डेटा उपलब्ध नहीं (मैनुअल/ओपन-मेटियो)")
-
     weather_tags = load_weather_tags(all_items)
     heavy_light_classification, classification_note = load_heavy_light_classification(
         HEAVY_LIGHT_CLASSIFICATION_FILE, all_items
@@ -1815,59 +2164,37 @@ def main() -> int:
     if classification_note:
         missing_data_notes.append(classification_note)
 
-    ekadashi = get_ekadashi_info(target_date_str, ekadashi_data)
-    if panchang_source_error_note:
-        panchang_lookup = PanchangLookupResult(
-            row=None,
-            status="source_load_error",
-            detail_hi=panchang_source_error_note,
-            total_rows=0,
-            valid_date_rows=0,
-            invalid_date_rows=0,
-        )
-    else:
-        panchang_lookup = lookup_panchang_entry_for_date(target_date, timezone_name, panchang_data)
-
-    panchang_info = resolve_panchang_info(
+    current_day = build_day_context(
         target_date,
-        ekadashi,
-        panchang_lookup.row,
-        default_ritu,
-        lunar_month_system,
-    )
-    festival_info = resolve_festival_info(target_date_str, festivals_data)
-
-    maah_mapped_ritu_key = resolve_ritu_key_from_lunar_month(panchang_info.maah_hi)
-    if maah_mapped_ritu_key is not None:
-        base_ritu_key = maah_mapped_ritu_key
-    else:
-        base_ritu_key = normalize_ritu_key(panchang_info.ritu_hi)
-        if panchang_lookup.status == "ok":
-            missing_data_notes.append("[त्रुटि] पंचांग माह नाम से ऋतु mapping नहीं हो सकी")
-        else:
-            missing_data_notes.append("[अनुपलब्ध] माह-आधारित ऋतु निर्धारण हेतु पंचांग माह डेटा उपलब्ध नहीं")
-
-    display_ritu_hi = SEASON_HI.get(base_ritu_key, panchang_info.ritu_hi)
-    paksha_hint = (
-        str(panchang_lookup.row.get("paksha_hi")).strip()
-        if panchang_lookup.row and isinstance(panchang_lookup.row.get("paksha_hi"), str)
-        else None
-    )
-    shringdhara_info = detect_shringdhara_observance(panchang_info.maah_hi, panchang_info.tithi_hi, paksha_hint)
-    if shringdhara_info.missing_note_hi:
-        missing_data_notes.append(shringdhara_info.missing_note_hi)
-
-    legacy_transition_window_days = int(config.get("season_transition_window_days", 7))
-    pre_transition_days = int(config.get("season_transition_pre_days", legacy_transition_window_days))
-    post_transition_days = int(config.get("season_transition_post_days", 8))
-    transition_plan = resolve_transition_plan(
-        target_date=target_date,
-        current_key=base_ritu_key,
-        weather=weather_info,
+        config=config,
+        timezone_name=timezone_name,
+        default_ritu=default_ritu,
+        lunar_month_system=lunar_month_system,
         thresholds=thresholds,
-        pre_transition_days=pre_transition_days,
-        post_transition_days=post_transition_days,
+        weather_enabled=weather_enabled,
+        panchang_data=panchang_data,
+        panchang_source_error_note=panchang_source_error_note,
+        festivals_data=festivals_data,
+        ekadashi_data=ekadashi_data,
+        breakfast_shishir_items=breakfast_shishir_items,
+        meal_shishir_items=meal_shishir_items,
+        breakfast_vasant_items=breakfast_vasant_items,
+        meal_vasant_items=meal_vasant_items,
+        breakfast_grishm_items=breakfast_grishm_items,
+        meal_grishm_items=meal_grishm_items,
+        breakfast_varsha_items=breakfast_varsha_items,
+        meal_varsha_items=meal_varsha_items,
+        breakfast_sharad_items=breakfast_sharad_items,
+        meal_sharad_items=meal_sharad_items,
+        breakfast_hemant_items=breakfast_hemant_items,
+        meal_hemant_items=meal_hemant_items,
+        light_fallback_items=light_fallback_items,
+        missing_data_notes=missing_data_notes,
     )
+
+    target_date = current_day.target_date
+    target_date_str = current_day.target_date_str
+    target_date_display_str = current_day.display_date_str
     coverage_note = assess_next_30_day_data_coverage(
         target_date=target_date,
         timezone_name=timezone_name,
@@ -1877,89 +2204,31 @@ def main() -> int:
     )
     if coverage_note:
         missing_data_notes.append(coverage_note)
-    menu_override_ritu_key = resolve_ritu_override(target_date, config, "menu_ritu_date_overrides")
-    if menu_override_ritu_key is not None:
-        ritu_key = menu_override_ritu_key
-    else:
-        ritu_key = base_ritu_key if shringdhara_info.active else transition_plan.selected_key
 
-    breakfast_item_override = resolve_item_date_override(target_date, config, "breakfast_item_date_overrides")
-    if panchang_lookup.status == "date_missing":
-        missing_data_notes.append("[अनुपलब्ध] पंचांग स्रोत में इस तिथि की प्रविष्टि नहीं है")
-    elif panchang_lookup.status in {"source_load_error", "source_invalid", "mapping_error", "lookup_error"}:
-        missing_data_notes.append(panchang_lookup.detail_hi)
-
-    if panchang_lookup.invalid_date_rows > 0:
-        missing_data_notes.append(
-            f"[त्रुटि] पंचांग में {panchang_lookup.invalid_date_rows} प्रविष्टियों का date फ़ॉर्मैट अमान्य/अपठनीय है"
-        )
-
-    if panchang_info.tithi_hi == "अज्ञात" and panchang_lookup.status == "ok":
-        missing_data_notes.append("[अनुपलब्ध] पंचांग प्रविष्टि में 'तिथि (पंचांग)' अज्ञात/रिक्त है")
-
-    if ritu_key == "grishm":
-        breakfast_items = breakfast_grishm_items[:]
-        meal_items = meal_grishm_items[:]
-        if not meal_grishm_items:
-            missing_data_notes.append("ग्रीष्म भोजन सूची उपलब्ध नहीं (fallback: हल्का डिफ़ॉल्ट)")
-        if not breakfast_grishm_items:
-            missing_data_notes.append("ग्रीष्म नाश्ता सूची उपलब्ध नहीं (fallback: हल्का डिफ़ॉल्ट)")
-    elif ritu_key == "hemant":
-        breakfast_items = breakfast_hemant_items[:]
-        meal_items = meal_hemant_items[:]
-        if not meal_hemant_items:
-            missing_data_notes.append("हेमंत भोजन सूची उपलब्ध नहीं (fallback: हल्का डिफ़ॉल्ट)")
-        if not breakfast_hemant_items:
-            missing_data_notes.append("हेमंत नाश्ता सूची उपलब्ध नहीं (fallback: हल्का डिफ़ॉल्ट)")
-    elif ritu_key == "sharad":
-        breakfast_items = breakfast_sharad_items[:]
-        meal_items = meal_sharad_items[:]
-        if not meal_sharad_items:
-            missing_data_notes.append("शरद भोजन सूची उपलब्ध नहीं (fallback: हल्का डिफ़ॉल्ट)")
-        if not breakfast_sharad_items:
-            missing_data_notes.append("शरद नाश्ता सूची उपलब्ध नहीं (fallback: हल्का डिफ़ॉल्ट)")
-    elif ritu_key == "varsha":
-        breakfast_items = breakfast_varsha_items[:]
-        meal_items = meal_varsha_items[:]
-        if not meal_varsha_items:
-            missing_data_notes.append("वर्षा भोजन सूची उपलब्ध नहीं (fallback: हल्का डिफ़ॉल्ट)")
-        if not breakfast_varsha_items:
-            missing_data_notes.append("वर्षा नाश्ता सूची उपलब्ध नहीं (fallback: हल्का डिफ़ॉल्ट)")
-    elif ritu_key == "vasant":
-        breakfast_items = breakfast_vasant_items[:]
-        meal_items = meal_vasant_items[:]
-        if not meal_vasant_items:
-            missing_data_notes.append("वसंत भोजन सूची उपलब्ध नहीं (fallback: हल्का डिफ़ॉल्ट)")
-        if not breakfast_vasant_items:
-            missing_data_notes.append("वसंत नाश्ता सूची उपलब्ध नहीं (fallback: हल्का डिफ़ॉल्ट)")
-    else:
-        breakfast_items = breakfast_shishir_items
-        meal_items = meal_shishir_items
-
-    if not breakfast_items:
-        breakfast_items = light_fallback_items[:]
-        if not any("नाश्ता सूची उपलब्ध नहीं" in note for note in missing_data_notes):
-            missing_data_notes.append("नाश्ता विकल्प उपलब्ध नहीं (fallback: हल्का डिफ़ॉल्ट)")
-    if not meal_items:
-        meal_items = light_fallback_items[:]
-        if not any("भोजन सूची उपलब्ध नहीं" in note for note in missing_data_notes):
-            missing_data_notes.append("भोजन विकल्प उपलब्ध नहीं (fallback: हल्का डिफ़ॉल्ट)")
-
-    if ritu_key == "varsha":
-        disallowed_keywords = VARSHA_BANNED_KEYWORDS
-    elif ritu_key == "hemant":
-        disallowed_keywords = HEMANT_BANNED_KEYWORDS
-    elif ritu_key == "sharad":
-        disallowed_keywords = SHARAD_BANNED_KEYWORDS
-    else:
-        disallowed_keywords = []
+    display_ritu_hi = current_day.display_ritu_hi
+    panchang_info = current_day.panchang_info
+    festival_info = current_day.festival_info
+    shringdhara_info = current_day.shringdhara_info
+    transition_plan = current_day.transition_plan
+    ritu_key = current_day.ritu_key
+    breakfast_items = current_day.breakfast_items
+    meal_items = current_day.meal_items
+    disallowed_keywords = current_day.disallowed_keywords
+    weather_info = current_day.weather_info
+    weather_rules = current_day.weather_rules
+    ekadashi = current_day.ekadashi
+    breakfast_item_override = current_day.breakfast_item_override
 
     breakfast_recent = recent_items(history, target_date, repeat_window_days, "breakfast")
     meal_recent = recent_items(history, target_date, repeat_window_days, "meal")
+    previous_day_breakfast_lock = get_previous_day_breakfast_lock(history, target_date)
 
     warning_items: set[str] = set()
 
     selected_observance_item: str | None = None
+    next_day_breakfast_lock: str | None = None
+    next_day_requires_rice_prep = False
+    rice_support_meal_candidates: list[str] = []
     if shringdhara_info.active:
         observance_items = dedupe_preserve_order(meal_items if meal_items else breakfast_items)
         observance_recent = breakfast_recent | meal_recent
@@ -1981,15 +2250,63 @@ def main() -> int:
         selected_breakfast = selected_observance_item
         selected_meal = selected_observance_item
     else:
+        breakfast_fixed = False
+        breakfast_choice_items = exclude_overnight_breakfasts(breakfast_items)
+
+        if previous_day_breakfast_lock:
+            if previous_day_breakfast_lock in breakfast_items:
+                selected_breakfast = previous_day_breakfast_lock
+                breakfast_fixed = True
+            else:
+                missing_data_notes.append(
+                    f"[अनुपलब्ध] पिछली रात से लॉक किया गया नाश्ता आज की सूची में नहीं मिला: {previous_day_breakfast_lock}"
+                )
+                selected_breakfast = choose_item(
+                    items=breakfast_choice_items,
+                    ekadashi=ekadashi,
+                    recent_block_set=breakfast_recent,
+                    keywords=keywords,
+                    disallowed_keywords=disallowed_keywords,
+                    fallback_policy=fallback_policy,
+                    seed_key=f"{target_date_str}:breakfast",
+                    weather_rules=weather_rules,
+                    weather_tags=weather_tags,
+                    warn_bucket=warning_items,
+                    prefer_lighter=transition_plan.prefer_lighter,
+                    light_fallback_items=light_fallback_items,
+                    heavy_light_classification=heavy_light_classification,
+                )
         if breakfast_item_override:
-            if breakfast_item_override in breakfast_items:
+            if previous_day_breakfast_lock:
+                pass
+            elif is_overnight_breakfast(breakfast_item_override):
+                missing_data_notes.append(
+                    "[अनुपलब्ध] आज का निर्धारित overnight नाश्ता पिछली रात की चावल तैयारी के बिना नहीं दिया जा सकता"
+                )
+                selected_breakfast = choose_item(
+                    items=breakfast_choice_items,
+                    ekadashi=ekadashi,
+                    recent_block_set=breakfast_recent,
+                    keywords=keywords,
+                    disallowed_keywords=disallowed_keywords,
+                    fallback_policy=fallback_policy,
+                    seed_key=f"{target_date_str}:breakfast",
+                    weather_rules=weather_rules,
+                    weather_tags=weather_tags,
+                    warn_bucket=warning_items,
+                    prefer_lighter=transition_plan.prefer_lighter,
+                    light_fallback_items=light_fallback_items,
+                    heavy_light_classification=heavy_light_classification,
+                )
+            elif breakfast_item_override in breakfast_items:
                 selected_breakfast = breakfast_item_override
+                breakfast_fixed = True
             else:
                 missing_data_notes.append(
                     f"[अनुपलब्ध] निर्धारित नाश्ता override सूची में नहीं मिला: {breakfast_item_override}"
                 )
                 selected_breakfast = choose_item(
-                    items=breakfast_items,
+                    items=breakfast_choice_items,
                     ekadashi=ekadashi,
                     recent_block_set=breakfast_recent,
                     keywords=keywords,
@@ -2004,14 +2321,126 @@ def main() -> int:
                     heavy_light_classification=heavy_light_classification,
                 )
         else:
-            selected_breakfast = choose_item(
-                items=breakfast_items,
+            if not previous_day_breakfast_lock:
+                selected_breakfast = choose_item(
+                    items=breakfast_choice_items,
+                    ekadashi=ekadashi,
+                    recent_block_set=breakfast_recent,
+                    keywords=keywords,
+                    disallowed_keywords=disallowed_keywords,
+                    fallback_policy=fallback_policy,
+                    seed_key=f"{target_date_str}:breakfast",
+                    weather_rules=weather_rules,
+                    weather_tags=weather_tags,
+                    warn_bucket=warning_items,
+                    prefer_lighter=transition_plan.prefer_lighter,
+                    light_fallback_items=light_fallback_items,
+                    heavy_light_classification=heavy_light_classification,
+                )
+
+        next_day = build_day_context(
+            target_date + timedelta(days=1),
+            config=config,
+            timezone_name=timezone_name,
+            default_ritu=default_ritu,
+            lunar_month_system=lunar_month_system,
+            thresholds=thresholds,
+            weather_enabled=weather_enabled,
+            panchang_data=panchang_data,
+            panchang_source_error_note=panchang_source_error_note,
+            festivals_data=festivals_data,
+            ekadashi_data=ekadashi_data,
+            breakfast_shishir_items=breakfast_shishir_items,
+            meal_shishir_items=meal_shishir_items,
+            breakfast_vasant_items=breakfast_vasant_items,
+            meal_vasant_items=meal_vasant_items,
+            breakfast_grishm_items=breakfast_grishm_items,
+            meal_grishm_items=meal_grishm_items,
+            breakfast_varsha_items=breakfast_varsha_items,
+            meal_varsha_items=meal_varsha_items,
+            breakfast_sharad_items=breakfast_sharad_items,
+            meal_sharad_items=meal_sharad_items,
+            breakfast_hemant_items=breakfast_hemant_items,
+            meal_hemant_items=meal_hemant_items,
+            light_fallback_items=light_fallback_items,
+        )
+
+        planned_next_day_overnight: str | None = None
+        next_day_override = next_day.breakfast_item_override
+        if not shringdhara_info.active and not next_day.shringdhara_info.active:
+            if next_day_override:
+                if is_overnight_breakfast(next_day_override):
+                    planned_next_day_overnight = next_day_override
+            else:
+                next_day_breakfast_recent = recent_items(history, next_day.target_date, repeat_window_days, "breakfast")
+                next_day_breakfast_recent.add(selected_breakfast)
+                planned_next_day_breakfast = choose_item(
+                    items=next_day.breakfast_items,
+                    ekadashi=next_day.ekadashi,
+                    recent_block_set=next_day_breakfast_recent,
+                    keywords=keywords,
+                    disallowed_keywords=next_day.disallowed_keywords,
+                    fallback_policy=fallback_policy,
+                    seed_key=f"{next_day.target_date_str}:breakfast:planned-by:{target_date_str}",
+                    weather_rules=next_day.weather_rules,
+                    weather_tags=weather_tags,
+                    warn_bucket=warning_items,
+                    prefer_lighter=next_day.transition_plan.prefer_lighter,
+                    light_fallback_items=light_fallback_items,
+                    heavy_light_classification=heavy_light_classification,
+                )
+                if is_overnight_breakfast(planned_next_day_breakfast):
+                    planned_next_day_overnight = planned_next_day_breakfast
+
+        if planned_next_day_overnight:
+            rice_support_meal_candidates = apply_hard_filters(
+                [item for item in meal_items if is_rice_item(item)],
+                ekadashi,
+                keywords,
+                disallowed_keywords,
+            )
+            if rice_support_meal_candidates:
+                next_day_breakfast_lock = planned_next_day_overnight
+                next_day_requires_rice_prep = True
+                selected_meal_pool = finalize_choice_pool(
+                    base_pool=rice_support_meal_candidates,
+                    recent_block_set=meal_recent,
+                    weather_rules=weather_rules,
+                    weather_tags=weather_tags,
+                    warn_bucket=warning_items,
+                    prefer_lighter=transition_plan.prefer_lighter,
+                    heavy_light_classification=heavy_light_classification,
+                )
+                selected_meal = deterministic_choice(selected_meal_pool, f"{target_date_str}:meal:rice-support")
+            else:
+                if next_day_override and is_overnight_breakfast(next_day_override):
+                    missing_data_notes.append(
+                        "[अनुपलब्ध] अगले दिन का निर्धारित overnight नाश्ता पिछली रात के चावल-आधारित भोजन से समर्थित नहीं हो सका"
+                    )
+                selected_meal = choose_item(
+                    items=meal_items,
+                    ekadashi=ekadashi,
+                    recent_block_set=meal_recent,
+                    keywords=keywords,
+                    disallowed_keywords=disallowed_keywords,
+                    fallback_policy=fallback_policy,
+                    seed_key=f"{target_date_str}:meal",
+                    weather_rules=weather_rules,
+                    weather_tags=weather_tags,
+                    warn_bucket=warning_items,
+                    prefer_lighter=transition_plan.prefer_lighter,
+                    light_fallback_items=light_fallback_items,
+                    heavy_light_classification=heavy_light_classification,
+                )
+        else:
+            selected_meal = choose_item(
+                items=meal_items,
                 ekadashi=ekadashi,
-                recent_block_set=breakfast_recent,
+                recent_block_set=meal_recent,
                 keywords=keywords,
                 disallowed_keywords=disallowed_keywords,
                 fallback_policy=fallback_policy,
-                seed_key=f"{target_date_str}:breakfast",
+                seed_key=f"{target_date_str}:meal",
                 weather_rules=weather_rules,
                 weather_tags=weather_tags,
                 warn_bucket=warning_items,
@@ -2020,52 +2449,18 @@ def main() -> int:
                 heavy_light_classification=heavy_light_classification,
             )
 
-        selected_meal = choose_item(
-            items=meal_items,
-            ekadashi=ekadashi,
-            recent_block_set=meal_recent,
-            keywords=keywords,
-            disallowed_keywords=disallowed_keywords,
-            fallback_policy=fallback_policy,
-            seed_key=f"{target_date_str}:meal",
-            weather_rules=weather_rules,
-            weather_tags=weather_tags,
-            warn_bucket=warning_items,
-            prefer_lighter=transition_plan.prefer_lighter,
-            light_fallback_items=light_fallback_items,
-            heavy_light_classification=heavy_light_classification,
-        )
-
         if is_heavy_item(selected_breakfast, weather_tags, heavy_light_classification) and is_heavy_item(
             selected_meal, weather_tags, heavy_light_classification
         ):
-            rebalanced_breakfast = choose_item(
-                items=breakfast_items,
-                ekadashi=ekadashi,
-                recent_block_set=breakfast_recent,
-                keywords=keywords,
-                disallowed_keywords=disallowed_keywords,
-                fallback_policy=fallback_policy,
-                seed_key=f"{target_date_str}:breakfast:light-balance",
-                weather_rules=weather_rules,
-                weather_tags=weather_tags,
-                warn_bucket=warning_items,
-                prefer_lighter=True,
-                light_fallback_items=light_fallback_items,
-                max_lightness_score=0,
-                heavy_light_classification=heavy_light_classification,
-            )
-            if not is_heavy_item(rebalanced_breakfast, weather_tags, heavy_light_classification):
-                selected_breakfast = rebalanced_breakfast
-            else:
-                rebalanced_meal = choose_item(
-                    items=meal_items,
+            if not breakfast_fixed:
+                rebalanced_breakfast = choose_item(
+                    items=breakfast_choice_items,
                     ekadashi=ekadashi,
-                    recent_block_set=meal_recent,
+                    recent_block_set=breakfast_recent,
                     keywords=keywords,
                     disallowed_keywords=disallowed_keywords,
                     fallback_policy=fallback_policy,
-                    seed_key=f"{target_date_str}:meal:light-balance",
+                    seed_key=f"{target_date_str}:breakfast:light-balance",
                     weather_rules=weather_rules,
                     weather_tags=weather_tags,
                     warn_bucket=warning_items,
@@ -2074,18 +2469,39 @@ def main() -> int:
                     max_lightness_score=0,
                     heavy_light_classification=heavy_light_classification,
                 )
-                if not is_heavy_item(rebalanced_meal, weather_tags, heavy_light_classification):
-                    selected_meal = rebalanced_meal
+                if not is_heavy_item(rebalanced_breakfast, weather_tags, heavy_light_classification):
+                    selected_breakfast = rebalanced_breakfast
+
+            if is_heavy_item(selected_breakfast, weather_tags, heavy_light_classification) and is_heavy_item(
+                selected_meal, weather_tags, heavy_light_classification
+            ):
+                if next_day_requires_rice_prep and rice_support_meal_candidates:
+                    rice_light_pool = finalize_choice_pool(
+                        base_pool=rice_support_meal_candidates,
+                        recent_block_set=meal_recent,
+                        weather_rules=weather_rules,
+                        weather_tags=weather_tags,
+                        warn_bucket=warning_items,
+                        prefer_lighter=True,
+                        max_lightness_score=0,
+                        heavy_light_classification=heavy_light_classification,
+                    )
+                    if rice_light_pool:
+                        rebalanced_meal = deterministic_choice(
+                            rice_light_pool, f"{target_date_str}:meal:rice-support:light-balance"
+                        )
+                        if not is_heavy_item(rebalanced_meal, weather_tags, heavy_light_classification):
+                            selected_meal = rebalanced_meal
                 else:
-                    forced_light = choose_item(
-                        items=light_fallback_items,
+                    rebalanced_meal = choose_item(
+                        items=meal_items,
                         ekadashi=ekadashi,
-                        recent_block_set=set(),
+                        recent_block_set=meal_recent,
                         keywords=keywords,
                         disallowed_keywords=disallowed_keywords,
                         fallback_policy=fallback_policy,
-                        seed_key=f"{target_date_str}:forced-light",
-                        weather_rules=None,
+                        seed_key=f"{target_date_str}:meal:light-balance",
+                        weather_rules=weather_rules,
                         weather_tags=weather_tags,
                         warn_bucket=warning_items,
                         prefer_lighter=True,
@@ -2093,12 +2509,31 @@ def main() -> int:
                         max_lightness_score=0,
                         heavy_light_classification=heavy_light_classification,
                     )
-                    if lightness_score(
-                        selected_breakfast, weather_tags, heavy_light_classification
-                    ) >= lightness_score(selected_meal, weather_tags, heavy_light_classification):
-                        selected_breakfast = forced_light
-                    else:
-                        selected_meal = forced_light
+                    if not is_heavy_item(rebalanced_meal, weather_tags, heavy_light_classification):
+                        selected_meal = rebalanced_meal
+
+            if (
+                not breakfast_fixed
+                and is_heavy_item(selected_breakfast, weather_tags, heavy_light_classification)
+                and is_heavy_item(selected_meal, weather_tags, heavy_light_classification)
+            ):
+                forced_light = choose_item(
+                    items=light_fallback_items,
+                    ekadashi=ekadashi,
+                    recent_block_set=set(),
+                    keywords=keywords,
+                    disallowed_keywords=disallowed_keywords,
+                    fallback_policy=fallback_policy,
+                    seed_key=f"{target_date_str}:forced-light",
+                    weather_rules=None,
+                    weather_tags=weather_tags,
+                    warn_bucket=warning_items,
+                    prefer_lighter=True,
+                    light_fallback_items=light_fallback_items,
+                    max_lightness_score=0,
+                    heavy_light_classification=heavy_light_classification,
+                )
+                selected_breakfast = forced_light
 
     if warning_items:
         print(
@@ -2106,7 +2541,15 @@ def main() -> int:
             file=sys.stderr,
         )
 
-    new_history = update_history(history, target_date_str, selected_breakfast, selected_meal, repeat_window_days)
+    new_history = update_history(
+        history,
+        target_date_str,
+        selected_breakfast,
+        selected_meal,
+        repeat_window_days,
+        next_day_breakfast_lock=next_day_breakfast_lock,
+        next_day_requires_rice_prep=next_day_requires_rice_prep,
+    )
     write_json(HISTORY_FILE, new_history)
 
     lines = [
@@ -2137,6 +2580,8 @@ def main() -> int:
             elif ritu_key == "grishm":
                 lines.append("*नाश्ता स्वाद निर्देश:* ग्रीष्म में इसे सामान्य तीखापन रखें।")
         lines.append(f"*आज का भोजन:* {selected_meal}")
+        if next_day_requires_rice_prep and next_day_breakfast_lock:
+            lines.append("*रात की तैयारी:* " + OVERNIGHT_RICE_PREP_NOTE)
 
     if ekadashi.is_ekadashi and ekadashi.name_hi:
         lines.append(f"*एकादशी:* {ekadashi.name_hi}")
