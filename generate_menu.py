@@ -927,6 +927,23 @@ def resolve_ritu_override(target_date: date, config: dict[str, Any], config_key:
     return None
 
 
+def resolve_item_date_override(target_date: date, config: dict[str, Any], config_key: str) -> str | None:
+    raw_overrides = config.get(config_key, [])
+    if not isinstance(raw_overrides, list):
+        return None
+
+    target_date_str = target_date.isoformat()
+    for row in raw_overrides:
+        if not isinstance(row, dict):
+            continue
+        if str(row.get("date", "")).strip() != target_date_str:
+            continue
+        item = str(row.get("item", "")).strip()
+        if item:
+            return item
+    return None
+
+
 def resolve_festival_info(target_date: str, festivals_data: Any) -> FestivalInfo:
     row = get_festival_entry_for_date(target_date, festivals_data)
     if not row:
@@ -1865,6 +1882,8 @@ def main() -> int:
         ritu_key = menu_override_ritu_key
     else:
         ritu_key = base_ritu_key if shringdhara_info.active else transition_plan.selected_key
+
+    breakfast_item_override = resolve_item_date_override(target_date, config, "breakfast_item_date_overrides")
     if panchang_lookup.status == "date_missing":
         missing_data_notes.append("[अनुपलब्ध] पंचांग स्रोत में इस तिथि की प्रविष्टि नहीं है")
     elif panchang_lookup.status in {"source_load_error", "source_invalid", "mapping_error", "lookup_error"}:
@@ -1962,21 +1981,44 @@ def main() -> int:
         selected_breakfast = selected_observance_item
         selected_meal = selected_observance_item
     else:
-        selected_breakfast = choose_item(
-            items=breakfast_items,
-            ekadashi=ekadashi,
-            recent_block_set=breakfast_recent,
-            keywords=keywords,
-            disallowed_keywords=disallowed_keywords,
-            fallback_policy=fallback_policy,
-            seed_key=f"{target_date_str}:breakfast",
-            weather_rules=weather_rules,
-            weather_tags=weather_tags,
-            warn_bucket=warning_items,
-            prefer_lighter=transition_plan.prefer_lighter,
-            light_fallback_items=light_fallback_items,
-            heavy_light_classification=heavy_light_classification,
-        )
+        if breakfast_item_override:
+            if breakfast_item_override in breakfast_items:
+                selected_breakfast = breakfast_item_override
+            else:
+                missing_data_notes.append(
+                    f"[अनुपलब्ध] निर्धारित नाश्ता override सूची में नहीं मिला: {breakfast_item_override}"
+                )
+                selected_breakfast = choose_item(
+                    items=breakfast_items,
+                    ekadashi=ekadashi,
+                    recent_block_set=breakfast_recent,
+                    keywords=keywords,
+                    disallowed_keywords=disallowed_keywords,
+                    fallback_policy=fallback_policy,
+                    seed_key=f"{target_date_str}:breakfast",
+                    weather_rules=weather_rules,
+                    weather_tags=weather_tags,
+                    warn_bucket=warning_items,
+                    prefer_lighter=transition_plan.prefer_lighter,
+                    light_fallback_items=light_fallback_items,
+                    heavy_light_classification=heavy_light_classification,
+                )
+        else:
+            selected_breakfast = choose_item(
+                items=breakfast_items,
+                ekadashi=ekadashi,
+                recent_block_set=breakfast_recent,
+                keywords=keywords,
+                disallowed_keywords=disallowed_keywords,
+                fallback_policy=fallback_policy,
+                seed_key=f"{target_date_str}:breakfast",
+                weather_rules=weather_rules,
+                weather_tags=weather_tags,
+                warn_bucket=warning_items,
+                prefer_lighter=transition_plan.prefer_lighter,
+                light_fallback_items=light_fallback_items,
+                heavy_light_classification=heavy_light_classification,
+            )
 
         selected_meal = choose_item(
             items=meal_items,
