@@ -187,13 +187,20 @@ button {
   position: relative;
   z-index: 2;
   display: grid;
-  gap: 11px;
-  width: min(100%, 54rem);
-  justify-items: center;
-  align-content: center;
-  text-align: center;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: clamp(20px, 5vw, 80px);
+  width: min(100%, 1120px);
+  align-items: center;
   margin: 0 auto;
   padding: clamp(8px, 1.5vh, 16px) 0;
+}
+
+.opening-hero__copy {
+  display: grid;
+  gap: 11px;
+  max-width: 42rem;
+  justify-items: start;
+  text-align: left;
 }
 
 .opening-hero__lead {
@@ -258,7 +265,7 @@ button {
   padding-top: 12px;
   border-top: 1px solid rgba(129, 104, 73, 0.14);
   max-width: 39rem;
-  justify-items: center;
+  justify-items: start;
 }
 
 .verse-block__sanskrit {
@@ -287,8 +294,8 @@ button {
 }
 
 .opening-hero__actions {
-  margin-top: 8px;
-  justify-content: center;
+  justify-content: flex-end;
+  align-self: center;
 }
 
 .identity-screen {
@@ -579,9 +586,18 @@ button {
   }
 
   .opening-hero__content {
+    grid-template-columns: 1fr;
+    max-width: 100%;
+    gap: 18px;
+    padding: 8px 0;
+    justify-items: stretch;
+  }
+
+  .opening-hero__copy {
     max-width: 100%;
     gap: 9px;
-    padding: 8px 0;
+    justify-items: center;
+    text-align: center;
   }
 
   .opening-hero__title {
@@ -597,6 +613,7 @@ button {
   .verse-block {
     gap: 7px;
     padding-top: 10px;
+    justify-items: center;
   }
 
   .verse-block__sanskrit {
@@ -607,5 +624,9 @@ button {
   .verse-block__transliteration {
     font-size: 0.86rem;
     line-height: 1.48;
+  }
+
+  .opening-hero__actions {
+    justify-content: center;
   }
 }

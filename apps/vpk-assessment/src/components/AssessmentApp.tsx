@@ -226,23 +226,25 @@ export function AssessmentApp({
               </div>
               <div className="opening-hero__wash" aria-hidden="true" />
               <div className="opening-hero__content">
-                <span className="opening-hero__lead">{openingHeader}</span>
-                <h1 className="opening-hero__title">{openingHeadline}</h1>
-                <p className="opening-hero__summary">{openingSubtext}</p>
-                <div className="verse-block">
-                  <div className="verse-block__sanskrit" lang="sa">
-                    {verseSanskrit.map((line) => (
-                      <p key={line}>{line}</p>
-                    ))}
+                <div className="opening-hero__copy">
+                  <span className="opening-hero__lead">{openingHeader}</span>
+                  <h1 className="opening-hero__title">{openingHeadline}</h1>
+                  <p className="opening-hero__summary">{openingSubtext}</p>
+                  <div className="verse-block">
+                    <div className="verse-block__sanskrit" lang="sa">
+                      {verseSanskrit.map((line) => (
+                        <p key={line}>{line}</p>
+                      ))}
+                    </div>
+                    <div className="verse-block__transliteration">
+                      {verseTransliteration.map((line) => (
+                        <p key={line}>{line}</p>
+                      ))}
+                    </div>
+                    <p className="verse-block__note">
+                      (Rog Nashaka mantra, a mantra for destroying disease.)
+                    </p>
                   </div>
-                  <div className="verse-block__transliteration">
-                    {verseTransliteration.map((line) => (
-                      <p key={line}>{line}</p>
-                    ))}
-                  </div>
-                  <p className="verse-block__note">
-                    (Rog Nashaka mantra, meaning a mantra for destroying disease.)
-                  </p>
                 </div>
                 <div className="button-row opening-hero__actions">
                   <button
