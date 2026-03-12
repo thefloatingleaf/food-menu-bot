@@ -3,7 +3,7 @@
 ## Run locally
 
 ```bash
-cd "/Users/gg/Ayurveda"
+cd "/Users/gg/Documents/Ayurveda"
 source .venv/bin/activate
 python3 generate_menu.py
 ```
