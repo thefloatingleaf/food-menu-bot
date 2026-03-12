@@ -37,8 +37,6 @@ const emptyForm: IdentityForm = {
 
 const openingHeader = "Constitution assessment, done with care.";
 const openingHeadline = "AYURVEDIC PRAKRITI ASSESSMENT";
-const openingSubtext =
-  "Record identity, review instructions, answer each category in Lifetime and Present, and see your results at the end.";
 const verseSanskrit = [
   "नमामि धन्वन्तरिमादिदेवं सुरासुरैर्वन्दितपादपद्मम् ।",
   "लोके जरारुग्भयमृत्युनाशनं धातारमीशं विविधौषधीनाम् ॥",
@@ -233,7 +231,11 @@ export function AssessmentApp({
                     <span>PRAKRITI</span>
                     <span>ASSESSMENT</span>
                   </h1>
-                  <p className="opening-hero__summary">{openingSubtext}</p>
+                  <p className="opening-hero__summary">
+                    Record identity, review instructions, answer each category in Lifetime and
+                    <br />
+                    Present, and see your results at the end.
+                  </p>
                   <div className="verse-block">
                     <div className="verse-block__sanskrit" lang="sa">
                       {verseSanskrit.map((line) => (
