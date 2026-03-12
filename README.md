@@ -1,5 +1,33 @@
 # Food Menu Daily WhatsApp System
 
+## VPK Questionnaire Web App
+
+The repository now also contains a self-contained VPK questionnaire application at `apps/vpk-assessment`.
+
+### One-command setup
+
+```bash
+./scripts/setup-vpk.sh
+```
+
+Expected result: npm dependencies install, questionnaire validation passes, and the SQLite file is initialized under `apps/vpk-assessment/data/`.
+
+### One-command run
+
+```bash
+./scripts/dev-vpk.sh
+```
+
+Expected result: the Next development server starts and prints a local URL such as `http://localhost:3000`.
+
+### One-command tests
+
+```bash
+./scripts/test-vpk.sh
+```
+
+Expected result: lint and Vitest checks pass for the VPK module.
+
 ## Run locally
 
 ```bash

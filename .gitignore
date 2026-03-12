@@ -3,3 +3,6 @@ __pycache__/
 *.pyc
 
 .DS_Store
+apps/vpk-assessment/.next/
+apps/vpk-assessment/node_modules/
+apps/vpk-assessment/data/
