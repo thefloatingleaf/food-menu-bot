@@ -156,10 +156,13 @@ python3 generate_menu.py --bootstrap-weather-tags
 
 ## Consecutive-day repeat rule
 
-1. The generator now looks at yesterday's `breakfast` and `meal` together from `history.json`.
-2. It blocks repeating the same tracked ingredient or dish family on the next day, even if the menu text changes form.
-3. Example: if today contains `करेला`, tomorrow avoids `करेला`, `भरवां करेला`, or mixed items like `करेला-भिंडी`.
-4. If the seasonal pool becomes too small after this rule, the script falls back to the best available menu and adds a `*डेटा अलर्ट:*` note instead of failing.
+1. The generator looks at yesterday's `breakfast` and `meal` together from `history.json`.
+2. It blocks only key repeats:
+   - breakfast main items such as `पोहा`, `उपमा`, `चीला`, `डोसा`, `इडली`, or the key breakfast filling/base such as `आलू`, `मूंग`, `मेथी`
+   - main sabzi-style meal items such as `करेला`, `लौकी`, `परवल`, `भिंडी`
+3. Common bases and support ingredients such as `चावल`, `रोटी`, `दाल`, spices, and everyday cooking ingredients are not used for this rule by themselves.
+4. Example: if today contains `करेला`, tomorrow avoids `करेला`, `भरवां करेला`, or mixed items like `करेला-भिंडी`.
+5. If the seasonal pool becomes too small after this rule, the script falls back to the best available menu and adds a `*डेटा अलर्ट:*` note instead of failing.
 
 ## Manual weather override format
 
