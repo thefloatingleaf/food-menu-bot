@@ -23,11 +23,15 @@ type AttemptRow = {
 };
 
 type IdentityPayload = {
-  name: string;
+  firstName: string;
+  middleName?: string;
+  lastName: string;
+  dateOfBirth: string;
   age: number;
   location: string;
   email: string;
-  phone: string;
+  countryCode: string;
+  localPhoneNumber: string;
 };
 
 const globalForDb = globalThis as unknown as { vpkDb?: DbInstance };
@@ -46,11 +50,17 @@ function createSchema(db: DbInstance) {
 
     CREATE TABLE IF NOT EXISTS users (
       id TEXT PRIMARY KEY,
-      name TEXT NOT NULL,
+      first_name TEXT NOT NULL,
+      middle_name TEXT,
+      last_name TEXT NOT NULL,
+      full_name TEXT NOT NULL,
+      date_of_birth TEXT NOT NULL,
       age INTEGER NOT NULL,
       location TEXT NOT NULL,
       email_original TEXT NOT NULL,
       email_normalized TEXT NOT NULL UNIQUE,
+      country_code TEXT NOT NULL,
+      phone_local_number TEXT NOT NULL,
       phone_original TEXT NOT NULL,
       phone_normalized TEXT NOT NULL UNIQUE,
       created_at TEXT NOT NULL
@@ -95,6 +105,28 @@ function createSchema(db: DbInstance) {
       FOREIGN KEY(attempt_id) REFERENCES assessment_attempts(id)
     );
   `);
+
+  const userColumns = new Set(
+    (db.prepare(`PRAGMA table_info(users)`).all() as Array<{ name: string }>).map(
+      (column) => column.name,
+    ),
+  );
+
+  const optionalUserColumns = [
+    ["first_name", "TEXT"],
+    ["middle_name", "TEXT"],
+    ["last_name", "TEXT"],
+    ["full_name", "TEXT"],
+    ["date_of_birth", "TEXT"],
+    ["country_code", "TEXT"],
+    ["phone_local_number", "TEXT"],
+  ] as const;
+
+  for (const [name, type] of optionalUserColumns) {
+    if (!userColumns.has(name)) {
+      db.exec(`ALTER TABLE users ADD COLUMN ${name} ${type};`);
+    }
+  }
 }
 
 export function getDb() {
@@ -165,7 +197,10 @@ export function getAttemptSnapshot(attemptId: string): AttemptSnapshot | null {
 export function createIdentityAttempt(payload: IdentityPayload) {
   const db = getDb();
   const emailNormalized = normalizeEmail(payload.email);
-  const phoneNormalized = normalizePhone(payload.phone);
+  const phoneNormalized = normalizePhone(payload.countryCode, payload.localPhoneNumber);
+  const fullName = [payload.firstName, payload.middleName?.trim(), payload.lastName]
+    .filter(Boolean)
+    .join(" ");
 
   const existing = db
     .prepare(
@@ -191,16 +226,24 @@ export function createIdentityAttempt(payload: IdentityPayload) {
   const transaction = db.transaction(() => {
     db.prepare(
       `INSERT INTO users (
-        id, name, age, location, email_original, email_normalized, phone_original, phone_normalized, created_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        id, first_name, middle_name, last_name, full_name, date_of_birth, age, location,
+        email_original, email_normalized, country_code, phone_local_number, phone_original,
+        phone_normalized, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     ).run(
       userId,
-      payload.name.trim(),
+      payload.firstName.trim(),
+      payload.middleName?.trim() || null,
+      payload.lastName.trim(),
+      fullName,
+      payload.dateOfBirth,
       payload.age,
       payload.location.trim(),
       payload.email.trim(),
       emailNormalized,
-      payload.phone.trim(),
+      payload.countryCode,
+      payload.localPhoneNumber.replace(/\D/g, ""),
+      `${payload.countryCode} ${payload.localPhoneNumber.trim()}`,
       phoneNormalized,
       timestamp,
     );

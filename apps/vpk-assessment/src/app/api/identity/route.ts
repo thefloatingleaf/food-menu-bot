@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 import { createIdentityAttempt } from "@/lib/db";
 import { ATTEMPT_COOKIE_NAME } from "@/lib/session";
-import { validateIdentityPayload } from "@/lib/validation";
+import { deriveAgeFromDateOfBirth, validateIdentityPayload } from "@/lib/validation";
 
 export async function POST(request: Request) {
   const payload = await request.json();
@@ -20,7 +20,18 @@ export async function POST(request: Request) {
     );
   }
 
-  const created = createIdentityAttempt(parsed.data);
+  const age = deriveAgeFromDateOfBirth(parsed.data.dateOfBirth);
+  if (age === null) {
+    return NextResponse.json(
+      { fieldErrors: { dateOfBirth: "Enter a valid date of birth." } },
+      { status: 400 },
+    );
+  }
+
+  const created = createIdentityAttempt({
+    ...parsed.data,
+    age,
+  });
   if (created.duplicate) {
     return NextResponse.json(
       { duplicate: true, message: created.message },

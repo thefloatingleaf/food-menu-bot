@@ -4,6 +4,7 @@ import { FormEvent, useEffect, useState } from "react";
 
 import { PieResultsChart } from "@/components/PieResultsChart";
 import type { AttemptSnapshot, QuestionPayload, ResultPayload, WizardStage } from "@/lib/types";
+import { countryPhoneOptions, deriveAgeFromDateOfBirth } from "@/lib/validation";
 
 type AssessmentAppProps = {
   initialSnapshot: AttemptSnapshot | null;
@@ -12,19 +13,25 @@ type AssessmentAppProps = {
 };
 
 type IdentityForm = {
-  name: string;
-  age: string;
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  dateOfBirth: string;
   location: string;
   email: string;
-  phone: string;
+  countryCode: string;
+  localPhoneNumber: string;
 };
 
 const emptyForm: IdentityForm = {
-  name: "",
-  age: "",
+  firstName: "",
+  middleName: "",
+  lastName: "",
+  dateOfBirth: "",
   location: "",
   email: "",
-  phone: "",
+  countryCode: "IN",
+  localPhoneNumber: "",
 };
 
 export function AssessmentApp({
@@ -48,6 +55,9 @@ export function AssessmentApp({
     initialQuestion?.savedResponse.presentOptionId ?? null,
   );
   const [result, setResult] = useState<ResultPayload | null>(initialResult);
+  const derivedAge = identityForm.dateOfBirth
+    ? deriveAgeFromDateOfBirth(identityForm.dateOfBirth)
+    : null;
 
   function updateField<Key extends keyof IdentityForm>(key: Key, value: IdentityForm[Key]) {
     setIdentityForm((current) => ({ ...current, [key]: value }));
@@ -208,14 +218,27 @@ export function AssessmentApp({
                 <form className="form-grid" onSubmit={handleIdentitySubmit}>
                   <div className="field-grid field-grid--double">
                     <div className="field">
-                      <label htmlFor="name">Present name</label>
-                      <input className="input" id="name" value={identityForm.name} onChange={(event) => updateField("name", event.target.value)} />
-                      {errors.name ? <p className="error-text">{errors.name}</p> : null}
+                      <label htmlFor="firstName">First Name</label>
+                      <input className="input" id="firstName" value={identityForm.firstName} onChange={(event) => updateField("firstName", event.target.value)} />
+                      {errors.firstName ? <p className="error-text">{errors.firstName}</p> : null}
                     </div>
                     <div className="field">
-                      <label htmlFor="age">Age</label>
-                      <input className="input" id="age" inputMode="numeric" value={identityForm.age} onChange={(event) => updateField("age", event.target.value)} />
-                      {errors.age ? <p className="error-text">{errors.age}</p> : null}
+                      <label htmlFor="middleName">Middle Name</label>
+                      <input className="input" id="middleName" value={identityForm.middleName} onChange={(event) => updateField("middleName", event.target.value)} />
+                      {errors.middleName ? <p className="error-text">{errors.middleName}</p> : null}
+                    </div>
+                  </div>
+                  <div className="field-grid field-grid--double">
+                    <div className="field">
+                      <label htmlFor="lastName">Last Name</label>
+                      <input className="input" id="lastName" value={identityForm.lastName} onChange={(event) => updateField("lastName", event.target.value)} />
+                      {errors.lastName ? <p className="error-text">{errors.lastName}</p> : null}
+                    </div>
+                    <div className="field">
+                      <label htmlFor="dateOfBirth">Date of Birth</label>
+                      <input className="input" id="dateOfBirth" type="date" placeholder="YYYY-MM-DD" value={identityForm.dateOfBirth} onChange={(event) => updateField("dateOfBirth", event.target.value)} />
+                      {derivedAge !== null ? <p className="field__hint">Derived age: {derivedAge}</p> : <p className="field__hint">Use the calendar or type a valid date in YYYY-MM-DD format.</p>}
+                      {errors.dateOfBirth ? <p className="error-text">{errors.dateOfBirth}</p> : null}
                     </div>
                   </div>
                   <div className="field">
@@ -230,10 +253,22 @@ export function AssessmentApp({
                       {errors.email ? <p className="error-text">{errors.email}</p> : null}
                     </div>
                     <div className="field">
-                      <label htmlFor="phone">Phone number</label>
-                      <input className="input" id="phone" type="tel" value={identityForm.phone} onChange={(event) => updateField("phone", event.target.value)} />
-                      {errors.phone ? <p className="error-text">{errors.phone}</p> : null}
+                      <label htmlFor="countryCode">Country code</label>
+                      <select className="input" id="countryCode" value={identityForm.countryCode} onChange={(event) => updateField("countryCode", event.target.value)}>
+                        {countryPhoneOptions.map((country) => (
+                          <option key={country.code} value={country.code}>
+                            {country.name} ({country.dialCode})
+                          </option>
+                        ))}
+                      </select>
+                      {errors.countryCode ? <p className="error-text">{errors.countryCode}</p> : null}
                     </div>
+                  </div>
+                  <div className="field">
+                    <label htmlFor="localPhoneNumber">Local phone number</label>
+                    <input className="input" id="localPhoneNumber" type="tel" inputMode="numeric" value={identityForm.localPhoneNumber} onChange={(event) => updateField("localPhoneNumber", event.target.value)} />
+                    {identityForm.countryCode === "IN" ? <p className="field__hint">For India, enter exactly 10 digits.</p> : null}
+                    {errors.localPhoneNumber ? <p className="error-text">{errors.localPhoneNumber}</p> : null}
                   </div>
                   <div className="button-row">
                     <button className="button button--primary" type="submit">Save details and continue</button>
