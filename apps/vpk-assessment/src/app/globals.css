@@ -251,11 +251,9 @@ button {
 
 .opening-hero__media {
   z-index: 0;
-}
-
-.opening-hero__image {
-  object-fit: cover;
-  object-position: center center;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
   opacity: 0.92;
   transform: scale(1.01);
   filter: saturate(1.06) brightness(1.02) contrast(1.02);
@@ -610,7 +608,7 @@ button {
     min-height: 100svh;
   }
 
-  .opening-hero__image {
+  .opening-hero__media {
     opacity: 0.94;
     transform: scale(1.04);
   }
@@ -635,10 +633,10 @@ button {
   }
 
   .opening-hero__copy {
-    position: relative;
-    left: auto;
-    top: auto;
-    transform: none;
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
     max-width: 100%;
     width: 100%;
     gap: 9px;
@@ -673,10 +671,10 @@ button {
   }
 
   .opening-hero__actions {
-    position: relative;
-    right: auto;
-    top: auto;
-    transform: none;
+    position: relative !important;
+    right: auto !important;
+    top: auto !important;
+    transform: none !important;
     justify-content: center;
     justify-self: center;
   }

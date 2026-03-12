@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { FormEvent, useEffect, useState } from "react";
 
 import { PieResultsChart } from "@/components/PieResultsChart";
@@ -51,6 +50,27 @@ export function AssessmentApp({
   initialQuestion,
   initialResult,
 }: AssessmentAppProps) {
+  const desktopLeftRailStyle = {
+    position: "absolute",
+    left: "clamp(26px, 4.2vw, 78px)",
+    top: "50%",
+    transform: "translateY(-50%)",
+    width: "min(31vw, 25.5rem)",
+    maxWidth: "25.5rem",
+  } as const;
+
+  const desktopRightRailStyle = {
+    position: "absolute",
+    right: "clamp(36px, 6vw, 108px)",
+    top: "50%",
+    transform: "translateY(-50%)",
+  } as const;
+
+  const stackedTitleStyle = {
+    display: "flex",
+    flexDirection: "column",
+  } as const;
+
   const [stage, setStage] = useState<WizardStage>(initialSnapshot?.stage ?? "opening");
   const [attemptId, setAttemptId] = useState<string | null>(initialSnapshot?.attemptId ?? initialResult?.attemptId ?? null);
   const [questionIndex, setQuestionIndex] = useState(initialSnapshot?.questionIndex ?? 1);
@@ -212,24 +232,19 @@ export function AssessmentApp({
         {stage === "opening" ? (
           <section className="opening-screen">
             <div className="opening-hero">
-              <div className="opening-hero__media" aria-hidden="true">
-                <Image
-                  src="/dhanvantri-opening.png"
-                  alt=""
-                  fill
-                  priority
-                  className="opening-hero__image"
-                  sizes="100vw"
-                />
-              </div>
+              <div
+                className="opening-hero__media"
+                aria-hidden="true"
+                style={{ backgroundImage: "url('/dhanvantri-opening.png')" }}
+              />
               <div className="opening-hero__wash" aria-hidden="true" />
               <div className="opening-hero__content">
-                <div className="opening-hero__copy">
+                <div className="opening-hero__copy" style={desktopLeftRailStyle}>
                   <span className="opening-hero__lead">{openingHeader}</span>
-                  <h1 className="opening-hero__title" aria-label={openingHeadline}>
-                    <span>AYURVEDIC</span>
-                    <span>PRAKRITI</span>
-                    <span>ASSESSMENT</span>
+                  <h1 className="opening-hero__title" aria-label={openingHeadline} style={stackedTitleStyle}>
+                    <span style={{ display: "block" }}>AYURVEDIC</span>
+                    <span style={{ display: "block" }}>PRAKRITI</span>
+                    <span style={{ display: "block" }}>ASSESSMENT</span>
                   </h1>
                   <p className="opening-hero__summary">
                     Record identity, review instructions, answer each category in Lifetime and
@@ -252,7 +267,7 @@ export function AssessmentApp({
                     </p>
                   </div>
                 </div>
-                <div className="button-row opening-hero__actions">
+                <div className="button-row opening-hero__actions" style={desktopRightRailStyle}>
                   <button
                     className="button button--primary"
                     type="button"
