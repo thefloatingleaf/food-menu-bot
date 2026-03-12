@@ -187,8 +187,8 @@ button {
   position: relative;
   z-index: 2;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: clamp(20px, 5vw, 80px);
+  grid-template-columns: minmax(300px, 1.05fr) minmax(120px, 0.55fr) minmax(220px, 0.8fr);
+  gap: clamp(16px, 3vw, 44px);
   width: min(100%, 1120px);
   align-items: center;
   margin: 0 auto;
@@ -199,6 +199,7 @@ button {
   display: grid;
   gap: 11px;
   max-width: 42rem;
+  grid-column: 1;
   justify-items: start;
   text-align: left;
 }
@@ -294,8 +295,10 @@ button {
 }
 
 .opening-hero__actions {
+  grid-column: 3;
   justify-content: flex-end;
   align-self: center;
+  justify-self: end;
 }
 
 .identity-screen {
@@ -595,6 +598,7 @@ button {
 
   .opening-hero__copy {
     max-width: 100%;
+    grid-column: auto;
     gap: 9px;
     justify-items: center;
     text-align: center;
@@ -627,6 +631,8 @@ button {
   }
 
   .opening-hero__actions {
+    grid-column: auto;
     justify-content: center;
+    justify-self: center;
   }
 }
