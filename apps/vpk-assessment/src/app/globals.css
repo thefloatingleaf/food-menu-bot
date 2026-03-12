@@ -161,6 +161,7 @@ button {
 
 .opening-screen {
   display: grid;
+  place-items: center;
 }
 
 .opening-hero {
@@ -176,9 +177,12 @@ button {
   z-index: 2;
   display: grid;
   gap: 14px;
-  max-width: 36rem;
+  max-width: 44rem;
   min-height: 100%;
-  justify-content: end;
+  justify-content: center;
+  justify-items: center;
+  text-align: center;
+  margin: 0 auto;
 }
 
 .opening-hero__lead {
@@ -200,11 +204,11 @@ button {
   line-height: 0.92;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  max-width: 10.5ch;
+  max-width: 11.5ch;
 }
 
 .opening-hero__summary {
-  max-width: 36rem;
+  max-width: 34rem;
   color: color-mix(in srgb, var(--muted) 90%, #4f3b2d);
   line-height: 1.72;
   font-size: 1rem;
@@ -220,19 +224,19 @@ button {
 .opening-hero__art {
   background-image: url("/dhanvantari-whisper.svg");
   background-repeat: no-repeat;
-  background-position: right 12px bottom -6px;
-  background-size: min(92%, 780px);
-  opacity: 0.72;
-  filter: blur(0.08px) saturate(1.04) brightness(1.08);
+  background-position: center center;
+  background-size: min(118%, 1040px);
+  opacity: 0.98;
+  filter: saturate(1.12) brightness(1.12) contrast(1.04);
   z-index: 0;
 }
 
 .opening-hero__wash {
   z-index: 1;
   background:
-    radial-gradient(circle at 72% 24%, rgba(243, 204, 118, 0.24), transparent 18%),
-    radial-gradient(circle at 76% 52%, rgba(212, 173, 93, 0.1), transparent 26%),
-    linear-gradient(90deg, rgba(245, 239, 228, 0.72) 0%, rgba(245, 239, 228, 0.32) 34%, rgba(245, 239, 228, 0.1) 100%);
+    radial-gradient(circle at 50% 20%, rgba(243, 204, 118, 0.14), transparent 18%),
+    radial-gradient(circle at 50% 54%, rgba(212, 173, 93, 0.08), transparent 30%),
+    linear-gradient(180deg, rgba(245, 239, 228, 0.18) 0%, rgba(245, 239, 228, 0.08) 42%, rgba(245, 239, 228, 0.18) 100%);
 }
 
 .verse-block {
@@ -242,6 +246,7 @@ button {
   padding-top: 14px;
   border-top: 1px solid rgba(129, 104, 73, 0.14);
   max-width: 39rem;
+  justify-items: center;
 }
 
 .verse-block__sanskrit {
@@ -260,7 +265,7 @@ button {
   font-size: 0.93rem;
   line-height: 1.7;
   font-style: italic;
-  max-width: 37rem;
+  max-width: 35rem;
 }
 
 .verse-block__note {
@@ -271,6 +276,7 @@ button {
 
 .opening-hero__actions {
   margin-top: 8px;
+  justify-content: center;
 }
 
 .identity-screen {
@@ -544,15 +550,15 @@ button {
   }
 
   .opening-hero__art {
-    background-position: center bottom -4px;
-    background-size: 128%;
-    opacity: 0.58;
+    background-position: center center;
+    background-size: 156%;
+    opacity: 0.92;
   }
 
   .opening-hero__wash {
     background:
-      radial-gradient(circle at 50% 20%, rgba(243, 204, 118, 0.18), transparent 24%),
-      linear-gradient(180deg, rgba(245, 239, 228, 0.58) 0%, rgba(245, 239, 228, 0.68) 34%, rgba(245, 239, 228, 0.82) 100%);
+      radial-gradient(circle at 50% 20%, rgba(243, 204, 118, 0.12), transparent 24%),
+      linear-gradient(180deg, rgba(245, 239, 228, 0.14) 0%, rgba(245, 239, 228, 0.16) 34%, rgba(245, 239, 228, 0.28) 100%);
   }
 
   .opening-hero__summary,
