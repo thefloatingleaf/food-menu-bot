@@ -224,6 +224,54 @@ HEMANT_BANNED_KEYWORDS = [
     "दुबारा गर्म किया पानी",
 ]
 
+CONSECUTIVE_DAY_REPEAT_ALIASES = {
+    "आलू": ("आलू",),
+    "अरहर": ("अरहर", "तुअर", "तूर"),
+    "उड़द": ("उड़द", "उरद"),
+    "उपमा": ("उपमा",),
+    "इडली": ("इडली",),
+    "उत्तपम": ("उत्तपम",),
+    "कचौड़ी": ("कचौड़ी",),
+    "कद्दू": ("कद्दू", "पेठा"),
+    "करेला": ("करेला", "करेले"),
+    "करोंदा": ("करोंदा",),
+    "कुंदरु": ("कुंदरु",),
+    "कुलथी": ("कुलथी",),
+    "केला": ("केला", "केले"),
+    "गोभी": ("गोभी",),
+    "चकुंदर": ("चकुंदर", "चुकंदर"),
+    "चना": ("चना", "चने", "छोले", "बेसन", "चना दाल", "काला चना", "काले चने", "सफ़ेद चना", "सफेद चना"),
+    "चीला": ("चीला", "चिल्ला"),
+    "डोसा": ("डोसा",),
+    "तोरई": ("तोरई", "तोरी"),
+    "दलिया": ("दलिया", "dalia"),
+    "परवल": ("परवल",),
+    "पकौड़े": ("पकौड़े",),
+    "पालक": ("पालक",),
+    "पोहा": ("पोहा",),
+    "पूरण पोली": ("पूरण पोली",),
+    "पूरी": ("पूरी",),
+    "फरे": ("फरे",),
+    "बथुआ": ("बथुआ",),
+    "भिंडी": ("भिंडी",),
+    "मटर": ("मटर",),
+    "मसूर": ("मसूर",),
+    "मेथी": ("मेथी",),
+    "मोठ": ("मोठ",),
+    "मूंग": ("मूँग", "मूंग", "मूँगदाल", "मूंगदाल"),
+    "मूली": ("मूली",),
+    "लौकी": ("लौकी", "दूधी", "दुधी"),
+    "वड़ा": ("वड़ा", "वड़े", "वडा"),
+    "सरसों": ("सरसों",),
+    "सहजन": ("सहजन", "सहजन की फली"),
+    "खिचड़ी": ("खिचड़ी",),
+    "खीर": ("खीर",),
+}
+CONSECUTIVE_DAY_REPEAT_NOTE = (
+    "[अनुपलब्ध] लगातार दिनों में एक ही मुख्य सामग्री/व्यंजन परिवार दोहराने से बचने के लिए पर्याप्त विकल्प नहीं मिले"
+)
+REPEAT_FAMILY_BOUNDARY_CLASS = r"\u0900-\u097Fa-zA-Z"
+
 
 SEASON_ORDER = ["shishir", "vasant", "grishm", "varsha", "sharad", "hemant"]
 SEASON_HI = {
@@ -643,6 +691,51 @@ def normalize_item_key(item: str) -> str:
     return re.sub(r"\s+", " ", item).strip()
 
 
+def normalize_repeat_family_text(text: str) -> str:
+    lowered = text.lower()
+    scrubbed = re.sub(r"[()\[\]{}.,;:!?*/+|_=\-–—]+", " ", lowered)
+    return re.sub(r"\s+", " ", scrubbed).strip()
+
+
+def compile_repeat_family_patterns(
+    family_aliases: dict[str, tuple[str, ...]],
+) -> dict[str, tuple[re.Pattern[str], ...]]:
+    compiled: dict[str, tuple[re.Pattern[str], ...]] = {}
+    for family, aliases in family_aliases.items():
+        patterns: list[re.Pattern[str]] = []
+        seen_aliases: set[str] = set()
+        for alias in aliases:
+            normalized_alias = normalize_repeat_family_text(alias)
+            if not normalized_alias or normalized_alias in seen_aliases:
+                continue
+            seen_aliases.add(normalized_alias)
+            escaped = re.escape(normalized_alias).replace(r"\ ", r"\s+")
+            patterns.append(
+                re.compile(rf"(?<![{REPEAT_FAMILY_BOUNDARY_CLASS}]){escaped}(?![{REPEAT_FAMILY_BOUNDARY_CLASS}])")
+            )
+        compiled[family] = tuple(patterns)
+    return compiled
+
+
+CONSECUTIVE_DAY_REPEAT_PATTERNS = compile_repeat_family_patterns(CONSECUTIVE_DAY_REPEAT_ALIASES)
+
+
+def extract_repeat_families(item: str) -> set[str]:
+    normalized_item = normalize_repeat_family_text(item)
+    if not normalized_item:
+        return set()
+
+    families: set[str] = set()
+    for family, patterns in CONSECUTIVE_DAY_REPEAT_PATTERNS.items():
+        if any(pattern.search(normalized_item) for pattern in patterns):
+            families.add(family)
+    return families
+
+
+def get_item_repeat_family_conflicts(item: str, blocked_families: set[str]) -> list[str]:
+    return sorted(extract_repeat_families(item) & blocked_families)
+
+
 def load_heavy_light_classification(
     path: Path,
     valid_items: list[str],
@@ -1059,6 +1152,18 @@ def apply_repeat_rule(pool: list[str], recent_block_set: set[str]) -> list[str]:
     return filtered if filtered else pool[:]
 
 
+def apply_consecutive_day_repeat_rule(
+    pool: list[str], blocked_families: set[str]
+) -> tuple[list[str], bool]:
+    if not blocked_families:
+        return pool[:], False
+
+    filtered = [item for item in pool if not get_item_repeat_family_conflicts(item, blocked_families)]
+    if filtered:
+        return filtered, False
+    return pool[:], True
+
+
 def get_history_row(history: list[dict[str, Any]], target_date_str: str) -> dict[str, Any] | None:
     for row in history:
         if row.get("date") == target_date_str:
@@ -1075,6 +1180,23 @@ def get_previous_day_breakfast_lock(history: list[dict[str, Any]], target_date: 
     if isinstance(lock, str) and lock.strip():
         return lock.strip()
     return None
+
+
+def get_row_repeat_families(row: dict[str, Any]) -> set[str]:
+    families: set[str] = set()
+    for field in ("breakfast", "meal", "item"):
+        value = row.get(field)
+        if isinstance(value, str) and value.strip():
+            families.update(extract_repeat_families(value))
+    return families
+
+
+def get_previous_day_repeat_families(history: list[dict[str, Any]], target_date: date) -> set[str]:
+    previous_date_str = (target_date - timedelta(days=1)).isoformat()
+    row = get_history_row(history, previous_date_str)
+    if row is None:
+        return set()
+    return get_row_repeat_families(row)
 
 
 def is_overnight_breakfast(item: str) -> bool:
@@ -1640,9 +1762,11 @@ def apply_hard_filters(
 def finalize_choice_pool(
     base_pool: list[str],
     recent_block_set: set[str],
+    consecutive_day_block_families: set[str],
     weather_rules: WeatherRules | None,
     weather_tags: dict[str, list[str]],
     warn_bucket: set[str],
+    constraint_notes: list[str],
     prefer_lighter: bool,
     max_lightness_score: int | None = None,
     heavy_light_classification: dict[str, str] | None = None,
@@ -1651,6 +1775,10 @@ def finalize_choice_pool(
         return []
 
     pool = apply_repeat_rule(base_pool, recent_block_set)
+
+    pool, repeated_family_fallback = apply_consecutive_day_repeat_rule(pool, consecutive_day_block_families)
+    if repeated_family_fallback and CONSECUTIVE_DAY_REPEAT_NOTE not in constraint_notes:
+        constraint_notes.append(CONSECUTIVE_DAY_REPEAT_NOTE)
 
     if weather_rules is not None:
         weather_pool = apply_weather_filter(pool, weather_rules, weather_tags, warn_bucket)
@@ -1684,6 +1812,7 @@ def choose_item(
     items: list[str],
     ekadashi: EkadashiInfo,
     recent_block_set: set[str],
+    consecutive_day_block_families: set[str],
     keywords: list[str],
     disallowed_keywords: list[str],
     fallback_policy: str,
@@ -1691,6 +1820,7 @@ def choose_item(
     weather_rules: WeatherRules | None,
     weather_tags: dict[str, list[str]],
     warn_bucket: set[str],
+    constraint_notes: list[str],
     prefer_lighter: bool,
     light_fallback_items: list[str],
     max_lightness_score: int | None = None,
@@ -1712,9 +1842,11 @@ def choose_item(
     pool = finalize_choice_pool(
         base_pool=base_pool,
         recent_block_set=recent_block_set,
+        consecutive_day_block_families=consecutive_day_block_families,
         weather_rules=weather_rules,
         weather_tags=weather_tags,
         warn_bucket=warn_bucket,
+        constraint_notes=constraint_notes,
         prefer_lighter=prefer_lighter,
         max_lightness_score=max_lightness_score,
         heavy_light_classification=heavy_light_classification,
@@ -2222,6 +2354,7 @@ def main() -> int:
     breakfast_recent = recent_items(history, target_date, repeat_window_days, "breakfast")
     meal_recent = recent_items(history, target_date, repeat_window_days, "meal")
     previous_day_breakfast_lock = get_previous_day_breakfast_lock(history, target_date)
+    previous_day_repeat_families = get_previous_day_repeat_families(history, target_date)
 
     warning_items: set[str] = set()
 
@@ -2236,6 +2369,7 @@ def main() -> int:
             items=observance_items,
             ekadashi=ekadashi,
             recent_block_set=observance_recent,
+            consecutive_day_block_families=previous_day_repeat_families,
             keywords=keywords,
             disallowed_keywords=disallowed_keywords,
             fallback_policy=fallback_policy,
@@ -2243,6 +2377,7 @@ def main() -> int:
             weather_rules=weather_rules,
             weather_tags=weather_tags,
             warn_bucket=warning_items,
+            constraint_notes=missing_data_notes,
             prefer_lighter=True,
             light_fallback_items=light_fallback_items,
             heavy_light_classification=heavy_light_classification,
@@ -2254,17 +2389,25 @@ def main() -> int:
         breakfast_choice_items = exclude_overnight_breakfasts(breakfast_items)
 
         if previous_day_breakfast_lock:
-            if previous_day_breakfast_lock in breakfast_items:
+            lock_conflicts = get_item_repeat_family_conflicts(previous_day_breakfast_lock, previous_day_repeat_families)
+            if previous_day_breakfast_lock in breakfast_items and not lock_conflicts:
                 selected_breakfast = previous_day_breakfast_lock
                 breakfast_fixed = True
             else:
-                missing_data_notes.append(
-                    f"[अनुपलब्ध] पिछली रात से लॉक किया गया नाश्ता आज की सूची में नहीं मिला: {previous_day_breakfast_lock}"
-                )
+                if previous_day_breakfast_lock not in breakfast_items:
+                    missing_data_notes.append(
+                        f"[अनुपलब्ध] पिछली रात से लॉक किया गया नाश्ता आज की सूची में नहीं मिला: {previous_day_breakfast_lock}"
+                    )
+                elif lock_conflicts:
+                    missing_data_notes.append(
+                        "[नियम] पिछली रात से लॉक किया गया नाश्ता लगातार-दिन नियम से टकराया: "
+                        + " / ".join(lock_conflicts)
+                    )
                 selected_breakfast = choose_item(
                     items=breakfast_choice_items,
                     ekadashi=ekadashi,
                     recent_block_set=breakfast_recent,
+                    consecutive_day_block_families=previous_day_repeat_families,
                     keywords=keywords,
                     disallowed_keywords=disallowed_keywords,
                     fallback_policy=fallback_policy,
@@ -2272,6 +2415,7 @@ def main() -> int:
                     weather_rules=weather_rules,
                     weather_tags=weather_tags,
                     warn_bucket=warning_items,
+                    constraint_notes=missing_data_notes,
                     prefer_lighter=transition_plan.prefer_lighter,
                     light_fallback_items=light_fallback_items,
                     heavy_light_classification=heavy_light_classification,
@@ -2287,6 +2431,7 @@ def main() -> int:
                     items=breakfast_choice_items,
                     ekadashi=ekadashi,
                     recent_block_set=breakfast_recent,
+                    consecutive_day_block_families=previous_day_repeat_families,
                     keywords=keywords,
                     disallowed_keywords=disallowed_keywords,
                     fallback_policy=fallback_policy,
@@ -2294,13 +2439,40 @@ def main() -> int:
                     weather_rules=weather_rules,
                     weather_tags=weather_tags,
                     warn_bucket=warning_items,
+                    constraint_notes=missing_data_notes,
                     prefer_lighter=transition_plan.prefer_lighter,
                     light_fallback_items=light_fallback_items,
                     heavy_light_classification=heavy_light_classification,
                 )
             elif breakfast_item_override in breakfast_items:
-                selected_breakfast = breakfast_item_override
-                breakfast_fixed = True
+                override_conflicts = get_item_repeat_family_conflicts(
+                    breakfast_item_override, previous_day_repeat_families
+                )
+                if override_conflicts:
+                    missing_data_notes.append(
+                        "[नियम] निर्धारित नाश्ता override लगातार-दिन नियम से टकराया: "
+                        + " / ".join(override_conflicts)
+                    )
+                    selected_breakfast = choose_item(
+                        items=breakfast_choice_items,
+                        ekadashi=ekadashi,
+                        recent_block_set=breakfast_recent,
+                        consecutive_day_block_families=previous_day_repeat_families,
+                        keywords=keywords,
+                        disallowed_keywords=disallowed_keywords,
+                        fallback_policy=fallback_policy,
+                        seed_key=f"{target_date_str}:breakfast",
+                        weather_rules=weather_rules,
+                        weather_tags=weather_tags,
+                        warn_bucket=warning_items,
+                        constraint_notes=missing_data_notes,
+                        prefer_lighter=transition_plan.prefer_lighter,
+                        light_fallback_items=light_fallback_items,
+                        heavy_light_classification=heavy_light_classification,
+                    )
+                else:
+                    selected_breakfast = breakfast_item_override
+                    breakfast_fixed = True
             else:
                 missing_data_notes.append(
                     f"[अनुपलब्ध] निर्धारित नाश्ता override सूची में नहीं मिला: {breakfast_item_override}"
@@ -2309,6 +2481,7 @@ def main() -> int:
                     items=breakfast_choice_items,
                     ekadashi=ekadashi,
                     recent_block_set=breakfast_recent,
+                    consecutive_day_block_families=previous_day_repeat_families,
                     keywords=keywords,
                     disallowed_keywords=disallowed_keywords,
                     fallback_policy=fallback_policy,
@@ -2316,6 +2489,7 @@ def main() -> int:
                     weather_rules=weather_rules,
                     weather_tags=weather_tags,
                     warn_bucket=warning_items,
+                    constraint_notes=missing_data_notes,
                     prefer_lighter=transition_plan.prefer_lighter,
                     light_fallback_items=light_fallback_items,
                     heavy_light_classification=heavy_light_classification,
@@ -2326,6 +2500,7 @@ def main() -> int:
                     items=breakfast_choice_items,
                     ekadashi=ekadashi,
                     recent_block_set=breakfast_recent,
+                    consecutive_day_block_families=previous_day_repeat_families,
                     keywords=keywords,
                     disallowed_keywords=disallowed_keywords,
                     fallback_policy=fallback_policy,
@@ -2333,6 +2508,7 @@ def main() -> int:
                     weather_rules=weather_rules,
                     weather_tags=weather_tags,
                     warn_bucket=warning_items,
+                    constraint_notes=missing_data_notes,
                     prefer_lighter=transition_plan.prefer_lighter,
                     light_fallback_items=light_fallback_items,
                     heavy_light_classification=heavy_light_classification,
@@ -2367,10 +2543,19 @@ def main() -> int:
 
         planned_next_day_overnight: str | None = None
         next_day_override = next_day.breakfast_item_override
+        selected_breakfast_repeat_families = extract_repeat_families(selected_breakfast)
         if not shringdhara_info.active and not next_day.shringdhara_info.active:
             if next_day_override:
-                if is_overnight_breakfast(next_day_override):
+                override_conflicts = get_item_repeat_family_conflicts(
+                    next_day_override, selected_breakfast_repeat_families
+                )
+                if is_overnight_breakfast(next_day_override) and not override_conflicts:
                     planned_next_day_overnight = next_day_override
+                elif is_overnight_breakfast(next_day_override) and override_conflicts:
+                    missing_data_notes.append(
+                        "[नियम] अगले दिन का निर्धारित overnight नाश्ता लगातार-दिन नियम से टकराया: "
+                        + " / ".join(override_conflicts)
+                    )
             else:
                 next_day_breakfast_recent = recent_items(history, next_day.target_date, repeat_window_days, "breakfast")
                 next_day_breakfast_recent.add(selected_breakfast)
@@ -2378,6 +2563,7 @@ def main() -> int:
                     items=next_day.breakfast_items,
                     ekadashi=next_day.ekadashi,
                     recent_block_set=next_day_breakfast_recent,
+                    consecutive_day_block_families=selected_breakfast_repeat_families,
                     keywords=keywords,
                     disallowed_keywords=next_day.disallowed_keywords,
                     fallback_policy=fallback_policy,
@@ -2385,6 +2571,7 @@ def main() -> int:
                     weather_rules=next_day.weather_rules,
                     weather_tags=weather_tags,
                     warn_bucket=warning_items,
+                    constraint_notes=missing_data_notes,
                     prefer_lighter=next_day.transition_plan.prefer_lighter,
                     light_fallback_items=light_fallback_items,
                     heavy_light_classification=heavy_light_classification,
@@ -2405,9 +2592,11 @@ def main() -> int:
                 selected_meal_pool = finalize_choice_pool(
                     base_pool=rice_support_meal_candidates,
                     recent_block_set=meal_recent,
+                    consecutive_day_block_families=previous_day_repeat_families,
                     weather_rules=weather_rules,
                     weather_tags=weather_tags,
                     warn_bucket=warning_items,
+                    constraint_notes=missing_data_notes,
                     prefer_lighter=transition_plan.prefer_lighter,
                     heavy_light_classification=heavy_light_classification,
                 )
@@ -2421,6 +2610,7 @@ def main() -> int:
                     items=meal_items,
                     ekadashi=ekadashi,
                     recent_block_set=meal_recent,
+                    consecutive_day_block_families=previous_day_repeat_families,
                     keywords=keywords,
                     disallowed_keywords=disallowed_keywords,
                     fallback_policy=fallback_policy,
@@ -2428,6 +2618,7 @@ def main() -> int:
                     weather_rules=weather_rules,
                     weather_tags=weather_tags,
                     warn_bucket=warning_items,
+                    constraint_notes=missing_data_notes,
                     prefer_lighter=transition_plan.prefer_lighter,
                     light_fallback_items=light_fallback_items,
                     heavy_light_classification=heavy_light_classification,
@@ -2437,6 +2628,7 @@ def main() -> int:
                 items=meal_items,
                 ekadashi=ekadashi,
                 recent_block_set=meal_recent,
+                consecutive_day_block_families=previous_day_repeat_families,
                 keywords=keywords,
                 disallowed_keywords=disallowed_keywords,
                 fallback_policy=fallback_policy,
@@ -2444,6 +2636,7 @@ def main() -> int:
                 weather_rules=weather_rules,
                 weather_tags=weather_tags,
                 warn_bucket=warning_items,
+                constraint_notes=missing_data_notes,
                 prefer_lighter=transition_plan.prefer_lighter,
                 light_fallback_items=light_fallback_items,
                 heavy_light_classification=heavy_light_classification,
@@ -2457,6 +2650,7 @@ def main() -> int:
                     items=breakfast_choice_items,
                     ekadashi=ekadashi,
                     recent_block_set=breakfast_recent,
+                    consecutive_day_block_families=previous_day_repeat_families,
                     keywords=keywords,
                     disallowed_keywords=disallowed_keywords,
                     fallback_policy=fallback_policy,
@@ -2464,6 +2658,7 @@ def main() -> int:
                     weather_rules=weather_rules,
                     weather_tags=weather_tags,
                     warn_bucket=warning_items,
+                    constraint_notes=missing_data_notes,
                     prefer_lighter=True,
                     light_fallback_items=light_fallback_items,
                     max_lightness_score=0,
@@ -2479,9 +2674,11 @@ def main() -> int:
                     rice_light_pool = finalize_choice_pool(
                         base_pool=rice_support_meal_candidates,
                         recent_block_set=meal_recent,
+                        consecutive_day_block_families=previous_day_repeat_families,
                         weather_rules=weather_rules,
                         weather_tags=weather_tags,
                         warn_bucket=warning_items,
+                        constraint_notes=missing_data_notes,
                         prefer_lighter=True,
                         max_lightness_score=0,
                         heavy_light_classification=heavy_light_classification,
@@ -2497,6 +2694,7 @@ def main() -> int:
                         items=meal_items,
                         ekadashi=ekadashi,
                         recent_block_set=meal_recent,
+                        consecutive_day_block_families=previous_day_repeat_families,
                         keywords=keywords,
                         disallowed_keywords=disallowed_keywords,
                         fallback_policy=fallback_policy,
@@ -2504,6 +2702,7 @@ def main() -> int:
                         weather_rules=weather_rules,
                         weather_tags=weather_tags,
                         warn_bucket=warning_items,
+                        constraint_notes=missing_data_notes,
                         prefer_lighter=True,
                         light_fallback_items=light_fallback_items,
                         max_lightness_score=0,
@@ -2521,6 +2720,7 @@ def main() -> int:
                     items=light_fallback_items,
                     ekadashi=ekadashi,
                     recent_block_set=set(),
+                    consecutive_day_block_families=previous_day_repeat_families,
                     keywords=keywords,
                     disallowed_keywords=disallowed_keywords,
                     fallback_policy=fallback_policy,
@@ -2528,12 +2728,24 @@ def main() -> int:
                     weather_rules=None,
                     weather_tags=weather_tags,
                     warn_bucket=warning_items,
+                    constraint_notes=missing_data_notes,
                     prefer_lighter=True,
                     light_fallback_items=light_fallback_items,
                     max_lightness_score=0,
                     heavy_light_classification=heavy_light_classification,
                 )
                 selected_breakfast = forced_light
+
+        today_repeat_families = extract_repeat_families(selected_breakfast) | extract_repeat_families(selected_meal)
+        if next_day_breakfast_lock:
+            next_day_lock_conflicts = get_item_repeat_family_conflicts(next_day_breakfast_lock, today_repeat_families)
+            if next_day_lock_conflicts:
+                missing_data_notes.append(
+                    "[नियम] अगले दिन का overnight नाश्ता आज के चयन से टकराने के कारण हटाया गया: "
+                    + " / ".join(next_day_lock_conflicts)
+                )
+                next_day_breakfast_lock = None
+                next_day_requires_rice_prep = False
 
     if warning_items:
         print(

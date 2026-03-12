@@ -42,6 +42,12 @@ python3 generate_menu.py
 python3 generate_menu.py --date 2026-02-27
 ```
 
+## Menu generator tests
+
+```bash
+python3 -m unittest discover -s tests
+```
+
 ## Bootstrap weather tags (one-time)
 
 ```bash
@@ -147,6 +153,13 @@ python3 generate_menu.py --bootstrap-weather-tags
    - `*हेमंत पूर्णतया निषिद्ध:* बासमती, मैदा, डिब्बा बंद, मोठ, दोबारा गर्म की हुई दाल/सब्ज़ी, जीरा, इमली, सॉस, अचार, कड़वा, कसैला, रिफाइंड, पनीर, एनर्जी ड्रिंक, प्याज़, दुबारा गर्म किया पानी`
    - `*हेमंत जल नियम:* हमेशा गुनगुना, पीतल या तांबे में`
 15. हेमंत days enforce hard filtering for the same prohibited keywords listed above.
+
+## Consecutive-day repeat rule
+
+1. The generator now looks at yesterday's `breakfast` and `meal` together from `history.json`.
+2. It blocks repeating the same tracked ingredient or dish family on the next day, even if the menu text changes form.
+3. Example: if today contains `करेला`, tomorrow avoids `करेला`, `भरवां करेला`, or mixed items like `करेला-भिंडी`.
+4. If the seasonal pool becomes too small after this rule, the script falls back to the best available menu and adds a `*डेटा अलर्ट:*` note instead of failing.
 
 ## Manual weather override format
 
