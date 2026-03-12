@@ -219,18 +219,19 @@ button {
 .opening-hero__art {
   background-image: url("/dhanvantari-whisper.svg");
   background-repeat: no-repeat;
-  background-position: right -40px bottom -28px;
-  background-size: min(62%, 520px);
-  opacity: 0.14;
-  filter: blur(0.3px) saturate(0.88);
+  background-position: right -4px bottom -12px;
+  background-size: min(78%, 660px);
+  opacity: 0.23;
+  filter: blur(0.2px) saturate(0.96) brightness(1.04);
   z-index: 0;
 }
 
 .opening-hero__wash {
   z-index: 1;
   background:
-    radial-gradient(circle at 68% 28%, rgba(231, 198, 128, 0.32), transparent 18%),
-    linear-gradient(90deg, rgba(245, 239, 228, 0.9) 0%, rgba(245, 239, 228, 0.72) 42%, rgba(245, 239, 228, 0.5) 100%);
+    radial-gradient(circle at 72% 24%, rgba(243, 204, 118, 0.4), transparent 18%),
+    radial-gradient(circle at 76% 52%, rgba(212, 173, 93, 0.18), transparent 26%),
+    linear-gradient(90deg, rgba(245, 239, 228, 0.86) 0%, rgba(245, 239, 228, 0.62) 38%, rgba(245, 239, 228, 0.34) 100%);
 }
 
 .verse-block {
@@ -536,14 +537,15 @@ button {
   }
 
   .opening-hero__art {
-    background-position: center bottom -18px;
-    background-size: 88%;
-    opacity: 0.1;
+    background-position: center bottom -8px;
+    background-size: 108%;
+    opacity: 0.18;
   }
 
   .opening-hero__wash {
     background:
-      linear-gradient(180deg, rgba(245, 239, 228, 0.78) 0%, rgba(245, 239, 228, 0.84) 46%, rgba(245, 239, 228, 0.92) 100%);
+      radial-gradient(circle at 50% 20%, rgba(243, 204, 118, 0.26), transparent 24%),
+      linear-gradient(180deg, rgba(245, 239, 228, 0.74) 0%, rgba(245, 239, 228, 0.8) 36%, rgba(245, 239, 228, 0.9) 100%);
   }
 
   .opening-hero__summary,
