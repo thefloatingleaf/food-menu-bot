@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { FormEvent, useEffect, useState } from "react";
 
 import { PieResultsChart } from "@/components/PieResultsChart";
@@ -212,8 +213,17 @@ export function AssessmentApp({
       <div className="app-shell__inner">
         {stage === "opening" ? (
           <section className="opening-screen">
-            <div className="panel opening-hero">
-              <div className="opening-hero__art" aria-hidden="true" />
+            <div className="opening-hero">
+              <div className="opening-hero__media" aria-hidden="true">
+                <Image
+                  src="/dhanvantri-opening.png"
+                  alt=""
+                  fill
+                  priority
+                  className="opening-hero__image"
+                  sizes="100vw"
+                />
+              </div>
               <div className="opening-hero__wash" aria-hidden="true" />
               <div className="opening-hero__content">
                 <span className="opening-hero__lead">{openingHeader}</span>
