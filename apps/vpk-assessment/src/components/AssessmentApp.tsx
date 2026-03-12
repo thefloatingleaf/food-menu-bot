@@ -34,6 +34,19 @@ const emptyForm: IdentityForm = {
   localPhoneNumber: "",
 };
 
+const openingHeader = "Constitution assessment, done with care.";
+const openingHeadline = "AYURVEDIC PRAKRITI ASSESSMENT";
+const openingSubtext =
+  "Record identity, review instructions, answer each category in Lifetime and Present, and see your results at the end.";
+const verseSanskrit = [
+  "नमामि धन्वन्तरिमादिदेवं सुरासुरैर्वन्दितपादपद्मम् ।",
+  "लोके जरारुग्भयमृत्युनाशनं धातारमीशं विविधौषधीनाम् ॥",
+];
+const verseTransliteration = [
+  "Namami Dhanvantari Adidevam Surasurairvanditapadapadmam I",
+  "Loke Jararugbhayamrityunashanam Dhataramisham Vividhauṣadhinam II",
+];
+
 export function AssessmentApp({
   initialSnapshot,
   initialQuestion,
@@ -58,6 +71,7 @@ export function AssessmentApp({
   const derivedAge = identityForm.dateOfBirth
     ? deriveAgeFromDateOfBirth(identityForm.dateOfBirth)
     : null;
+  const isOpeningStage = stage === "identity" || stage === "duplicate";
 
   function updateField<Key extends keyof IdentityForm>(key: Key, value: IdentityForm[Key]) {
     setIdentityForm((current) => ({ ...current, [key]: value }));
@@ -195,98 +209,137 @@ export function AssessmentApp({
   }
 
   return (
-    <main className="app-shell">
+    <main className={`app-shell ${isOpeningStage ? "app-shell--opening" : ""}`}>
       <div className="app-shell__inner">
-        <section className="hero">
-          <span className="eyebrow">Ayurvedic VPK Assessment</span>
-          <h1>Reflective constitution mapping, one quiet step at a time.</h1>
-          <p>
-            Identity is recorded first, instructions are acknowledged explicitly, and every category is answered in two parallel tracks before results appear at the end.
-          </p>
-        </section>
-
-        <section className="split">
-          <div className="panel stack">
-            {stage === "identity" && (
-              <>
-                <div className="stack">
-                  <h2 className="section-title">Begin with your present details</h2>
-                  <p className="muted">
-                    This one-time assessment requires your present identity details before any questionnaire access is allowed.
+        {isOpeningStage ? (
+          <section className="split split--opening">
+            <div className="panel opening-hero">
+              <div className="opening-hero__art" aria-hidden="true" />
+              <div className="opening-hero__wash" aria-hidden="true" />
+              <div className="opening-hero__content">
+                <span className="opening-hero__lead">{openingHeader}</span>
+                <h1 className="opening-hero__title">{openingHeadline}</h1>
+                <p className="opening-hero__summary">{openingSubtext}</p>
+                <div className="verse-block">
+                  <div className="verse-block__sanskrit" lang="sa">
+                    {verseSanskrit.map((line) => (
+                      <p key={line}>{line}</p>
+                    ))}
+                  </div>
+                  <div className="verse-block__transliteration">
+                    {verseTransliteration.map((line) => (
+                      <p key={line}>{line}</p>
+                    ))}
+                  </div>
+                  <p className="verse-block__note">
+                    Rog Nashaka mantra, meaning a mantra for destroying disease.
                   </p>
                 </div>
-                <form className="form-grid" onSubmit={handleIdentitySubmit}>
-                  <div className="field-grid field-grid--double">
-                    <div className="field">
-                      <label htmlFor="firstName">First Name</label>
-                      <input className="input" id="firstName" value={identityForm.firstName} onChange={(event) => updateField("firstName", event.target.value)} />
-                      {errors.firstName ? <p className="error-text">{errors.firstName}</p> : null}
-                    </div>
-                    <div className="field">
-                      <label htmlFor="middleName">Middle Name</label>
-                      <input className="input" id="middleName" value={identityForm.middleName} onChange={(event) => updateField("middleName", event.target.value)} />
-                      {errors.middleName ? <p className="error-text">{errors.middleName}</p> : null}
-                    </div>
-                  </div>
-                  <div className="field-grid field-grid--double">
-                    <div className="field">
-                      <label htmlFor="lastName">Last Name</label>
-                      <input className="input" id="lastName" value={identityForm.lastName} onChange={(event) => updateField("lastName", event.target.value)} />
-                      {errors.lastName ? <p className="error-text">{errors.lastName}</p> : null}
-                    </div>
-                    <div className="field">
-                      <label htmlFor="dateOfBirth">Date of Birth</label>
-                      <input className="input" id="dateOfBirth" type="date" placeholder="YYYY-MM-DD" value={identityForm.dateOfBirth} onChange={(event) => updateField("dateOfBirth", event.target.value)} />
-                      {derivedAge !== null ? <p className="field__hint">Derived age: {derivedAge}</p> : <p className="field__hint">Use the calendar or type a valid date in YYYY-MM-DD format.</p>}
-                      {errors.dateOfBirth ? <p className="error-text">{errors.dateOfBirth}</p> : null}
-                    </div>
-                  </div>
-                  <div className="field">
-                    <label htmlFor="location">Present location</label>
-                    <input className="input" id="location" value={identityForm.location} onChange={(event) => updateField("location", event.target.value)} />
-                    {errors.location ? <p className="error-text">{errors.location}</p> : null}
-                  </div>
-                  <div className="field-grid field-grid--double">
-                    <div className="field">
-                      <label htmlFor="email">Email address</label>
-                      <input className="input" id="email" type="email" value={identityForm.email} onChange={(event) => updateField("email", event.target.value)} />
-                      {errors.email ? <p className="error-text">{errors.email}</p> : null}
-                    </div>
-                    <div className="field">
-                      <label htmlFor="countryCode">Country code</label>
-                      <select className="input" id="countryCode" value={identityForm.countryCode} onChange={(event) => updateField("countryCode", event.target.value)}>
-                        {countryPhoneOptions.map((country) => (
-                          <option key={country.code} value={country.code}>
-                            {country.name} ({country.dialCode})
-                          </option>
-                        ))}
-                      </select>
-                      {errors.countryCode ? <p className="error-text">{errors.countryCode}</p> : null}
-                    </div>
-                  </div>
-                  <div className="field">
-                    <label htmlFor="localPhoneNumber">Local phone number</label>
-                    <input className="input" id="localPhoneNumber" type="tel" inputMode="numeric" value={identityForm.localPhoneNumber} onChange={(event) => updateField("localPhoneNumber", event.target.value)} />
-                    {identityForm.countryCode === "IN" ? <p className="field__hint">For India, enter exactly 10 digits.</p> : null}
-                    {errors.localPhoneNumber ? <p className="error-text">{errors.localPhoneNumber}</p> : null}
-                  </div>
-                  <div className="button-row">
-                    <button className="button button--primary" type="submit">Save details and continue</button>
-                  </div>
-                </form>
-              </>
-            )}
-
-            {stage === "duplicate" && (
-              <div className="stack">
-                <h2 className="section-title">This assessment is already on record</h2>
-                <p className="muted">{duplicateMessage}</p>
-                <div className="button-row">
-                  <button className="button button--secondary" type="button" onClick={() => setStage("identity")}>Review details</button>
-                </div>
               </div>
-            )}
+            </div>
 
+            <div className="panel stack panel--identity">
+              <div className="badge-row">
+                <span className="badge">One-time access</span>
+                <span className="badge">40 categories</span>
+                <span className="badge">Two parallel tracks</span>
+              </div>
+              <div className="divider" />
+              {stage === "identity" && (
+                <>
+                  <div className="stack">
+                    <h2 className="section-title">Begin with your present details</h2>
+                    <p className="muted">
+                      This one-time assessment requires your present identity details before any questionnaire access is allowed.
+                    </p>
+                  </div>
+                  <form className="form-grid" onSubmit={handleIdentitySubmit}>
+                    <div className="field-grid field-grid--double">
+                      <div className="field">
+                        <label htmlFor="firstName">First Name</label>
+                        <input className="input" id="firstName" value={identityForm.firstName} onChange={(event) => updateField("firstName", event.target.value)} />
+                        {errors.firstName ? <p className="error-text">{errors.firstName}</p> : null}
+                      </div>
+                      <div className="field">
+                        <label htmlFor="middleName">Middle Name</label>
+                        <input className="input" id="middleName" value={identityForm.middleName} onChange={(event) => updateField("middleName", event.target.value)} />
+                        {errors.middleName ? <p className="error-text">{errors.middleName}</p> : null}
+                      </div>
+                    </div>
+                    <div className="field-grid field-grid--double">
+                      <div className="field">
+                        <label htmlFor="lastName">Last Name</label>
+                        <input className="input" id="lastName" value={identityForm.lastName} onChange={(event) => updateField("lastName", event.target.value)} />
+                        {errors.lastName ? <p className="error-text">{errors.lastName}</p> : null}
+                      </div>
+                      <div className="field">
+                        <label htmlFor="dateOfBirth">Date of Birth</label>
+                        <input className="input" id="dateOfBirth" type="date" placeholder="YYYY-MM-DD" value={identityForm.dateOfBirth} onChange={(event) => updateField("dateOfBirth", event.target.value)} />
+                        {derivedAge !== null ? <p className="field__hint">Derived age: {derivedAge}</p> : <p className="field__hint">Use the calendar or type a valid date in YYYY-MM-DD format.</p>}
+                        {errors.dateOfBirth ? <p className="error-text">{errors.dateOfBirth}</p> : null}
+                      </div>
+                    </div>
+                    <div className="field">
+                      <label htmlFor="location">Present location</label>
+                      <input className="input" id="location" value={identityForm.location} onChange={(event) => updateField("location", event.target.value)} />
+                      {errors.location ? <p className="error-text">{errors.location}</p> : null}
+                    </div>
+                    <div className="field-grid field-grid--double">
+                      <div className="field">
+                        <label htmlFor="email">Email address</label>
+                        <input className="input" id="email" type="email" value={identityForm.email} onChange={(event) => updateField("email", event.target.value)} />
+                        {errors.email ? <p className="error-text">{errors.email}</p> : null}
+                      </div>
+                      <div className="field">
+                        <label htmlFor="countryCode">Country code</label>
+                        <select className="input" id="countryCode" value={identityForm.countryCode} onChange={(event) => updateField("countryCode", event.target.value)}>
+                          {countryPhoneOptions.map((country) => (
+                            <option key={country.code} value={country.code}>
+                              {country.name} ({country.dialCode})
+                            </option>
+                          ))}
+                        </select>
+                        {errors.countryCode ? <p className="error-text">{errors.countryCode}</p> : null}
+                      </div>
+                    </div>
+                    <div className="field">
+                      <label htmlFor="localPhoneNumber">Local phone number</label>
+                      <input className="input" id="localPhoneNumber" type="tel" inputMode="numeric" value={identityForm.localPhoneNumber} onChange={(event) => updateField("localPhoneNumber", event.target.value)} />
+                      {identityForm.countryCode === "IN" ? <p className="field__hint">For India, enter exactly 10 digits.</p> : null}
+                      {errors.localPhoneNumber ? <p className="error-text">{errors.localPhoneNumber}</p> : null}
+                    </div>
+                    <div className="button-row">
+                      <button className="button button--primary" type="submit">Save details and continue</button>
+                    </div>
+                  </form>
+                </>
+              )}
+
+              {stage === "duplicate" && (
+                <div className="stack">
+                  <h2 className="section-title">This assessment is already on record</h2>
+                  <p className="muted">{duplicateMessage}</p>
+                  <div className="button-row">
+                    <button className="button button--secondary" type="button" onClick={() => setStage("identity")}>Review details</button>
+                  </div>
+                </div>
+              )}
+
+              {uiError ? <p className="error-text">{uiError}</p> : null}
+            </div>
+          </section>
+        ) : (
+          <>
+            <section className="hero hero--compact">
+              <span className="eyebrow">Ayurvedic VPK Assessment</span>
+              <h1>Proceed with clarity and complete the assessment calmly.</h1>
+              <p>
+                Identity is already recorded for this session. Continue through instructions, the guided questionnaire, and the final result view.
+              </p>
+            </section>
+
+            <section className="split">
+              <div className="panel stack">
             {stage === "instructions" && (
               <div className="stack">
                 <h2 className="section-title">Instructions</h2>
@@ -402,22 +455,24 @@ export function AssessmentApp({
             )}
 
             {uiError ? <p className="error-text">{uiError}</p> : null}
-          </div>
+              </div>
 
-          <aside className="panel panel--dense stack">
-            <div className="badge-row">
-              <span className="badge">One-time access</span>
-              <span className="badge">40 categories</span>
-              <span className="badge">Two parallel tracks</span>
-            </div>
-            <div className="divider" />
-            <div className="status-card">
-              <p className="muted">
-                The app records identity first, captures instruction acknowledgement with timestamp, then guides the user through one category at a time without revealing any interim score.
-              </p>
-            </div>
-          </aside>
-        </section>
+              <aside className="panel panel--dense stack">
+                <div className="badge-row">
+                  <span className="badge">One-time access</span>
+                  <span className="badge">40 categories</span>
+                  <span className="badge">Two parallel tracks</span>
+                </div>
+                <div className="divider" />
+                <div className="status-card">
+                  <p className="muted">
+                    The app records identity first, captures instruction acknowledgement with timestamp, then guides the user through one category at a time without revealing any interim score.
+                  </p>
+                </div>
+              </aside>
+            </section>
+          </>
+        )}
       </div>
     </main>
   );

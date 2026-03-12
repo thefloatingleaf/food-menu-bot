@@ -65,6 +65,10 @@ button {
   padding: 32px 16px 48px;
 }
 
+.app-shell--opening {
+  padding-top: 24px;
+}
+
 .app-shell__inner {
   width: min(1100px, 100%);
   margin: 0 auto;
@@ -76,6 +80,11 @@ button {
   display: grid;
   gap: 14px;
   padding: 12px 8px 4px;
+}
+
+.hero--compact {
+  gap: 10px;
+  padding: 4px 8px 2px;
 }
 
 .eyebrow {
@@ -96,6 +105,11 @@ button {
 .hero h1 {
   font-size: clamp(3rem, 9vw, 5.4rem);
   max-width: 12ch;
+}
+
+.hero--compact h1 {
+  font-size: clamp(2.4rem, 6vw, 3.4rem);
+  max-width: 16ch;
 }
 
 .hero p {
@@ -131,6 +145,10 @@ button {
   padding: 22px;
 }
 
+.panel--identity {
+  gap: 16px;
+}
+
 .stack {
   display: grid;
   gap: 18px;
@@ -139,6 +157,114 @@ button {
 .split {
   display: grid;
   gap: 22px;
+}
+
+.split--opening {
+  grid-template-columns: minmax(0, 1.08fr) minmax(360px, 0.92fr);
+  align-items: stretch;
+}
+
+.opening-hero {
+  min-height: 100%;
+  padding: 30px 30px 28px;
+  isolation: isolate;
+  background:
+    linear-gradient(160deg, rgba(252, 248, 240, 0.92) 0%, rgba(246, 238, 224, 0.86) 64%, rgba(239, 229, 212, 0.82) 100%);
+}
+
+.opening-hero__content {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: 14px;
+  max-width: 36rem;
+}
+
+.opening-hero__lead {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255, 251, 244, 0.7);
+  border: 1px solid rgba(129, 104, 73, 0.12);
+  color: var(--muted);
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+}
+
+.opening-hero__title {
+  font-family: var(--font-display), serif;
+  font-size: clamp(2.9rem, 7vw, 5rem);
+  line-height: 0.92;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  max-width: 10.5ch;
+}
+
+.opening-hero__summary {
+  max-width: 36rem;
+  color: color-mix(in srgb, var(--muted) 90%, #4f3b2d);
+  line-height: 1.72;
+  font-size: 1rem;
+}
+
+.opening-hero__art,
+.opening-hero__wash {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.opening-hero__art {
+  background-image: url("/dhanvantari-whisper.svg");
+  background-repeat: no-repeat;
+  background-position: right -40px bottom -28px;
+  background-size: min(62%, 520px);
+  opacity: 0.14;
+  filter: blur(0.3px) saturate(0.88);
+  z-index: 0;
+}
+
+.opening-hero__wash {
+  z-index: 1;
+  background:
+    radial-gradient(circle at 68% 28%, rgba(231, 198, 128, 0.32), transparent 18%),
+    linear-gradient(90deg, rgba(245, 239, 228, 0.9) 0%, rgba(245, 239, 228, 0.72) 42%, rgba(245, 239, 228, 0.5) 100%);
+}
+
+.verse-block {
+  display: grid;
+  gap: 10px;
+  margin-top: 8px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(129, 104, 73, 0.14);
+  max-width: 39rem;
+}
+
+.verse-block__sanskrit {
+  display: grid;
+  gap: 4px;
+  color: color-mix(in srgb, var(--foreground) 90%, #5a4230);
+  font-family: var(--font-devanagari), var(--font-display), serif;
+  font-size: clamp(1.05rem, 2vw, 1.28rem);
+  line-height: 1.72;
+}
+
+.verse-block__transliteration {
+  display: grid;
+  gap: 4px;
+  color: rgba(79, 59, 45, 0.86);
+  font-size: 0.93rem;
+  line-height: 1.7;
+  font-style: italic;
+  max-width: 37rem;
+}
+
+.verse-block__note {
+  color: rgba(121, 100, 82, 0.88);
+  font-size: 0.8rem;
+  letter-spacing: 0.03em;
 }
 
 .badge-row {
@@ -389,11 +515,40 @@ button {
 }
 
 @media (max-width: 767px) {
+  .app-shell--opening {
+    padding-top: 18px;
+  }
+
+  .split--opening {
+    grid-template-columns: 1fr;
+  }
+
   .field-grid--double {
     grid-template-columns: 1fr;
   }
 
   .panel {
     padding: 22px 18px;
+  }
+
+  .opening-hero {
+    padding: 24px 18px 24px;
+  }
+
+  .opening-hero__art {
+    background-position: center bottom -18px;
+    background-size: 88%;
+    opacity: 0.1;
+  }
+
+  .opening-hero__wash {
+    background:
+      linear-gradient(180deg, rgba(245, 239, 228, 0.78) 0%, rgba(245, 239, 228, 0.84) 46%, rgba(245, 239, 228, 0.92) 100%);
+  }
+
+  .opening-hero__summary,
+  .verse-block,
+  .verse-block__transliteration {
+    max-width: none;
   }
 }
