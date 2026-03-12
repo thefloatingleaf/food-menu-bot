@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { FormEvent, useEffect, useState } from "react";
 
 import { PieResultsChart } from "@/components/PieResultsChart";
@@ -36,6 +37,10 @@ const emptyForm: IdentityForm = {
 
 const openingHeader = "Constitution assessment, done with care.";
 const openingHeadline = "AYURVEDIC PRAKRITI ASSESSMENT";
+const openingSummaryLines = [
+  "Record identity, review instructions, answer each category in Lifetime and",
+  "Present, and see your results at the end.",
+];
 const verseSanskrit = [
   "नमामि धन्वन्तरिमादिदेवं सुरासुरैर्वन्दितपादपद्मम् ।",
   "लोके जरारुग्भयमृत्युनाशनं धातारमीशं विविधौषधीनाम् ॥",
@@ -50,27 +55,6 @@ export function AssessmentApp({
   initialQuestion,
   initialResult,
 }: AssessmentAppProps) {
-  const desktopLeftRailStyle = {
-    position: "absolute",
-    left: "clamp(26px, 4.2vw, 78px)",
-    top: "50%",
-    transform: "translateY(-50%)",
-    width: "min(31vw, 25.5rem)",
-    maxWidth: "25.5rem",
-  } as const;
-
-  const desktopRightRailStyle = {
-    position: "absolute",
-    right: "clamp(36px, 6vw, 108px)",
-    top: "50%",
-    transform: "translateY(-50%)",
-  } as const;
-
-  const stackedTitleStyle = {
-    display: "flex",
-    flexDirection: "column",
-  } as const;
-
   const [stage, setStage] = useState<WizardStage>(initialSnapshot?.stage ?? "opening");
   const [attemptId, setAttemptId] = useState<string | null>(initialSnapshot?.attemptId ?? initialResult?.attemptId ?? null);
   const [questionIndex, setQuestionIndex] = useState(initialSnapshot?.questionIndex ?? 1);
@@ -230,44 +214,51 @@ export function AssessmentApp({
     <main className={`app-shell ${stage === "opening" ? "app-shell--opening" : ""}`}>
       <div className="app-shell__inner">
         {stage === "opening" ? (
-          <section className="opening-screen">
-            <div className="opening-hero">
-              <div
-                className="opening-hero__media"
-                aria-hidden="true"
-                style={{ backgroundImage: "url('/dhanvantri-opening.png')" }}
+          <section className="opening-stage">
+            <div className="opening-stage__backdrop" aria-hidden="true">
+              <Image
+                src="/dhanvantri-opening.png"
+                alt=""
+                fill
+                priority
+                className="opening-stage__image"
+                sizes="100vw"
               />
-              <div className="opening-hero__wash" aria-hidden="true" />
-              <div className="opening-hero__content">
-                <div className="opening-hero__copy" style={desktopLeftRailStyle}>
-                  <span className="opening-hero__lead">{openingHeader}</span>
-                  <h1 className="opening-hero__title" aria-label={openingHeadline} style={stackedTitleStyle}>
-                    <span style={{ display: "block" }}>AYURVEDIC</span>
-                    <span style={{ display: "block" }}>PRAKRITI</span>
-                    <span style={{ display: "block" }}>ASSESSMENT</span>
+            </div>
+            <div className="opening-stage__layout">
+              <div className="opening-stage__zone opening-stage__zone--left">
+                <div className="opening-stage__copy">
+                  <p className="opening-stage__lead">{openingHeader}</p>
+                  <h1 className="opening-stage__title" aria-label={openingHeadline}>
+                    <span>AYURVEDIC</span>
+                    <span>PRAKRITI</span>
+                    <span>ASSESSMENT</span>
                   </h1>
-                  <p className="opening-hero__summary">
-                    Record identity, review instructions, answer each category in Lifetime and
-                    <br />
-                    Present, and see your results at the end.
-                  </p>
-                  <div className="verse-block">
-                    <div className="verse-block__sanskrit" lang="sa">
+                  <div className="opening-stage__summary">
+                    {openingSummaryLines.map((line) => (
+                      <p key={line}>{line}</p>
+                    ))}
+                  </div>
+                  <div className="opening-stage__verse">
+                    <div className="opening-stage__sanskrit" lang="sa">
                       {verseSanskrit.map((line) => (
                         <p key={line}>{line}</p>
                       ))}
                     </div>
-                    <div className="verse-block__transliteration">
+                    <div className="opening-stage__transliteration">
                       {verseTransliteration.map((line) => (
                         <p key={line}>{line}</p>
                       ))}
                     </div>
-                    <p className="verse-block__note">
+                    <p className="opening-stage__note">
                       (Rog Nashaka mantra, a mantra for destroying disease.)
                     </p>
                   </div>
                 </div>
-                <div className="button-row opening-hero__actions" style={desktopRightRailStyle}>
+              </div>
+              <div className="opening-stage__zone opening-stage__zone--center" aria-hidden="true" />
+              <div className="opening-stage__zone opening-stage__zone--right">
+                <div className="opening-stage__cta">
                   <button
                     className="button button--primary"
                     type="button"
