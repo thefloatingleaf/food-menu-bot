@@ -162,6 +162,12 @@ export function AssessmentApp({
     }
   }, [instructionsText, stage]);
 
+  useEffect(() => {
+    if (stage === "assessment" && !question && !questionLoading) {
+      void loadQuestion(questionIndex);
+    }
+  }, [question, questionIndex, questionLoading, stage]);
+
   async function handleIdentitySubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setUiError("");
