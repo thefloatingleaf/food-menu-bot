@@ -228,7 +228,11 @@ export function AssessmentApp({
               <div className="opening-hero__content">
                 <div className="opening-hero__copy">
                   <span className="opening-hero__lead">{openingHeader}</span>
-                  <h1 className="opening-hero__title">{openingHeadline}</h1>
+                  <h1 className="opening-hero__title" aria-label={openingHeadline}>
+                    <span>AYURVEDIC</span>
+                    <span>PRAKRITI</span>
+                    <span>ASSESSMENT</span>
+                  </h1>
                   <p className="opening-hero__summary">{openingSubtext}</p>
                   <div className="verse-block">
                     <div className="verse-block__sanskrit" lang="sa">
