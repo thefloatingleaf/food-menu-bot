@@ -52,7 +52,7 @@ export function AssessmentApp({
   initialQuestion,
   initialResult,
 }: AssessmentAppProps) {
-  const [stage, setStage] = useState<WizardStage>(initialSnapshot?.stage ?? "identity");
+  const [stage, setStage] = useState<WizardStage>(initialSnapshot?.stage ?? "opening");
   const [attemptId, setAttemptId] = useState<string | null>(initialSnapshot?.attemptId ?? initialResult?.attemptId ?? null);
   const [questionIndex, setQuestionIndex] = useState(initialSnapshot?.questionIndex ?? 1);
   const [identityForm, setIdentityForm] = useState(emptyForm);
@@ -71,7 +71,6 @@ export function AssessmentApp({
   const derivedAge = identityForm.dateOfBirth
     ? deriveAgeFromDateOfBirth(identityForm.dateOfBirth)
     : null;
-  const isOpeningStage = stage === "identity" || stage === "duplicate";
 
   function updateField<Key extends keyof IdentityForm>(key: Key, value: IdentityForm[Key]) {
     setIdentityForm((current) => ({ ...current, [key]: value }));
@@ -209,10 +208,10 @@ export function AssessmentApp({
   }
 
   return (
-    <main className={`app-shell ${isOpeningStage ? "app-shell--opening" : ""}`}>
+    <main className={`app-shell ${stage === "opening" ? "app-shell--opening" : ""}`}>
       <div className="app-shell__inner">
-        {isOpeningStage ? (
-          <section className="split split--opening">
+        {stage === "opening" ? (
+          <section className="opening-screen">
             <div className="panel opening-hero">
               <div className="opening-hero__art" aria-hidden="true" />
               <div className="opening-hero__wash" aria-hidden="true" />
@@ -232,102 +231,113 @@ export function AssessmentApp({
                     ))}
                   </div>
                   <p className="verse-block__note">
-                    Rog Nashaka mantra, meaning a mantra for destroying disease.
+                    (Rog Nashaka mantra, meaning a mantra for destroying disease.)
                   </p>
                 </div>
-              </div>
-            </div>
-
-            <div className="panel stack panel--identity">
-              <div className="badge-row">
-                <span className="badge">One-time access</span>
-                <span className="badge">40 categories</span>
-                <span className="badge">Two parallel tracks</span>
-              </div>
-              <div className="divider" />
-              {stage === "identity" && (
-                <>
-                  <div className="stack">
-                    <h2 className="section-title">Begin with your present details</h2>
-                    <p className="muted">
-                      This one-time assessment requires your present identity details before any questionnaire access is allowed.
-                    </p>
-                  </div>
-                  <form className="form-grid" onSubmit={handleIdentitySubmit}>
-                    <div className="field-grid field-grid--double">
-                      <div className="field">
-                        <label htmlFor="firstName">First Name</label>
-                        <input className="input" id="firstName" value={identityForm.firstName} onChange={(event) => updateField("firstName", event.target.value)} />
-                        {errors.firstName ? <p className="error-text">{errors.firstName}</p> : null}
-                      </div>
-                      <div className="field">
-                        <label htmlFor="middleName">Middle Name</label>
-                        <input className="input" id="middleName" value={identityForm.middleName} onChange={(event) => updateField("middleName", event.target.value)} />
-                        {errors.middleName ? <p className="error-text">{errors.middleName}</p> : null}
-                      </div>
-                    </div>
-                    <div className="field-grid field-grid--double">
-                      <div className="field">
-                        <label htmlFor="lastName">Last Name</label>
-                        <input className="input" id="lastName" value={identityForm.lastName} onChange={(event) => updateField("lastName", event.target.value)} />
-                        {errors.lastName ? <p className="error-text">{errors.lastName}</p> : null}
-                      </div>
-                      <div className="field">
-                        <label htmlFor="dateOfBirth">Date of Birth</label>
-                        <input className="input" id="dateOfBirth" type="date" placeholder="YYYY-MM-DD" value={identityForm.dateOfBirth} onChange={(event) => updateField("dateOfBirth", event.target.value)} />
-                        {derivedAge !== null ? <p className="field__hint">Derived age: {derivedAge}</p> : <p className="field__hint">Use the calendar or type a valid date in YYYY-MM-DD format.</p>}
-                        {errors.dateOfBirth ? <p className="error-text">{errors.dateOfBirth}</p> : null}
-                      </div>
-                    </div>
-                    <div className="field">
-                      <label htmlFor="location">Present location</label>
-                      <input className="input" id="location" value={identityForm.location} onChange={(event) => updateField("location", event.target.value)} />
-                      {errors.location ? <p className="error-text">{errors.location}</p> : null}
-                    </div>
-                    <div className="field-grid field-grid--double">
-                      <div className="field">
-                        <label htmlFor="email">Email address</label>
-                        <input className="input" id="email" type="email" value={identityForm.email} onChange={(event) => updateField("email", event.target.value)} />
-                        {errors.email ? <p className="error-text">{errors.email}</p> : null}
-                      </div>
-                      <div className="field">
-                        <label htmlFor="countryCode">Country code</label>
-                        <select className="input" id="countryCode" value={identityForm.countryCode} onChange={(event) => updateField("countryCode", event.target.value)}>
-                          {countryPhoneOptions.map((country) => (
-                            <option key={country.code} value={country.code}>
-                              {country.name} ({country.dialCode})
-                            </option>
-                          ))}
-                        </select>
-                        {errors.countryCode ? <p className="error-text">{errors.countryCode}</p> : null}
-                      </div>
-                    </div>
-                    <div className="field">
-                      <label htmlFor="localPhoneNumber">Local phone number</label>
-                      <input className="input" id="localPhoneNumber" type="tel" inputMode="numeric" value={identityForm.localPhoneNumber} onChange={(event) => updateField("localPhoneNumber", event.target.value)} />
-                      {identityForm.countryCode === "IN" ? <p className="field__hint">For India, enter exactly 10 digits.</p> : null}
-                      {errors.localPhoneNumber ? <p className="error-text">{errors.localPhoneNumber}</p> : null}
-                    </div>
-                    <div className="button-row">
-                      <button className="button button--primary" type="submit">Save details and continue</button>
-                    </div>
-                  </form>
-                </>
-              )}
-
-              {stage === "duplicate" && (
-                <div className="stack">
-                  <h2 className="section-title">This assessment is already on record</h2>
-                  <p className="muted">{duplicateMessage}</p>
-                  <div className="button-row">
-                    <button className="button button--secondary" type="button" onClick={() => setStage("identity")}>Review details</button>
-                  </div>
+                <div className="button-row opening-hero__actions">
+                  <button
+                    className="button button--primary"
+                    type="button"
+                    onClick={() => setStage("identity")}
+                  >
+                    Begin assessment
+                  </button>
                 </div>
-              )}
-
-              {uiError ? <p className="error-text">{uiError}</p> : null}
+              </div>
             </div>
           </section>
+        ) : stage === "identity" || stage === "duplicate" ? (
+          <>
+            <section className="hero hero--compact">
+              <span className="eyebrow">Present details</span>
+              <h1>Enter present details before the questionnaire begins.</h1>
+              <p>
+                Your identity is recorded first and checked for one-time access before the instructions and questionnaire are unlocked.
+              </p>
+            </section>
+
+            <section className="identity-screen">
+              <div className="panel stack panel--identity">
+                {stage === "identity" && (
+                  <>
+                    <div className="stack">
+                      <h2 className="section-title">Present details</h2>
+                    </div>
+                    <form className="form-grid" onSubmit={handleIdentitySubmit}>
+                      <div className="field-grid field-grid--double">
+                        <div className="field">
+                          <label htmlFor="firstName">First Name</label>
+                          <input className="input" id="firstName" value={identityForm.firstName} onChange={(event) => updateField("firstName", event.target.value)} />
+                          {errors.firstName ? <p className="error-text">{errors.firstName}</p> : null}
+                        </div>
+                        <div className="field">
+                          <label htmlFor="middleName">Middle Name</label>
+                          <input className="input" id="middleName" value={identityForm.middleName} onChange={(event) => updateField("middleName", event.target.value)} />
+                          {errors.middleName ? <p className="error-text">{errors.middleName}</p> : null}
+                        </div>
+                      </div>
+                      <div className="field-grid field-grid--double">
+                        <div className="field">
+                          <label htmlFor="lastName">Last Name</label>
+                          <input className="input" id="lastName" value={identityForm.lastName} onChange={(event) => updateField("lastName", event.target.value)} />
+                          {errors.lastName ? <p className="error-text">{errors.lastName}</p> : null}
+                        </div>
+                        <div className="field">
+                          <label htmlFor="dateOfBirth">Date of Birth</label>
+                          <input className="input" id="dateOfBirth" type="date" placeholder="YYYY-MM-DD" value={identityForm.dateOfBirth} onChange={(event) => updateField("dateOfBirth", event.target.value)} />
+                          {derivedAge !== null ? <p className="field__hint">Derived age: {derivedAge}</p> : <p className="field__hint">Use the calendar or type a valid date in YYYY-MM-DD format.</p>}
+                          {errors.dateOfBirth ? <p className="error-text">{errors.dateOfBirth}</p> : null}
+                        </div>
+                      </div>
+                      <div className="field">
+                        <label htmlFor="location">Present location</label>
+                        <input className="input" id="location" value={identityForm.location} onChange={(event) => updateField("location", event.target.value)} />
+                        {errors.location ? <p className="error-text">{errors.location}</p> : null}
+                      </div>
+                      <div className="field-grid field-grid--double">
+                        <div className="field">
+                          <label htmlFor="email">Email address</label>
+                          <input className="input" id="email" type="email" value={identityForm.email} onChange={(event) => updateField("email", event.target.value)} />
+                          {errors.email ? <p className="error-text">{errors.email}</p> : null}
+                        </div>
+                        <div className="field">
+                          <label htmlFor="countryCode">Country code</label>
+                          <select className="input" id="countryCode" value={identityForm.countryCode} onChange={(event) => updateField("countryCode", event.target.value)}>
+                            {countryPhoneOptions.map((country) => (
+                              <option key={country.code} value={country.code}>
+                                {country.name} ({country.dialCode})
+                              </option>
+                            ))}
+                          </select>
+                          {errors.countryCode ? <p className="error-text">{errors.countryCode}</p> : null}
+                        </div>
+                      </div>
+                      <div className="field">
+                        <label htmlFor="localPhoneNumber">Local phone number</label>
+                        <input className="input" id="localPhoneNumber" type="tel" inputMode="numeric" value={identityForm.localPhoneNumber} onChange={(event) => updateField("localPhoneNumber", event.target.value)} />
+                        {errors.localPhoneNumber ? <p className="error-text">{errors.localPhoneNumber}</p> : null}
+                      </div>
+                      <div className="button-row">
+                        <button className="button button--primary" type="submit">Begin with questionnaire</button>
+                      </div>
+                    </form>
+                  </>
+                )}
+
+                {stage === "duplicate" && (
+                  <div className="stack">
+                    <h2 className="section-title">This assessment is already on record</h2>
+                    <p className="muted">{duplicateMessage}</p>
+                    <div className="button-row">
+                      <button className="button button--secondary" type="button" onClick={() => setStage("identity")}>Review details</button>
+                    </div>
+                  </div>
+                )}
+
+                {uiError ? <p className="error-text">{uiError}</p> : null}
+              </div>
+            </section>
+          </>
         ) : (
           <>
             <section className="hero hero--compact">

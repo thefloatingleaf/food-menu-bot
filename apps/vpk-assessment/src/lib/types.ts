@@ -27,6 +27,7 @@ export type AttemptStatus =
   | "blocked_duplicate";
 
 export type WizardStage =
+  | "opening"
   | "identity"
   | "duplicate"
   | "instructions"

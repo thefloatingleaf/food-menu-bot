@@ -159,14 +159,13 @@ button {
   gap: 22px;
 }
 
-.split--opening {
-  grid-template-columns: minmax(0, 1.08fr) minmax(360px, 0.92fr);
-  align-items: stretch;
+.opening-screen {
+  display: grid;
 }
 
 .opening-hero {
-  min-height: 100%;
-  padding: 30px 30px 28px;
+  min-height: min(78vh, 760px);
+  padding: 32px 34px 30px;
   isolation: isolate;
   background:
     linear-gradient(160deg, rgba(252, 248, 240, 0.92) 0%, rgba(246, 238, 224, 0.86) 64%, rgba(239, 229, 212, 0.82) 100%);
@@ -178,6 +177,8 @@ button {
   display: grid;
   gap: 14px;
   max-width: 36rem;
+  min-height: 100%;
+  justify-content: end;
 }
 
 .opening-hero__lead {
@@ -266,6 +267,15 @@ button {
   color: rgba(121, 100, 82, 0.88);
   font-size: 0.8rem;
   letter-spacing: 0.03em;
+}
+
+.opening-hero__actions {
+  margin-top: 8px;
+}
+
+.identity-screen {
+  width: min(760px, 100%);
+  margin: 0 auto;
 }
 
 .badge-row {
@@ -520,10 +530,6 @@ button {
     padding-top: 18px;
   }
 
-  .split--opening {
-    grid-template-columns: 1fr;
-  }
-
   .field-grid--double {
     grid-template-columns: 1fr;
   }
@@ -534,6 +540,7 @@ button {
 
   .opening-hero {
     padding: 24px 18px 24px;
+    min-height: min(82vh, 720px);
   }
 
   .opening-hero__art {

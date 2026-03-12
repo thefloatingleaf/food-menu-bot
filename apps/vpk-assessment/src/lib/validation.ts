@@ -105,13 +105,33 @@ export function deriveAgeFromDateOfBirth(dateOfBirth: string, now = new Date()) 
 }
 
 function validatePhoneByCountry(countryCode: string, localPhoneNumber: string, ctx: z.RefinementCtx) {
-  const digits = localPhoneNumber.replace(/\D/g, "");
+  const rawValue = localPhoneNumber.trim();
+  const digits = rawValue.replace(/\D/g, "");
+
+  if (!/^\d+$/.test(rawValue)) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["localPhoneNumber"],
+      message: "Enter digits only in the mobile number.",
+    });
+    return;
+  }
+
   if (countryCode === "IN") {
-    if (!/^\d{10}$/.test(digits)) {
+    if (digits.length < 10) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["localPhoneNumber"],
-        message: "For India, enter exactly 10 digits.",
+        message: "Mobile number cannot be less than 10 digits.",
+      });
+      return;
+    }
+
+    if (digits.length !== 10) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["localPhoneNumber"],
+        message: "Mobile number must be exactly 10 digits.",
       });
     }
     return;
