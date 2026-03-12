@@ -84,6 +84,24 @@ button {
   gap: 0;
 }
 
+.app-shell__toolbar {
+  width: min(1100px, calc(100% - 32px));
+  margin: 0 auto;
+  display: flex;
+  justify-content: flex-start;
+  padding-top: 8px;
+}
+
+.app-shell__toolbar--opening {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 12;
+  width: auto;
+  margin: 0;
+  padding: 0;
+}
+
 .hero {
   display: grid;
   gap: 14px;
@@ -452,6 +470,20 @@ button {
   color: var(--muted);
 }
 
+.button--home {
+  min-height: 44px;
+  padding: 0 16px;
+  background: rgba(255, 251, 244, 0.84);
+  border-color: rgba(129, 104, 73, 0.18);
+  color: var(--foreground);
+  box-shadow: 0 10px 22px rgba(111, 86, 59, 0.1);
+  backdrop-filter: blur(8px);
+}
+
+.button--home-active {
+  background: rgba(255, 251, 244, 0.92);
+}
+
 .button:disabled {
   opacity: 0.55;
   cursor: not-allowed;
@@ -594,6 +626,18 @@ button {
 @media (max-width: 767px) {
   .app-shell--opening {
     padding: 0;
+  }
+
+  .app-shell__toolbar {
+    width: calc(100% - 24px);
+    padding-top: 4px;
+  }
+
+  .app-shell__toolbar--opening {
+    top: 12px;
+    left: 12px;
+    width: auto;
+    padding-top: 0;
   }
 
   .field-grid--double {

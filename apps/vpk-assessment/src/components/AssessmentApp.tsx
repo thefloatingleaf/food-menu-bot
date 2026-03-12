@@ -56,6 +56,9 @@ export function AssessmentApp({
   initialResult,
 }: AssessmentAppProps) {
   const [stage, setStage] = useState<WizardStage>(initialSnapshot?.stage ?? "opening");
+  const [resumeStage, setResumeStage] = useState<WizardStage | null>(
+    initialSnapshot?.stage && initialSnapshot.stage !== "opening" ? initialSnapshot.stage : null,
+  );
   const [attemptId, setAttemptId] = useState<string | null>(initialSnapshot?.attemptId ?? initialResult?.attemptId ?? null);
   const [questionIndex, setQuestionIndex] = useState(initialSnapshot?.questionIndex ?? 1);
   const [identityForm, setIdentityForm] = useState(emptyForm);
@@ -77,6 +80,33 @@ export function AssessmentApp({
 
   function updateField<Key extends keyof IdentityForm>(key: Key, value: IdentityForm[Key]) {
     setIdentityForm((current) => ({ ...current, [key]: value }));
+  }
+
+  function goToStage(nextStage: WizardStage) {
+    if (nextStage !== "opening") {
+      setResumeStage(nextStage);
+    }
+    setStage(nextStage);
+  }
+
+  function handleHome() {
+    if (stage !== "opening") {
+      setResumeStage(stage);
+    }
+    setUiError("");
+    setStage("opening");
+  }
+
+  function handleOpeningContinue() {
+    if (resumeStage && resumeStage !== "opening") {
+      if (resumeStage === "assessment" && !question) {
+        void loadQuestion(questionIndex);
+      }
+      goToStage(resumeStage);
+      return;
+    }
+
+    goToStage("identity");
   }
 
   async function loadQuestion(index: number) {
@@ -128,7 +158,7 @@ export function AssessmentApp({
 
       if (payload.duplicate) {
         setDuplicateMessage(payload.message);
-        setStage("duplicate");
+        goToStage("duplicate");
         return;
       }
 
@@ -137,7 +167,7 @@ export function AssessmentApp({
     }
 
     setAttemptId(payload.attemptId);
-    setStage("instructions");
+    goToStage("instructions");
   }
 
   async function handleAcknowledge() {
@@ -153,7 +183,7 @@ export function AssessmentApp({
       return;
     }
 
-    setStage("start");
+    goToStage("start");
   }
 
   async function handleNext() {
@@ -207,11 +237,21 @@ export function AssessmentApp({
     }
 
     setResult(payload);
-    setStage("result");
+    goToStage("result");
   }
 
   return (
     <main className={`app-shell ${stage === "opening" ? "app-shell--opening" : ""}`}>
+      <div className={`app-shell__toolbar ${stage === "opening" ? "app-shell__toolbar--opening" : ""}`}>
+        <button
+          className={`button button--home ${stage === "opening" ? "button--home-active" : ""}`}
+          type="button"
+          onClick={handleHome}
+          aria-current={stage === "opening" ? "page" : undefined}
+        >
+          Home
+        </button>
+      </div>
       <div className="app-shell__inner">
         {stage === "opening" ? (
           <section className="opening-stage">
@@ -262,7 +302,7 @@ export function AssessmentApp({
                   <button
                     className="button button--primary"
                     type="button"
-                    onClick={() => setStage("identity")}
+                    onClick={handleOpeningContinue}
                   >
                     Begin assessment
                   </button>
@@ -353,7 +393,7 @@ export function AssessmentApp({
                     <h2 className="section-title">This assessment is already on record</h2>
                     <p className="muted">{duplicateMessage}</p>
                     <div className="button-row">
-                      <button className="button button--secondary" type="button" onClick={() => setStage("identity")}>Review details</button>
+                      <button className="button button--secondary" type="button" onClick={() => goToStage("identity")}>Review details</button>
                     </div>
                   </div>
                 )}
@@ -398,7 +438,7 @@ export function AssessmentApp({
                   <p className="muted">Your acknowledgement has been recorded. Results remain hidden until the final step.</p>
                 </div>
                 <div className="button-row">
-                  <button className="button button--primary" type="button" onClick={() => setStage("assessment")}>
+                  <button className="button button--primary" type="button" onClick={() => goToStage("assessment")}>
                     Start Test
                   </button>
                 </div>
