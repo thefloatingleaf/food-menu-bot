@@ -576,7 +576,7 @@ button {
 }
 
 @media (min-width: 768px) {
-  .app-shell {
+  .app-shell:not(.app-shell--opening) {
     padding: 40px 24px 56px;
   }
 
