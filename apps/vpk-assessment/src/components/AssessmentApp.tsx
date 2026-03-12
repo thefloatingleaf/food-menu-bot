@@ -67,6 +67,7 @@ export function AssessmentApp({
   const [uiError, setUiError] = useState("");
   const [duplicateMessage, setDuplicateMessage] = useState("");
   const [question, setQuestion] = useState<QuestionPayload | null>(initialQuestion);
+  const [questionLoading, setQuestionLoading] = useState(false);
   const [lifetimeSelection, setLifetimeSelection] = useState<string | null>(
     initialQuestion?.savedResponse.lifetimeOptionId ?? null,
   );
@@ -97,10 +98,23 @@ export function AssessmentApp({
     setStage("opening");
   }
 
-  function handleOpeningContinue() {
+  async function enterAssessment(index = questionIndex) {
+    if (question) {
+      goToStage("assessment");
+      return;
+    }
+
+    const loaded = await loadQuestion(index);
+    if (loaded) {
+      goToStage("assessment");
+    }
+  }
+
+  async function handleOpeningContinue() {
     if (resumeStage && resumeStage !== "opening") {
       if (resumeStage === "assessment" && !question) {
-        void loadQuestion(questionIndex);
+        await enterAssessment(questionIndex);
+        return;
       }
       goToStage(resumeStage);
       return;
@@ -110,19 +124,29 @@ export function AssessmentApp({
   }
 
   async function loadQuestion(index: number) {
+    setQuestionLoading(true);
     setUiError("");
-    const response = await fetch(`/api/questions/${index}`);
-    const payload = await response.json();
 
-    if (!response.ok) {
-      setUiError(payload.error ?? "Unable to load this question.");
-      return;
+    try {
+      const response = await fetch(`/api/questions/${index}`);
+      const payload = await response.json();
+
+      if (!response.ok) {
+        setUiError(payload.error ?? "Unable to load this question.");
+        return false;
+      }
+
+      setQuestion(payload);
+      setQuestionIndex(payload.index);
+      setLifetimeSelection(payload.savedResponse.lifetimeOptionId);
+      setPresentSelection(payload.savedResponse.presentOptionId);
+      return true;
+    } catch {
+      setUiError("Unable to load this question.");
+      return false;
+    } finally {
+      setQuestionLoading(false);
     }
-
-    setQuestion(payload);
-    setQuestionIndex(payload.index);
-    setLifetimeSelection(payload.savedResponse.lifetimeOptionId);
-    setPresentSelection(payload.savedResponse.presentOptionId);
   }
 
   useEffect(() => {
@@ -438,9 +462,17 @@ export function AssessmentApp({
                   <p className="muted">Your acknowledgement has been recorded. Results remain hidden until the final step.</p>
                 </div>
                 <div className="button-row">
-                  <button className="button button--primary" type="button" onClick={() => goToStage("assessment")}>
+                  <button className="button button--primary" type="button" onClick={() => void enterAssessment()}>
                     Start Test
                   </button>
+                </div>
+              </div>
+            )}
+
+            {stage === "assessment" && questionLoading && (
+              <div className="stack">
+                <div className="status-card">
+                  <p className="muted">Loading the first question...</p>
                 </div>
               </div>
             )}
