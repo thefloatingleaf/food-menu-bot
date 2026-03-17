@@ -64,5 +64,34 @@ class ConsecutiveDayRepeatRuleTests(unittest.TestCase):
         self.assertTrue(fell_back)
 
 
+class OvernightBreakfastFormattingTests(unittest.TestCase):
+    def test_format_overnight_breakfast_label_uses_short_name(self) -> None:
+        full_item = (
+            "पखाला भात (Pakhala Bhata): रात में 1 कटोरी कच्चे चावल धोकर सादा चावल पकाएँ।"
+        )
+        self.assertEqual(
+            generate_menu.format_overnight_breakfast_label(full_item),
+            "पखाला भात (Pakhala Bhata)",
+        )
+
+    def test_format_overnight_breakfast_label_keeps_plain_item(self) -> None:
+        plain_item = "पझैया सादम (Pazhaya Sadam)"
+        self.assertEqual(generate_menu.format_overnight_breakfast_label(plain_item), plain_item)
+
+
+class MangorePrepInstructionTests(unittest.TestCase):
+    def test_requires_mangore_prep_for_mangaunde_spelling(self) -> None:
+        self.assertTrue(generate_menu.requires_mangore_prep("उबले हुए मंगौड़े", "सादा भोजन"))
+
+    def test_requires_mangore_prep_for_breakfast_item(self) -> None:
+        self.assertTrue(generate_menu.requires_mangore_prep("उबले हुए मंगोड़े", "सादा भोजन"))
+
+    def test_requires_mangore_prep_for_meal_item(self) -> None:
+        self.assertTrue(generate_menu.requires_mangore_prep("", "उबले मंगोड़े की रस्सेदार सब्ज़ी और गेहूं रोटी"))
+
+    def test_requires_mangore_prep_ignores_other_items(self) -> None:
+        self.assertFalse(generate_menu.requires_mangore_prep("पोहा", "दाल और रोटी"))
+
+
 if __name__ == "__main__":
     unittest.main()

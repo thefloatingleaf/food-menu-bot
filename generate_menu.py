@@ -159,6 +159,12 @@ OVERNIGHT_RICE_PREP_NOTE = (
     "कल सुबह के नाश्ते के लिए आज चावल बनाएं और कम से कम 1 कटोरी कच्चे चावल के बराबर "
     "अतिरिक्त पके हुए सादे चावल अलग रखें। इन्हें रात भर साफ पानी में डुबोकर रखें।"
 )
+MANGORE_ITEM_TOKENS = ("मंगौड़े", "मंगोड़े", "मंगोड़े", "मंगोरे", "mangore")
+MANGORE_PREP_NOTE = (
+    "फॉलोवर महोदय, कल के मंगौड़े के लिए आज रात 1 कटोरी धुली मूंग दाल चुनकर अच्छी तरह धो लें, "
+    "फिर उसे 3-4 कटोरी पानी में पूरी तरह डुबोकर ढककर 8-10 घंटे भिगोकर रखें, "
+    "ताकि सुबह मंगौड़े समय पर तैयार किए जा सकें।"
+)
 RICE_ITEM_TOKENS = ("चावल", "राइस", "भात")
 
 VARSHA_COMMON_REQUIRED_SIDES = [
@@ -1236,9 +1242,23 @@ def is_overnight_breakfast(item: str) -> bool:
     return item in OVERNIGHT_BREAKFAST_ITEMS
 
 
+def format_overnight_breakfast_label(item: str) -> str:
+    primary = item.split(":", 1)[0].strip()
+    return primary if primary else item
+
+
 def exclude_overnight_breakfasts(items: list[str]) -> list[str]:
     filtered = [item for item in items if item not in OVERNIGHT_BREAKFAST_ITEMS]
     return filtered if filtered else items[:]
+
+
+def is_mangore_item(item: str) -> bool:
+    normalized_item = item.casefold()
+    return any(token in normalized_item for token in MANGORE_ITEM_TOKENS)
+
+
+def requires_mangore_prep(*items: str) -> bool:
+    return any(is_mangore_item(item) for item in items if item)
 
 
 def is_rice_item(item: str) -> bool:
@@ -1967,8 +1987,7 @@ def should_show_weather_line(weather: WeatherInfo, mode: str) -> bool:
 def build_weather_line(weather: WeatherInfo, city_hi: str) -> str:
     return (
         f"*मौसम:* {city_hi} - सुबह {weather.morning_temp_c:.1f}°C, "
-        f"अधिकतम {weather.max_temp_c:.1f}°C, वर्षा संभावना {weather.rain_probability_pct:.0f}% "
-        f"({weather.source_hi})"
+        f"अधिकतम {weather.max_temp_c:.1f}°C, वर्षा संभावना {weather.rain_probability_pct:.0f}%"
     )
 
 
@@ -2469,26 +2488,11 @@ def main() -> int:
                 pass
             elif is_overnight_breakfast(breakfast_item_override):
                 missing_data_notes.append(
-                    "[अनुपलब्ध] आज का निर्धारित overnight नाश्ता पिछली रात की चावल तैयारी के बिना नहीं दिया जा सकता"
+                    "[डेटा चेतावनी] आज का निर्धारित overnight नाश्ता लागू किया गया है, "
+                    "लेकिन पिछली रात की चावल तैयारी history में नहीं मिली"
                 )
-                selected_breakfast = choose_item(
-                    items=breakfast_choice_items,
-                    ekadashi=ekadashi,
-                    recent_block_set=breakfast_recent,
-                    consecutive_day_block_families=previous_day_repeat_families,
-                    family_extractor=extract_breakfast_repeat_families,
-                    keywords=keywords,
-                    disallowed_keywords=disallowed_keywords,
-                    fallback_policy=fallback_policy,
-                    seed_key=f"{target_date_str}:breakfast",
-                    weather_rules=weather_rules,
-                    weather_tags=weather_tags,
-                    warn_bucket=warning_items,
-                    constraint_notes=missing_data_notes,
-                    prefer_lighter=transition_plan.prefer_lighter,
-                    light_fallback_items=light_fallback_items,
-                    heavy_light_classification=heavy_light_classification,
-                )
+                selected_breakfast = breakfast_item_override
+                breakfast_fixed = True
             elif breakfast_item_override in breakfast_items:
                 override_conflicts = get_item_repeat_family_conflicts(
                     breakfast_item_override,
@@ -2836,10 +2840,6 @@ def main() -> int:
         f"*माह:* {panchang_info.maah_hi}",
         f"*तिथि (पंचांग):* {panchang_info.tithi_hi}",
     ]
-    if transition_plan.active and not shringdhara_info.active:
-        lines.append(
-            f"*ऋतु संक्रमण:* {SEASON_HI[transition_plan.current_key]} -> {SEASON_HI[transition_plan.upcoming_key]} ({transition_plan.days_to_next} दिन शेष)"
-        )
     festival_line = format_festival_line(festival_info)
     if festival_line:
         lines.append(festival_line)
@@ -2850,15 +2850,31 @@ def main() -> int:
         lines.append("*शृंगधारा स्मरण:* " + SHRINGDHARA_DAILY_REMINDER)
         lines.append("*परंपरागत हल्का विकल्प:* " + SHRINGDHARA_LIGHT_NOTE)
     else:
-        lines.append(f"*सुबह का नाश्ता:* {selected_breakfast}")
+        breakfast_display = (
+            format_overnight_breakfast_label(selected_breakfast)
+            if selected_breakfast in OVERNIGHT_BREAKFAST_ITEMS
+            else selected_breakfast
+        )
+        lines.append(f"*सुबह का नाश्ता:* {breakfast_display}")
         if selected_breakfast in OVERNIGHT_BREAKFAST_ITEMS:
-            lines.append("*नाश्ता तैयारी स्मरण:* इस नाश्ते की तैयारी शाम से शुरू करें ताकि यह सुबह खाने के लिए तैयार रहे।")
+            prep_date_display_str = (target_date - timedelta(days=1)).strftime("%d-%b-%Y")
+            lines.append(f"*नाश्ता विधि:* {selected_breakfast}")
+            lines.append(
+                "*नाश्ता तैयारी स्मरण:* "
+                f"इस नाश्ते की तैयारी आज ({prep_date_display_str}) शाम से शुरू करें ताकि यह सुबह खाने के लिए तैयार रहे।"
+            )
             if ritu_key == "vasant":
                 lines.append("*नाश्ता स्वाद निर्देश:* वसंत में इसे थोड़ा अधिक तीखा रखें।")
             elif ritu_key == "grishm":
                 lines.append("*नाश्ता स्वाद निर्देश:* ग्रीष्म में इसे सामान्य तीखापन रखें।")
         lines.append(f"*आज का भोजन:* {selected_meal}")
+        if requires_mangore_prep(selected_breakfast, selected_meal):
+            lines.append("*फॉलोवर महोदय हेतु रात की तैयारी:* " + MANGORE_PREP_NOTE)
         if next_day_requires_rice_prep and next_day_breakfast_lock:
+            lines.append(
+                "*कल सुबह का नाश्ता (रात की तैयारी से):* "
+                + format_overnight_breakfast_label(next_day_breakfast_lock)
+            )
             lines.append("*रात की तैयारी:* " + OVERNIGHT_RICE_PREP_NOTE)
 
     if ekadashi.is_ekadashi and ekadashi.name_hi:
@@ -2892,13 +2908,6 @@ def main() -> int:
 
     if target_date.month == 1 and target_date.day == 1:
         lines.append("*वार्षिक स्मरण (1 जनवरी):* " + NEW_YEAR_KANJI_NOTE)
-
-    if missing_data_notes:
-        unique_notes: list[str] = []
-        for note in missing_data_notes:
-            if note not in unique_notes:
-                unique_notes.append(note)
-        lines.append("*डेटा अलर्ट:* " + " | ".join(unique_notes))
 
     if len(lines) >= 4:
         header_block = "\r\n".join(lines[:4])

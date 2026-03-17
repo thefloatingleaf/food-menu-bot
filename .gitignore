@@ -6,3 +6,4 @@ __pycache__/
 apps/vpk-assessment/.next/
 apps/vpk-assessment/node_modules/
 apps/vpk-assessment/data/
+test_outputs/

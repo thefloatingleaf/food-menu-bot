@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# VPK Assessment App
 
-## Getting Started
+## Prerequisites
 
-First, run the development server:
+- Node.js 20+
+- npm 10+
+- macOS local filesystem access for the SQLite database under `data/`
+
+## One-command setup
+
+```bash
+npm run setup
+```
+
+Expected result: questionnaire validation passes, the SQLite database is initialized, and a local admin account is seeded if one does not already exist.
+
+Default initial admin credentials unless overridden by environment variables:
+
+- Username: `admin`
+- Password: `admin1234`
+
+Optional overrides:
+
+- `VPK_INITIAL_ADMIN_USERNAME`
+- `VPK_INITIAL_ADMIN_PASSWORD`
+- `VPK_DB_PATH`
+
+## One-command run
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Expected result: the Next.js development server starts and prints a local URL such as `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## One-command tests
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run lint && npm run test
+```
 
-## Learn More
+Expected result: lint and Vitest checks pass.
 
-To learn more about Next.js, take a look at the following resources:
+## Production build check
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run build
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Expected result: the app compiles successfully for production.
 
-## Deploy on Vercel
+## Current flow
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Sign in with the admin account or a user account created by the admin.
+2. Admin users can open `Manage Accounts` and create additional logins with passwords.
+3. User accounts can log in, complete the assessment, and later return to view their result.
+4. Assessment content is protected with disabled copy/select/context-menu/print behavior and visible watermarking.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Privacy note
+
+This is a web app, so browser-level hardening can discourage screenshots but cannot guarantee screenshot blocking at the operating-system level on macOS or iPhone browsers.
+
+## Troubleshooting
+
+- If login fails on first run, re-run `npm run setup` to ensure the seeded admin account exists.
+- If the app needs a fresh local database, remove `data/vpk-assessment.sqlite*` only if you intentionally want to reset local assessment data.
+- If the UI behaves oddly after schema changes, stop the dev server and run `npm run build` once to catch type or route issues.

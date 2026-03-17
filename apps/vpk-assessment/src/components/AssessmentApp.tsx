@@ -1,13 +1,22 @@
 "use client";
 
 import Image from "next/image";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 
 import { PieResultsChart } from "@/components/PieResultsChart";
-import type { AttemptSnapshot, QuestionPayload, ResultPayload, WizardStage } from "@/lib/types";
+import type {
+  AttemptSnapshot,
+  AuthenticatedAccount,
+  ManagedAccountSummary,
+  QuestionPayload,
+  ResultPayload,
+  WizardStage,
+} from "@/lib/types";
 import { countryPhoneOptions, deriveAgeFromDateOfBirth } from "@/lib/validation";
 
 type AssessmentAppProps = {
+  initialAccount: AuthenticatedAccount | null;
+  initialAccounts: ManagedAccountSummary[];
   initialSnapshot: AttemptSnapshot | null;
   initialQuestion: QuestionPayload | null;
   initialResult: ResultPayload | null;
@@ -24,6 +33,17 @@ type IdentityForm = {
   localPhoneNumber: string;
 };
 
+type LoginForm = {
+  username: string;
+  password: string;
+};
+
+type AccountCreationForm = {
+  displayName: string;
+  username: string;
+  password: string;
+};
+
 const emptyForm: IdentityForm = {
   firstName: "",
   middleName: "",
@@ -35,11 +55,22 @@ const emptyForm: IdentityForm = {
   localPhoneNumber: "",
 };
 
+const emptyLoginForm: LoginForm = {
+  username: "",
+  password: "",
+};
+
+const emptyAccountForm: AccountCreationForm = {
+  displayName: "",
+  username: "",
+  password: "",
+};
+
 const openingHeader = "Constitution assessment, done with care.";
 const openingHeadline = "AYURVEDIC PRAKRITI ASSESSMENT";
 const openingSummaryLines = [
-  "Record identity, review instructions, answer each category in Lifetime and",
-  "Present, and see your results at the end.",
+  "Secure login, guided instructions, one category at a time, and a final",
+  "constitution result view only after completion.",
 ];
 const verseSanskrit = [
   "नमामि धन्वन्तरिमादिदेवं सुरासुरैर्वन्दितपादपद्मम् ।",
@@ -50,16 +81,27 @@ const verseTransliteration = [
   "Loke Jararugbhayamrityunashanam Dhataramisham Vividhauṣadhinam II",
 ];
 
+function isEditableTarget(target: EventTarget | null) {
+  return target instanceof HTMLElement
+    ? Boolean(target.closest("input, textarea, select, [contenteditable='true']"))
+    : false;
+}
+
 export function AssessmentApp({
+  initialAccount,
+  initialAccounts,
   initialSnapshot,
   initialQuestion,
   initialResult,
 }: AssessmentAppProps) {
+  const [account] = useState<AuthenticatedAccount | null>(initialAccount);
   const [stage, setStage] = useState<WizardStage>(initialSnapshot?.stage ?? "opening");
   const [resumeStage, setResumeStage] = useState<WizardStage | null>(
     initialSnapshot?.stage && initialSnapshot.stage !== "opening" ? initialSnapshot.stage : null,
   );
-  const [attemptId, setAttemptId] = useState<string | null>(initialSnapshot?.attemptId ?? initialResult?.attemptId ?? null);
+  const [attemptId, setAttemptId] = useState<string | null>(
+    initialSnapshot?.attemptId ?? initialResult?.attemptId ?? null,
+  );
   const [questionIndex, setQuestionIndex] = useState(initialSnapshot?.questionIndex ?? 1);
   const [identityForm, setIdentityForm] = useState(emptyForm);
   const [instructionsText, setInstructionsText] = useState("");
@@ -75,18 +117,90 @@ export function AssessmentApp({
     initialQuestion?.savedResponse.presentOptionId ?? null,
   );
   const [result, setResult] = useState<ResultPayload | null>(initialResult);
+  const [loginForm, setLoginForm] = useState<LoginForm>(emptyLoginForm);
+  const [loginErrors, setLoginErrors] = useState<Record<string, string>>({});
+  const [loginError, setLoginError] = useState("");
+  const [loginSubmitting, setLoginSubmitting] = useState(false);
+  const [adminPanelOpen, setAdminPanelOpen] = useState(false);
+  const [accountForm, setAccountForm] = useState<AccountCreationForm>(emptyAccountForm);
+  const [accountFormErrors, setAccountFormErrors] = useState<Record<string, string>>({});
+  const [accountFormError, setAccountFormError] = useState("");
+  const [accountFormSuccess, setAccountFormSuccess] = useState("");
+  const [accountSubmitting, setAccountSubmitting] = useState(false);
+  const [managedAccounts, setManagedAccounts] = useState<ManagedAccountSummary[]>(initialAccounts);
+  const registrantName = initialSnapshot?.registrantName?.trim() || account?.displayName || "the registered person";
   const derivedAge = identityForm.dateOfBirth
     ? deriveAgeFromDateOfBirth(identityForm.dateOfBirth)
     : null;
+  const watermarkSeed = useMemo(
+    () =>
+      account
+        ? Array.from({ length: 12 }, (_, index) => `${account.username} • ${account.displayName} • Private VPK • ${index + 1}`)
+        : [],
+    [account],
+  );
+
+  useEffect(() => {
+    if (!account) {
+      return;
+    }
+
+    const preventProtectedAction = (event: Event) => {
+      if (!isEditableTarget(event.target)) {
+        event.preventDefault();
+      }
+    };
+
+    const handleKeydown = (event: KeyboardEvent) => {
+      const lowerKey = event.key.toLowerCase();
+      const modifierPressed = event.metaKey || event.ctrlKey;
+
+      if (modifierPressed && ["c", "x", "a", "s", "p"].includes(lowerKey) && !isEditableTarget(event.target)) {
+        event.preventDefault();
+      }
+
+      if (event.metaKey && event.shiftKey && ["3", "4", "5"].includes(lowerKey)) {
+        event.preventDefault();
+      }
+    };
+
+    document.addEventListener("copy", preventProtectedAction);
+    document.addEventListener("cut", preventProtectedAction);
+    document.addEventListener("contextmenu", preventProtectedAction);
+    document.addEventListener("dragstart", preventProtectedAction);
+    document.addEventListener("selectstart", preventProtectedAction);
+    document.addEventListener("keydown", handleKeydown);
+
+    return () => {
+      document.removeEventListener("copy", preventProtectedAction);
+      document.removeEventListener("cut", preventProtectedAction);
+      document.removeEventListener("contextmenu", preventProtectedAction);
+      document.removeEventListener("dragstart", preventProtectedAction);
+      document.removeEventListener("selectstart", preventProtectedAction);
+      document.removeEventListener("keydown", handleKeydown);
+    };
+  }, [account]);
 
   function updateField<Key extends keyof IdentityForm>(key: Key, value: IdentityForm[Key]) {
     setIdentityForm((current) => ({ ...current, [key]: value }));
+  }
+
+  function updateLoginField<Key extends keyof LoginForm>(key: Key, value: LoginForm[Key]) {
+    setLoginForm((current) => ({ ...current, [key]: value }));
+  }
+
+  function updateAccountField<Key extends keyof AccountCreationForm>(
+    key: Key,
+    value: AccountCreationForm[Key],
+  ) {
+    setAccountForm((current) => ({ ...current, [key]: value }));
   }
 
   function goToStage(nextStage: WizardStage) {
     if (nextStage !== "opening") {
       setResumeStage(nextStage);
     }
+    setAdminPanelOpen(false);
     setStage(nextStage);
   }
 
@@ -94,8 +208,44 @@ export function AssessmentApp({
     if (stage !== "opening") {
       setResumeStage(stage);
     }
+    setAdminPanelOpen(false);
     setUiError("");
     setStage("opening");
+  }
+
+  async function handleLoginSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setLoginSubmitting(true);
+    setLoginErrors({});
+    setLoginError("");
+
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(loginForm),
+      });
+      const payload = await response.json();
+
+      if (!response.ok) {
+        if (payload.fieldErrors) {
+          setLoginErrors(payload.fieldErrors);
+          return;
+        }
+
+        setLoginError(payload.error ?? "Unable to log in.");
+        return;
+      }
+
+      window.location.reload();
+    } finally {
+      setLoginSubmitting(false);
+    }
+  }
+
+  async function handleLogout() {
+    await fetch("/api/auth/logout", { method: "POST" });
+    window.location.reload();
   }
 
   async function enterAssessment(index = questionIndex) {
@@ -150,6 +300,10 @@ export function AssessmentApp({
   }
 
   useEffect(() => {
+    if (!account) {
+      return;
+    }
+
     if (stage === "instructions" && !instructionsText) {
       fetch("/api/instructions")
         .then((response) => response.json())
@@ -160,13 +314,17 @@ export function AssessmentApp({
           setUiError("Unable to load instructions.");
         });
     }
-  }, [instructionsText, stage]);
+  }, [account, instructionsText, stage]);
 
   useEffect(() => {
+    if (!account) {
+      return;
+    }
+
     if (stage === "assessment" && !question && !questionLoading) {
       void loadQuestion(questionIndex);
     }
-  }, [question, questionIndex, questionLoading, stage]);
+  }, [account, question, questionIndex, questionLoading, stage]);
 
   async function handleIdentitySubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -270,20 +428,248 @@ export function AssessmentApp({
     goToStage("result");
   }
 
+  async function handleCreateAccount(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setAccountSubmitting(true);
+    setAccountFormErrors({});
+    setAccountFormError("");
+    setAccountFormSuccess("");
+
+    try {
+      const response = await fetch("/api/admin/accounts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(accountForm),
+      });
+      const payload = await response.json();
+
+      if (!response.ok) {
+        if (payload.fieldErrors) {
+          setAccountFormErrors(payload.fieldErrors);
+          return;
+        }
+
+        setAccountFormError(payload.error ?? "Unable to create the account.");
+        return;
+      }
+
+      setManagedAccounts((current) => [...current, payload.account]);
+      setAccountForm(emptyAccountForm);
+      setAccountFormSuccess(`Account ${payload.account.username} is ready to log in.`);
+    } finally {
+      setAccountSubmitting(false);
+    }
+  }
+
+  if (!account) {
+    return (
+      <main className="app-shell app-shell--opening">
+        <div className="app-shell__inner">
+          <section className="opening-stage opening-stage--login">
+            <div className="opening-stage__backdrop" aria-hidden="true">
+              <Image
+                src="/dhanvantri-opening.png"
+                alt=""
+                fill
+                priority
+                className="opening-stage__image"
+                sizes="100vw"
+              />
+            </div>
+            <div className="opening-stage__layout opening-stage__layout--login">
+              <div className="opening-stage__zone opening-stage__zone--left">
+                <div className="opening-stage__copy">
+                  <p className="opening-stage__lead">Protected clinical access</p>
+                  <h1 className="opening-stage__title" aria-label={openingHeadline}>
+                    <span>AYURVEDIC</span>
+                    <span>PRAKRITI</span>
+                    <span>ASSESSMENT</span>
+                  </h1>
+                  <div className="opening-stage__summary">
+                    {openingSummaryLines.map((line) => (
+                      <p key={line}>{line}</p>
+                    ))}
+                  </div>
+                  <div className="opening-stage__verse">
+                    <div className="opening-stage__sanskrit" lang="sa">
+                      {verseSanskrit.map((line) => (
+                        <p key={line}>{line}</p>
+                      ))}
+                    </div>
+                    <div className="opening-stage__transliteration">
+                      {verseTransliteration.map((line) => (
+                        <p key={line}>{line}</p>
+                      ))}
+                    </div>
+                    <p className="opening-stage__note">
+                      Use an approved account to continue. Admin users can create additional accounts after login.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="opening-stage__zone opening-stage__zone--right opening-stage__zone--login-panel">
+                <div className="panel stack opening-stage__login-panel">
+                  <div className="stack">
+                    <span className="eyebrow">Account Login</span>
+                    <h2 className="section-title">Sign in to continue</h2>
+                    <p className="muted">
+                      Copy, text selection, print, and context menu actions are restricted after login. Browser screenshots are watermarked and discouraged, but cannot be fully blocked by a web browser alone.
+                    </p>
+                  </div>
+                  <form className="form-grid" onSubmit={handleLoginSubmit}>
+                    <div className="field">
+                      <label htmlFor="login-username">Username</label>
+                      <input
+                        className="input"
+                        id="login-username"
+                        autoComplete="username"
+                        value={loginForm.username}
+                        onChange={(event) => updateLoginField("username", event.target.value)}
+                      />
+                      {loginErrors.username ? <p className="error-text">{loginErrors.username}</p> : null}
+                    </div>
+                    <div className="field">
+                      <label htmlFor="login-password">Password</label>
+                      <input
+                        className="input"
+                        id="login-password"
+                        type="password"
+                        autoComplete="current-password"
+                        value={loginForm.password}
+                        onChange={(event) => updateLoginField("password", event.target.value)}
+                      />
+                      {loginErrors.password ? <p className="error-text">{loginErrors.password}</p> : null}
+                    </div>
+                    {loginError ? <p className="error-text">{loginError}</p> : null}
+                    <div className="button-row">
+                      <button className="button button--primary" type="submit" disabled={loginSubmitting}>
+                        {loginSubmitting ? "Signing in..." : "Login"}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+    );
+  }
+
   return (
-    <main className={`app-shell ${stage === "opening" ? "app-shell--opening" : ""}`}>
+    <main className={`app-shell ${stage === "opening" ? "app-shell--opening" : ""} app-shell--protected`}>
+      <div className="privacy-watermark" aria-hidden="true">
+        {watermarkSeed.map((label) => (
+          <span key={label}>{label}</span>
+        ))}
+      </div>
       <div className={`app-shell__toolbar ${stage === "opening" ? "app-shell__toolbar--opening" : ""}`}>
         <button
-          className={`button button--home ${stage === "opening" ? "button--home-active" : ""}`}
+          className={`button button--home ${stage === "opening" && !adminPanelOpen ? "button--home-active" : ""}`}
           type="button"
           onClick={handleHome}
-          aria-current={stage === "opening" ? "page" : undefined}
+          aria-current={stage === "opening" && !adminPanelOpen ? "page" : undefined}
         >
           Home
         </button>
+        {account.role === "admin" ? (
+          <button
+            className={`button button--secondary ${adminPanelOpen ? "button--home-active" : ""}`}
+            type="button"
+            onClick={() => setAdminPanelOpen((current) => !current)}
+          >
+            {adminPanelOpen ? "Close Accounts" : "Manage Accounts"}
+          </button>
+        ) : null}
+        <button className="button button--ghost" type="button" onClick={handleLogout}>
+          Logout
+        </button>
       </div>
       <div className="app-shell__inner">
-        {stage === "opening" ? (
+        {adminPanelOpen ? (
+          <>
+            <section className="hero hero--compact">
+              <span className="eyebrow">Admin Controls</span>
+              <h1 className="hero__single-line">Create assessment accounts and hand out passwords carefully.</h1>
+              <p>
+                This panel is visible only to the admin login. Accounts created here can sign in, complete the assessment, and later return to see their result.
+              </p>
+            </section>
+
+            <section className="split split--admin">
+              <div className="panel stack">
+                <div className="stack">
+                  <h2 className="section-title">Add account</h2>
+                  <p className="muted">Create a login name and password for the person who will take the test.</p>
+                </div>
+                <form className="form-grid" onSubmit={handleCreateAccount}>
+                  <div className="field">
+                    <label htmlFor="account-display-name">Account holder name</label>
+                    <input
+                      className="input"
+                      id="account-display-name"
+                      value={accountForm.displayName}
+                      onChange={(event) => updateAccountField("displayName", event.target.value)}
+                    />
+                    {accountFormErrors.displayName ? <p className="error-text">{accountFormErrors.displayName}</p> : null}
+                  </div>
+                  <div className="field-grid field-grid--double">
+                    <div className="field">
+                      <label htmlFor="account-username">Username</label>
+                      <input
+                        className="input"
+                        id="account-username"
+                        value={accountForm.username}
+                        onChange={(event) => updateAccountField("username", event.target.value)}
+                      />
+                      {accountFormErrors.username ? <p className="error-text">{accountFormErrors.username}</p> : null}
+                    </div>
+                    <div className="field">
+                      <label htmlFor="account-password">Password</label>
+                      <input
+                        className="input"
+                        id="account-password"
+                        type="password"
+                        value={accountForm.password}
+                        onChange={(event) => updateAccountField("password", event.target.value)}
+                      />
+                      {accountFormErrors.password ? <p className="error-text">{accountFormErrors.password}</p> : null}
+                    </div>
+                  </div>
+                  {accountFormError ? <p className="error-text">{accountFormError}</p> : null}
+                  {accountFormSuccess ? <p className="success-text">{accountFormSuccess}</p> : null}
+                  <div className="button-row">
+                    <button className="button button--primary" type="submit" disabled={accountSubmitting}>
+                      {accountSubmitting ? "Creating..." : "Create Account"}
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+              <div className="panel stack">
+                <div className="stack">
+                  <h2 className="section-title">Existing accounts</h2>
+                  <p className="muted">Share usernames and passwords only with the intended assessment holder.</p>
+                </div>
+                <div className="account-list">
+                  {managedAccounts.map((managedAccount) => (
+                    <article className="account-card" key={managedAccount.id}>
+                      <div className="account-card__header">
+                        <strong>{managedAccount.displayName}</strong>
+                        <span className="constitution-pill">{managedAccount.role}</span>
+                      </div>
+                      <p className="muted">Username: {managedAccount.username}</p>
+                      <p className="muted">Created: {new Date(managedAccount.createdAt).toLocaleString()}</p>
+                      <p className="muted">
+                        Last login: {managedAccount.lastLoginAt ? new Date(managedAccount.lastLoginAt).toLocaleString() : "Not yet used"}
+                      </p>
+                    </article>
+                  ))}
+                </div>
+              </div>
+            </section>
+          </>
+        ) : stage === "opening" ? (
           <section className="opening-stage">
             <div className="opening-stage__backdrop" aria-hidden="true">
               <Image
@@ -321,21 +707,20 @@ export function AssessmentApp({
                       ))}
                     </div>
                     <p className="opening-stage__note">
-                      (Rog Nashaka mantra, a mantra for destroying disease.)
+                      Logged in as {account.displayName}. This view is watermarked and guarded against copy, print, and casual capture.
                     </p>
                   </div>
                 </div>
               </div>
               <div className="opening-stage__zone opening-stage__zone--center" aria-hidden="true" />
               <div className="opening-stage__zone opening-stage__zone--right">
-                <div className="opening-stage__cta">
-                  <button
-                    className="button button--primary"
-                    type="button"
-                    onClick={handleOpeningContinue}
-                  >
-                    Begin assessment
+                <div className="opening-stage__cta stack opening-stage__cta-stack">
+                  <button className="button button--primary" type="button" onClick={handleOpeningContinue}>
+                    {resumeStage && resumeStage !== "opening" ? "Resume assessment" : "Begin assessment"}
                   </button>
+                  <div className="status-card">
+                    <p className="muted">Text copying is disabled in the assessment view. Browser screenshots are discouraged with watermarking but cannot be fully blocked by web technology.</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -436,152 +821,130 @@ export function AssessmentApp({
           <>
             <section className="hero hero--compact">
               <span className="eyebrow">Ayurvedic VPK Assessment</span>
-              <h1>Proceed with clarity and complete the assessment calmly.</h1>
-              <p>
-                Identity is already recorded for this session. Continue through instructions, the guided questionnaire, and the final result view.
-              </p>
+              <h1 className="hero__single-line">Proceed with clarity and complete the assessment calmly.</h1>
+              <p>VPK assessment is already registered for {registrantName}. Continue through instructions, the guided questionnaire, and the final result view.</p>
             </section>
 
-            <section className="split">
+            <section className={`split ${stage === "assessment" ? "split--assessment" : ""}`}>
               <div className="panel stack">
-            {stage === "instructions" && (
-              <div className="stack">
-                <h2 className="section-title">Instructions</h2>
-                <div className="status-card">
-                  <p className="muted">{instructionsText || "Loading instructions..."}</p>
-                </div>
-                <div className="button-row">
-                  <button className="button button--primary" type="button" onClick={handleAcknowledge}>
-                    I have read and understood
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {stage === "start" && (
-              <div className="stack">
-                <h2 className="section-title">Start the 40-category assessment</h2>
-                <p className="muted">
-                  You will answer one category at a time. Each screen requires one choice for Lifetime and one choice for Present.
-                </p>
-                <div className="status-card">
-                  <p className="muted">Your acknowledgement has been recorded. Results remain hidden until the final step.</p>
-                </div>
-                <div className="button-row">
-                  <button className="button button--primary" type="button" onClick={() => void enterAssessment()}>
-                    Start Test
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {stage === "assessment" && questionLoading && (
-              <div className="stack">
-                <div className="status-card">
-                  <p className="muted">Loading the first question...</p>
-                </div>
-              </div>
-            )}
-
-            {stage === "assessment" && question && (
-              <div className="stack">
-                <div className="question-header">
-                  <span className="question-counter">Question {question.index} of {question.total}</span>
-                  <h2 className="question-title">{question.category.title}</h2>
-                  {question.category.note ? <p className="muted">{question.category.note}</p> : null}
-                </div>
-                <div className="tracks">
-                  <div className="track-card">
-                    <p className="group-label">{question.lifetimeLabel}</p>
-                    <div className="option-list" role="radiogroup" aria-label={question.lifetimeLabel}>
-                      {question.options.map((option) => (
-                        <button
-                          key={option.id}
-                          type="button"
-                          className={`option-card ${lifetimeSelection === option.id ? "option-card--selected" : ""}`}
-                          onClick={() => setLifetimeSelection(option.id)}
-                          aria-pressed={lifetimeSelection === option.id}
-                        >
-                          <span className="option-card__title">{option.text}</span>
-                          <span className="option-card__meta">{lifetimeSelection === option.id ? "Selected for Lifetime" : "Choose for Lifetime"}</span>
-                        </button>
-                      ))}
+                {stage === "instructions" && (
+                  <div className="stack">
+                    <h2 className="section-title">Instructions</h2>
+                    <div className="status-card">
+                      <p className="muted">{instructionsText || "Loading instructions..."}</p>
+                    </div>
+                    <div className="status-card status-card--private">
+                      <p className="muted">Private assessment mode is active for {account.displayName}. Copy, print, and context actions are disabled in this browser session.</p>
+                    </div>
+                    <div className="button-row">
+                      <button className="button button--primary" type="button" onClick={handleAcknowledge}>
+                        I have read and understood
+                      </button>
                     </div>
                   </div>
-                  <div className="track-card">
-                    <p className="group-label">{question.presentLabel}</p>
-                    <div className="option-list" role="radiogroup" aria-label={question.presentLabel}>
-                      {question.options.map((option) => (
-                        <button
-                          key={option.id}
-                          type="button"
-                          className={`option-card ${presentSelection === option.id ? "option-card--selected" : ""}`}
-                          onClick={() => setPresentSelection(option.id)}
-                          aria-pressed={presentSelection === option.id}
-                        >
-                          <span className="option-card__title">{option.text}</span>
-                          <span className="option-card__meta">{presentSelection === option.id ? "Selected for Present" : "Choose for Present"}</span>
-                        </button>
-                      ))}
+                )}
+
+                {stage === "start" && (
+                  <div className="stack">
+                    <h2 className="section-title">Start the assessment</h2>
+                    <p className="muted">
+                      You will answer one category at a time. Each screen requires one choice for Lifetime and one choice for Present.
+                    </p>
+                    <p className="muted">
+                      If none of the options fits perfectly, choose the option that is the closest match.
+                    </p>
+                    <div className="status-card">
+                      <p className="muted">Your acknowledgement has been recorded. Results remain hidden until the final step.</p>
+                    </div>
+                    <div className="button-row">
+                      <button className="button button--primary" type="button" onClick={() => void enterAssessment()}>
+                        Start Test
+                      </button>
                     </div>
                   </div>
-                </div>
-                <div className="button-row">
-                  <button className="button button--ghost" type="button" onClick={handleBack} disabled={question.index === 1}>Back</button>
-                  <button className="button button--primary" type="button" onClick={handleNext}>
-                    {question.index === question.total ? "Show Result" : "Next Question"}
-                  </button>
-                </div>
-              </div>
-            )}
+                )}
 
-            {stage === "result" && result && (
-              <div className="stack">
-                <div className="stack">
-                  <h2 className="section-title">Final constitution view</h2>
-                  <p className="muted">These totals are generated only after the last question has been submitted.</p>
-                </div>
-                <div className="result-grid">
-                  <div className="result-track">
-                    <span className="eyebrow">Lifetime / Prakriti</span>
-                    <div className="constitution-pill">Constitution: {result.lifetime.constitutionLabel}</div>
-                    <PieResultsChart data={result.charts.lifetime} title="Lifetime" />
-                    <div className="totals-list">
-                      <div className="totals-item"><span>V total</span><strong>{result.lifetime.V}</strong></div>
-                      <div className="totals-item"><span>P total</span><strong>{result.lifetime.P}</strong></div>
-                      <div className="totals-item"><span>K total</span><strong>{result.lifetime.K}</strong></div>
+                {stage === "assessment" && questionLoading && (
+                  <div className="stack">
+                    <div className="status-card">
+                      <p className="muted">Loading the first question...</p>
                     </div>
                   </div>
-                  <div className="result-track">
-                    <span className="eyebrow">Present / Vikriti</span>
-                    <div className="constitution-pill">Constitution: {result.present.constitutionLabel}</div>
-                    <PieResultsChart data={result.charts.present} title="Present" />
-                    <div className="totals-list">
-                      <div className="totals-item"><span>V total</span><strong>{result.present.V}</strong></div>
-                      <div className="totals-item"><span>P total</span><strong>{result.present.P}</strong></div>
-                      <div className="totals-item"><span>K total</span><strong>{result.present.K}</strong></div>
+                )}
+
+                {stage === "assessment" && question && (
+                  <div className="stack assessment-stage">
+                    <div className="question-header">
+                      <span className="question-counter">Question {question.index} of {question.total}</span>
+                      <h2 className="question-title">{question.category.title}</h2>
+                      {question.category.note ? <p className="muted">{question.category.note}</p> : null}
+                    </div>
+                    <div className="tracks">
+                      <div className="track-card">
+                        <p className="group-label">{question.lifetimeLabel}</p>
+                        <div className="option-list" role="radiogroup" aria-label={question.lifetimeLabel}>
+                          {question.options.map((option) => (
+                            <button
+                              key={option.id}
+                              type="button"
+                              className={`option-card ${lifetimeSelection === option.id ? "option-card--selected" : ""}`}
+                              onClick={() => setLifetimeSelection(option.id)}
+                              aria-pressed={lifetimeSelection === option.id}
+                            >
+                              <span className="option-card__title">{option.text}</span>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="track-card">
+                        <p className="group-label">{question.presentLabel}</p>
+                        <div className="option-list" role="radiogroup" aria-label={question.presentLabel}>
+                          {question.options.map((option) => (
+                            <button
+                              key={option.id}
+                              type="button"
+                              className={`option-card ${presentSelection === option.id ? "option-card--selected" : ""}`}
+                              onClick={() => setPresentSelection(option.id)}
+                              aria-pressed={presentSelection === option.id}
+                            >
+                              <span className="option-card__title">{option.text}</span>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="button-row">
+                      <button className="button button--ghost" type="button" onClick={handleBack} disabled={question.index === 1}>Back</button>
+                      <button className="button button--primary" type="button" onClick={handleNext}>
+                        {question.index === question.total ? "Show Result" : "Next Question"}
+                      </button>
                     </div>
                   </div>
-                </div>
-              </div>
-            )}
+                )}
 
-            {uiError ? <p className="error-text">{uiError}</p> : null}
-              </div>
+                {stage === "result" && result && (
+                  <div className="stack">
+                    <div className="stack">
+                      <h2 className="section-title">Final constitution view</h2>
+                      <p className="muted">Your constitution profile is revealed only after all categories are submitted.</p>
+                    </div>
+                    <div className="result-grid">
+                      <div className="result-track">
+                        <span className="eyebrow">Lifetime / Prakriti</span>
+                        <div className="constitution-pill">Constitution: {result.lifetime.constitutionLabel}</div>
+                        <PieResultsChart data={result.charts.lifetime} title="Lifetime" />
+                      </div>
+                      <div className="result-track">
+                        <span className="eyebrow">Present / Vikriti</span>
+                        <div className="constitution-pill">Constitution: {result.present.constitutionLabel}</div>
+                        <PieResultsChart data={result.charts.present} title="Present" />
+                      </div>
+                    </div>
+                  </div>
+                )}
 
-              <aside className="panel panel--dense stack">
-                <div className="badge-row">
-                  <span className="badge">One-time access</span>
-                  <span className="badge">40 categories</span>
-                  <span className="badge">Two parallel tracks</span>
-                </div>
-                <div className="divider" />
-                <div className="status-card">
-                  <p className="muted">
-                    The app records identity first, captures instruction acknowledgement with timestamp, then guides the user through one category at a time without revealing any interim score.
-                  </p>
-                </div>
-              </aside>
+                {uiError ? <p className="error-text">{uiError}</p> : null}
+              </div>
             </section>
           </>
         )}

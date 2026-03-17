@@ -48,6 +48,19 @@ python3 generate_menu.py --date 2026-02-27
 python3 -m unittest discover -s tests
 ```
 
+## Generate the 3 trigger menus for manual checking
+
+```bash
+python3 scripts/generate_trigger_test_menus.py
+```
+
+Expected result: three files are created in `test_outputs/menu_triggers/` for:
+- `mangore`
+- `pazhaya-sadam`
+- `pakhala-bhata`
+
+The script temporarily applies breakfast overrides, generates the next-day menus, saves the outputs, and then restores `config.json`, `history.json`, and `daily_menu.txt`.
+
 ## Bootstrap weather tags (one-time)
 
 ```bash
@@ -63,6 +76,7 @@ python3 generate_menu.py --bootstrap-weather-tags
 - `*पर्व/त्योहार:* <festival names>` (only when present on that date)
 - `*सुबह का नाश्ता:* <item>`
 - `*आज का भोजन:* <item>`
+- `*फॉलोवर महोदय हेतु रात की तैयारी:* <instruction>` (only when the generated next-day menu includes मंगौड़े)
 - `*एकादशी:* <name_hi>` (only on Ekadashi/Gauna dates)
 - `*मौसम:* <details>` (only rainy/extreme days)
 - `*वसंत अनिवार्य साथ:* ...` (only when ऋतु is वसंत)

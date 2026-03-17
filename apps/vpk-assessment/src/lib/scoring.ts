@@ -58,7 +58,9 @@ export function deriveConstitutionLabel(
     throw new Error("Unable to derive constitution label.");
   }
 
-  if (first.value - second.value <= threshold) {
+  const denominator = Math.max(first.value, 1);
+  const relativeGap = (first.value - second.value) / denominator;
+  if (relativeGap <= threshold) {
     return `${first.key}-${second.key}`;
   }
 

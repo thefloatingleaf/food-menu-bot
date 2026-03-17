@@ -4,18 +4,65 @@ import { questionnaireContent } from "@/data/vpkQuestionnaire";
 import { validateQuestionnaireContent } from "@/lib/content-validation";
 import { deriveConstitutionLabel, registerScoringCategories, scoreResponses } from "@/lib/scoring";
 import {
+  validateAccountCreationPayload,
   deriveAgeFromDateOfBirth,
   normalizeEmail,
   normalizePhone,
   validateIdentityPayload,
+  validateLoginPayload,
 } from "@/lib/validation";
 
 registerScoringCategories(questionnaireContent.categories);
 
 describe("content validation", () => {
-  it("contains the full 40-category questionnaire", () => {
+  it("contains the expanded questionnaire", () => {
     expect(validateQuestionnaireContent()).toBe(true);
-    expect(questionnaireContent.categories).toHaveLength(40);
+    expect(questionnaireContent.categories).toHaveLength(58);
+  });
+
+  it("covers the added constitution guideline areas", () => {
+    const titles = questionnaireContent.categories.map((category) => category.title);
+
+    expect(titles).toEqual(
+      expect.arrayContaining([
+        "Nose",
+        "Eyes",
+        "Lips",
+        "Chin",
+        "Cheeks",
+        "Neck",
+        "Chest",
+        "Belly",
+        "Belly Button",
+        "Hips",
+        "Joints",
+        "Taste Preference",
+        "Thirst",
+        "Faith",
+        "Intellect",
+        "Recollection",
+        "Dreams",
+        "Financial Capacity",
+      ]),
+    );
+  });
+
+  it("keeps the expanded questionnaire in a body-to-mind flow", () => {
+    expect(questionnaireContent.categories.slice(0, 6).map((category) => category.id)).toEqual([
+      "body-frame",
+      "body-weight",
+      "face-shape",
+      "nose",
+      "eyes",
+      "teeth",
+    ]);
+
+    expect(questionnaireContent.categories.slice(-4).map((category) => category.id)).toEqual([
+      "life-goals",
+      "neurotic-tendencies",
+      "dreams",
+      "sleep",
+    ]);
   });
 });
 
@@ -64,9 +111,34 @@ describe("identity normalization", () => {
   });
 });
 
+describe("account validation", () => {
+  it("accepts valid login credentials", () => {
+    const parsed = validateLoginPayload({
+      username: "asha.user",
+      password: "SecurePass123",
+    });
+
+    expect(parsed.success).toBe(true);
+  });
+
+  it("rejects short account passwords", () => {
+    const parsed = validateAccountCreationPayload({
+      displayName: "Asha Patel",
+      username: "asha.user",
+      password: "short",
+    });
+
+    expect(parsed.success).toBe(false);
+  });
+});
+
 describe("scoring", () => {
-  it("supports dual constitutions when scores are close", () => {
-    expect(deriveConstitutionLabel({ V: 15, P: 14, K: 11 }, 1)).toBe("V-P");
+  it("supports dual constitutions when top two are within 20 percent", () => {
+    expect(deriveConstitutionLabel({ V: 20, P: 17, K: 3 }, 0.2)).toBe("V-P");
+  });
+
+  it("returns a single constitution when top gap is above 20 percent", () => {
+    expect(deriveConstitutionLabel({ V: 20, P: 15, K: 5 }, 0.2)).toBe("V");
   });
 
   it("scores Lifetime and Present independently", () => {
@@ -78,11 +150,11 @@ describe("scoring", () => {
 
     const result = scoreResponses("attempt-1", responses, "2026-03-12T00:00:00.000Z");
 
-    expect(result.lifetime.V).toBe(20);
-    expect(result.lifetime.P).toBe(20);
+    expect(result.lifetime.V).toBe(29);
+    expect(result.lifetime.P).toBe(29);
     expect(result.lifetime.K).toBe(0);
     expect(result.present.V).toBe(0);
-    expect(result.present.P).toBe(20);
-    expect(result.present.K).toBe(20);
+    expect(result.present.P).toBe(29);
+    expect(result.present.K).toBe(29);
   });
 });

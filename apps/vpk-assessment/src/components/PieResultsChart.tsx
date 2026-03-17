@@ -1,6 +1,6 @@
 "use client";
 
-import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
+import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 
 import type { ResultPayload } from "@/lib/types";
 
@@ -17,40 +17,64 @@ type PieResultsChartProps = {
 
 export function PieResultsChart({ data, title }: PieResultsChartProps) {
   return (
-    <div className="stack" aria-label={`${title} pie chart`}>
-      <div style={{ width: "100%", height: 240 }}>
-        <ResponsiveContainer>
-          <PieChart>
-            <Pie
-              data={data}
-              dataKey="value"
-              nameKey="key"
-              innerRadius={56}
-              outerRadius={92}
-              paddingAngle={4}
-              stroke="rgba(255, 250, 242, 0.8)"
-              strokeWidth={2}
-            >
-              {data.map((entry) => (
-                <Cell key={entry.key} fill={chartColors[entry.key]} />
-              ))}
-            </Pie>
-            <Tooltip
-              formatter={(value, key) => [`${value ?? 0}`, `${String(key)} total`]}
-              contentStyle={{
-                borderRadius: 16,
-                border: "1px solid rgba(129, 104, 73, 0.14)",
-                background: "rgba(255, 252, 245, 0.98)",
-              }}
-            />
-          </PieChart>
-        </ResponsiveContainer>
+    <div className="result-pie" aria-label={`${title} constitution profile`}>
+      <div className="result-pie__frame">
+        <div className="result-pie__pulse" />
+        <div className="result-pie__chart">
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={data}
+                dataKey="value"
+                nameKey="key"
+                innerRadius={70}
+                outerRadius={118}
+                startAngle={110}
+                endAngle={-250}
+                paddingAngle={4}
+                stroke="rgba(255, 250, 242, 0.95)"
+                strokeWidth={2}
+                isAnimationActive
+                animationBegin={0}
+                animationDuration={1800}
+                animationEasing="ease-out"
+              >
+                {data.map((entry) => (
+                  <Cell key={entry.key} fill={chartColors[entry.key]} />
+                ))}
+              </Pie>
+              <Pie
+                data={data}
+                dataKey="value"
+                nameKey="key"
+                innerRadius={58}
+                outerRadius={64}
+                startAngle={110}
+                endAngle={-250}
+                paddingAngle={2}
+                stroke="transparent"
+                isAnimationActive
+                animationBegin={260}
+                animationDuration={1500}
+                animationEasing="ease-out"
+              >
+                {data.map((entry) => (
+                  <Cell key={`${entry.key}-inner`} fill={chartColors[entry.key]} fillOpacity={0.28} />
+                ))}
+              </Pie>
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+        <div className="result-pie__core" />
       </div>
-      <div className="legend" aria-hidden="true">
+      <div className="result-pie__legend" aria-hidden="true">
         {data.map((entry) => (
-          <span className="legend__item" key={entry.key}>
-            <span className="legend__swatch" style={{ backgroundColor: chartColors[entry.key] }} />
-            {entry.key} • {entry.value}
+          <span className="result-pie__legend-item" key={entry.key}>
+            <span
+              className="result-pie__swatch"
+              style={{ backgroundColor: chartColors[entry.key] }}
+            />
+            {entry.key}
           </span>
         ))}
       </div>

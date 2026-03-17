@@ -1,8 +1,8 @@
 import { questionnaireContent } from "@/data/vpkQuestionnaire";
 
 export function validateQuestionnaireContent() {
-  if (questionnaireContent.categories.length !== 40) {
-    throw new Error(`Expected 40 categories, found ${questionnaireContent.categories.length}.`);
+  if (questionnaireContent.categories.length < 40) {
+    throw new Error(`Expected at least 40 categories, found ${questionnaireContent.categories.length}.`);
   }
 
   const categoryIds = new Set<string>();

@@ -1,4 +1,5 @@
 export type DoshaKey = "V" | "P" | "K";
+export type AccountRole = "admin" | "user";
 
 export type QuestionnaireOption = {
   id: string;
@@ -79,4 +80,18 @@ export type AttemptSnapshot = {
   stage: WizardStage;
   questionIndex: number;
   instructionsAcknowledgedAt: string | null;
+  registrantName: string | null;
+};
+
+export type AuthenticatedAccount = {
+  id: string;
+  username: string;
+  displayName: string;
+  role: AccountRole;
+};
+
+export type ManagedAccountSummary = AuthenticatedAccount & {
+  createdAt: string;
+  updatedAt: string;
+  lastLoginAt: string | null;
 };

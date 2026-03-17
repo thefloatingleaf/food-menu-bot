@@ -219,6 +219,35 @@ export const responseSchema = z.object({
   presentOptionId: z.string().trim().min(1),
 });
 
+const usernameRegex = /^[a-z0-9._-]+$/i;
+
+export const loginSchema = z.object({
+  username: z
+    .string()
+    .trim()
+    .min(3, "Enter the username.")
+    .max(60, "Username is too long.")
+    .regex(usernameRegex, "Use letters, numbers, dots, hyphens, or underscores only."),
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters.")
+    .max(128, "Password must be at most 128 characters."),
+});
+
+export const accountCreationSchema = z.object({
+  displayName: z.string().trim().min(2, "Enter the account holder name.").max(120),
+  username: z
+    .string()
+    .trim()
+    .min(3, "Enter the username.")
+    .max(60, "Username is too long.")
+    .regex(usernameRegex, "Use letters, numbers, dots, hyphens, or underscores only."),
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters.")
+    .max(128, "Password must be at most 128 characters."),
+});
+
 export function normalizeEmail(email: string): string {
   return email.trim().toLowerCase();
 }
@@ -232,4 +261,12 @@ export function normalizePhone(countryCode: string, localPhoneNumber: string): s
 
 export function validateIdentityPayload(payload: unknown) {
   return identitySchema.safeParse(payload);
+}
+
+export function validateLoginPayload(payload: unknown) {
+  return loginSchema.safeParse(payload);
+}
+
+export function validateAccountCreationPayload(payload: unknown) {
+  return accountCreationSchema.safeParse(payload);
 }

@@ -4,10 +4,14 @@ import path from "node:path";
 import Database from "better-sqlite3";
 
 import { questionnaireContent, scoringConfig } from "@/data/vpkQuestionnaire";
+import { hashPassword, normalizeUsername, verifyPassword } from "@/lib/auth";
 import { registerScoringCategories, scoreResponses } from "@/lib/scoring";
 import type {
+  AccountRole,
   AttemptSnapshot,
   AttemptStatus,
+  AuthenticatedAccount,
+  ManagedAccountSummary,
   QuestionPayload,
   ResultPayload,
   WizardStage,
@@ -18,8 +22,22 @@ type DbInstance = Database.Database;
 
 type AttemptRow = {
   id: string;
+  account_id?: string | null;
   status: AttemptStatus;
   instructions_acknowledged_at: string | null;
+  full_name?: string | null;
+};
+
+type AccountRow = {
+  id: string;
+  username: string;
+  username_normalized: string;
+  display_name: string;
+  role: AccountRole;
+  password_hash: string;
+  created_at: string;
+  updated_at: string;
+  last_login_at: string | null;
 };
 
 type IdentityPayload = {
@@ -48,6 +66,26 @@ function createSchema(db: DbInstance) {
   db.exec(`
     PRAGMA journal_mode = WAL;
 
+    CREATE TABLE IF NOT EXISTS auth_accounts (
+      id TEXT PRIMARY KEY,
+      username TEXT NOT NULL UNIQUE,
+      username_normalized TEXT NOT NULL UNIQUE,
+      display_name TEXT NOT NULL,
+      role TEXT NOT NULL,
+      password_hash TEXT NOT NULL,
+      created_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL,
+      last_login_at TEXT
+    );
+
+    CREATE TABLE IF NOT EXISTS auth_sessions (
+      id TEXT PRIMARY KEY,
+      account_id TEXT NOT NULL,
+      created_at TEXT NOT NULL,
+      expires_at TEXT NOT NULL,
+      FOREIGN KEY(account_id) REFERENCES auth_accounts(id)
+    );
+
     CREATE TABLE IF NOT EXISTS users (
       id TEXT PRIMARY KEY,
       first_name TEXT NOT NULL,
@@ -68,12 +106,14 @@ function createSchema(db: DbInstance) {
 
     CREATE TABLE IF NOT EXISTS assessment_attempts (
       id TEXT PRIMARY KEY,
+      account_id TEXT,
       user_id TEXT NOT NULL,
       status TEXT NOT NULL,
       instructions_acknowledged_at TEXT,
       started_at TEXT,
       completed_at TEXT,
       created_at TEXT NOT NULL,
+      FOREIGN KEY(account_id) REFERENCES auth_accounts(id),
       FOREIGN KEY(user_id) REFERENCES users(id)
     );
 
@@ -106,6 +146,27 @@ function createSchema(db: DbInstance) {
     );
   `);
 
+  const authAccountColumns = new Set(
+    (db.prepare(`PRAGMA table_info(auth_accounts)`).all() as Array<{ name: string }>).map(
+      (column) => column.name,
+    ),
+  );
+
+  const optionalAuthAccountColumns = [
+    ["username_normalized", "TEXT"],
+    ["display_name", "TEXT"],
+    ["role", "TEXT"],
+    ["password_hash", "TEXT"],
+    ["updated_at", "TEXT"],
+    ["last_login_at", "TEXT"],
+  ] as const;
+
+  for (const [name, type] of optionalAuthAccountColumns) {
+    if (!authAccountColumns.has(name)) {
+      db.exec(`ALTER TABLE auth_accounts ADD COLUMN ${name} ${type};`);
+    }
+  }
+
   const userColumns = new Set(
     (db.prepare(`PRAGMA table_info(users)`).all() as Array<{ name: string }>).map(
       (column) => column.name,
@@ -127,6 +188,46 @@ function createSchema(db: DbInstance) {
       db.exec(`ALTER TABLE users ADD COLUMN ${name} ${type};`);
     }
   }
+
+  const assessmentAttemptColumns = new Set(
+    (db.prepare(`PRAGMA table_info(assessment_attempts)`).all() as Array<{ name: string }>).map(
+      (column) => column.name,
+    ),
+  );
+
+  if (!assessmentAttemptColumns.has("account_id")) {
+    db.exec(`ALTER TABLE assessment_attempts ADD COLUMN account_id TEXT;`);
+  }
+
+  seedInitialAdmin(db);
+}
+
+function seedInitialAdmin(db: DbInstance) {
+  const adminCount = db
+    .prepare(`SELECT COUNT(*) AS count FROM auth_accounts WHERE role = 'admin'`)
+    .get() as { count: number };
+
+  if (adminCount.count > 0) {
+    return;
+  }
+
+  const timestamp = nowIso();
+  const username = process.env.VPK_INITIAL_ADMIN_USERNAME?.trim() || "admin";
+  const password = process.env.VPK_INITIAL_ADMIN_PASSWORD?.trim() || "admin1234";
+
+  db.prepare(
+    `INSERT INTO auth_accounts (
+      id, username, username_normalized, display_name, role, password_hash, created_at, updated_at, last_login_at
+    ) VALUES (?, ?, ?, ?, 'admin', ?, ?, ?, NULL)`,
+  ).run(
+    crypto.randomUUID(),
+    username,
+    normalizeUsername(username),
+    "Administrator",
+    hashPassword(password),
+    timestamp,
+    timestamp,
+  );
 }
 
 export function getDb() {
@@ -144,8 +245,159 @@ export function initializeDatabase() {
   return getDb();
 }
 
+function mapAccount(row: AccountRow): AuthenticatedAccount {
+  return {
+    id: row.id,
+    username: row.username,
+    displayName: row.display_name,
+    role: row.role,
+  };
+}
+
+function findAccountBySessionToken(sessionToken: string) {
+  const db = getDb();
+  const now = nowIso();
+  db.prepare(`DELETE FROM auth_sessions WHERE expires_at <= ?`).run(now);
+
+  return db
+    .prepare(
+      `SELECT
+        accounts.id,
+        accounts.username,
+        accounts.username_normalized,
+        accounts.display_name,
+        accounts.role,
+        accounts.password_hash,
+        accounts.created_at,
+        accounts.updated_at,
+        accounts.last_login_at
+       FROM auth_sessions AS sessions
+       JOIN auth_accounts AS accounts ON accounts.id = sessions.account_id
+       WHERE sessions.id = ?
+         AND sessions.expires_at > ?`,
+    )
+    .get(sessionToken, now) as AccountRow | undefined;
+}
+
+export function getAuthenticatedAccount(sessionToken: string): AuthenticatedAccount | null {
+  const row = findAccountBySessionToken(sessionToken);
+  return row ? mapAccount(row) : null;
+}
+
+export function loginAccount(username: string, password: string) {
+  const db = getDb();
+  const normalizedUsername = normalizeUsername(username);
+  const account = db
+    .prepare(
+      `SELECT
+        id, username, username_normalized, display_name, role, password_hash, created_at, updated_at, last_login_at
+       FROM auth_accounts
+       WHERE username_normalized = ?`,
+    )
+    .get(normalizedUsername) as AccountRow | undefined;
+
+  if (!account || !verifyPassword(password, account.password_hash)) {
+    throw new Error("Invalid username or password.");
+  }
+
+  const sessionToken = crypto.randomUUID();
+  const createdAt = nowIso();
+  const expiresAt = addMonths(new Date(createdAt), 1).toISOString();
+
+  const transaction = db.transaction(() => {
+    db.prepare(
+      `INSERT INTO auth_sessions (id, account_id, created_at, expires_at)
+       VALUES (?, ?, ?, ?)`,
+    ).run(sessionToken, account.id, createdAt, expiresAt);
+
+    db.prepare(
+      `UPDATE auth_accounts
+       SET last_login_at = ?, updated_at = ?
+       WHERE id = ?`,
+    ).run(createdAt, createdAt, account.id);
+  });
+
+  transaction();
+
+  return {
+    sessionToken,
+    expiresAt,
+    account: mapAccount({ ...account, last_login_at: createdAt, updated_at: createdAt }),
+    attemptId: getLatestAttemptIdForAccount(account.id),
+  };
+}
+
+export function logoutAccount(sessionToken: string) {
+  const db = getDb();
+  db.prepare(`DELETE FROM auth_sessions WHERE id = ?`).run(sessionToken);
+}
+
+export function listAccounts(): ManagedAccountSummary[] {
+  const db = getDb();
+  const rows = db
+    .prepare(
+      `SELECT
+        id, username, username_normalized, display_name, role, password_hash, created_at, updated_at, last_login_at
+       FROM auth_accounts
+       ORDER BY role DESC, created_at ASC`,
+    )
+    .all() as AccountRow[];
+
+  return rows.map((row) => ({
+    ...mapAccount(row),
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+    lastLoginAt: row.last_login_at,
+  }));
+}
+
+export function createManagedAccount(payload: { displayName: string; username: string; password: string }) {
+  const db = getDb();
+  const normalizedUsername = normalizeUsername(payload.username);
+  const existing = db
+    .prepare(`SELECT id FROM auth_accounts WHERE username_normalized = ?`)
+    .get(normalizedUsername) as { id: string } | undefined;
+
+  if (existing) {
+    throw new Error("That username is already in use.");
+  }
+
+  const timestamp = nowIso();
+  const id = crypto.randomUUID();
+
+  db.prepare(
+    `INSERT INTO auth_accounts (
+      id, username, username_normalized, display_name, role, password_hash, created_at, updated_at, last_login_at
+    ) VALUES (?, ?, ?, ?, 'user', ?, ?, ?, NULL)`,
+  ).run(
+    id,
+    payload.username.trim(),
+    normalizedUsername,
+    payload.displayName.trim(),
+    hashPassword(payload.password),
+    timestamp,
+    timestamp,
+  );
+
+  return {
+    id,
+    username: payload.username.trim(),
+    displayName: payload.displayName.trim(),
+    role: "user" as const,
+    createdAt: timestamp,
+    updatedAt: timestamp,
+    lastLoginAt: null,
+  };
+}
+
 function nowIso() {
   return new Date().toISOString();
+}
+
+function addMonths(input: Date, months: number) {
+  const output = new Date(input);
+  output.setMonth(output.getMonth() + months);
+  return output;
 }
 
 function deriveStage(row: AttemptRow, answeredCount: number): WizardStage {
@@ -169,15 +421,48 @@ function getAnsweredCount(attemptId: string) {
   return row.count;
 }
 
-export function getAttemptSnapshot(attemptId: string): AttemptSnapshot | null {
+function getLatestAttemptIdForAccount(accountId: string) {
+  const db = getDb();
+  const row = db
+    .prepare(
+      `SELECT id
+       FROM assessment_attempts
+       WHERE account_id = ?
+       ORDER BY created_at DESC
+       LIMIT 1`,
+    )
+    .get(accountId) as { id: string } | undefined;
+
+  return row?.id ?? null;
+}
+
+export function resolveAttemptIdForAccount(accountId: string, requestedAttemptId: string | null) {
+  const db = getDb();
+
+  if (requestedAttemptId) {
+    const ownedAttempt = db
+      .prepare(`SELECT id FROM assessment_attempts WHERE id = ? AND account_id = ?`)
+      .get(requestedAttemptId, accountId) as { id: string } | undefined;
+
+    if (ownedAttempt) {
+      return ownedAttempt.id;
+    }
+  }
+
+  return getLatestAttemptIdForAccount(accountId);
+}
+
+export function getAttemptSnapshot(accountId: string, attemptId: string): AttemptSnapshot | null {
   const db = getDb();
   const attempt = db
     .prepare(
-      `SELECT id, status, instructions_acknowledged_at
-       FROM assessment_attempts
-       WHERE id = ?`,
+      `SELECT attempts.id, attempts.account_id, attempts.status, attempts.instructions_acknowledged_at, users.full_name
+       FROM assessment_attempts AS attempts
+       JOIN users ON users.id = attempts.user_id
+       WHERE attempts.id = ?
+         AND attempts.account_id = ?`,
     )
-    .get(attemptId) as AttemptRow | undefined;
+    .get(attemptId, accountId) as AttemptRow | undefined;
 
   if (!attempt) {
     return null;
@@ -191,68 +476,120 @@ export function getAttemptSnapshot(attemptId: string): AttemptSnapshot | null {
     stage: deriveStage(attempt, answeredCount),
     questionIndex: Math.min(answeredCount + 1, questionnaireContent.categories.length),
     instructionsAcknowledgedAt: attempt.instructions_acknowledged_at,
+    registrantName: attempt.full_name ?? null,
   };
 }
 
-export function createIdentityAttempt(payload: IdentityPayload) {
+export function createIdentityAttempt(accountId: string, payload: IdentityPayload) {
   const db = getDb();
   const emailNormalized = normalizeEmail(payload.email);
   const phoneNormalized = normalizePhone(payload.countryCode, payload.localPhoneNumber);
   const fullName = [payload.firstName, payload.middleName?.trim(), payload.lastName]
     .filter(Boolean)
     .join(" ");
-
-  const existing = db
+  const latestAccountAttempt = db
     .prepare(
-      `SELECT id
-       FROM users
-       WHERE email_normalized = ? OR phone_normalized = ?
+      `SELECT status, completed_at
+       FROM assessment_attempts
+       WHERE account_id = ?
+       ORDER BY created_at DESC
        LIMIT 1`,
     )
-    .get(emailNormalized, phoneNormalized) as { id: string } | undefined;
+    .get(accountId) as { status: AttemptStatus; completed_at: string | null } | undefined;
 
-  if (existing) {
+  if (latestAccountAttempt && latestAccountAttempt.status !== "completed") {
     return {
       duplicate: true as const,
-      message:
-        "This assessment has already been taken with the same email address or phone number.",
+      message: "An assessment for this account is already in progress. Continue the existing session.",
     };
   }
 
-  const userId = crypto.randomUUID();
+  const existingUsers = db
+    .prepare(
+      `SELECT id
+       FROM users
+       WHERE email_normalized = ? OR phone_normalized = ?`,
+    )
+    .all(emailNormalized, phoneNormalized) as Array<{ id: string }>;
+
+  const distinctExistingUserIds = [...new Set(existingUsers.map((item) => item.id))];
+  if (distinctExistingUserIds.length > 1) {
+    return {
+      duplicate: true as const,
+      message:
+        "This email and phone number are linked to different records. Please contact support to continue safely.",
+    };
+  }
+
+  const now = new Date();
+  const timestamp = now.toISOString();
+  const existingUserId = distinctExistingUserIds[0] ?? null;
+
+  if (existingUserId) {
+    const latestAttempt = db
+      .prepare(
+        `SELECT status, completed_at
+         FROM assessment_attempts
+         WHERE user_id = ?
+         ORDER BY created_at DESC
+         LIMIT 1`,
+      )
+      .get(existingUserId) as { status: AttemptStatus; completed_at: string | null } | undefined;
+
+    if (latestAttempt && latestAttempt.status !== "completed") {
+      return {
+        duplicate: true as const,
+        message:
+          "An assessment for this identity is already in progress. Continue the existing session.",
+      };
+    }
+
+    if (latestAttempt?.completed_at) {
+      const eligibleAt = addMonths(new Date(latestAttempt.completed_at), 6);
+      if (now < eligibleAt) {
+        return {
+          duplicate: true as const,
+          message: `Next VPK retest is available on ${eligibleAt.toLocaleDateString("en-CA")}.`,
+        };
+      }
+    }
+  }
+
+  const userId = existingUserId ?? crypto.randomUUID();
   const attemptId = crypto.randomUUID();
-  const timestamp = nowIso();
 
   const transaction = db.transaction(() => {
-    db.prepare(
-      `INSERT INTO users (
-        id, first_name, middle_name, last_name, full_name, date_of_birth, age, location,
-        email_original, email_normalized, country_code, phone_local_number, phone_original,
-        phone_normalized, created_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    ).run(
-      userId,
-      payload.firstName.trim(),
-      payload.middleName?.trim() || null,
-      payload.lastName.trim(),
-      fullName,
-      payload.dateOfBirth,
-      payload.age,
-      payload.location.trim(),
-      payload.email.trim(),
-      emailNormalized,
-      payload.countryCode,
-      payload.localPhoneNumber.replace(/\D/g, ""),
-      `${payload.countryCode} ${payload.localPhoneNumber.trim()}`,
-      phoneNormalized,
-      timestamp,
-    );
+    if (!existingUserId) {
+      db.prepare(
+        `INSERT INTO users (
+          id, first_name, middle_name, last_name, full_name, date_of_birth, age, location,
+          email_original, email_normalized, country_code, phone_local_number, phone_original,
+          phone_normalized, created_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      ).run(
+        userId,
+        payload.firstName.trim(),
+        payload.middleName?.trim() || null,
+        payload.lastName.trim(),
+        fullName,
+        payload.dateOfBirth,
+        payload.age,
+        payload.location.trim(),
+        payload.email.trim(),
+        emailNormalized,
+        payload.countryCode,
+        payload.localPhoneNumber.replace(/\D/g, ""),
+        `${payload.countryCode} ${payload.localPhoneNumber.trim()}`,
+        phoneNormalized,
+        timestamp,
+      );
+    }
 
     db.prepare(
       `INSERT INTO assessment_attempts (
-        id, user_id, status, instructions_acknowledged_at, started_at, completed_at, created_at
-      ) VALUES (?, ?, 'identity_created', NULL, NULL, NULL, ?)`,
-    ).run(attemptId, userId, timestamp);
+        id, account_id, user_id, status, instructions_acknowledged_at, started_at, completed_at, created_at
+      ) VALUES (?, ?, ?, 'identity_created', NULL, NULL, NULL, ?)`,
+    ).run(attemptId, accountId, userId, timestamp);
   });
 
   transaction();
@@ -284,15 +621,20 @@ export function acknowledgeInstructions(attemptId: string) {
   return acknowledgedAt;
 }
 
-function assertAssessmentAccess(attemptId: string) {
+function getOwnedAttempt(accountId: string, attemptId: string) {
   const db = getDb();
-  const attempt = db
+  return db
     .prepare(
-      `SELECT id, status, instructions_acknowledged_at
+      `SELECT id, account_id, status, instructions_acknowledged_at
        FROM assessment_attempts
-       WHERE id = ?`,
+       WHERE id = ?
+         AND account_id = ?`,
     )
-    .get(attemptId) as AttemptRow | undefined;
+    .get(attemptId, accountId) as AttemptRow | undefined;
+}
+
+function assertAssessmentAccess(accountId: string, attemptId: string) {
+  const attempt = getOwnedAttempt(accountId, attemptId);
 
   if (!attempt) {
     throw new Error("Assessment attempt not found.");
@@ -309,9 +651,15 @@ function assertAssessmentAccess(attemptId: string) {
   return attempt;
 }
 
-export function getQuestionPayload(attemptId: string, index: number): QuestionPayload {
+export function getQuestionPayload(accountId: string, attemptId: string, index: number): QuestionPayload {
   const db = getDb();
-  assertAssessmentAccess(attemptId);
+  assertAssessmentAccess(accountId, attemptId);
+  const answeredCount = getAnsweredCount(attemptId);
+  const maximumVisibleIndex = Math.min(answeredCount + 1, questionnaireContent.categories.length);
+
+  if (index < 1 || index > maximumVisibleIndex) {
+    throw new Error("That question is not available yet.");
+  }
 
   const category = questionnaireContent.categories[index - 1];
   if (!category) {
@@ -347,13 +695,14 @@ export function getQuestionPayload(attemptId: string, index: number): QuestionPa
 }
 
 export function saveResponse(
+  accountId: string,
   attemptId: string,
   categoryId: string,
   lifetimeOptionId: string,
   presentOptionId: string,
 ) {
   const db = getDb();
-  const attempt = assertAssessmentAccess(attemptId);
+  const attempt = assertAssessmentAccess(accountId, attemptId);
   const category = questionnaireContent.categories.find((item) => item.id === categoryId);
 
   if (!category) {
@@ -402,9 +751,9 @@ export function saveResponse(
   };
 }
 
-export function completeAssessment(attemptId: string): ResultPayload {
+export function completeAssessment(accountId: string, attemptId: string): ResultPayload {
   const db = getDb();
-  assertAssessmentAccess(attemptId);
+  assertAssessmentAccess(accountId, attemptId);
 
   const responses = db
     .prepare(
@@ -420,7 +769,7 @@ export function completeAssessment(attemptId: string): ResultPayload {
     }>;
 
   if (responses.length !== questionnaireContent.categories.length) {
-    throw new Error("All 40 categories must be answered before results can be shown.");
+    throw new Error(`All ${questionnaireContent.categories.length} categories must be answered before results can be shown.`);
   }
 
   const completedAt = nowIso();
@@ -471,7 +820,10 @@ export function completeAssessment(attemptId: string): ResultPayload {
   return result;
 }
 
-export function getResultByAttemptId(attemptId: string): ResultPayload | null {
+export function getResultByAttemptId(accountId: string, attemptId: string): ResultPayload | null {
+  if (!getOwnedAttempt(accountId, attemptId)) {
+    throw new Error("Assessment attempt not found.");
+  }
   const db = getDb();
   const row = db
     .prepare(
