@@ -775,6 +775,12 @@ button {
   text-align: center;
 }
 
+.selection-chip--same {
+  grid-column: 1 / -1;
+  min-height: 48px;
+  background: rgba(251, 246, 236, 0.94);
+}
+
 .option-list,
 .totals-list {
   display: grid;

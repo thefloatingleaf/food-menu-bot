@@ -984,6 +984,18 @@ export function AssessmentApp({
                               >
                                 <span className="selection-chip__label">{question.presentLabel}</span>
                               </button>
+                              <button
+                                type="button"
+                                className={`selection-chip selection-chip--same ${lifetimeSelection === option.id && presentSelection === option.id ? "selection-chip--selected" : ""}`}
+                                onClick={() => {
+                                  setLifetimeSelection(option.id);
+                                  setPresentSelection(option.id);
+                                }}
+                                aria-pressed={lifetimeSelection === option.id && presentSelection === option.id}
+                                aria-label={`Set both to: ${option.text}`}
+                              >
+                                <span className="selection-chip__label">Set Both</span>
+                              </button>
                             </div>
                           </div>
                         ))}
