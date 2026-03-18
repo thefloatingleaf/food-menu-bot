@@ -278,16 +278,24 @@ button {
   display: grid;
   gap: 1rem;
   padding: 1.35rem 1.5rem 1.4rem 1.35rem;
-  overflow: hidden;
-  border-radius: 2.75rem;
+  overflow: visible;
+  isolation: isolate;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.opening-stage__copy::before {
+  content: "";
+  position: absolute;
+  inset: -0.35rem;
+  z-index: -1;
+  border-radius: 1.55rem;
   background: rgba(255, 248, 240, 0.58);
   border: 1px solid rgba(129, 104, 73, 0.2);
   box-shadow: 0 16px 34px rgba(86, 63, 38, 0.1);
   backdrop-filter: blur(12px);
-}
-
-.opening-stage__copy::before {
-  display: none;
 }
 
 .opening-stage__lead {
@@ -927,11 +935,11 @@ button {
     max-width: none;
     gap: 0.88rem;
     padding: 1rem 1rem 1.05rem;
-    border-radius: 2rem;
   }
 
   .opening-stage__copy::before {
-    display: none;
+    inset: -0.25rem;
+    border-radius: 1.35rem;
   }
 
   .opening-stage__login-panel {
