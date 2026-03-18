@@ -274,10 +274,11 @@ button {
 
 .opening-stage__copy {
   position: relative;
-  width: min(100%, 21.75rem);
+  width: min(100%, 25rem);
   display: grid;
   gap: 1rem;
   padding: 1.15rem 1.25rem 1.1rem 0.4rem;
+  overflow: hidden;
 }
 
 .opening-stage__copy::before {
@@ -323,11 +324,12 @@ button {
   display: grid;
   gap: 0.1em;
   font-family: var(--font-display), serif;
-  font-size: clamp(2.65rem, 3.3vw, 4.25rem);
+  font-size: clamp(2.2rem, 2.9vw, 3.65rem);
   line-height: 0.93;
-  letter-spacing: 0.035em;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
   color: #3d2c22;
+  max-width: 100%;
 }
 
 .opening-stage__title span {
@@ -399,6 +401,11 @@ button {
 .opening-stage__login-panel .input {
   background: rgba(255, 248, 240, 0.58);
   border-color: rgba(129, 104, 73, 0.2);
+}
+
+.opening-stage__login-panel .form-grid {
+  width: min(100%, 15rem);
+  margin-left: auto;
 }
 
 .opening-stage__login-panel .input::placeholder {
@@ -962,7 +969,7 @@ button {
   }
 
   .opening-stage__title {
-    font-size: clamp(2.25rem, 10vw, 3.4rem);
+    font-size: clamp(1.82rem, 7.6vw, 2.75rem);
   }
 
   .opening-stage__summary {
