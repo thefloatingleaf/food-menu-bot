@@ -973,7 +973,7 @@ export function AssessmentApp({
                                 aria-pressed={lifetimeSelection === option.id}
                                 aria-label={`${question.lifetimeLabel}: ${option.text}`}
                               >
-                                <span className="selection-chip__label">{question.lifetimeLabel}</span>
+                                <span className="selection-chip__label">Select</span>
                               </button>
                               <button
                                 type="button"
@@ -982,7 +982,7 @@ export function AssessmentApp({
                                 aria-pressed={presentSelection === option.id}
                                 aria-label={`${question.presentLabel}: ${option.text}`}
                               >
-                                <span className="selection-chip__label">{question.presentLabel}</span>
+                                <span className="selection-chip__label">Select</span>
                               </button>
                               <button
                                 type="button"
