@@ -953,38 +953,40 @@ export function AssessmentApp({
                     <div className="status-card status-card--highlight">
                       <p>If none of the options fits perfectly, choose the option that is the closest match.</p>
                     </div>
-                    <div className="tracks">
-                      <div className="track-card">
-                        <p className="group-label">{question.lifetimeLabel}</p>
-                        <div className="option-list" role="radiogroup" aria-label={question.lifetimeLabel}>
-                          {question.options.map((option) => (
-                            <button
-                              key={option.id}
-                              type="button"
-                              className={`option-card ${lifetimeSelection === option.id ? "option-card--selected" : ""}`}
-                              onClick={() => setLifetimeSelection(option.id)}
-                              aria-pressed={lifetimeSelection === option.id}
-                            >
-                              <span className="option-card__title">{option.text}</span>
-                            </button>
-                          ))}
-                        </div>
+                    <div className="selection-board" role="group" aria-label={`${question.category.title} selections`}>
+                      <div className="selection-board__header" aria-hidden="true">
+                        <span className="selection-board__spacer" />
+                        <span className="selection-board__label">{question.lifetimeLabel}</span>
+                        <span className="selection-board__label">{question.presentLabel}</span>
                       </div>
-                      <div className="track-card">
-                        <p className="group-label">{question.presentLabel}</p>
-                        <div className="option-list" role="radiogroup" aria-label={question.presentLabel}>
-                          {question.options.map((option) => (
-                            <button
-                              key={option.id}
-                              type="button"
-                              className={`option-card ${presentSelection === option.id ? "option-card--selected" : ""}`}
-                              onClick={() => setPresentSelection(option.id)}
-                              aria-pressed={presentSelection === option.id}
-                            >
+                      <div className="selection-list">
+                        {question.options.map((option) => (
+                          <div className="selection-option" key={option.id}>
+                            <div className="selection-option__text">
                               <span className="option-card__title">{option.text}</span>
-                            </button>
-                          ))}
-                        </div>
+                            </div>
+                            <div className="selection-option__controls">
+                              <button
+                                type="button"
+                                className={`selection-chip ${lifetimeSelection === option.id ? "selection-chip--selected" : ""}`}
+                                onClick={() => setLifetimeSelection(option.id)}
+                                aria-pressed={lifetimeSelection === option.id}
+                                aria-label={`${question.lifetimeLabel}: ${option.text}`}
+                              >
+                                <span className="selection-chip__label">{question.lifetimeLabel}</span>
+                              </button>
+                              <button
+                                type="button"
+                                className={`selection-chip ${presentSelection === option.id ? "selection-chip--selected" : ""}`}
+                                onClick={() => setPresentSelection(option.id)}
+                                aria-pressed={presentSelection === option.id}
+                                aria-label={`${question.presentLabel}: ${option.text}`}
+                              >
+                                <span className="selection-chip__label">{question.presentLabel}</span>
+                              </button>
+                            </div>
+                          </div>
+                        ))}
                       </div>
                     </div>
                     <div className="button-row">

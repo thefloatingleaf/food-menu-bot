@@ -690,6 +690,91 @@ button {
   border: 1px solid rgba(129, 104, 73, 0.14);
 }
 
+.selection-board {
+  --pick-col-width: clamp(112px, 14vw, 150px);
+  display: grid;
+  gap: 12px;
+}
+
+.selection-board__header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--pick-col-width) var(--pick-col-width);
+  gap: 12px;
+  align-items: center;
+  padding: 0 8px;
+}
+
+.selection-board__spacer {
+  min-width: 0;
+}
+
+.selection-board__label {
+  font-size: 0.88rem;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.selection-list {
+  display: grid;
+  gap: 12px;
+}
+
+.selection-option {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--pick-col-width) var(--pick-col-width);
+  gap: 12px;
+  align-items: stretch;
+  padding: 16px 18px;
+  border-radius: 22px;
+  border: 1px solid rgba(129, 104, 73, 0.12);
+  background: rgba(255, 252, 245, 0.96);
+}
+
+.selection-option__text {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.selection-option__controls {
+  display: grid;
+  grid-template-columns: var(--pick-col-width) var(--pick-col-width);
+  gap: 12px;
+}
+
+.selection-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+  width: 100%;
+  padding: 0 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(129, 104, 73, 0.12);
+  background: rgba(255, 252, 245, 0.88);
+  color: var(--foreground);
+  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+}
+
+.selection-chip:hover {
+  transform: translateY(-1px);
+}
+
+.selection-chip--selected {
+  background: linear-gradient(180deg, rgba(246, 232, 204, 0.98), rgba(255, 250, 239, 0.92));
+  border-color: rgba(184, 127, 50, 0.48);
+  box-shadow: 0 12px 24px rgba(184, 127, 50, 0.12);
+}
+
+.selection-chip__label {
+  font-size: 0.86rem;
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: center;
+}
+
 .option-list,
 .totals-list {
   display: grid;
@@ -722,6 +807,8 @@ button {
 .option-card__title {
   font-weight: 700;
   line-height: 1.5;
+  overflow-wrap: anywhere;
+  word-break: normal;
 }
 
 .totals-item {
@@ -1027,6 +1114,24 @@ button {
   .details-hero__single-line {
     white-space: nowrap;
     font-size: clamp(0.7rem, 2vw, 1rem);
+  }
+
+  .selection-board__header {
+    display: none;
+  }
+
+  .selection-option {
+    grid-template-columns: 1fr;
+  }
+
+  .selection-option__controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .selection-chip {
+    min-height: 52px;
   }
 
   .privacy-watermark {
