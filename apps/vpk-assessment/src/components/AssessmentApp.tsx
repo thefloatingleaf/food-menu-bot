@@ -66,7 +66,6 @@ const emptyAccountForm: AccountCreationForm = {
   password: "",
 };
 
-const openingHeader = "Constitution assessment, done with care.";
 const openingHeadline = "AYURVEDIC PRAKRITI ASSESSMENT";
 const openingSummaryLines = [
   "Secure login, guided instructions, one category at a time, and a final",
@@ -756,39 +755,8 @@ export function AssessmentApp({
                 sizes="100vw"
               />
             </div>
-            <div className="opening-stage__layout">
-              <div className="opening-stage__zone opening-stage__zone--left">
-                <div className="opening-stage__copy">
-                  <p className="opening-stage__lead">{openingHeader}</p>
-                  <h1 className="opening-stage__title" aria-label={openingHeadline}>
-                    <span>AYURVEDIC</span>
-                    <span>PRAKRITI</span>
-                    <span>ASSESSMENT</span>
-                  </h1>
-                  <div className="opening-stage__summary">
-                    {openingSummaryLines.map((line) => (
-                      <p key={line}>{line}</p>
-                    ))}
-                  </div>
-                  <div className="opening-stage__verse">
-                    <div className="opening-stage__sanskrit" lang="sa">
-                      {verseSanskrit.map((line) => (
-                        <p key={line}>{line}</p>
-                      ))}
-                    </div>
-                    <div className="opening-stage__transliteration">
-                      {verseTransliteration.map((line) => (
-                        <p key={line}>{line}</p>
-                      ))}
-                    </div>
-                    <p className="opening-stage__note">
-                      Logged in as {account.displayName}. This view is watermarked and guarded against copy, print, and casual capture.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="opening-stage__zone opening-stage__zone--center" aria-hidden="true" />
-              <div className="opening-stage__zone opening-stage__zone--right">
+            <div className="opening-stage__layout opening-stage__layout--signed-in">
+              <div className="opening-stage__zone opening-stage__zone--right opening-stage__zone--signed-in">
                 <div className="opening-stage__cta stack opening-stage__cta-stack">
                   <button className="button button--primary" type="button" onClick={handleOpeningContinue}>
                     {resumeStage && resumeStage !== "opening" ? "Resume assessment" : "Begin assessment"}
