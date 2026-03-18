@@ -793,9 +793,6 @@ export function AssessmentApp({
                   <button className="button button--primary" type="button" onClick={handleOpeningContinue}>
                     {resumeStage && resumeStage !== "opening" ? "Resume assessment" : "Begin assessment"}
                   </button>
-                  <div className="status-card">
-                    <p className="muted">Text copying is disabled in the assessment view. Browser screenshots are discouraged with watermarking but cannot be fully blocked by web technology.</p>
-                  </div>
                 </div>
               </div>
             </div>
