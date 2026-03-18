@@ -288,6 +288,15 @@ button {
   border-radius: 2rem;
   background:
     linear-gradient(
+      180deg,
+      rgba(245, 239, 228, 0) 0%,
+      rgba(245, 239, 228, 0.28) 10%,
+      rgba(245, 239, 228, 0.84) 24%,
+      rgba(245, 239, 228, 0.84) 76%,
+      rgba(245, 239, 228, 0.24) 90%,
+      rgba(245, 239, 228, 0) 100%
+    ),
+    linear-gradient(
       90deg,
       rgba(245, 239, 228, 0) 0%,
       rgba(245, 239, 228, 0.36) 8%,
@@ -380,7 +389,7 @@ button {
   box-shadow: none;
   backdrop-filter: none;
   padding: 0;
-  margin-left: clamp(-1.5rem, -2vw, -0.4rem);
+  margin-left: clamp(4.75rem, 6vw, 6.2rem);
 }
 
 .opening-stage__login-panel::after {
@@ -394,6 +403,10 @@ button {
 
 .opening-stage__login-panel .input::placeholder {
   color: rgba(84, 66, 53, 0.72);
+}
+
+.opening-stage__login-panel .button-row {
+  justify-content: flex-end;
 }
 
 .sr-only {
