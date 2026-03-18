@@ -105,7 +105,7 @@ class FestivalSpecialMenuTests(unittest.TestCase):
                         "sikh_hi": [],
                         "suppress_regular_menu": True,
                         "special_menu_note_hi": (
-                            "Day 1 - Maa Shailputri: Desi ghee विशेष रूप से ग्रहण या अर्पित करें।"
+                            "नवरात्रि दिवस 1, माँ शैलपुत्री: आज विशेष रूप से देसी घी ग्रहण करें या भोग में अर्पित करें।"
                         ),
                     }
                 ]
@@ -116,7 +116,7 @@ class FestivalSpecialMenuTests(unittest.TestCase):
         self.assertTrue(info.suppress_regular_menu)
         self.assertEqual(
             info.special_menu_note_hi,
-            "Day 1 - Maa Shailputri: Desi ghee विशेष रूप से ग्रहण या अर्पित करें।",
+            "नवरात्रि दिवस 1, माँ शैलपुत्री: आज विशेष रूप से देसी घी ग्रहण करें या भोग में अर्पित करें।",
         )
 
     def test_format_special_menu_note_line_uses_special_note(self) -> None:
@@ -124,12 +124,12 @@ class FestivalSpecialMenuTests(unittest.TestCase):
             hindu_hi=["चैत्र नवरात्रि"],
             sikh_hi=[],
             suppress_regular_menu=True,
-            special_menu_note_hi="Day 8 - Maa Mahagauri: Coconut विशेष रूप से ग्रहण या अर्पित करें।",
+            special_menu_note_hi="नवरात्रि दिवस 8, माँ महागौरी: आज विशेष रूप से नारियल ग्रहण करें या भोग में अर्पित करें।",
         )
 
         self.assertEqual(
             generate_menu.format_special_menu_note_line(info),
-            "*विशेष पारंपरिक सेवन/भोग:* Day 8 - Maa Mahagauri: Coconut विशेष रूप से ग्रहण या अर्पित करें।",
+            "*विशेष पारंपरिक सेवन/भोग:* नवरात्रि दिवस 8, माँ महागौरी: आज विशेष रूप से नारियल ग्रहण करें या भोग में अर्पित करें।",
         )
 
 

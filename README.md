@@ -115,7 +115,7 @@ python3 generate_menu.py --bootstrap-weather-tags
       "hindu_hi": ["चैत्र नवरात्रि"],
       "sikh_hi": [],
       "suppress_regular_menu": true,
-      "special_menu_note_hi": "Day 1 - Maa Shailputri: Desi ghee विशेष रूप से ग्रहण या अर्पित करें।"
+      "special_menu_note_hi": "नवरात्रि दिवस 1, माँ शैलपुत्री: आज विशेष रूप से देसी घी ग्रहण करें या भोग में अर्पित करें।"
     }
   ]
 }
