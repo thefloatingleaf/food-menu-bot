@@ -580,6 +580,10 @@ button {
   gap: 12px;
 }
 
+.button-row--end {
+  justify-content: flex-end;
+}
+
 .button {
   display: inline-flex;
   align-items: center;

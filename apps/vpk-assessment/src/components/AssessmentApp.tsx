@@ -600,11 +600,11 @@ export function AssessmentApp({
                       {loginErrors.password ? <p className="error-text">{loginErrors.password}</p> : null}
                     </div>
                     {loginError ? <p className="error-text">{loginError}</p> : null}
-                    <div className="button-row">
-                      <button className="button button--primary" type="submit" disabled={loginSubmitting}>
-                        {loginSubmitting ? "Signing in..." : "Login"}
-                      </button>
-                    </div>
+                  <div className="button-row button-row--end">
+                    <button className="button button--primary" type="submit" disabled={loginSubmitting}>
+                      {loginSubmitting ? "Signing in..." : "Login"}
+                    </button>
+                  </div>
                   </form>
                 </div>
               </div>
@@ -701,7 +701,7 @@ export function AssessmentApp({
                   </div>
                   {accountFormError ? <p className="error-text">{accountFormError}</p> : null}
                   {accountFormSuccess ? <p className="success-text">{accountFormSuccess}</p> : null}
-                  <div className="button-row">
+                  <div className="button-row button-row--end">
                     <button className="button button--primary" type="submit" disabled={accountSubmitting}>
                       {accountSubmitting ? "Creating..." : "Create Account"}
                     </button>
@@ -734,7 +734,7 @@ export function AssessmentApp({
                           <p className="muted">Completed tests: {managedAccount.completedAttempts}</p>
                           <p className="muted">Available attempts: {managedAccount.availableAttempts}</p>
                           <p className="muted">{describeWindowStatus(managedAccount)}</p>
-                          <div className="button-row">
+                          <div className="button-row button-row--end">
                             <button
                               className="button button--secondary"
                               type="button"
@@ -847,7 +847,7 @@ export function AssessmentApp({
                         <input className="input" id="localPhoneNumber" type="tel" inputMode="numeric" value={identityForm.localPhoneNumber} onChange={(event) => updateField("localPhoneNumber", event.target.value)} />
                         {errors.localPhoneNumber ? <p className="error-text">{errors.localPhoneNumber}</p> : null}
                       </div>
-                      <div className="button-row">
+                      <div className="button-row button-row--end">
                         <button className="button button--primary" type="submit">Begin with questionnaire</button>
                       </div>
                     </form>
@@ -858,7 +858,7 @@ export function AssessmentApp({
                   <div className="stack">
                     <h2 className="section-title">This assessment is already on record</h2>
                     <p className="muted">{duplicateMessage}</p>
-                    <div className="button-row">
+                    <div className="button-row button-row--end">
                       <button className="button button--secondary" type="button" onClick={() => goToStage("identity")}>Review details</button>
                     </div>
                   </div>
@@ -902,7 +902,7 @@ export function AssessmentApp({
                         <p className="muted">Private assessment mode is active for {account.displayName}. Copy, print, and context actions are disabled in this browser session.</p>
                       </div>
                     ) : null}
-                    <div className="button-row">
+                    <div className="button-row button-row--end">
                       <button className="button button--primary" type="button" onClick={handleAcknowledge}>
                         I have read and understood
                       </button>
@@ -927,7 +927,7 @@ export function AssessmentApp({
                         <p className="muted">This attempt must be completed before {new Date(accessWindowExpiresAt).toLocaleString()}.</p>
                       </div>
                     ) : null}
-                    <div className="button-row">
+                    <div className="button-row button-row--end">
                       <button className="button button--primary" type="button" onClick={() => void enterAssessment()}>
                         Start Test
                       </button>
