@@ -755,11 +755,13 @@ export function AssessmentApp({
                 sizes="100vw"
               />
             </div>
-            <div className="opening-stage__layout opening-stage__layout--signed-in">
-              <div className="opening-stage__zone opening-stage__zone--right opening-stage__zone--signed-in">
+            <div className="opening-stage__layout">
+              <div className="opening-stage__zone opening-stage__zone--left" aria-hidden="true" />
+              <div className="opening-stage__zone opening-stage__zone--center" aria-hidden="true" />
+              <div className="opening-stage__zone opening-stage__zone--right">
                 <div className="opening-stage__cta stack opening-stage__cta-stack">
                   <button className="button button--primary" type="button" onClick={handleOpeningContinue}>
-                    {resumeStage && resumeStage !== "opening" ? "Resume assessment" : "Begin assessment"}
+                    Begin Assessment
                   </button>
                 </div>
               </div>
