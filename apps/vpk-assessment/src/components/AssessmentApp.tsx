@@ -916,9 +916,9 @@ export function AssessmentApp({
                     <p className="muted">
                       You will answer one category at a time. Each screen requires one choice for Lifetime and one choice for Present.
                     </p>
-                    <p className="muted">
-                      If none of the options fits perfectly, choose the option that is the closest match.
-                    </p>
+                    <div className="status-card status-card--highlight">
+                      <p>If none of the options fits perfectly, choose the option that is the closest match.</p>
+                    </div>
                     <div className="status-card">
                       <p className="muted">Your acknowledgement has been recorded. Results remain hidden until the final step.</p>
                     </div>
@@ -949,6 +949,9 @@ export function AssessmentApp({
                       <span className="question-counter">Question {question.index} of {question.total}</span>
                       <h2 className="question-title">{question.category.title}</h2>
                       {question.category.note ? <p className="muted">{question.category.note}</p> : null}
+                    </div>
+                    <div className="status-card status-card--highlight">
+                      <p>If none of the options fits perfectly, choose the option that is the closest match.</p>
                     </div>
                     <div className="tracks">
                       <div className="track-card">
