@@ -160,6 +160,10 @@ export function AssessmentApp({
   const derivedAge = identityForm.dateOfBirth
     ? deriveAgeFromDateOfBirth(identityForm.dateOfBirth)
     : null;
+  const instructionLines = useMemo(
+    () => instructionsText.split("\n").map((line) => line.trim()).filter(Boolean),
+    [instructionsText],
+  );
   const watermarkSeed = useMemo(
     () =>
       account && protectionsActive
@@ -878,7 +882,15 @@ export function AssessmentApp({
                   <div className="stack">
                     <h2 className="section-title">Instructions</h2>
                     <div className="status-card">
-                      <p className="muted">{instructionsText || "Loading instructions..."}</p>
+                      {instructionLines.length > 0 ? (
+                        <ul className="instruction-list muted">
+                          {instructionLines.map((line) => (
+                            <li key={line}>{line}</li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <p className="muted">Loading instructions...</p>
+                      )}
                     </div>
                     {accessWindowExpiresAt ? (
                       <div className="status-card">

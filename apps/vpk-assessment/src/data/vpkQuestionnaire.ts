@@ -5,8 +5,17 @@ export const scoringConfig = {
 } as const;
 
 export const questionnaireContent: QuestionnaireContent = {
-  instructionText:
-    "Look over the questionnaire below and choose one option for each category in two separate columns: your lifetime tendencies and your present tendencies. For each category, you will therefore give one answer for Lifetime and one answer for Present. Choose honestly and calmly. Take your time. Think freely. Sit with a calm mind. Do not be prejudiced. Be truthful about your tendencies. Read each statement carefully. Observations are assessed against Vata, Pitta, and Kapha across body build, physiology, mental tendencies, and daily habits. This test can be taken only once. No conclusion will be shown before the end. For each category, select exactly one option for Lifetime and exactly one option for Present. Results will be calculated only after the last question. If two constitutions are very close in score, the result may be treated as a mixed or dual type. The system must record that the user has read and understood these instructions before permitting the test to start.",
+  instructionText: [
+    "Read each statement with care.",
+    "Choose one answer for Lifetime and one for Present.",
+    "Answer honestly, calmly and without preconception.",
+    "Consider build, habits, body and mind.",
+    "Only Admin may retake the test. Others may take it once.",
+    "No result is shown before the end.",
+    "Results appear only after the last question.",
+    "Close scores may indicate a mixed type.",
+    "You must confirm that you have read and understood these instructions before the test begins.",
+  ].join("\n"),
   categories: [
     { id: "body-frame", order: 1, title: "Body Frame", options: [{ id: "body-frame-v", text: "tall or short, thin; poorly developed physique", doshaKey: "V" }, { id: "body-frame-p", text: "medium height; moderately developed physique", doshaKey: "P" }, { id: "body-frame-k", text: "stout, stocky, big; well developed physique", doshaKey: "K" }] },
     { id: "body-weight", order: 2, title: "Body Weight", options: [{ id: "body-weight-v", text: "light, difficult to gain weight", doshaKey: "V" }, { id: "body-weight-p", text: "moderate weight", doshaKey: "P" }, { id: "body-weight-k", text: "heavy; gains weight easily", doshaKey: "K" }] },
