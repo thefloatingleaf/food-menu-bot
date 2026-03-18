@@ -990,11 +990,11 @@ button {
 }
 
 @media print {
-  body * {
+  .app-shell--protected * {
     visibility: hidden !important;
   }
 
-  body::before {
+  .app-shell--protected::before {
     content: "Printing is disabled for this protected assessment.";
     visibility: visible !important;
     position: fixed;

@@ -156,19 +156,20 @@ export function AssessmentApp({
   const [managedAccounts, setManagedAccounts] = useState<ManagedAccountSummary[]>(initialAccounts);
   const registrantName = initialSnapshot?.registrantName?.trim() || account?.displayName || "the registered person";
   const accessWindowExpiresAt = initialSnapshot?.accessWindowExpiresAt ?? null;
+  const protectionsActive = account?.role !== "admin";
   const derivedAge = identityForm.dateOfBirth
     ? deriveAgeFromDateOfBirth(identityForm.dateOfBirth)
     : null;
   const watermarkSeed = useMemo(
     () =>
-      account
+      account && protectionsActive
         ? Array.from({ length: 12 }, (_, index) => `${account.username} • ${account.displayName} • Private VPK • ${index + 1}`)
         : [],
-    [account],
+    [account, protectionsActive],
   );
 
   useEffect(() => {
-    if (!account) {
+    if (!account || !protectionsActive) {
       return;
     }
 
@@ -206,7 +207,7 @@ export function AssessmentApp({
       document.removeEventListener("selectstart", preventProtectedAction);
       document.removeEventListener("keydown", handleKeydown);
     };
-  }, [account]);
+  }, [account, protectionsActive]);
 
   function updateField<Key extends keyof IdentityForm>(key: Key, value: IdentityForm[Key]) {
     setIdentityForm((current) => ({ ...current, [key]: value }));
@@ -611,12 +612,16 @@ export function AssessmentApp({
   }
 
   return (
-    <main className={`app-shell ${stage === "opening" ? "app-shell--opening" : ""} app-shell--protected`}>
-      <div className="privacy-watermark" aria-hidden="true">
-        {watermarkSeed.map((label) => (
-          <span key={label}>{label}</span>
-        ))}
-      </div>
+    <main
+      className={`app-shell ${stage === "opening" ? "app-shell--opening" : ""} ${protectionsActive ? "app-shell--protected" : ""}`}
+    >
+      {protectionsActive ? (
+        <div className="privacy-watermark" aria-hidden="true">
+          {watermarkSeed.map((label) => (
+            <span key={label}>{label}</span>
+          ))}
+        </div>
+      ) : null}
       <div className={`app-shell__toolbar ${stage === "opening" ? "app-shell__toolbar--opening" : ""}`}>
         <button
           className={`button button--home ${stage === "opening" && !adminPanelOpen ? "button--home-active" : ""}`}
@@ -880,9 +885,11 @@ export function AssessmentApp({
                         <p className="muted">This test window stays open until {new Date(accessWindowExpiresAt).toLocaleString()}.</p>
                       </div>
                     ) : null}
-                    <div className="status-card status-card--private">
-                      <p className="muted">Private assessment mode is active for {account.displayName}. Copy, print, and context actions are disabled in this browser session.</p>
-                    </div>
+                    {protectionsActive ? (
+                      <div className="status-card status-card--private">
+                        <p className="muted">Private assessment mode is active for {account.displayName}. Copy, print, and context actions are disabled in this browser session.</p>
+                      </div>
+                    ) : null}
                     <div className="button-row">
                       <button className="button button--primary" type="button" onClick={handleAcknowledge}>
                         I have read and understood
