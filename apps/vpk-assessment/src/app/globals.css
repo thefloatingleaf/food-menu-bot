@@ -212,7 +212,7 @@ button {
 .opening-stage {
   position: relative;
   width: 100vw;
-  min-height: 100svh;
+  min-height: max(100svh, calc(100vw / 1.5));
   margin: 0;
   overflow: hidden;
   isolation: isolate;
@@ -226,15 +226,15 @@ button {
 }
 
 .opening-stage__image {
-  object-fit: cover;
-  object-position: center 6%;
+  object-fit: contain;
+  object-position: center top;
   filter: saturate(1.04) brightness(0.98) contrast(1.01);
 }
 
 .opening-stage__layout {
   position: relative;
   z-index: 1;
-  min-height: 100svh;
+  min-height: max(100svh, calc(100vw / 1.5));
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   align-items: center;
@@ -266,9 +266,10 @@ button {
 }
 
 .opening-stage__zone--login-panel {
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   padding-right: 0;
+  padding-left: clamp(0.5rem, 2vw, 2.5rem);
 }
 
 .opening-stage__copy {
@@ -282,12 +283,20 @@ button {
 .opening-stage__copy::before {
   content: "";
   position: absolute;
-  inset: -1.05rem -0.3rem -1.15rem -1.1rem;
+  inset: -1.05rem -0.45rem -1.15rem -1.7rem;
   z-index: -1;
   border-radius: 2rem;
   background:
-    linear-gradient(90deg, rgba(245, 239, 228, 0.92) 0%, rgba(245, 239, 228, 0.76) 62%, rgba(245, 239, 228, 0.2) 84%, rgba(245, 239, 228, 0) 100%);
-  backdrop-filter: blur(2px);
+    linear-gradient(
+      90deg,
+      rgba(245, 239, 228, 0) 0%,
+      rgba(245, 239, 228, 0.36) 8%,
+      rgba(245, 239, 228, 0.86) 22%,
+      rgba(245, 239, 228, 0.8) 66%,
+      rgba(245, 239, 228, 0.26) 86%,
+      rgba(245, 239, 228, 0) 100%
+    );
+  backdrop-filter: blur(3px);
 }
 
 .opening-stage__lead {
@@ -371,6 +380,7 @@ button {
   box-shadow: none;
   backdrop-filter: none;
   padding: 0;
+  margin-left: clamp(-1.5rem, -2vw, -0.4rem);
 }
 
 .opening-stage__login-panel::after {
@@ -883,7 +893,7 @@ button {
   }
 
   .opening-stage__image {
-    object-position: center 12%;
+    object-position: center top;
   }
 
   .opening-stage__layout {
@@ -908,6 +918,7 @@ button {
 
   .opening-stage__zone--login-panel {
     justify-content: flex-start;
+    padding-left: 0;
   }
 
   .opening-stage__copy {
@@ -920,7 +931,17 @@ button {
   .opening-stage__copy::before {
     inset: -0.8rem -0.7rem -0.9rem -0.8rem;
     background:
-      linear-gradient(180deg, rgba(245, 239, 228, 0.86) 0%, rgba(245, 239, 228, 0.72) 48%, rgba(245, 239, 228, 0.2) 100%);
+      linear-gradient(
+        180deg,
+        rgba(245, 239, 228, 0.22) 0%,
+        rgba(245, 239, 228, 0.78) 18%,
+        rgba(245, 239, 228, 0.72) 56%,
+        rgba(245, 239, 228, 0.22) 100%
+      );
+  }
+
+  .opening-stage__login-panel {
+    margin-left: 0;
   }
 
   .opening-stage__lead {
