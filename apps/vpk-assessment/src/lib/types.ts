@@ -27,6 +27,13 @@ export type AttemptStatus =
   | "completed"
   | "blocked_duplicate";
 
+export type AttemptWindowStatus =
+  | "unlimited"
+  | "not-started"
+  | "active"
+  | "expired"
+  | "used";
+
 export type WizardStage =
   | "opening"
   | "identity"
@@ -81,6 +88,7 @@ export type AttemptSnapshot = {
   questionIndex: number;
   instructionsAcknowledgedAt: string | null;
   registrantName: string | null;
+  accessWindowExpiresAt: string | null;
 };
 
 export type AuthenticatedAccount = {
@@ -94,4 +102,10 @@ export type ManagedAccountSummary = AuthenticatedAccount & {
   createdAt: string;
   updatedAt: string;
   lastLoginAt: string | null;
+  attemptsUsed: number;
+  completedAttempts: number;
+  availableAttempts: number | null;
+  accessWindowStartedAt: string | null;
+  accessWindowExpiresAt: string | null;
+  windowStatus: AttemptWindowStatus;
 };

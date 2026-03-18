@@ -10,6 +10,7 @@ import type {
   AccountRole,
   AttemptSnapshot,
   AttemptStatus,
+  AttemptWindowStatus,
   AuthenticatedAccount,
   ManagedAccountSummary,
   QuestionPayload,
@@ -38,6 +39,28 @@ type AccountRow = {
   created_at: string;
   updated_at: string;
   last_login_at: string | null;
+  available_attempts: number;
+  window_started_at: string | null;
+  window_expires_at: string | null;
+};
+
+type LatestAttemptRow = {
+  id: string;
+  status: AttemptStatus;
+  completed_at: string | null;
+  created_at: string;
+};
+
+type AccountAssessmentState = {
+  account: AccountRow;
+  latestAttempt: LatestAttemptRow | null;
+  attemptsUsed: number;
+  completedAttempts: number;
+  availableAttempts: number | null;
+  windowStartedAt: string | null;
+  windowExpiresAt: string | null;
+  windowExpired: boolean;
+  windowStatus: AttemptWindowStatus;
 };
 
 type IdentityPayload = {
@@ -55,6 +78,7 @@ type IdentityPayload = {
 const globalForDb = globalThis as unknown as { vpkDb?: DbInstance };
 const dbFilePath =
   process.env.VPK_DB_PATH ?? path.join(process.cwd(), "data", "vpk-assessment.sqlite");
+const USER_ATTEMPT_WINDOW_HOURS = 6;
 
 registerScoringCategories(questionnaireContent.categories);
 
@@ -75,7 +99,10 @@ function createSchema(db: DbInstance) {
       password_hash TEXT NOT NULL,
       created_at TEXT NOT NULL,
       updated_at TEXT NOT NULL,
-      last_login_at TEXT
+      last_login_at TEXT,
+      available_attempts INTEGER NOT NULL DEFAULT 1,
+      window_started_at TEXT,
+      window_expires_at TEXT
     );
 
     CREATE TABLE IF NOT EXISTS auth_sessions (
@@ -159,6 +186,9 @@ function createSchema(db: DbInstance) {
     ["password_hash", "TEXT"],
     ["updated_at", "TEXT"],
     ["last_login_at", "TEXT"],
+    ["available_attempts", "INTEGER NOT NULL DEFAULT 1"],
+    ["window_started_at", "TEXT"],
+    ["window_expires_at", "TEXT"],
   ] as const;
 
   for (const [name, type] of optionalAuthAccountColumns) {
@@ -166,6 +196,12 @@ function createSchema(db: DbInstance) {
       db.exec(`ALTER TABLE auth_accounts ADD COLUMN ${name} ${type};`);
     }
   }
+
+  db.exec(`
+    UPDATE auth_accounts
+    SET available_attempts = COALESCE(available_attempts, CASE WHEN role = 'admin' THEN 999999 ELSE 1 END)
+    WHERE available_attempts IS NULL OR available_attempts < 0;
+  `);
 
   const userColumns = new Set(
     (db.prepare(`PRAGMA table_info(users)`).all() as Array<{ name: string }>).map(
@@ -217,8 +253,9 @@ function seedInitialAdmin(db: DbInstance) {
 
   db.prepare(
     `INSERT INTO auth_accounts (
-      id, username, username_normalized, display_name, role, password_hash, created_at, updated_at, last_login_at
-    ) VALUES (?, ?, ?, ?, 'admin', ?, ?, ?, NULL)`,
+      id, username, username_normalized, display_name, role, password_hash, created_at, updated_at, last_login_at,
+      available_attempts, window_started_at, window_expires_at
+    ) VALUES (?, ?, ?, ?, 'admin', ?, ?, ?, NULL, 999999, NULL, NULL)`,
   ).run(
     crypto.randomUUID(),
     username,
@@ -254,6 +291,114 @@ function mapAccount(row: AccountRow): AuthenticatedAccount {
   };
 }
 
+function addHours(input: Date, hours: number) {
+  return new Date(input.getTime() + hours * 60 * 60 * 1000);
+}
+
+function getAccountRow(accountId: string) {
+  const db = getDb();
+  return db
+    .prepare(
+      `SELECT
+        id, username, username_normalized, display_name, role, password_hash,
+        created_at, updated_at, last_login_at, available_attempts, window_started_at, window_expires_at
+       FROM auth_accounts
+       WHERE id = ?`,
+    )
+    .get(accountId) as AccountRow | undefined;
+}
+
+function getLatestAttemptForAccount(db: DbInstance, accountId: string) {
+  return db
+    .prepare(
+      `SELECT id, status, completed_at, created_at
+       FROM assessment_attempts
+       WHERE account_id = ?
+       ORDER BY created_at DESC
+       LIMIT 1`,
+    )
+    .get(accountId) as LatestAttemptRow | undefined;
+}
+
+function getAttemptCountsForAccount(db: DbInstance, accountId: string) {
+  return db
+    .prepare(
+      `SELECT
+        COUNT(*) AS attempts_used,
+        SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END) AS completed_attempts
+       FROM assessment_attempts
+       WHERE account_id = ?`,
+    )
+    .get(accountId) as { attempts_used: number; completed_attempts: number | null };
+}
+
+function deriveWindowStatus(state: AccountAssessmentState): AttemptWindowStatus {
+  if (state.account.role === "admin") {
+    return "unlimited";
+  }
+
+  if (state.availableAttempts === 0) {
+    if (state.latestAttempt?.status === "completed") {
+      return "used";
+    }
+
+    if (state.windowExpired) {
+      return "expired";
+    }
+  }
+
+  if (!state.windowStartedAt || !state.windowExpiresAt) {
+    return "not-started";
+  }
+
+  return state.windowExpired ? "expired" : "active";
+}
+
+function getAccountAssessmentState(accountId: string) {
+  const db = getDb();
+  const account = getAccountRow(accountId);
+  if (!account) {
+    throw new Error("Account not found.");
+  }
+
+  const latestAttempt = getLatestAttemptForAccount(db, accountId) ?? null;
+  const counts = getAttemptCountsForAccount(db, accountId);
+  const windowExpired = Boolean(
+    account.window_expires_at && new Date(account.window_expires_at).getTime() < Date.now(),
+  );
+
+  const state: AccountAssessmentState = {
+    account,
+    latestAttempt,
+    attemptsUsed: counts.attempts_used,
+    completedAttempts: counts.completed_attempts ?? 0,
+    availableAttempts: account.role === "admin" ? null : account.available_attempts,
+    windowStartedAt: account.window_started_at,
+    windowExpiresAt: account.window_expires_at,
+    windowExpired,
+    windowStatus: "not-started",
+  };
+
+  state.windowStatus = deriveWindowStatus(state);
+  return state;
+}
+
+function maybeStartAssessmentWindow(db: DbInstance, account: AccountRow, startedAt: string) {
+  if (account.role === "admin" || account.available_attempts < 1 || account.window_started_at) {
+    return;
+  }
+
+  const expiresAt = addHours(new Date(startedAt), USER_ATTEMPT_WINDOW_HOURS).toISOString();
+  db.prepare(
+    `UPDATE auth_accounts
+     SET window_started_at = ?, window_expires_at = ?, updated_at = ?
+     WHERE id = ?`,
+  ).run(startedAt, expiresAt, startedAt, account.id);
+
+  account.window_started_at = startedAt;
+  account.window_expires_at = expiresAt;
+}
+
 function findAccountBySessionToken(sessionToken: string) {
   const db = getDb();
   const now = nowIso();
@@ -270,7 +415,10 @@ function findAccountBySessionToken(sessionToken: string) {
         accounts.password_hash,
         accounts.created_at,
         accounts.updated_at,
-        accounts.last_login_at
+        accounts.last_login_at,
+        accounts.available_attempts,
+        accounts.window_started_at,
+        accounts.window_expires_at
        FROM auth_sessions AS sessions
        JOIN auth_accounts AS accounts ON accounts.id = sessions.account_id
        WHERE sessions.id = ?
@@ -290,7 +438,8 @@ export function loginAccount(username: string, password: string) {
   const account = db
     .prepare(
       `SELECT
-        id, username, username_normalized, display_name, role, password_hash, created_at, updated_at, last_login_at
+        id, username, username_normalized, display_name, role, password_hash, created_at, updated_at, last_login_at,
+        available_attempts, window_started_at, window_expires_at
        FROM auth_accounts
        WHERE username_normalized = ?`,
     )
@@ -315,6 +464,8 @@ export function loginAccount(username: string, password: string) {
        SET last_login_at = ?, updated_at = ?
        WHERE id = ?`,
     ).run(createdAt, createdAt, account.id);
+
+    maybeStartAssessmentWindow(db, account, createdAt);
   });
 
   transaction();
@@ -323,7 +474,7 @@ export function loginAccount(username: string, password: string) {
     sessionToken,
     expiresAt,
     account: mapAccount({ ...account, last_login_at: createdAt, updated_at: createdAt }),
-    attemptId: getLatestAttemptIdForAccount(account.id),
+    attemptId: resolveAttemptIdForAccount(account.id, null),
   };
 }
 
@@ -337,18 +488,42 @@ export function listAccounts(): ManagedAccountSummary[] {
   const rows = db
     .prepare(
       `SELECT
-        id, username, username_normalized, display_name, role, password_hash, created_at, updated_at, last_login_at
+        id, username, username_normalized, display_name, role, password_hash, created_at, updated_at, last_login_at,
+        available_attempts, window_started_at, window_expires_at
        FROM auth_accounts
        ORDER BY role DESC, created_at ASC`,
     )
     .all() as AccountRow[];
 
-  return rows.map((row) => ({
-    ...mapAccount(row),
-    createdAt: row.created_at,
-    updatedAt: row.updated_at,
-    lastLoginAt: row.last_login_at,
-  }));
+  return rows.map((row) => {
+    const latestAttempt = getLatestAttemptForAccount(db, row.id) ?? null;
+    const counts = getAttemptCountsForAccount(db, row.id);
+    const state: AccountAssessmentState = {
+      account: row,
+      latestAttempt,
+      attemptsUsed: counts.attempts_used,
+      completedAttempts: counts.completed_attempts ?? 0,
+      availableAttempts: row.role === "admin" ? null : row.available_attempts,
+      windowStartedAt: row.window_started_at,
+      windowExpiresAt: row.window_expires_at,
+      windowExpired: Boolean(row.window_expires_at && new Date(row.window_expires_at).getTime() < Date.now()),
+      windowStatus: "not-started",
+    };
+    state.windowStatus = deriveWindowStatus(state);
+
+    return {
+      ...mapAccount(row),
+      createdAt: row.created_at,
+      updatedAt: row.updated_at,
+      lastLoginAt: row.last_login_at,
+      attemptsUsed: state.attemptsUsed,
+      completedAttempts: state.completedAttempts,
+      availableAttempts: state.availableAttempts,
+      accessWindowStartedAt: state.windowStartedAt,
+      accessWindowExpiresAt: state.windowExpiresAt,
+      windowStatus: state.windowStatus,
+    };
+  });
 }
 
 export function createManagedAccount(payload: { displayName: string; username: string; password: string }) {
@@ -367,8 +542,9 @@ export function createManagedAccount(payload: { displayName: string; username: s
 
   db.prepare(
     `INSERT INTO auth_accounts (
-      id, username, username_normalized, display_name, role, password_hash, created_at, updated_at, last_login_at
-    ) VALUES (?, ?, ?, ?, 'user', ?, ?, ?, NULL)`,
+      id, username, username_normalized, display_name, role, password_hash, created_at, updated_at, last_login_at,
+      available_attempts, window_started_at, window_expires_at
+    ) VALUES (?, ?, ?, ?, 'user', ?, ?, ?, NULL, 1, NULL, NULL)`,
   ).run(
     id,
     payload.username.trim(),
@@ -387,7 +563,38 @@ export function createManagedAccount(payload: { displayName: string; username: s
     createdAt: timestamp,
     updatedAt: timestamp,
     lastLoginAt: null,
+    attemptsUsed: 0,
+    completedAttempts: 0,
+    availableAttempts: 1,
+    accessWindowStartedAt: null,
+    accessWindowExpiresAt: null,
+    windowStatus: "not-started" as const,
   };
+}
+
+export function allowManagedAccountRetest(accountId: string) {
+  const db = getDb();
+  const account = getAccountRow(accountId);
+
+  if (!account) {
+    throw new Error("Account not found.");
+  }
+
+  if (account.role === "admin") {
+    throw new Error("Admin accounts do not need retest approval.");
+  }
+
+  const timestamp = nowIso();
+  db.prepare(
+    `UPDATE auth_accounts
+     SET available_attempts = CASE WHEN available_attempts < 1 THEN 1 ELSE available_attempts END,
+         window_started_at = NULL,
+         window_expires_at = NULL,
+         updated_at = ?
+     WHERE id = ?`,
+  ).run(timestamp, accountId);
+
+  return listAccounts().find((item) => item.id === accountId) ?? null;
 }
 
 function nowIso() {
@@ -421,35 +628,55 @@ function getAnsweredCount(attemptId: string) {
   return row.count;
 }
 
-function getLatestAttemptIdForAccount(accountId: string) {
-  const db = getDb();
-  const row = db
-    .prepare(
-      `SELECT id
-       FROM assessment_attempts
-       WHERE account_id = ?
-       ORDER BY created_at DESC
-       LIMIT 1`,
-    )
-    .get(accountId) as { id: string } | undefined;
-
-  return row?.id ?? null;
-}
-
 export function resolveAttemptIdForAccount(accountId: string, requestedAttemptId: string | null) {
   const db = getDb();
+  const state = getAccountAssessmentState(accountId);
 
   if (requestedAttemptId) {
     const ownedAttempt = db
-      .prepare(`SELECT id FROM assessment_attempts WHERE id = ? AND account_id = ?`)
-      .get(requestedAttemptId, accountId) as { id: string } | undefined;
+      .prepare(`SELECT id, status FROM assessment_attempts WHERE id = ? AND account_id = ?`)
+      .get(requestedAttemptId, accountId) as { id: string; status: AttemptStatus } | undefined;
 
     if (ownedAttempt) {
-      return ownedAttempt.id;
+      if (ownedAttempt.status !== "completed") {
+        if (state.account.role === "admin") {
+          return ownedAttempt.id;
+        }
+
+        if (!state.windowExpired && state.availableAttempts === 0) {
+          return ownedAttempt.id;
+        }
+      } else if (
+        state.account.role !== "admin" &&
+        state.availableAttempts === 0 &&
+        state.latestAttempt?.status === "completed"
+      ) {
+        return ownedAttempt.id;
+      }
     }
   }
 
-  return getLatestAttemptIdForAccount(accountId);
+  if (!state.latestAttempt) {
+    return null;
+  }
+
+  if (state.latestAttempt.status !== "completed") {
+    if (state.account.role === "admin") {
+      return state.latestAttempt.id;
+    }
+
+    if (!state.windowExpired && state.availableAttempts === 0) {
+      return state.latestAttempt.id;
+    }
+
+    return null;
+  }
+
+  if (state.account.role === "admin") {
+    return null;
+  }
+
+  return state.availableAttempts === 0 ? state.latestAttempt.id : null;
 }
 
 export function getAttemptSnapshot(accountId: string, attemptId: string): AttemptSnapshot | null {
@@ -469,6 +696,7 @@ export function getAttemptSnapshot(accountId: string, attemptId: string): Attemp
   }
 
   const answeredCount = getAnsweredCount(attemptId);
+  const state = getAccountAssessmentState(accountId);
 
   return {
     attemptId: attempt.id,
@@ -477,27 +705,55 @@ export function getAttemptSnapshot(accountId: string, attemptId: string): Attemp
     questionIndex: Math.min(answeredCount + 1, questionnaireContent.categories.length),
     instructionsAcknowledgedAt: attempt.instructions_acknowledged_at,
     registrantName: attempt.full_name ?? null,
+    accessWindowExpiresAt: state.account.role === "admin" ? null : state.windowExpiresAt,
   };
 }
 
 export function createIdentityAttempt(accountId: string, payload: IdentityPayload) {
   const db = getDb();
+  const state = getAccountAssessmentState(accountId);
   const emailNormalized = normalizeEmail(payload.email);
   const phoneNormalized = normalizePhone(payload.countryCode, payload.localPhoneNumber);
   const fullName = [payload.firstName, payload.middleName?.trim(), payload.lastName]
     .filter(Boolean)
     .join(" ");
-  const latestAccountAttempt = db
-    .prepare(
-      `SELECT status, completed_at
-       FROM assessment_attempts
-       WHERE account_id = ?
-       ORDER BY created_at DESC
-       LIMIT 1`,
-    )
-    .get(accountId) as { status: AttemptStatus; completed_at: string | null } | undefined;
 
-  if (latestAccountAttempt && latestAccountAttempt.status !== "completed") {
+  if (state.account.role !== "admin") {
+    if (state.latestAttempt && state.latestAttempt.status !== "completed" && state.availableAttempts === 0) {
+      if (state.windowExpired) {
+        return {
+          duplicate: true as const,
+          message: "The 6-hour test window has expired. Ask the admin to allow the test again.",
+        };
+      }
+
+      return {
+        duplicate: true as const,
+        message: "An assessment for this account is already in progress. Continue the existing session.",
+      };
+    }
+
+    if (state.availableAttempts === 0) {
+      return {
+        duplicate: true as const,
+        message: "This account has already used its available test. Ask the admin to allow another attempt.",
+      };
+    }
+
+    if (!state.windowStartedAt || !state.windowExpiresAt) {
+      return {
+        duplicate: true as const,
+        message: "The 6-hour test window is not active yet. Log in again to start the window.",
+      };
+    }
+
+    if (state.windowExpired) {
+      return {
+        duplicate: true as const,
+        message: "The 6-hour test window has expired. Ask the admin to allow the test again.",
+      };
+    }
+  } else if (state.latestAttempt && state.latestAttempt.status !== "completed") {
     return {
       duplicate: true as const,
       message: "An assessment for this account is already in progress. Continue the existing session.",
@@ -537,19 +793,11 @@ export function createIdentityAttempt(accountId: string, payload: IdentityPayloa
       .get(existingUserId) as { status: AttemptStatus; completed_at: string | null } | undefined;
 
     if (latestAttempt && latestAttempt.status !== "completed") {
-      return {
-        duplicate: true as const,
-        message:
-          "An assessment for this identity is already in progress. Continue the existing session.",
-      };
-    }
-
-    if (latestAttempt?.completed_at) {
-      const eligibleAt = addMonths(new Date(latestAttempt.completed_at), 6);
-      if (now < eligibleAt) {
+      if (state.account.role === "admin" || state.availableAttempts === 0) {
         return {
           duplicate: true as const,
-          message: `Next VPK retest is available on ${eligibleAt.toLocaleDateString("en-CA")}.`,
+          message:
+            "An assessment for this identity is already in progress. Continue the existing session.",
         };
       }
     }
@@ -590,6 +838,15 @@ export function createIdentityAttempt(accountId: string, payload: IdentityPayloa
         id, account_id, user_id, status, instructions_acknowledged_at, started_at, completed_at, created_at
       ) VALUES (?, ?, ?, 'identity_created', NULL, NULL, NULL, ?)`,
     ).run(attemptId, accountId, userId, timestamp);
+
+    if (state.account.role !== "admin") {
+      db.prepare(
+        `UPDATE auth_accounts
+         SET available_attempts = CASE WHEN available_attempts > 0 THEN available_attempts - 1 ELSE 0 END,
+             updated_at = ?
+         WHERE id = ?`,
+      ).run(timestamp, accountId);
+    }
   });
 
   transaction();
@@ -635,9 +892,20 @@ function getOwnedAttempt(accountId: string, attemptId: string) {
 
 function assertAssessmentAccess(accountId: string, attemptId: string) {
   const attempt = getOwnedAttempt(accountId, attemptId);
+  const state = getAccountAssessmentState(accountId);
 
   if (!attempt) {
     throw new Error("Assessment attempt not found.");
+  }
+
+  if (state.account.role !== "admin") {
+    if (state.availableAttempts !== null && state.availableAttempts > 0) {
+      throw new Error("This attempt is no longer active. Ask the admin to start a fresh attempt.");
+    }
+
+    if (state.windowExpired) {
+      throw new Error("The 6-hour test window has expired. Ask the admin to allow another attempt.");
+    }
   }
 
   if (!attempt.instructions_acknowledged_at) {

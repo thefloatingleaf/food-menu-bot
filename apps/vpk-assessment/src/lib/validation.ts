@@ -248,6 +248,10 @@ export const accountCreationSchema = z.object({
     .max(128, "Password must be at most 128 characters."),
 });
 
+export const accountRetestSchema = z.object({
+  accountId: z.string().trim().uuid("Choose a valid account."),
+});
+
 export function normalizeEmail(email: string): string {
   return email.trim().toLowerCase();
 }
@@ -259,14 +263,18 @@ export function normalizePhone(countryCode: string, localPhoneNumber: string): s
   return `${dial}|${localDigits}`;
 }
 
-export function validateIdentityPayload(payload: unknown) {
-  return identitySchema.safeParse(payload);
-}
-
 export function validateLoginPayload(payload: unknown) {
   return loginSchema.safeParse(payload);
 }
 
+export function validateIdentityPayload(payload: unknown) {
+  return identitySchema.safeParse(payload);
+}
+
 export function validateAccountCreationPayload(payload: unknown) {
   return accountCreationSchema.safeParse(payload);
+}
+
+export function validateAccountRetestPayload(payload: unknown) {
+  return accountRetestSchema.safeParse(payload);
 }

@@ -53,8 +53,9 @@ Expected result: the app compiles successfully for production.
 
 1. Sign in with the admin account or a user account created by the admin.
 2. Admin users can open `Manage Accounts` and create additional logins with passwords.
-3. User accounts can log in, complete the assessment, and later return to view their result.
-4. Assessment content is protected with disabled copy/select/context-menu/print behavior and visible watermarking.
+3. Regular user accounts receive one assessment attempt at a time, with a 6-hour test window starting from an eligible login.
+4. Admin accounts can complete the assessment multiple times and can use `Allow Test Again` to reopen access for any regular account.
+5. Assessment content is protected with disabled copy/select/context-menu/print behavior and visible watermarking.
 
 ## Privacy note
 

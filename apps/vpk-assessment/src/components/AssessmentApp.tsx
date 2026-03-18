@@ -87,6 +87,30 @@ function isEditableTarget(target: EventTarget | null) {
     : false;
 }
 
+function describeWindowStatus(account: ManagedAccountSummary) {
+  if (account.role === "admin" || account.windowStatus === "unlimited") {
+    return "Unlimited access";
+  }
+
+  if (account.windowStatus === "used") {
+    return "Test already completed";
+  }
+
+  if (account.windowStatus === "not-started") {
+    return "Window will begin at the next eligible login";
+  }
+
+  if (account.windowStatus === "expired") {
+    return account.accessWindowExpiresAt
+      ? `Window expired on ${new Date(account.accessWindowExpiresAt).toLocaleString()}`
+      : "Window expired";
+  }
+
+  return account.accessWindowExpiresAt
+    ? `Window open until ${new Date(account.accessWindowExpiresAt).toLocaleString()}`
+    : "Window active";
+}
+
 export function AssessmentApp({
   initialAccount,
   initialAccounts,
@@ -127,8 +151,12 @@ export function AssessmentApp({
   const [accountFormError, setAccountFormError] = useState("");
   const [accountFormSuccess, setAccountFormSuccess] = useState("");
   const [accountSubmitting, setAccountSubmitting] = useState(false);
+  const [accountActionError, setAccountActionError] = useState("");
+  const [accountActionSuccess, setAccountActionSuccess] = useState("");
+  const [retestSubmittingId, setRetestSubmittingId] = useState<string | null>(null);
   const [managedAccounts, setManagedAccounts] = useState<ManagedAccountSummary[]>(initialAccounts);
   const registrantName = initialSnapshot?.registrantName?.trim() || account?.displayName || "the registered person";
+  const accessWindowExpiresAt = initialSnapshot?.accessWindowExpiresAt ?? null;
   const derivedAge = identityForm.dateOfBirth
     ? deriveAgeFromDateOfBirth(identityForm.dateOfBirth)
     : null;
@@ -434,6 +462,8 @@ export function AssessmentApp({
     setAccountFormErrors({});
     setAccountFormError("");
     setAccountFormSuccess("");
+    setAccountActionError("");
+    setAccountActionSuccess("");
 
     try {
       const response = await fetch("/api/admin/accounts", {
@@ -461,6 +491,38 @@ export function AssessmentApp({
     }
   }
 
+  async function handleAllowRetest(accountId: string) {
+    setRetestSubmittingId(accountId);
+    setAccountActionError("");
+    setAccountActionSuccess("");
+
+    try {
+      const response = await fetch("/api/admin/accounts", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ accountId }),
+      });
+      const payload = await response.json();
+
+      if (!response.ok) {
+        setAccountActionError(payload.error ?? "Unable to update the account.");
+        return;
+      }
+
+      setManagedAccounts(payload.accounts ?? managedAccounts);
+      const refreshedAccount = (payload.accounts ?? managedAccounts).find(
+        (managedAccount: ManagedAccountSummary) => managedAccount.id === accountId,
+      );
+      setAccountActionSuccess(
+        refreshedAccount
+          ? `${refreshedAccount.displayName} can log in again for a fresh 6-hour test window.`
+          : "The account has been updated.",
+      );
+    } finally {
+      setRetestSubmittingId(null);
+    }
+  }
+
   if (!account) {
     return (
       <main className="app-shell app-shell--opening">
@@ -479,7 +541,7 @@ export function AssessmentApp({
             <div className="opening-stage__layout opening-stage__layout--login">
               <div className="opening-stage__zone opening-stage__zone--left">
                 <div className="opening-stage__copy">
-                  <p className="opening-stage__lead">Protected clinical access</p>
+                  <p className="opening-stage__lead">Traditional constitutional assessment</p>
                   <h1 className="opening-stage__title" aria-label={openingHeadline}>
                     <span>AYURVEDIC</span>
                     <span>PRAKRITI</span>
@@ -501,20 +563,16 @@ export function AssessmentApp({
                         <p key={line}>{line}</p>
                       ))}
                     </div>
-                    <p className="opening-stage__note">
-                      Use an approved account to continue. Admin users can create additional accounts after login.
-                    </p>
+                    <p className="opening-stage__note">Enter with the credentials assigned for this assessment.</p>
                   </div>
                 </div>
               </div>
               <div className="opening-stage__zone opening-stage__zone--right opening-stage__zone--login-panel">
                 <div className="panel stack opening-stage__login-panel">
                   <div className="stack">
-                    <span className="eyebrow">Account Login</span>
-                    <h2 className="section-title">Sign in to continue</h2>
-                    <p className="muted">
-                      Copy, text selection, print, and context menu actions are restricted after login. Browser screenshots are watermarked and discouraged, but cannot be fully blocked by a web browser alone.
-                    </p>
+                    <span className="eyebrow">Authorised Entry</span>
+                    <h2 className="section-title">Enter username and password</h2>
+                    <p className="muted">Use the account details provided by the clinic or administrator.</p>
                   </div>
                   <form className="form-grid" onSubmit={handleLoginSubmit}>
                     <div className="field">
@@ -592,7 +650,7 @@ export function AssessmentApp({
               <span className="eyebrow">Admin Controls</span>
               <h1 className="hero__single-line">Create assessment accounts and hand out passwords carefully.</h1>
               <p>
-                This panel is visible only to the admin login. Accounts created here can sign in, complete the assessment, and later return to see their result.
+                This panel is visible only to the admin login. Accounts created here can sign in, complete the assessment, and the admin can reopen access when another attempt is approved.
               </p>
             </section>
 
@@ -651,6 +709,8 @@ export function AssessmentApp({
                   <h2 className="section-title">Existing accounts</h2>
                   <p className="muted">Share usernames and passwords only with the intended assessment holder.</p>
                 </div>
+                {accountActionError ? <p className="error-text">{accountActionError}</p> : null}
+                {accountActionSuccess ? <p className="success-text">{accountActionSuccess}</p> : null}
                 <div className="account-list">
                   {managedAccounts.map((managedAccount) => (
                     <article className="account-card" key={managedAccount.id}>
@@ -663,6 +723,24 @@ export function AssessmentApp({
                       <p className="muted">
                         Last login: {managedAccount.lastLoginAt ? new Date(managedAccount.lastLoginAt).toLocaleString() : "Not yet used"}
                       </p>
+                      {managedAccount.role === "user" ? (
+                        <>
+                          <p className="muted">Attempts used: {managedAccount.attemptsUsed}</p>
+                          <p className="muted">Completed tests: {managedAccount.completedAttempts}</p>
+                          <p className="muted">Available attempts: {managedAccount.availableAttempts}</p>
+                          <p className="muted">{describeWindowStatus(managedAccount)}</p>
+                          <div className="button-row">
+                            <button
+                              className="button button--secondary"
+                              type="button"
+                              onClick={() => void handleAllowRetest(managedAccount.id)}
+                              disabled={retestSubmittingId === managedAccount.id}
+                            >
+                              {retestSubmittingId === managedAccount.id ? "Updating..." : "Allow Test Again"}
+                            </button>
+                          </div>
+                        </>
+                      ) : null}
                     </article>
                   ))}
                 </div>
@@ -833,6 +911,11 @@ export function AssessmentApp({
                     <div className="status-card">
                       <p className="muted">{instructionsText || "Loading instructions..."}</p>
                     </div>
+                    {accessWindowExpiresAt ? (
+                      <div className="status-card">
+                        <p className="muted">This test window stays open until {new Date(accessWindowExpiresAt).toLocaleString()}.</p>
+                      </div>
+                    ) : null}
                     <div className="status-card status-card--private">
                       <p className="muted">Private assessment mode is active for {account.displayName}. Copy, print, and context actions are disabled in this browser session.</p>
                     </div>
@@ -856,6 +939,11 @@ export function AssessmentApp({
                     <div className="status-card">
                       <p className="muted">Your acknowledgement has been recorded. Results remain hidden until the final step.</p>
                     </div>
+                    {accessWindowExpiresAt ? (
+                      <div className="status-card">
+                        <p className="muted">This attempt must be completed before {new Date(accessWindowExpiresAt).toLocaleString()}.</p>
+                      </div>
+                    ) : null}
                     <div className="button-row">
                       <button className="button button--primary" type="button" onClick={() => void enterAssessment()}>
                         Start Test
