@@ -68,8 +68,8 @@ const emptyAccountForm: AccountCreationForm = {
 
 const openingHeadline = "AYURVEDIC PRAKRITI ASSESSMENT";
 const openingSummaryLines = [
-  "Secure login, guided instructions, one category at a time, and a final",
-  "constitution result view only after completion.",
+  "Secure login, guided instructions, and one category at a time.",
+  "Your constitution result is shown only after completion.",
 ];
 const verseSanskrit = [
   "नमामि धन्वन्तरिमादिदेवं सुरासुरैर्वन्दितपादपद्मम् ।",
@@ -662,12 +662,12 @@ export function AssessmentApp({
             <section className="split split--admin">
               <div className="panel stack">
                 <div className="stack">
-                  <h2 className="section-title">Add account</h2>
+                  <h2 className="section-title">Add Account</h2>
                   <p className="muted">Create a login name and password for the person who will take the test.</p>
                 </div>
                 <form className="form-grid" onSubmit={handleCreateAccount}>
                   <div className="field">
-                    <label htmlFor="account-display-name">Account holder name</label>
+                      <label htmlFor="account-display-name">Account Holder Name</label>
                     <input
                       className="input"
                       id="account-display-name"
@@ -711,7 +711,7 @@ export function AssessmentApp({
 
               <div className="panel stack">
                 <div className="stack">
-                  <h2 className="section-title">Existing accounts</h2>
+                  <h2 className="section-title">Existing Accounts</h2>
                   <p className="muted">Share usernames and passwords only with the intended assessment holder.</p>
                 </div>
                 {accountActionError ? <p className="error-text">{accountActionError}</p> : null}
@@ -783,7 +783,7 @@ export function AssessmentApp({
               <h1 className="hero__single-line details-hero__single-line">
                 Enter details before the questionnaire begins for proper assessment.
               </h1>
-              <p>Your data would be kept private.</p>
+              <p>Your data will be kept private.</p>
             </section>
 
             <section className="identity-screen">
@@ -791,7 +791,7 @@ export function AssessmentApp({
                 {stage === "identity" && (
                   <>
                     <div className="stack">
-                      <h2 className="section-title">Present details</h2>
+                      <h2 className="section-title">Present Details</h2>
                     </div>
                     <form className="form-grid" onSubmit={handleIdentitySubmit}>
                       <div className="field-grid field-grid--double">
@@ -815,7 +815,7 @@ export function AssessmentApp({
                         <div className="field">
                           <label htmlFor="dateOfBirth">Date of Birth</label>
                           <input className="input" id="dateOfBirth" type="date" placeholder="YYYY-MM-DD" value={identityForm.dateOfBirth} onChange={(event) => updateField("dateOfBirth", event.target.value)} />
-                          {derivedAge !== null ? <p className="field__hint">Derived age: {derivedAge}</p> : null}
+                          {derivedAge !== null ? <p className="field__hint">Derived Age: {derivedAge}</p> : null}
                           {errors.dateOfBirth ? <p className="error-text">{errors.dateOfBirth}</p> : null}
                         </div>
                       </div>
@@ -826,12 +826,12 @@ export function AssessmentApp({
                       </div>
                       <div className="field-grid field-grid--double">
                         <div className="field">
-                          <label htmlFor="email">Email address</label>
+                          <label htmlFor="email">Email Address</label>
                           <input className="input" id="email" type="email" value={identityForm.email} onChange={(event) => updateField("email", event.target.value)} />
                           {errors.email ? <p className="error-text">{errors.email}</p> : null}
                         </div>
                         <div className="field">
-                          <label htmlFor="countryCode">Country code</label>
+                          <label htmlFor="countryCode">Country Code</label>
                           <select className="input" id="countryCode" value={identityForm.countryCode} onChange={(event) => updateField("countryCode", event.target.value)}>
                             {countryPhoneOptions.map((country) => (
                               <option key={country.code} value={country.code}>
@@ -848,7 +848,7 @@ export function AssessmentApp({
                         {errors.localPhoneNumber ? <p className="error-text">{errors.localPhoneNumber}</p> : null}
                       </div>
                       <div className="button-row button-row--end">
-                        <button className="button button--primary" type="submit">Begin with questionnaire</button>
+                        <button className="button button--primary" type="submit">Begin the Questionnaire</button>
                       </div>
                     </form>
                   </>
@@ -873,7 +873,7 @@ export function AssessmentApp({
             <section className="hero hero--compact">
               <span className="eyebrow">Ayurvedic VPK Assessment</span>
               <h1 className="hero__single-line">Proceed with clarity and complete the assessment calmly.</h1>
-              <p>VPK assessment is already registered for {registrantName}. Continue through instructions, the guided questionnaire, and the final result view.</p>
+              <p>The VPK assessment is already registered for {registrantName}. Continue through the instructions, guided questionnaire, and final result view.</p>
             </section>
 
             <section className={`split ${stage === "assessment" ? "split--assessment" : ""}`}>
@@ -912,7 +912,7 @@ export function AssessmentApp({
 
                 {stage === "start" && (
                   <div className="stack">
-                    <h2 className="section-title">Start the assessment</h2>
+                    <h2 className="section-title">Start the Assessment</h2>
                     <p className="muted">
                       You will answer one category at a time. Each screen requires one choice for Lifetime and one choice for Present.
                     </p>
@@ -1001,7 +1001,7 @@ export function AssessmentApp({
                 {stage === "result" && result && (
                   <div className="stack">
                     <div className="stack">
-                      <h2 className="section-title">Final constitution view</h2>
+                      <h2 className="section-title">Final Constitution View</h2>
                       <p className="muted">Your constitution profile is revealed only after all categories are submitted.</p>
                     </div>
                     <div className="result-grid">
