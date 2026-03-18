@@ -74,6 +74,8 @@ python3 generate_menu.py --bootstrap-weather-tags
 - `*माह:* <value>`
 - `*तिथि (पंचांग):* <value>`
 - `*पर्व/त्योहार:* <festival names>` (only when present on that date)
+- `*नियमित मेनू:* आज पर्व/विशेष पालन के कारण नियमित नाश्ता और भोजन मेनू नहीं दिया जाएगा।` (only on festival no-menu dates)
+- `*विशेष पारंपरिक सेवन/भोग:* <festival special note>` (only on festival no-menu dates)
 - `*सुबह का नाश्ता:* <item>`
 - `*आज का भोजन:* <item>`
 - `*फॉलोवर महोदय हेतु रात की तैयारी:* <instruction>` (only when the generated next-day menu includes मंगौड़े)
@@ -109,9 +111,11 @@ python3 generate_menu.py --bootstrap-weather-tags
 {
   "entries": [
     {
-      "date": "2026-02-18",
-      "hindu_hi": ["महाशिवरात्रि"],
-      "sikh_hi": ["गुरु पर्व"]
+      "date": "2026-03-19",
+      "hindu_hi": ["चैत्र नवरात्रि"],
+      "sikh_hi": [],
+      "suppress_regular_menu": true,
+      "special_menu_note_hi": "Day 1 - Maa Shailputri: Desi ghee विशेष रूप से ग्रहण या अर्पित करें।"
     }
   ]
 }

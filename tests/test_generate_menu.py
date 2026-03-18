@@ -93,5 +93,45 @@ class MangorePrepInstructionTests(unittest.TestCase):
         self.assertFalse(generate_menu.requires_mangore_prep("पोहा", "दाल और रोटी"))
 
 
+class FestivalSpecialMenuTests(unittest.TestCase):
+    def test_resolve_festival_info_reads_no_menu_special_note(self) -> None:
+        info = generate_menu.resolve_festival_info(
+            "2026-03-19",
+            {
+                "entries": [
+                    {
+                        "date": "2026-03-19",
+                        "hindu_hi": ["चैत्र नवरात्रि"],
+                        "sikh_hi": [],
+                        "suppress_regular_menu": True,
+                        "special_menu_note_hi": (
+                            "Day 1 - Maa Shailputri: Desi ghee विशेष रूप से ग्रहण या अर्पित करें।"
+                        ),
+                    }
+                ]
+            },
+        )
+
+        self.assertEqual(info.hindu_hi, ["चैत्र नवरात्रि"])
+        self.assertTrue(info.suppress_regular_menu)
+        self.assertEqual(
+            info.special_menu_note_hi,
+            "Day 1 - Maa Shailputri: Desi ghee विशेष रूप से ग्रहण या अर्पित करें।",
+        )
+
+    def test_format_special_menu_note_line_uses_special_note(self) -> None:
+        info = generate_menu.FestivalInfo(
+            hindu_hi=["चैत्र नवरात्रि"],
+            sikh_hi=[],
+            suppress_regular_menu=True,
+            special_menu_note_hi="Day 8 - Maa Mahagauri: Coconut विशेष रूप से ग्रहण या अर्पित करें।",
+        )
+
+        self.assertEqual(
+            generate_menu.format_special_menu_note_line(info),
+            "*विशेष पारंपरिक सेवन/भोग:* Day 8 - Maa Mahagauri: Coconut विशेष रूप से ग्रहण या अर्पित करें।",
+        )
+
+
 if __name__ == "__main__":
     unittest.main()

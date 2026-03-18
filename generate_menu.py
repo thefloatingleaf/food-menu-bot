@@ -63,6 +63,8 @@ class PanchangInfo:
 class FestivalInfo:
     hindu_hi: list[str]
     sikh_hi: list[str]
+    suppress_regular_menu: bool = False
+    special_menu_note_hi: str | None = None
 
 
 @dataclass
@@ -1093,6 +1095,16 @@ def resolve_item_date_override(target_date: date, config: dict[str, Any], config
     return None
 
 
+def parse_boolish(value: Any) -> bool:
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, str):
+        return value.strip().lower() in {"1", "true", "yes", "y"}
+    if isinstance(value, (int, float)):
+        return value != 0
+    return False
+
+
 def resolve_festival_info(target_date: str, festivals_data: Any) -> FestivalInfo:
     row = get_festival_entry_for_date(target_date, festivals_data)
     if not row:
@@ -1100,10 +1112,21 @@ def resolve_festival_info(target_date: str, festivals_data: Any) -> FestivalInfo
 
     hindu_hi = row.get("hindu_hi", [])
     sikh_hi = row.get("sikh_hi", [])
+    special_menu_note_raw = row.get("special_menu_note_hi")
 
     hindu = [str(x).strip() for x in hindu_hi if isinstance(x, str) and str(x).strip()] if isinstance(hindu_hi, list) else []
     sikh = [str(x).strip() for x in sikh_hi if isinstance(x, str) and str(x).strip()] if isinstance(sikh_hi, list) else []
-    return FestivalInfo(hindu_hi=hindu, sikh_hi=sikh)
+    special_menu_note_hi = (
+        str(special_menu_note_raw).strip()
+        if isinstance(special_menu_note_raw, str) and str(special_menu_note_raw).strip()
+        else None
+    )
+    return FestivalInfo(
+        hindu_hi=hindu,
+        sikh_hi=sikh,
+        suppress_regular_menu=parse_boolish(row.get("suppress_regular_menu", False)),
+        special_menu_note_hi=special_menu_note_hi,
+    )
 
 
 def format_festival_line(festival_info: FestivalInfo) -> str | None:
@@ -1114,6 +1137,12 @@ def format_festival_line(festival_info: FestivalInfo) -> str | None:
     if not combined:
         return None
     return "*पर्व/त्योहार:* " + " / ".join(combined)
+
+
+def format_special_menu_note_line(festival_info: FestivalInfo) -> str | None:
+    if not festival_info.special_menu_note_hi:
+        return None
+    return "*विशेष पारंपरिक सेवन/भोग:* " + festival_info.special_menu_note_hi
 
 
 def is_blocked_item(item: str, keywords: list[str]) -> bool:
@@ -1991,6 +2020,14 @@ def build_weather_line(weather: WeatherInfo, city_hi: str) -> str:
     )
 
 
+def build_output_text(lines: list[str]) -> str:
+    if len(lines) >= 4:
+        header_block = "\r\n".join(lines[:4])
+        body_block = "\r\n\r\n".join(lines[4:])
+        return header_block if not body_block else f"{header_block}\r\n\r\n{body_block}"
+    return "\r\n\r\n".join(lines)
+
+
 def get_disallowed_keywords(ritu_key: str) -> list[str]:
     if ritu_key == "varsha":
         return VARSHA_BANNED_KEYWORDS
@@ -2407,6 +2444,34 @@ def main() -> int:
     weather_rules = current_day.weather_rules
     ekadashi = current_day.ekadashi
     breakfast_item_override = current_day.breakfast_item_override
+
+    if festival_info.suppress_regular_menu:
+        lines = [
+            f"*{target_date_display_str} तिथि के लिए भोजन:*",
+            f"*ऋतु:* {display_ritu_hi}",
+            f"*माह:* {panchang_info.maah_hi}",
+            f"*तिथि (पंचांग):* {panchang_info.tithi_hi}",
+        ]
+        festival_line = format_festival_line(festival_info)
+        if festival_line:
+            lines.append(festival_line)
+        lines.append("*नियमित मेनू:* आज पर्व/विशेष पालन के कारण नियमित नाश्ता और भोजन मेनू नहीं दिया जाएगा।")
+        special_menu_note_line = format_special_menu_note_line(festival_info)
+        if special_menu_note_line:
+            lines.append(special_menu_note_line)
+        if ekadashi.is_ekadashi and ekadashi.name_hi:
+            lines.append(f"*एकादशी:* {ekadashi.name_hi}")
+        if weather_info is not None and should_show_weather_line(weather_info, weather_mode):
+            lines.append(build_weather_line(weather_info, weather_city_hi))
+        if target_date.month == 1 and target_date.day == 1:
+            lines.append("*वार्षिक स्मरण (1 जनवरी):* " + NEW_YEAR_KANJI_NOTE)
+
+        output_text = build_output_text(lines)
+        with OUTPUT_FILE.open("w", encoding="utf-8") as f:
+            f.write(output_text + "\n")
+
+        print(output_text)
+        return 0
 
     breakfast_recent = recent_items(history, target_date, repeat_window_days, "breakfast")
     meal_recent = recent_items(history, target_date, repeat_window_days, "meal")
@@ -2909,12 +2974,7 @@ def main() -> int:
     if target_date.month == 1 and target_date.day == 1:
         lines.append("*वार्षिक स्मरण (1 जनवरी):* " + NEW_YEAR_KANJI_NOTE)
 
-    if len(lines) >= 4:
-        header_block = "\r\n".join(lines[:4])
-        body_block = "\r\n\r\n".join(lines[4:])
-        output_text = header_block if not body_block else f"{header_block}\r\n\r\n{body_block}"
-    else:
-        output_text = "\r\n\r\n".join(lines)
+    output_text = build_output_text(lines)
 
     with OUTPUT_FILE.open("w", encoding="utf-8") as f:
         f.write(output_text + "\n")
