@@ -56,6 +56,7 @@ button {
 }
 
 :focus-visible {
+  outline: 3px solid var(--focus);
   outline: 3px solid color-mix(in srgb, var(--focus) 78%, white);
   outline-offset: 3px;
 }
@@ -82,6 +83,7 @@ button {
 
 .app-shell--opening {
   width: 100vw;
+  min-height: 100vh;
   min-height: 100svh;
   padding: 0;
 }
@@ -95,6 +97,7 @@ button {
 
 .app-shell--opening .app-shell__inner {
   width: 100vw;
+  min-height: 100vh;
   min-height: 100svh;
   gap: 0;
 }
@@ -162,6 +165,13 @@ button {
   line-height: 1.2;
 }
 
+.details-hero__single-line {
+  max-width: 100%;
+  white-space: nowrap;
+  font-size: clamp(0.72rem, 1.5vw, 1.45rem);
+  letter-spacing: -0.01em;
+}
+
 .hero p {
   max-width: 48rem;
   color: var(--muted);
@@ -177,6 +187,7 @@ button {
   border-radius: 30px;
   padding: 28px;
   box-shadow: 0 22px 48px var(--shadow);
+  -webkit-backdrop-filter: blur(14px);
   backdrop-filter: blur(14px);
 }
 
@@ -212,6 +223,7 @@ button {
 .opening-stage {
   position: relative;
   width: 100vw;
+  min-height: max(100vh, calc(100vw / 1.5));
   min-height: max(100svh, calc(100vw / 1.5));
   margin: 0;
   overflow: hidden;
@@ -234,6 +246,7 @@ button {
 .opening-stage__layout {
   position: relative;
   z-index: 1;
+  min-height: max(100vh, calc(100vw / 1.5));
   min-height: max(100svh, calc(100vw / 1.5));
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -247,6 +260,7 @@ button {
 
 .opening-stage__zone {
   position: relative;
+  min-height: min(100vh - 48px, 52rem);
   min-height: min(100svh - 48px, 52rem);
   display: flex;
   align-items: center;
@@ -295,6 +309,7 @@ button {
   background: rgba(255, 248, 240, 0.58);
   border: 1px solid rgba(129, 104, 73, 0.2);
   box-shadow: 0 16px 34px rgba(86, 63, 38, 0.1);
+  -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
 }
 
@@ -304,6 +319,7 @@ button {
   border-radius: 999px;
   background: rgba(255, 251, 244, 0.76);
   border: 1px solid rgba(129, 104, 73, 0.16);
+  color: #6f5a48;
   color: color-mix(in srgb, var(--muted) 90%, #5f4938);
   font-size: 0.92rem;
   line-height: 1.2;
@@ -594,6 +610,7 @@ button {
   border-color: rgba(129, 104, 73, 0.18);
   color: var(--foreground);
   box-shadow: 0 10px 22px rgba(111, 86, 59, 0.1);
+  -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
 }
 
@@ -981,11 +998,24 @@ button {
     white-space: normal;
   }
 
+  .details-hero__single-line {
+    white-space: nowrap;
+    font-size: clamp(0.7rem, 2vw, 1rem);
+  }
+
   .privacy-watermark {
     grid-template-columns: 1fr 1fr;
     gap: 3rem 1rem;
     padding-top: 7rem;
     opacity: 0.12;
+  }
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .panel,
+  .opening-stage__copy::before,
+  .button--home {
+    background: rgba(252, 248, 240, 0.94);
   }
 }
 

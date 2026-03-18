@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Manrope, Noto_Serif_Devanagari } from "next/font/google";
 import "./globals.css";
 
@@ -22,6 +22,12 @@ const devanagariFont = Noto_Serif_Devanagari({
 export const metadata: Metadata = {
   title: "Ayurvedic Constitution Assessment",
   description: "A calm, data-driven VPK questionnaire with gated identity, instructions, and final results.",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({

@@ -776,7 +776,9 @@ export function AssessmentApp({
           <>
             <section className="hero hero--compact">
               <span className="eyebrow">Details</span>
-              <h1>Enter details before the questionnaire begins for proper assessment.</h1>
+              <h1 className="hero__single-line details-hero__single-line">
+                Enter details before the questionnaire begins for proper assessment.
+              </h1>
               <p>Your data would be kept private.</p>
             </section>
 
@@ -814,7 +816,7 @@ export function AssessmentApp({
                         </div>
                       </div>
                       <div className="field">
-                        <label htmlFor="location">Present location</label>
+                        <label htmlFor="location">Location</label>
                         <input className="input" id="location" value={identityForm.location} onChange={(event) => updateField("location", event.target.value)} />
                         {errors.location ? <p className="error-text">{errors.location}</p> : null}
                       </div>
