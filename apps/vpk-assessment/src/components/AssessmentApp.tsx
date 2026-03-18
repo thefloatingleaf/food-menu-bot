@@ -569,30 +569,27 @@ export function AssessmentApp({
               </div>
               <div className="opening-stage__zone opening-stage__zone--right opening-stage__zone--login-panel">
                 <div className="panel stack opening-stage__login-panel">
-                  <div className="stack">
-                    <span className="eyebrow">Authorised Entry</span>
-                    <h2 className="section-title">Enter username and password</h2>
-                    <p className="muted">Use the account details provided by the clinic or administrator.</p>
-                  </div>
                   <form className="form-grid" onSubmit={handleLoginSubmit}>
                     <div className="field">
-                      <label htmlFor="login-username">Username</label>
+                      <label className="sr-only" htmlFor="login-username">Username</label>
                       <input
                         className="input"
                         id="login-username"
                         autoComplete="username"
+                        placeholder="Username"
                         value={loginForm.username}
                         onChange={(event) => updateLoginField("username", event.target.value)}
                       />
                       {loginErrors.username ? <p className="error-text">{loginErrors.username}</p> : null}
                     </div>
                     <div className="field">
-                      <label htmlFor="login-password">Password</label>
+                      <label className="sr-only" htmlFor="login-password">Password</label>
                       <input
                         className="input"
                         id="login-password"
                         type="password"
                         autoComplete="current-password"
+                        placeholder="Password"
                         value={loginForm.password}
                         onChange={(event) => updateLoginField("password", event.target.value)}
                       />

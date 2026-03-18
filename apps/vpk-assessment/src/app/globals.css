@@ -366,6 +366,36 @@ button {
 
 .opening-stage__login-panel {
   width: min(100%, 30rem);
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  padding: 0;
+}
+
+.opening-stage__login-panel::after {
+  display: none;
+}
+
+.opening-stage__login-panel .input {
+  background: rgba(255, 248, 240, 0.58);
+  border-color: rgba(129, 104, 73, 0.2);
+}
+
+.opening-stage__login-panel .input::placeholder {
+  color: rgba(84, 66, 53, 0.72);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .opening-stage__cta::before {
