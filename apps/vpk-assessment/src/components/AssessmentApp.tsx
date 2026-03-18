@@ -775,11 +775,9 @@ export function AssessmentApp({
         ) : stage === "identity" || stage === "duplicate" ? (
           <>
             <section className="hero hero--compact">
-              <span className="eyebrow">Present details</span>
-              <h1>Enter present details before the questionnaire begins.</h1>
-              <p>
-                Your identity is recorded first and checked for one-time access before the instructions and questionnaire are unlocked.
-              </p>
+              <span className="eyebrow">Details</span>
+              <h1>Enter details before the questionnaire begins for proper assessment.</h1>
+              <p>Your data would be kept private.</p>
             </section>
 
             <section className="identity-screen">
@@ -811,7 +809,7 @@ export function AssessmentApp({
                         <div className="field">
                           <label htmlFor="dateOfBirth">Date of Birth</label>
                           <input className="input" id="dateOfBirth" type="date" placeholder="YYYY-MM-DD" value={identityForm.dateOfBirth} onChange={(event) => updateField("dateOfBirth", event.target.value)} />
-                          {derivedAge !== null ? <p className="field__hint">Derived age: {derivedAge}</p> : <p className="field__hint">Use the calendar or type a valid date in YYYY-MM-DD format.</p>}
+                          {derivedAge !== null ? <p className="field__hint">Derived age: {derivedAge}</p> : null}
                           {errors.dateOfBirth ? <p className="error-text">{errors.dateOfBirth}</p> : null}
                         </div>
                       </div>
@@ -839,7 +837,7 @@ export function AssessmentApp({
                         </div>
                       </div>
                       <div className="field">
-                        <label htmlFor="localPhoneNumber">Local phone number</label>
+                        <label htmlFor="localPhoneNumber">Phone Number</label>
                         <input className="input" id="localPhoneNumber" type="tel" inputMode="numeric" value={identityForm.localPhoneNumber} onChange={(event) => updateField("localPhoneNumber", event.target.value)} />
                         {errors.localPhoneNumber ? <p className="error-text">{errors.localPhoneNumber}</p> : null}
                       </div>
