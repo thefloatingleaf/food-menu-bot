@@ -119,6 +119,31 @@ class FestivalSpecialMenuTests(unittest.TestCase):
             "नवरात्रि दिवस 1, माँ शैलपुत्री: आज विशेष रूप से देसी घी ग्रहण करें या भोग में अर्पित करें।",
         )
 
+    def test_resolve_festival_info_suppresses_rama_navami_too(self) -> None:
+        info = generate_menu.resolve_festival_info(
+            "2026-03-27",
+            {
+                "entries": [
+                    {
+                        "date": "2026-03-27",
+                        "hindu_hi": ["राम नवमी"],
+                        "sikh_hi": [],
+                        "suppress_regular_menu": True,
+                        "special_menu_note_hi": (
+                            "नवरात्रि समापन / राम नवमी: आज विशेष रूप से व्रत-उपयोगी सात्त्विक भोग अर्पित करें।"
+                        ),
+                    }
+                ]
+            },
+        )
+
+        self.assertEqual(info.hindu_hi, ["राम नवमी"])
+        self.assertTrue(info.suppress_regular_menu)
+        self.assertEqual(
+            info.special_menu_note_hi,
+            "नवरात्रि समापन / राम नवमी: आज विशेष रूप से व्रत-उपयोगी सात्त्विक भोग अर्पित करें।",
+        )
+
     def test_format_special_menu_note_line_uses_special_note(self) -> None:
         info = generate_menu.FestivalInfo(
             hindu_hi=["चैत्र नवरात्रि"],
