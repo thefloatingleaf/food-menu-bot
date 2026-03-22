@@ -133,6 +133,46 @@ class DayContext:
     breakfast_item_override: str | None
 
 
+CHAITRA_NAVRATRI_NO_MENU_2026: dict[str, dict[str, Any]] = {
+    "2026-03-19": {
+        "hindu_hi": ["चैत्र नवरात्रि"],
+        "special_menu_note_hi": "नवरात्रि दिवस 1, माँ शैलपुत्री: आज विशेष रूप से देसी घी ग्रहण करें या भोग में अर्पित करें।",
+    },
+    "2026-03-20": {
+        "hindu_hi": ["चैत्र नवरात्रि"],
+        "special_menu_note_hi": "नवरात्रि दिवस 2, माँ ब्रह्मचारिणी: आज विशेष रूप से चीनी या मिश्री ग्रहण करें या भोग में अर्पित करें।",
+    },
+    "2026-03-21": {
+        "hindu_hi": ["चैत्र नवरात्रि"],
+        "special_menu_note_hi": "नवरात्रि दिवस 3, माँ चंद्रघंटा: आज विशेष रूप से खीर ग्रहण करें या भोग में अर्पित करें।",
+    },
+    "2026-03-22": {
+        "hindu_hi": ["चैत्र नवरात्रि"],
+        "special_menu_note_hi": "नवरात्रि दिवस 4, माँ कूष्मांडा: आज विशेष रूप से मालपुआ ग्रहण करें या भोग में अर्पित करें।",
+    },
+    "2026-03-23": {
+        "hindu_hi": ["चैत्र नवरात्रि"],
+        "special_menu_note_hi": "नवरात्रि दिवस 5, माँ स्कंदमाता: आज विशेष रूप से केला ग्रहण करें या भोग में अर्पित करें।",
+    },
+    "2026-03-24": {
+        "hindu_hi": ["चैत्र नवरात्रि"],
+        "special_menu_note_hi": "नवरात्रि दिवस 6, माँ कात्यायनी: आज विशेष रूप से शहद ग्रहण करें या भोग में अर्पित करें।",
+    },
+    "2026-03-25": {
+        "hindu_hi": ["चैत्र नवरात्रि"],
+        "special_menu_note_hi": "नवरात्रि दिवस 7, माँ कालरात्रि: आज विशेष रूप से गुड़ ग्रहण करें या भोग में अर्पित करें।",
+    },
+    "2026-03-26": {
+        "hindu_hi": ["चैत्र नवरात्रि"],
+        "special_menu_note_hi": "नवरात्रि दिवस 8, माँ महागौरी: आज विशेष रूप से नारियल ग्रहण करें या भोग में अर्पित करें।",
+    },
+    "2026-03-27": {
+        "hindu_hi": ["चैत्र नवरात्रि", "राम नवमी"],
+        "special_menu_note_hi": "नवरात्रि दिवस 9 / राम नवमी, माँ सिद्धिदात्री: आज विशेष रूप से तिल या व्रत-उपयोगी सात्त्विक भोग अर्पित करें।",
+    },
+}
+
+
 VASANT_REQUIRED_SIDES = [
     "नीम की चटनी",
     "पुदीना की चटनी",
@@ -1105,11 +1145,7 @@ def parse_boolish(value: Any) -> bool:
     return False
 
 
-def resolve_festival_info(target_date: str, festivals_data: Any) -> FestivalInfo:
-    row = get_festival_entry_for_date(target_date, festivals_data)
-    if not row:
-        return FestivalInfo(hindu_hi=[], sikh_hi=[])
-
+def build_festival_info_from_row(row: dict[str, Any]) -> FestivalInfo:
     hindu_hi = row.get("hindu_hi", [])
     sikh_hi = row.get("sikh_hi", [])
     special_menu_note_raw = row.get("special_menu_note_hi")
@@ -1127,6 +1163,48 @@ def resolve_festival_info(target_date: str, festivals_data: Any) -> FestivalInfo
         suppress_regular_menu=parse_boolish(row.get("suppress_regular_menu", False)),
         special_menu_note_hi=special_menu_note_hi,
     )
+
+
+def get_fallback_festival_info(target_date: str) -> FestivalInfo | None:
+    fallback = CHAITRA_NAVRATRI_NO_MENU_2026.get(target_date)
+    if not fallback:
+        return None
+    return FestivalInfo(
+        hindu_hi=list(fallback.get("hindu_hi", [])),
+        sikh_hi=[],
+        suppress_regular_menu=True,
+        special_menu_note_hi=str(fallback.get("special_menu_note_hi", "")).strip() or None,
+    )
+
+
+def merge_festival_info(primary: FestivalInfo, fallback: FestivalInfo | None) -> FestivalInfo:
+    if fallback is None:
+        return primary
+
+    hindu_hi: list[str] = []
+    for name in primary.hindu_hi + fallback.hindu_hi:
+        if name and name not in hindu_hi:
+            hindu_hi.append(name)
+
+    sikh_hi: list[str] = []
+    for name in primary.sikh_hi + fallback.sikh_hi:
+        if name and name not in sikh_hi:
+            sikh_hi.append(name)
+
+    return FestivalInfo(
+        hindu_hi=hindu_hi,
+        sikh_hi=sikh_hi,
+        suppress_regular_menu=primary.suppress_regular_menu or fallback.suppress_regular_menu,
+        special_menu_note_hi=primary.special_menu_note_hi or fallback.special_menu_note_hi,
+    )
+
+
+def resolve_festival_info(target_date: str, festivals_data: Any) -> FestivalInfo:
+    row = get_festival_entry_for_date(target_date, festivals_data)
+    fallback_info = get_fallback_festival_info(target_date)
+    if not row:
+        return fallback_info or FestivalInfo(hindu_hi=[], sikh_hi=[])
+    return merge_festival_info(build_festival_info_from_row(row), fallback_info)
 
 
 def format_festival_line(festival_info: FestivalInfo) -> str | None:

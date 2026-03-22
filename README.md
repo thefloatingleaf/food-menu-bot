@@ -121,6 +121,8 @@ python3 generate_menu.py --bootstrap-weather-tags
 }
 ```
 
+For Chaitra Navratri 2026, the generator also has a built-in no-menu fallback for `2026-03-19` through `2026-03-27`, so those dates still suppress the regular menu even if a festival row is missing or incomplete.
+
 ## Weather flow (free)
 
 1. Use manual override if date exists in `manual_weather_override.json`

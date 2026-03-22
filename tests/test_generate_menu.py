@@ -144,6 +144,37 @@ class FestivalSpecialMenuTests(unittest.TestCase):
             "नवरात्रि दिवस 3, माँ चंद्रघंटा: आज विशेष रूप से खीर ग्रहण करें या भोग में अर्पित करें।",
         )
 
+    def test_resolve_festival_info_falls_back_when_navratri_row_is_missing(self) -> None:
+        info = generate_menu.resolve_festival_info("2026-03-22", {"entries": []})
+
+        self.assertEqual(info.hindu_hi, ["चैत्र नवरात्रि"])
+        self.assertTrue(info.suppress_regular_menu)
+        self.assertEqual(
+            info.special_menu_note_hi,
+            "नवरात्रि दिवस 4, माँ कूष्मांडा: आज विशेष रूप से मालपुआ ग्रहण करें या भोग में अर्पित करें।",
+        )
+
+    def test_resolve_festival_info_merges_in_fallback_when_flag_is_missing(self) -> None:
+        info = generate_menu.resolve_festival_info(
+            "2026-03-27",
+            {
+                "entries": [
+                    {
+                        "date": "2026-03-27",
+                        "hindu_hi": ["राम नवमी"],
+                        "sikh_hi": [],
+                    }
+                ]
+            },
+        )
+
+        self.assertEqual(info.hindu_hi, ["राम नवमी", "चैत्र नवरात्रि"])
+        self.assertTrue(info.suppress_regular_menu)
+        self.assertEqual(
+            info.special_menu_note_hi,
+            "नवरात्रि दिवस 9 / राम नवमी, माँ सिद्धिदात्री: आज विशेष रूप से तिल या व्रत-उपयोगी सात्त्विक भोग अर्पित करें।",
+        )
+
     def test_format_special_menu_note_line_uses_special_note(self) -> None:
         info = generate_menu.FestivalInfo(
             hindu_hi=["चैत्र नवरात्रि"],
