@@ -8,7 +8,7 @@ import re
 import ssl
 import sys
 import time
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Any, Callable
@@ -65,6 +65,7 @@ class FestivalInfo:
     sikh_hi: list[str]
     suppress_regular_menu: bool = False
     special_menu_note_hi: str | None = None
+    special_menu_lines_hi: list[str] | None = None
 
 
 @dataclass
@@ -171,6 +172,30 @@ CHAITRA_NAVRATRI_NO_MENU_2026: dict[str, dict[str, Any]] = {
         "special_menu_note_hi": "नवरात्रि दिवस 9 / राम नवमी, माँ सिद्धिदात्री: आज विशेष रूप से तिल या व्रत-उपयोगी सात्त्विक भोग अर्पित करें।",
     },
 }
+
+
+NAVRATRI_ASHTAMI_SPECIAL_MENU_LINES = [
+    "*विशेष अष्टमी मेनू:* अष्टमी के दिन नवरात्रि का भोजन निम्नानुसार बनाया जाए:",
+    "1. काले चने — 4 कटोरी।",
+    "2. छोले — 3 कटोरी।",
+    "3. तरी वाले आलू — कुल 10 से 12 मध्यम आकार के आलू, ताकि सभी के लिए पर्याप्त रहें।",
+    "4. पूरी — 50 पूरी के लिए तैयारी रखें। आटा थोड़ा सख्त गूँथा जाए, ताकि पूरी अच्छी बने।",
+    "5. कद्दू — लगभग 2 मध्यम आकार के कद्दू।",
+    "*ध्यान रहे:*",
+    "1. काले चने और छोले रात में अच्छी तरह भिगो दिए जाएँ।",
+    "2. किसी भी वस्तु में प्याज बिल्कुल न डाला जाए।",
+    "3. पूरी के लिए आटा पहले से तैयार रखा जाए।",
+    "*विशेष निर्देश:* किसी भी वस्तु में प्याज बिल्कुल न डाला जाए।",
+    "*सूजी के हलवे के लिए निर्देश:*",
+    "1. डेढ़ कटोरी चीनी में 4 कटोरी पानी डालकर अच्छी तरह मिला लें।",
+    "2. दूसरी कड़ाही में 1 कटोरी सूजी लें।",
+    "3. उसमें इतना घी डालें कि पूरी सूजी अच्छी तरह घी में डूब जाए।",
+    "4. सूजी को भूरा होने तक अच्छी तरह भूनें।",
+    "5. सूजी भुन जाने पर कटे हुए बादाम डालें।",
+    "6. इसके बाद चीनी वाला पानी छान लें।",
+    "7. छना हुआ पानी भुनी हुई सूजी वाली कड़ाही में धीरे-धीरे, थोड़ा-थोड़ा करके डालें।",
+    "8. पानी डालते समय लगातार चलाते रहें, ताकि हलवा अच्छी तरह तैयार हो।",
+]
 
 
 VASANT_REQUIRED_SIDES = [
@@ -1145,13 +1170,20 @@ def parse_boolish(value: Any) -> bool:
     return False
 
 
+def normalize_non_empty_string_list(value: Any) -> list[str]:
+    if not isinstance(value, list):
+        return []
+    return [str(item).strip() for item in value if isinstance(item, str) and str(item).strip()]
+
+
 def build_festival_info_from_row(row: dict[str, Any]) -> FestivalInfo:
     hindu_hi = row.get("hindu_hi", [])
     sikh_hi = row.get("sikh_hi", [])
     special_menu_note_raw = row.get("special_menu_note_hi")
+    special_menu_lines_hi = normalize_non_empty_string_list(row.get("special_menu_lines_hi"))
 
-    hindu = [str(x).strip() for x in hindu_hi if isinstance(x, str) and str(x).strip()] if isinstance(hindu_hi, list) else []
-    sikh = [str(x).strip() for x in sikh_hi if isinstance(x, str) and str(x).strip()] if isinstance(sikh_hi, list) else []
+    hindu = normalize_non_empty_string_list(hindu_hi)
+    sikh = normalize_non_empty_string_list(sikh_hi)
     special_menu_note_hi = (
         str(special_menu_note_raw).strip()
         if isinstance(special_menu_note_raw, str) and str(special_menu_note_raw).strip()
@@ -1162,6 +1194,7 @@ def build_festival_info_from_row(row: dict[str, Any]) -> FestivalInfo:
         sikh_hi=sikh,
         suppress_regular_menu=parse_boolish(row.get("suppress_regular_menu", False)),
         special_menu_note_hi=special_menu_note_hi,
+        special_menu_lines_hi=special_menu_lines_hi or None,
     )
 
 
@@ -1170,10 +1203,11 @@ def get_fallback_festival_info(target_date: str) -> FestivalInfo | None:
     if not fallback:
         return None
     return FestivalInfo(
-        hindu_hi=list(fallback.get("hindu_hi", [])),
+        hindu_hi=normalize_non_empty_string_list(fallback.get("hindu_hi", [])),
         sikh_hi=[],
         suppress_regular_menu=True,
         special_menu_note_hi=str(fallback.get("special_menu_note_hi", "")).strip() or None,
+        special_menu_lines_hi=normalize_non_empty_string_list(fallback.get("special_menu_lines_hi")) or None,
     )
 
 
@@ -1196,6 +1230,7 @@ def merge_festival_info(primary: FestivalInfo, fallback: FestivalInfo | None) ->
         sikh_hi=sikh_hi,
         suppress_regular_menu=primary.suppress_regular_menu or fallback.suppress_regular_menu,
         special_menu_note_hi=primary.special_menu_note_hi or fallback.special_menu_note_hi,
+        special_menu_lines_hi=primary.special_menu_lines_hi or fallback.special_menu_lines_hi,
     )
 
 
@@ -1221,6 +1256,25 @@ def format_special_menu_note_line(festival_info: FestivalInfo) -> str | None:
     if not festival_info.special_menu_note_hi:
         return None
     return "*विशेष पारंपरिक सेवन/भोग:* " + festival_info.special_menu_note_hi
+
+
+def is_navratri_festival(festival_info: FestivalInfo) -> bool:
+    return any("नवरात्रि" in name for name in festival_info.hindu_hi)
+
+
+def apply_recurring_festival_menu_overrides(
+    festival_info: FestivalInfo,
+    panchang_info: PanchangInfo,
+) -> FestivalInfo:
+    if festival_info.special_menu_lines_hi:
+        return festival_info
+    if is_navratri_festival(festival_info) and panchang_info.tithi_hi == "अष्टमी":
+        return replace(
+            festival_info,
+            suppress_regular_menu=True,
+            special_menu_lines_hi=NAVRATRI_ASHTAMI_SPECIAL_MENU_LINES[:],
+        )
+    return festival_info
 
 
 def is_blocked_item(item: str, keywords: list[str]) -> bool:
@@ -2251,6 +2305,7 @@ def build_day_context(
         lunar_month_system,
     )
     festival_info = resolve_festival_info(target_date_str, festivals_data)
+    festival_info = apply_recurring_festival_menu_overrides(festival_info, panchang_info)
 
     maah_mapped_ritu_key = resolve_ritu_key_from_lunar_month(panchang_info.maah_hi)
     if maah_mapped_ritu_key is not None:
@@ -2533,10 +2588,13 @@ def main() -> int:
         festival_line = format_festival_line(festival_info)
         if festival_line:
             lines.append(festival_line)
-        lines.append("*नियमित मेनू:* आज पर्व/विशेष पालन के कारण नियमित नाश्ता और भोजन मेनू नहीं दिया जाएगा।")
-        special_menu_note_line = format_special_menu_note_line(festival_info)
-        if special_menu_note_line:
-            lines.append(special_menu_note_line)
+        if festival_info.special_menu_lines_hi:
+            lines.extend(festival_info.special_menu_lines_hi)
+        else:
+            lines.append("*नियमित मेनू:* आज पर्व/विशेष पालन के कारण नियमित नाश्ता और भोजन मेनू नहीं दिया जाएगा।")
+            special_menu_note_line = format_special_menu_note_line(festival_info)
+            if special_menu_note_line:
+                lines.append(special_menu_note_line)
         if ekadashi.is_ekadashi and ekadashi.name_hi:
             lines.append(f"*एकादशी:* {ekadashi.name_hi}")
         if weather_info is not None and should_show_weather_line(weather_info, weather_mode):

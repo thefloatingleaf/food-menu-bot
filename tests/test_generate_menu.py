@@ -94,6 +94,30 @@ class MangorePrepInstructionTests(unittest.TestCase):
 
 
 class FestivalSpecialMenuTests(unittest.TestCase):
+    def test_resolve_festival_info_reads_explicit_special_menu_lines(self) -> None:
+        info = generate_menu.resolve_festival_info(
+            "2026-03-26",
+            {
+                "entries": [
+                    {
+                        "date": "2026-03-26",
+                        "hindu_hi": ["चैत्र नवरात्रि"],
+                        "sikh_hi": [],
+                        "suppress_regular_menu": True,
+                        "special_menu_lines_hi": [
+                            "*विशेष अष्टमी मेनू:*",
+                            "1. काले चने — 4 कटोरी।",
+                        ],
+                    }
+                ]
+            },
+        )
+
+        self.assertEqual(
+            info.special_menu_lines_hi,
+            ["*विशेष अष्टमी मेनू:*", "1. काले चने — 4 कटोरी।"],
+        )
+
     def test_resolve_festival_info_reads_no_menu_special_note(self) -> None:
         info = generate_menu.resolve_festival_info(
             "2026-03-19",
@@ -187,6 +211,34 @@ class FestivalSpecialMenuTests(unittest.TestCase):
             generate_menu.format_special_menu_note_line(info),
             "*विशेष पारंपरिक सेवन/भोग:* नवरात्रि दिवस 8, माँ महागौरी: आज विशेष रूप से नारियल ग्रहण करें या भोग में अर्पित करें।",
         )
+
+    def test_apply_recurring_festival_menu_overrides_adds_navratri_ashtami_menu(self) -> None:
+        festival_info = generate_menu.FestivalInfo(
+            hindu_hi=["चैत्र नवरात्रि"],
+            sikh_hi=[],
+            suppress_regular_menu=True,
+            special_menu_note_hi="नवरात्रि दिवस 8, माँ महागौरी: आज विशेष रूप से नारियल ग्रहण करें या भोग में अर्पित करें।",
+        )
+        panchang_info = generate_menu.PanchangInfo(ritu_hi="वसंत", maah_hi="चैत्र", tithi_hi="अष्टमी")
+
+        updated = generate_menu.apply_recurring_festival_menu_overrides(festival_info, panchang_info)
+
+        self.assertIsNotNone(updated.special_menu_lines_hi)
+        self.assertIn("1. काले चने — 4 कटोरी।", updated.special_menu_lines_hi)
+        self.assertIn("*विशेष निर्देश:* किसी भी वस्तु में प्याज बिल्कुल न डाला जाए।", updated.special_menu_lines_hi)
+
+    def test_apply_recurring_festival_menu_overrides_keeps_existing_explicit_lines(self) -> None:
+        festival_info = generate_menu.FestivalInfo(
+            hindu_hi=["चैत्र नवरात्रि"],
+            sikh_hi=[],
+            suppress_regular_menu=True,
+            special_menu_lines_hi=["*विशेष अष्टमी मेनू:*", "1. Custom item"],
+        )
+        panchang_info = generate_menu.PanchangInfo(ritu_hi="वसंत", maah_hi="चैत्र", tithi_hi="अष्टमी")
+
+        updated = generate_menu.apply_recurring_festival_menu_overrides(festival_info, panchang_info)
+
+        self.assertEqual(updated.special_menu_lines_hi, ["*विशेष अष्टमी मेनू:*", "1. Custom item"])
 
 
 if __name__ == "__main__":

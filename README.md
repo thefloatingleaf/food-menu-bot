@@ -75,6 +75,7 @@ python3 generate_menu.py --bootstrap-weather-tags
 - `*तिथि (पंचांग):* <value>`
 - `*पर्व/त्योहार:* <festival names>` (only when present on that date)
 - `*नियमित मेनू:* आज पर्व/विशेष पालन के कारण नियमित नाश्ता और भोजन मेनू नहीं दिया जाएगा।` (only on festival no-menu dates)
+- `*विशेष अष्टमी मेनू:* ...` plus its numbered preparation lines (only when a festival row or recurring rule supplies `special_menu_lines_hi`)
 - `*विशेष पारंपरिक सेवन/भोग:* <festival special note>` (only on festival no-menu dates)
 - `*सुबह का नाश्ता:* <item>`
 - `*आज का भोजन:* <item>`
@@ -115,13 +116,21 @@ python3 generate_menu.py --bootstrap-weather-tags
       "hindu_hi": ["चैत्र नवरात्रि"],
       "sikh_hi": [],
       "suppress_regular_menu": true,
-      "special_menu_note_hi": "नवरात्रि दिवस 1, माँ शैलपुत्री: आज विशेष रूप से देसी घी ग्रहण करें या भोग में अर्पित करें।"
+      "special_menu_note_hi": "नवरात्रि दिवस 1, माँ शैलपुत्री: आज विशेष रूप से देसी घी ग्रहण करें या भोग में अर्पित करें।",
+      "special_menu_lines_hi": [
+        "*विशेष अष्टमी मेनू:* अष्टमी के दिन नवरात्रि का भोजन निम्नानुसार बनाया जाए:",
+        "1. काले चने — 4 कटोरी।"
+      ]
     }
   ]
 }
 ```
 
 For Chaitra Navratri 2026, the generator also has a built-in no-menu fallback for `2026-03-19` through `2026-03-27`, so those dates still suppress the regular menu even if a festival row is missing or incomplete.
+
+If a festival row includes `special_menu_lines_hi`, those lines replace the generic `*नियमित मेनू:*` / `*विशेष पारंपरिक सेवन/भोग:*` block for that date.
+
+The generator also applies a recurring override for any festival day that is both `नवरात्रि` and पंचांग `अष्टमी`: it outputs the fixed Ashtami menu (काले चने, छोले, तरी वाले आलू, पूरी, कद्दू, and सूजी हलवा instructions) and suppresses all regular seasonal menu selection for that day.
 
 ## Weather flow (free)
 
