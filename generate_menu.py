@@ -134,44 +134,19 @@ class DayContext:
     breakfast_item_override: str | None
 
 
-CHAITRA_NAVRATRI_NO_MENU_2026: dict[str, dict[str, Any]] = {
-    "2026-03-19": {
-        "hindu_hi": ["चैत्र नवरात्रि"],
-        "special_menu_note_hi": "नवरात्रि दिवस 1, माँ शैलपुत्री: आज विशेष रूप से देसी घी ग्रहण करें या भोग में अर्पित करें।",
-    },
-    "2026-03-20": {
-        "hindu_hi": ["चैत्र नवरात्रि"],
-        "special_menu_note_hi": "नवरात्रि दिवस 2, माँ ब्रह्मचारिणी: आज विशेष रूप से चीनी या मिश्री ग्रहण करें या भोग में अर्पित करें।",
-    },
-    "2026-03-21": {
-        "hindu_hi": ["चैत्र नवरात्रि"],
-        "special_menu_note_hi": "नवरात्रि दिवस 3, माँ चंद्रघंटा: आज विशेष रूप से खीर ग्रहण करें या भोग में अर्पित करें।",
-    },
-    "2026-03-22": {
-        "hindu_hi": ["चैत्र नवरात्रि"],
-        "special_menu_note_hi": "नवरात्रि दिवस 4, माँ कूष्मांडा: आज विशेष रूप से मालपुआ ग्रहण करें या भोग में अर्पित करें।",
-    },
-    "2026-03-23": {
-        "hindu_hi": ["चैत्र नवरात्रि"],
-        "special_menu_note_hi": "नवरात्रि दिवस 5, माँ स्कंदमाता: आज विशेष रूप से केला ग्रहण करें या भोग में अर्पित करें।",
-    },
-    "2026-03-24": {
-        "hindu_hi": ["चैत्र नवरात्रि"],
-        "special_menu_note_hi": "नवरात्रि दिवस 6, माँ कात्यायनी: आज विशेष रूप से शहद ग्रहण करें या भोग में अर्पित करें।",
-    },
-    "2026-03-25": {
-        "hindu_hi": ["चैत्र नवरात्रि"],
-        "special_menu_note_hi": "नवरात्रि दिवस 7, माँ कालरात्रि: आज विशेष रूप से गुड़ ग्रहण करें या भोग में अर्पित करें।",
-    },
-    "2026-03-26": {
-        "hindu_hi": ["चैत्र नवरात्रि"],
-        "special_menu_note_hi": "नवरात्रि दिवस 8, माँ महागौरी: आज विशेष रूप से नारियल ग्रहण करें या भोग में अर्पित करें।",
-    },
-    "2026-03-27": {
-        "hindu_hi": ["चैत्र नवरात्रि", "राम नवमी"],
-        "special_menu_note_hi": "नवरात्रि दिवस 9 / राम नवमी, माँ सिद्धिदात्री: आज विशेष रूप से तिल या व्रत-उपयोगी सात्त्विक भोग अर्पित करें।",
-    },
+NAVRATRI_DAY_SPECIAL_NOTES = {
+    1: "नवरात्रि दिवस 1, माँ शैलपुत्री: आज विशेष रूप से देसी घी ग्रहण करें या भोग में अर्पित करें।",
+    2: "नवरात्रि दिवस 2, माँ ब्रह्मचारिणी: आज विशेष रूप से चीनी या मिश्री ग्रहण करें या भोग में अर्पित करें।",
+    3: "नवरात्रि दिवस 3, माँ चंद्रघंटा: आज विशेष रूप से खीर ग्रहण करें या भोग में अर्पित करें।",
+    4: "नवरात्रि दिवस 4, माँ कूष्मांडा: आज विशेष रूप से मालपुआ ग्रहण करें या भोग में अर्पित करें।",
+    5: "नवरात्रि दिवस 5, माँ स्कंदमाता: आज विशेष रूप से केला ग्रहण करें या भोग में अर्पित करें।",
+    6: "नवरात्रि दिवस 6, माँ कात्यायनी: आज विशेष रूप से शहद ग्रहण करें या भोग में अर्पित करें।",
+    7: "नवरात्रि दिवस 7, माँ कालरात्रि: आज विशेष रूप से गुड़ ग्रहण करें या भोग में अर्पित करें।",
+    8: "नवरात्रि दिवस 8, माँ महागौरी: आज विशेष रूप से नारियल ग्रहण करें या भोग में अर्पित करें।",
+    9: "नवरात्रि दिवस 9, माँ सिद्धिदात्री: आज विशेष रूप से तिल या सात्त्विक भोग अर्पित करें।",
 }
+
+VIJAYADASHAMI_SPECIAL_NOTE = "विजयादशमी: आज विशेष रूप से सात्त्विक भोग अर्पित करें और शुभ कार्य आरंभ करें।"
 
 
 NAVRATRI_ASHTAMI_SPECIAL_MENU_LINES = [
@@ -196,6 +171,77 @@ NAVRATRI_ASHTAMI_SPECIAL_MENU_LINES = [
     "7. छना हुआ पानी भुनी हुई सूजी वाली कड़ाही में धीरे-धीरे, थोड़ा-थोड़ा करके डालें।",
     "8. पानी डालते समय लगातार चलाते रहें, ताकि हलवा अच्छी तरह तैयार हो।",
 ]
+
+
+def build_navratri_fallback_entries(
+    start_date_str: str,
+    total_days: int,
+    *,
+    festival_names: list[str],
+    day_9_note_hi: str | None = None,
+    final_day_extra_names: list[str] | None = None,
+    final_day_note_hi: str | None = None,
+) -> dict[str, dict[str, Any]]:
+    start_date = datetime.strptime(start_date_str, "%Y-%m-%d").date()
+    entries: dict[str, dict[str, Any]] = {}
+
+    for day_number in range(1, total_days + 1):
+        current_date = start_date + timedelta(days=day_number - 1)
+        current_names = festival_names[:]
+        special_menu_note_hi: str | None
+        special_menu_lines_hi: list[str] | None = None
+
+        if day_number == 8:
+            special_menu_note_hi = NAVRATRI_DAY_SPECIAL_NOTES[8]
+            special_menu_lines_hi = NAVRATRI_ASHTAMI_SPECIAL_MENU_LINES[:]
+        elif day_number == 9:
+            special_menu_note_hi = day_9_note_hi or NAVRATRI_DAY_SPECIAL_NOTES[9]
+        elif day_number == total_days and final_day_note_hi is not None:
+            special_menu_note_hi = final_day_note_hi
+            if final_day_extra_names:
+                for name in final_day_extra_names:
+                    if name not in current_names:
+                        current_names.append(name)
+        else:
+            special_menu_note_hi = NAVRATRI_DAY_SPECIAL_NOTES.get(day_number)
+
+        entries[current_date.strftime("%Y-%m-%d")] = {
+            "hindu_hi": current_names,
+            "special_menu_note_hi": special_menu_note_hi,
+            "special_menu_lines_hi": special_menu_lines_hi,
+        }
+
+    return entries
+
+
+NAVRATRI_FALLBACKS: dict[str, dict[str, Any]] = {}
+NAVRATRI_FALLBACKS.update(
+    build_navratri_fallback_entries(
+        "2026-03-19",
+        9,
+        festival_names=["चैत्र नवरात्रि"],
+        day_9_note_hi="नवरात्रि दिवस 9 / राम नवमी, माँ सिद्धिदात्री: आज विशेष रूप से तिल या व्रत-उपयोगी सात्त्विक भोग अर्पित करें।",
+        final_day_extra_names=["राम नवमी"],
+    )
+)
+NAVRATRI_FALLBACKS.update(
+    build_navratri_fallback_entries(
+        "2026-10-11",
+        10,
+        festival_names=["शारदीय नवरात्रि"],
+        final_day_extra_names=["विजयादशमी"],
+        final_day_note_hi=VIJAYADASHAMI_SPECIAL_NOTE,
+    )
+)
+NAVRATRI_FALLBACKS.update(
+    build_navratri_fallback_entries(
+        "2027-04-07",
+        9,
+        festival_names=["चैत्र नवरात्रि"],
+        day_9_note_hi="नवरात्रि दिवस 9 / राम नवमी, माँ सिद्धिदात्री: आज विशेष रूप से तिल या व्रत-उपयोगी सात्त्विक भोग अर्पित करें।",
+        final_day_extra_names=["राम नवमी"],
+    )
+)
 
 
 VASANT_REQUIRED_SIDES = [
@@ -1199,7 +1245,7 @@ def build_festival_info_from_row(row: dict[str, Any]) -> FestivalInfo:
 
 
 def get_fallback_festival_info(target_date: str) -> FestivalInfo | None:
-    fallback = CHAITRA_NAVRATRI_NO_MENU_2026.get(target_date)
+    fallback = NAVRATRI_FALLBACKS.get(target_date)
     if not fallback:
         return None
     return FestivalInfo(

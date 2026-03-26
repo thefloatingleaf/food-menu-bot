@@ -126,7 +126,13 @@ python3 generate_menu.py --bootstrap-weather-tags
 }
 ```
 
-For Chaitra Navratri 2026, the generator also has a built-in no-menu fallback for `2026-03-19` through `2026-03-27`, so those dates still suppress the regular menu even if a festival row is missing or incomplete.
+The generator also has built-in Navratri fallback coverage for:
+
+- `2026-03-19` through `2026-03-27` (`चैत्र नवरात्रि 2026`)
+- `2026-10-11` through `2026-10-20` (`शारदीय नवरात्रि 2026`, ending with `विजयादशमी`)
+- `2027-04-07` through `2027-04-15` (`चैत्र नवरात्रि 2027`)
+
+These ranges still suppress the regular menu even if a festival row is missing or incomplete.
 
 If a festival row includes `special_menu_lines_hi`, those lines replace the generic `*नियमित मेनू:*` / `*विशेष पारंपरिक सेवन/भोग:*` block for that date.
 

@@ -3094,6 +3094,78 @@
       "tithi_hi": "सप्तमी",
       "paksha_hi": "शुक्ल पक्ष",
       "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+    },
+    {
+      "date": "2027-04-07",
+      "ritu_hi": "वसंत",
+      "maah_hi": "चैत्र",
+      "tithi_hi": "प्रतिपदा",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "User-provided Chaitra Navratri 2027 range"
+    },
+    {
+      "date": "2027-04-08",
+      "ritu_hi": "वसंत",
+      "maah_hi": "चैत्र",
+      "tithi_hi": "द्वितीया",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "User-provided Chaitra Navratri 2027 range"
+    },
+    {
+      "date": "2027-04-09",
+      "ritu_hi": "वसंत",
+      "maah_hi": "चैत्र",
+      "tithi_hi": "तृतीया",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "User-provided Chaitra Navratri 2027 range"
+    },
+    {
+      "date": "2027-04-10",
+      "ritu_hi": "वसंत",
+      "maah_hi": "चैत्र",
+      "tithi_hi": "चतुर्थी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "User-provided Chaitra Navratri 2027 range"
+    },
+    {
+      "date": "2027-04-11",
+      "ritu_hi": "वसंत",
+      "maah_hi": "चैत्र",
+      "tithi_hi": "पंचमी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "User-provided Chaitra Navratri 2027 range"
+    },
+    {
+      "date": "2027-04-12",
+      "ritu_hi": "वसंत",
+      "maah_hi": "चैत्र",
+      "tithi_hi": "षष्ठी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "User-provided Chaitra Navratri 2027 range"
+    },
+    {
+      "date": "2027-04-13",
+      "ritu_hi": "वसंत",
+      "maah_hi": "चैत्र",
+      "tithi_hi": "सप्तमी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "User-provided Chaitra Navratri 2027 range"
+    },
+    {
+      "date": "2027-04-14",
+      "ritu_hi": "वसंत",
+      "maah_hi": "चैत्र",
+      "tithi_hi": "अष्टमी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "User-provided Chaitra Navratri 2027 range"
+    },
+    {
+      "date": "2027-04-15",
+      "ritu_hi": "वसंत",
+      "maah_hi": "चैत्र",
+      "tithi_hi": "नवमी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "User-provided Chaitra Navratri 2027 range"
     }
   ]
 }
