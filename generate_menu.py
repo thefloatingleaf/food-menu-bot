@@ -242,6 +242,33 @@ NAVRATRI_FALLBACKS.update(
         final_day_extra_names=["राम नवमी"],
     )
 )
+NAVRATRI_FALLBACKS.update(
+    build_navratri_fallback_entries(
+        "2027-09-30",
+        10,
+        festival_names=["शारदीय नवरात्रि"],
+        final_day_extra_names=["विजयादशमी"],
+        final_day_note_hi=VIJAYADASHAMI_SPECIAL_NOTE,
+    )
+)
+NAVRATRI_FALLBACKS.update(
+    build_navratri_fallback_entries(
+        "2028-03-27",
+        9,
+        festival_names=["चैत्र नवरात्रि"],
+        day_9_note_hi="नवरात्रि दिवस 9 / राम नवमी, माँ सिद्धिदात्री: आज विशेष रूप से तिल या व्रत-उपयोगी सात्त्विक भोग अर्पित करें।",
+        final_day_extra_names=["राम नवमी"],
+    )
+)
+NAVRATRI_FALLBACKS.update(
+    build_navratri_fallback_entries(
+        "2028-09-19",
+        10,
+        festival_names=["शारदीय नवरात्रि"],
+        final_day_extra_names=["विजयादशमी"],
+        final_day_note_hi=VIJAYADASHAMI_SPECIAL_NOTE,
+    )
+)
 
 
 VASANT_REQUIRED_SIDES = [

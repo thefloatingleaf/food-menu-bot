@@ -131,6 +131,9 @@ The generator also has built-in Navratri fallback coverage for:
 - `2026-03-19` through `2026-03-27` (`चैत्र नवरात्रि 2026`)
 - `2026-10-11` through `2026-10-20` (`शारदीय नवरात्रि 2026`, ending with `विजयादशमी`)
 - `2027-04-07` through `2027-04-15` (`चैत्र नवरात्रि 2027`)
+- `2027-09-30` through `2027-10-09` (`शारदीय नवरात्रि 2027`, ending with `विजयादशमी`)
+- `2028-03-27` through `2028-04-04` (`चैत्र नवरात्रि 2028`)
+- `2028-09-19` through `2028-09-28` (`शारदीय नवरात्रि 2028`, ending with `विजयादशमी`)
 
 These ranges still suppress the regular menu even if a festival row is missing or incomplete.
 

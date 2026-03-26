@@ -210,6 +210,40 @@ class FestivalSpecialMenuTests(unittest.TestCase):
             "विजयादशमी: आज विशेष रूप से सात्त्विक भोग अर्पित करें और शुभ कार्य आरंभ करें।",
         )
 
+    def test_resolve_festival_info_falls_back_for_sharad_navratri_2027_ashtami_menu(self) -> None:
+        info = generate_menu.resolve_festival_info("2027-10-07", {"entries": []})
+
+        self.assertEqual(info.hindu_hi, ["शारदीय नवरात्रि"])
+        self.assertTrue(info.suppress_regular_menu)
+        self.assertEqual(
+            info.special_menu_note_hi,
+            "नवरात्रि दिवस 8, माँ महागौरी: आज विशेष रूप से नारियल ग्रहण करें या भोग में अर्पित करें।",
+        )
+        self.assertIsNotNone(info.special_menu_lines_hi)
+        self.assertIn("1. काले चने — 4 कटोरी।", info.special_menu_lines_hi)
+
+    def test_resolve_festival_info_falls_back_for_chaitra_navratri_2028_ashtami_menu(self) -> None:
+        info = generate_menu.resolve_festival_info("2028-04-03", {"entries": []})
+
+        self.assertEqual(info.hindu_hi, ["चैत्र नवरात्रि"])
+        self.assertTrue(info.suppress_regular_menu)
+        self.assertEqual(
+            info.special_menu_note_hi,
+            "नवरात्रि दिवस 8, माँ महागौरी: आज विशेष रूप से नारियल ग्रहण करें या भोग में अर्पित करें।",
+        )
+        self.assertIsNotNone(info.special_menu_lines_hi)
+        self.assertIn("1. काले चने — 4 कटोरी।", info.special_menu_lines_hi)
+
+    def test_resolve_festival_info_marks_vijayadashami_in_2028_range(self) -> None:
+        info = generate_menu.resolve_festival_info("2028-09-28", {"entries": []})
+
+        self.assertEqual(info.hindu_hi, ["शारदीय नवरात्रि", "विजयादशमी"])
+        self.assertTrue(info.suppress_regular_menu)
+        self.assertEqual(
+            info.special_menu_note_hi,
+            "विजयादशमी: आज विशेष रूप से सात्त्विक भोग अर्पित करें और शुभ कार्य आरंभ करें।",
+        )
+
     def test_resolve_festival_info_merges_in_fallback_when_flag_is_missing(self) -> None:
         info = generate_menu.resolve_festival_info(
             "2026-03-27",
