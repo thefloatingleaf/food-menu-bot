@@ -244,13 +244,20 @@ class FestivalSpecialMenuTests(unittest.TestCase):
             "विजयादशमी: आज विशेष रूप से सात्त्विक भोग अर्पित करें और शुभ कार्य आरंभ करें।",
         )
 
+    def test_resolve_festival_info_has_no_2026_chaitra_navratri_fallback_on_march_27(self) -> None:
+        info = generate_menu.resolve_festival_info("2026-03-27", {"entries": []})
+
+        self.assertEqual(info.hindu_hi, [])
+        self.assertFalse(info.suppress_regular_menu)
+        self.assertIsNone(info.special_menu_note_hi)
+
     def test_resolve_festival_info_merges_in_fallback_when_flag_is_missing(self) -> None:
         info = generate_menu.resolve_festival_info(
-            "2026-03-27",
+            "2027-04-15",
             {
                 "entries": [
                     {
-                        "date": "2026-03-27",
+                        "date": "2027-04-15",
                         "hindu_hi": ["राम नवमी"],
                         "sikh_hi": [],
                     }

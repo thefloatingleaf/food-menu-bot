@@ -219,7 +219,7 @@ NAVRATRI_FALLBACKS: dict[str, dict[str, Any]] = {}
 NAVRATRI_FALLBACKS.update(
     build_navratri_fallback_entries(
         "2026-03-19",
-        9,
+        8,
         festival_names=["चैत्र नवरात्रि"],
         day_9_note_hi="नवरात्रि दिवस 9 / राम नवमी, माँ सिद्धिदात्री: आज विशेष रूप से तिल या व्रत-उपयोगी सात्त्विक भोग अर्पित करें।",
         final_day_extra_names=["राम नवमी"],
