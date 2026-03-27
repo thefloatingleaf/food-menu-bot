@@ -1487,6 +1487,10 @@ def exclude_overnight_breakfasts(items: list[str]) -> list[str]:
     return filtered if filtered else items[:]
 
 
+def can_apply_overnight_breakfast_on_run_date(target_date: date, generation_date: date) -> bool:
+    return target_date > generation_date
+
+
 def is_mangore_item(item: str) -> bool:
     normalized_item = item.casefold()
     return any(token in normalized_item for token in MANGORE_ITEM_TOKENS)
@@ -2577,6 +2581,7 @@ def main() -> int:
     target_date = resolve_date(args.date, timezone_name)
     target_date_str = target_date.strftime("%Y-%m-%d")
     target_date_display_str = target_date.strftime("%d-%b-%Y")
+    generation_date = datetime.now(ZoneInfo(timezone_name)).date()
 
     weather_enabled = bool(config.get("weather_enabled", True))
     weather_mode = str(config.get("weather_show_mode", "rain_or_extreme_only"))
@@ -2722,24 +2727,59 @@ def main() -> int:
         breakfast_choice_items = exclude_overnight_breakfasts(breakfast_items)
 
         if previous_day_breakfast_lock:
-            lock_conflicts = get_item_repeat_family_conflicts(
-                previous_day_breakfast_lock,
-                previous_day_repeat_families,
-                extract_breakfast_repeat_families,
-            )
-            if previous_day_breakfast_lock in breakfast_items and not lock_conflicts:
-                selected_breakfast = previous_day_breakfast_lock
-                breakfast_fixed = True
+            if is_overnight_breakfast(previous_day_breakfast_lock) and not can_apply_overnight_breakfast_on_run_date(
+                target_date, generation_date
+            ):
+                missing_data_notes.append(
+                    "[समय नियम] overnight नाश्ता लॉक लागू नहीं किया गया क्योंकि यह मेनू उसी सुबह बनाया जा रहा है"
+                )
+                previous_day_breakfast_lock = None
             else:
-                if previous_day_breakfast_lock not in breakfast_items:
-                    missing_data_notes.append(
-                        f"[अनुपलब्ध] पिछली रात से लॉक किया गया नाश्ता आज की सूची में नहीं मिला: {previous_day_breakfast_lock}"
+                lock_conflicts = get_item_repeat_family_conflicts(
+                    previous_day_breakfast_lock,
+                    previous_day_repeat_families,
+                    extract_breakfast_repeat_families,
+                )
+                if previous_day_breakfast_lock in breakfast_items and not lock_conflicts:
+                    selected_breakfast = previous_day_breakfast_lock
+                    breakfast_fixed = True
+                else:
+                    if previous_day_breakfast_lock not in breakfast_items:
+                        missing_data_notes.append(
+                            f"[अनुपलब्ध] पिछली रात से लॉक किया गया नाश्ता आज की सूची में नहीं मिला: {previous_day_breakfast_lock}"
+                        )
+                    elif lock_conflicts:
+                        missing_data_notes.append(
+                            "[नियम] पिछली रात से लॉक किया गया नाश्ता लगातार-दिन नियम से टकराया: "
+                            + " / ".join(lock_conflicts)
+                        )
+                    selected_breakfast = choose_item(
+                        items=breakfast_choice_items,
+                        ekadashi=ekadashi,
+                        recent_block_set=breakfast_recent,
+                        consecutive_day_block_families=previous_day_repeat_families,
+                        family_extractor=extract_breakfast_repeat_families,
+                        keywords=keywords,
+                        disallowed_keywords=disallowed_keywords,
+                        fallback_policy=fallback_policy,
+                        seed_key=f"{target_date_str}:breakfast",
+                        weather_rules=weather_rules,
+                        weather_tags=weather_tags,
+                        warn_bucket=warning_items,
+                        constraint_notes=missing_data_notes,
+                        prefer_lighter=transition_plan.prefer_lighter,
+                        light_fallback_items=light_fallback_items,
+                        heavy_light_classification=heavy_light_classification,
                     )
-                elif lock_conflicts:
-                    missing_data_notes.append(
-                        "[नियम] पिछली रात से लॉक किया गया नाश्ता लगातार-दिन नियम से टकराया: "
-                        + " / ".join(lock_conflicts)
-                    )
+        if breakfast_item_override:
+            if previous_day_breakfast_lock:
+                pass
+            elif is_overnight_breakfast(breakfast_item_override) and not can_apply_overnight_breakfast_on_run_date(
+                target_date, generation_date
+            ):
+                missing_data_notes.append(
+                    "[समय नियम] आज का overnight नाश्ता override लागू नहीं किया गया क्योंकि तैयारी का समय निकल चुका है"
+                )
                 selected_breakfast = choose_item(
                     items=breakfast_choice_items,
                     ekadashi=ekadashi,
@@ -2758,9 +2798,6 @@ def main() -> int:
                     light_fallback_items=light_fallback_items,
                     heavy_light_classification=heavy_light_classification,
                 )
-        if breakfast_item_override:
-            if previous_day_breakfast_lock:
-                pass
             elif is_overnight_breakfast(breakfast_item_override):
                 missing_data_notes.append(
                     "[डेटा चेतावनी] आज का निर्धारित overnight नाश्ता लागू किया गया है, "

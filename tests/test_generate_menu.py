@@ -65,6 +65,16 @@ class ConsecutiveDayRepeatRuleTests(unittest.TestCase):
 
 
 class OvernightBreakfastFormattingTests(unittest.TestCase):
+    def test_same_day_generation_cannot_apply_overnight_breakfast(self) -> None:
+        self.assertFalse(
+            generate_menu.can_apply_overnight_breakfast_on_run_date(date(2026, 3, 27), date(2026, 3, 27))
+        )
+
+    def test_next_day_generation_can_apply_overnight_breakfast(self) -> None:
+        self.assertTrue(
+            generate_menu.can_apply_overnight_breakfast_on_run_date(date(2026, 3, 27), date(2026, 3, 26))
+        )
+
     def test_format_overnight_breakfast_label_uses_short_name(self) -> None:
         full_item = (
             "पखाला भात (Pakhala Bhata): रात में 1 कटोरी कच्चे चावल धोकर सादा चावल पकाएँ।"
