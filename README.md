@@ -82,7 +82,8 @@ python3 generate_menu.py --bootstrap-weather-tags
 - `*फॉलोवर महोदय हेतु रात की तैयारी:* <instruction>` (only when the generated next-day menu includes मंगौड़े)
 - `*एकादशी:* <name_hi>` (only on Ekadashi/Gauna dates)
 - `*मौसम:* <details>` (only rainy/extreme days)
-- `*वसंत अनिवार्य साथ:* ...` (only when ऋतु is वसंत)
+- `*वसंत नाश्ता अनिवार्य साथ:* ...` (only when ऋतु is वसंत)
+- `*वसंत भोजन अनिवार्य साथ:* ...` (only when ऋतु is वसंत)
 
 ## Data files
 
@@ -153,7 +154,8 @@ The generator also applies a recurring override for any festival day that is bot
    - `breakfast_vasant.json`
    - `menu_vasant.json`
 2. For वसंत days, output also includes:
-   - `*वसंत अनिवार्य साथ:* नीम की चटनी / पुदीना की चटनी / लहसुन की चटनी / तीखा अचार (खट्टा नहीं) / मूंग दाल पापड़ / मसाला छाछ ...`
+   - `*वसंत नाश्ता अनिवार्य साथ:* नीम की चटनी / पुदीना की चटनी / लहसुन की चटनी / तीखा अचार (खट्टा नहीं) / मसाला छाछ ...`
+   - `*वसंत भोजन अनिवार्य साथ:* नीम की चटनी / पुदीना की चटनी / लहसुन की चटनी / तीखा अचार (खट्टा नहीं) / मूंग दाल पापड़ / मसाला छाछ ...`
    - `*वसंत दशम-दिवस स्मरण:* नीम का घी बनाएं।` plus the 6-step recipe below it (only on the 10th day of वसंत ऋतु)
 3. For any वसंत भोजन that uses `रोटी` and does not use `चावल`, the grain is restricted to exactly one of:
    - `जौ (केवल पुराना)`
