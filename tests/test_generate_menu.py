@@ -164,6 +164,7 @@ class VasantRotiRotationTests(unittest.TestCase):
                 "गेहू की रोटी और भिंडी की सूखी सब्ज़ी",
                 "चने और जो की रोटी (मिस्सी रोटी) और अरहर दाल",
                 "काला चना और चावल",
+                "रागी की रोटी और कटहल की सब्ज़ी",
             ]
         )
 
@@ -171,6 +172,7 @@ class VasantRotiRotationTests(unittest.TestCase):
         self.assertIn("गेहूँ (केवल पुराना) की रोटी और भिंडी की सूखी सब्ज़ी", canonical)
         self.assertIn("चने और जौ की रोटी (मिस्सी रोटी) और अरहर दाल", canonical)
         self.assertIn("चने-लौकी की दाल और चावल", canonical)
+        self.assertIn("रागी (केवल पुराना) की रोटी और कटहल की सब्ज़ी", canonical)
         self.assertIn(
             "चने और जौ की रोटी (मिस्सी रोटी) और चने-लौकी की दाल",
             canonical,
