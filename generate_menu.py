@@ -281,6 +281,14 @@ VASANT_REQUIRED_SIDES = [
     "मसाला छाछ (जीरा, अजवाइन, कढ़ी पत्ता, हींग, घी का तड़का)",
 ]
 VASANT_NEEM_GHEE_NOTE = "नीम का घी बनाएं।"
+VASANT_NEEM_GHEE_RECIPE_LINES = [
+    "1. ताज़ी नीम की पत्तियाँ अच्छी तरह साफ कर लें।",
+    "2. पत्तियों पर लगा सारा पानी पूरी तरह सुखा लें और पीस लें मिक्सी में।",
+    "3. 1 किलो घी को कड़ाही में गरम करें।",
+    "4. उसमें नीम की एक बड़ी, भरी हुई मुट्ठी डालकर धीमी आँच पर पकाएँ।",
+    "5. जब पत्तियाँ काली पड़ने लगें, तब आँच बन्द कर दें।",
+    "6. इसके बाद घी को छान लें और प्रयोग में लाएँ।",
+]
 
 GRISHM_BREAKFAST_REQUIRED_SIDES = [
     "छाछ (काफ़ी पतली)",
@@ -711,6 +719,11 @@ def is_vasant_day_ten(target_date: datetime.date, ritu_key: str) -> bool:
         return False
     vasant_start = current_season_start_date("vasant", target_date)
     return (target_date - vasant_start).days == 9
+
+
+def append_vasant_neem_ghee_lines(lines: list[str]) -> None:
+    lines.append("*वसंत दशम-दिवस स्मरण:* " + VASANT_NEEM_GHEE_NOTE)
+    lines.extend(VASANT_NEEM_GHEE_RECIPE_LINES)
 
 
 def season_weather_fit_score(season_key: str, weather: WeatherInfo) -> float:
@@ -2745,7 +2758,7 @@ def main() -> int:
         if weather_info is not None and should_show_weather_line(weather_info, weather_mode):
             lines.append(build_weather_line(weather_info, weather_city_hi))
         if vasant_day_ten:
-            lines.append("*वसंत दशम-दिवस स्मरण:* " + VASANT_NEEM_GHEE_NOTE)
+            append_vasant_neem_ghee_lines(lines)
         if target_date.month == 1 and target_date.day == 1:
             lines.append("*वार्षिक स्मरण (1 जनवरी):* " + NEW_YEAR_KANJI_NOTE)
 
@@ -3286,7 +3299,7 @@ def main() -> int:
         lines.append(build_weather_line(weather_info, weather_city_hi))
 
     if vasant_day_ten:
-        lines.append("*वसंत दशम-दिवस स्मरण:* " + VASANT_NEEM_GHEE_NOTE)
+        append_vasant_neem_ghee_lines(lines)
 
     if not shringdhara_info.active:
         if ritu_key == "vasant":

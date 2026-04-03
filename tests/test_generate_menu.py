@@ -147,6 +147,14 @@ class VasantDayTenTests(unittest.TestCase):
         self.assertFalse(generate_menu.is_vasant_day_ten(date(2026, 3, 23), "vasant"))
         self.assertFalse(generate_menu.is_vasant_day_ten(date(2026, 3, 24), "grishm"))
 
+    def test_append_vasant_neem_ghee_lines_adds_full_recipe(self) -> None:
+        lines = []
+        generate_menu.append_vasant_neem_ghee_lines(lines)
+
+        self.assertEqual(lines[0], "*वसंत दशम-दिवस स्मरण:* नीम का घी बनाएं।")
+        self.assertIn("1. ताज़ी नीम की पत्तियाँ अच्छी तरह साफ कर लें।", lines)
+        self.assertIn("6. इसके बाद घी को छान लें और प्रयोग में लाएँ।", lines)
+
 
 class OvernightBreakfastFormattingTests(unittest.TestCase):
     def test_same_day_generation_cannot_apply_overnight_breakfast(self) -> None:

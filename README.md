@@ -154,7 +154,7 @@ The generator also applies a recurring override for any festival day that is bot
    - `menu_vasant.json`
 2. For वसंत days, output also includes:
    - `*वसंत अनिवार्य साथ:* नीम की चटनी / पुदीना की चटनी / लहसुन की चटनी / तीखा अचार (खट्टा नहीं) / मूंग दाल पापड़ / मसाला छाछ ...`
-   - `*वसंत दशम-दिवस स्मरण:* नीम का घी बनाएं।` (only on the 10th day of वसंत ऋतु)
+   - `*वसंत दशम-दिवस स्मरण:* नीम का घी बनाएं।` plus the 6-step recipe below it (only on the 10th day of वसंत ऋतु)
 3. Otherwise, script uses Shishir files:
    - `breakfast_shishir.json`
    - `menu_shishir.json`
