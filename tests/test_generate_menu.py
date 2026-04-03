@@ -64,6 +64,81 @@ class ConsecutiveDayRepeatRuleTests(unittest.TestCase):
         self.assertTrue(fell_back)
 
 
+class VarietyCycleRuleTests(unittest.TestCase):
+    def test_normalize_history_preserves_ritu_key(self) -> None:
+        normalized = generate_menu.normalize_history(
+            [
+                {
+                    "date": "2026-03-12",
+                    "breakfast": "पोहा",
+                    "meal": "दाल और रोटी",
+                    "ritu_key": "वसंत",
+                }
+            ]
+        )
+
+        self.assertEqual(normalized[0]["ritu_key"], "vasant")
+
+    def test_get_variety_cycle_used_items_reads_same_ritu_only(self) -> None:
+        history = [
+            {
+                "date": "2026-03-11",
+                "breakfast": "पोहा",
+                "meal": "दाल और रोटी",
+                "ritu_key": "vasant",
+            },
+            {
+                "date": "2026-03-12",
+                "breakfast": "उपमा",
+                "meal": "भिंडी",
+                "ritu_key": "grishm",
+            },
+            {
+                "date": "2026-03-13",
+                "breakfast": "इडली",
+                "meal": "लौकी",
+                "ritu_key": "vasant",
+            },
+        ]
+
+        self.assertEqual(
+            generate_menu.get_variety_cycle_used_items(history, date(2026, 3, 14), "breakfast", "vasant"),
+            {"पोहा", "इडली"},
+        )
+
+    def test_apply_variety_cycle_rule_filters_until_cycle_exhausts(self) -> None:
+        filtered, reset = generate_menu.apply_variety_cycle_rule(["पोहा", "उपमा", "इडली"], {"पोहा", "इडली"})
+        self.assertEqual(filtered, ["उपमा"])
+        self.assertFalse(reset)
+
+    def test_apply_variety_cycle_rule_resets_after_full_cycle(self) -> None:
+        filtered, reset = generate_menu.apply_variety_cycle_rule(["पोहा", "उपमा"], {"पोहा", "उपमा"})
+        self.assertEqual(filtered, ["पोहा", "उपमा"])
+        self.assertTrue(reset)
+
+    def test_choose_item_prefers_unused_item_in_same_ritu_cycle(self) -> None:
+        selected = generate_menu.choose_item(
+            items=["पोहा", "उपमा"],
+            ekadashi=generate_menu.EkadashiInfo(False, None, None),
+            cycle_block_set={"पोहा"},
+            recent_block_set=set(),
+            consecutive_day_block_families=set(),
+            family_extractor=generate_menu.extract_breakfast_repeat_families,
+            keywords=[],
+            disallowed_keywords=[],
+            fallback_policy="fallback_full_menu",
+            seed_key="2026-03-14:breakfast",
+            weather_rules=None,
+            weather_tags={},
+            warn_bucket=set(),
+            constraint_notes=[],
+            prefer_lighter=False,
+            light_fallback_items=[],
+        )
+
+        self.assertEqual(selected, "उपमा")
+
+
 class OvernightBreakfastFormattingTests(unittest.TestCase):
     def test_same_day_generation_cannot_apply_overnight_breakfast(self) -> None:
         self.assertFalse(

@@ -424,6 +424,10 @@ MEAL_REPEAT_ALIASES = {
 CONSECUTIVE_DAY_REPEAT_NOTE = (
     "[अनुपलब्ध] लगातार दिनों में वही मुख्य नाश्ता या वही मुख्य सब्ज़ी दोहराने से बचने के लिए पर्याप्त विकल्प नहीं मिले"
 )
+VARIETY_CYCLE_RESET_NOTE = (
+    "[विविधता चक्र] इस ऋतु और श्रेणी के सभी उपयुक्त विकल्प पहले ही उपयोग हो चुके थे, इसलिए चक्र रीसेट किया गया"
+)
+MIN_VARIETY_HISTORY_DAYS = 400
 REPEAT_FAMILY_BOUNDARY_CLASS = r"\u0900-\u097Fa-zA-Z"
 
 
@@ -1369,11 +1373,14 @@ def normalize_history(raw: Any) -> list[dict[str, str]]:
 
         breakfast_val = row.get("breakfast")
         meal_val = row.get("meal")
+        ritu_key_val = row.get("ritu_key")
         next_day_breakfast_lock = row.get("next_day_breakfast_lock")
         next_day_requires_rice_prep = row.get("next_day_requires_rice_prep")
 
         if isinstance(breakfast_val, str) and isinstance(meal_val, str):
             normalized_row: dict[str, Any] = {"date": date_val, "breakfast": breakfast_val, "meal": meal_val}
+            if isinstance(ritu_key_val, str) and ritu_key_val.strip():
+                normalized_row["ritu_key"] = normalize_ritu_key(ritu_key_val.strip())
             if isinstance(next_day_breakfast_lock, str) and next_day_breakfast_lock.strip():
                 normalized_row["next_day_breakfast_lock"] = next_day_breakfast_lock.strip()
                 normalized_row["next_day_requires_rice_prep"] = True
@@ -1385,6 +1392,8 @@ def normalize_history(raw: Any) -> list[dict[str, str]]:
         old_item = row.get("item")
         if isinstance(old_item, str):
             normalized_row = {"date": date_val, "meal": old_item}
+            if isinstance(ritu_key_val, str) and ritu_key_val.strip():
+                normalized_row["ritu_key"] = normalize_ritu_key(ritu_key_val.strip())
             if isinstance(next_day_breakfast_lock, str) and next_day_breakfast_lock.strip():
                 normalized_row["next_day_breakfast_lock"] = next_day_breakfast_lock.strip()
                 normalized_row["next_day_requires_rice_prep"] = True
@@ -1415,6 +1424,39 @@ def recent_items(
 def apply_repeat_rule(pool: list[str], recent_block_set: set[str]) -> list[str]:
     filtered = [item for item in pool if item not in recent_block_set]
     return filtered if filtered else pool[:]
+
+
+def get_variety_cycle_used_items(
+    history: list[dict[str, Any]],
+    target_date: date,
+    field: str,
+    ritu_key: str,
+) -> set[str]:
+    used: set[str] = set()
+    normalized_ritu_key = normalize_ritu_key(ritu_key)
+    for row in history:
+        try:
+            row_date = datetime.strptime(row["date"], "%Y-%m-%d").date()
+        except (ValueError, KeyError):
+            continue
+        if row_date >= target_date:
+            continue
+        row_ritu_key = row.get("ritu_key")
+        if not isinstance(row_ritu_key, str) or normalize_ritu_key(row_ritu_key) != normalized_ritu_key:
+            continue
+        value = row.get(field)
+        if isinstance(value, str) and value:
+            used.add(value)
+    return used
+
+
+def apply_variety_cycle_rule(pool: list[str], cycle_used_items: set[str]) -> tuple[list[str], bool]:
+    if not cycle_used_items:
+        return pool[:], False
+    filtered = [item for item in pool if item not in cycle_used_items]
+    if filtered:
+        return filtered, False
+    return pool[:], True
 
 
 def apply_consecutive_day_repeat_rule(
@@ -2053,6 +2095,7 @@ def apply_hard_filters(
 
 def finalize_choice_pool(
     base_pool: list[str],
+    cycle_block_set: set[str],
     recent_block_set: set[str],
     consecutive_day_block_families: set[str],
     family_extractor: Callable[[str], set[str]],
@@ -2067,7 +2110,11 @@ def finalize_choice_pool(
     if not base_pool:
         return []
 
-    pool = apply_repeat_rule(base_pool, recent_block_set)
+    pool, variety_cycle_reset = apply_variety_cycle_rule(base_pool, cycle_block_set)
+    if variety_cycle_reset and VARIETY_CYCLE_RESET_NOTE not in constraint_notes:
+        constraint_notes.append(VARIETY_CYCLE_RESET_NOTE)
+
+    pool = apply_repeat_rule(pool, recent_block_set)
 
     pool, repeated_family_fallback = apply_consecutive_day_repeat_rule(
         pool, consecutive_day_block_families, family_extractor
@@ -2106,6 +2153,7 @@ def deterministic_choice(pool: list[str], seed_key: str) -> str:
 def choose_item(
     items: list[str],
     ekadashi: EkadashiInfo,
+    cycle_block_set: set[str],
     recent_block_set: set[str],
     consecutive_day_block_families: set[str],
     family_extractor: Callable[[str], set[str]],
@@ -2137,6 +2185,7 @@ def choose_item(
 
     pool = finalize_choice_pool(
         base_pool=base_pool,
+        cycle_block_set=cycle_block_set,
         recent_block_set=recent_block_set,
         consecutive_day_block_families=consecutive_day_block_families,
         family_extractor=family_extractor,
@@ -2157,11 +2206,17 @@ def update_history(
     breakfast_item: str,
     meal_item: str,
     keep_days: int,
+    ritu_key: str,
     next_day_breakfast_lock: str | None = None,
     next_day_requires_rice_prep: bool = False,
 ) -> list[dict[str, Any]]:
     updated = [row for row in history if row.get("date") != target_date]
-    new_row: dict[str, Any] = {"date": target_date, "breakfast": breakfast_item, "meal": meal_item}
+    new_row: dict[str, Any] = {
+        "date": target_date,
+        "breakfast": breakfast_item,
+        "meal": meal_item,
+        "ritu_key": normalize_ritu_key(ritu_key),
+    }
     if isinstance(next_day_breakfast_lock, str) and next_day_breakfast_lock.strip():
         new_row["next_day_breakfast_lock"] = next_day_breakfast_lock.strip()
         new_row["next_day_requires_rice_prep"] = True
@@ -2169,7 +2224,7 @@ def update_history(
         new_row["next_day_requires_rice_prep"] = True
     updated.append(new_row)
 
-    cutoff = datetime.strptime(target_date, "%Y-%m-%d").date() - timedelta(days=max(keep_days, 7) + 30)
+    cutoff = datetime.strptime(target_date, "%Y-%m-%d").date() - timedelta(days=max(keep_days, MIN_VARIETY_HISTORY_DAYS))
 
     retained: list[dict[str, Any]] = []
     for row in updated:
@@ -2201,7 +2256,9 @@ def dedupe_preserve_order(items: list[str]) -> list[str]:
 
 
 def normalize_ritu_key(ritu_hi: str) -> str:
-    cleaned = ritu_hi.replace(" ", "")
+    cleaned = ritu_hi.replace(" ", "").strip().lower()
+    if cleaned in {"hemant", "sharad", "varsha", "grishm", "vasant", "shishir"}:
+        return cleaned
     if "हेमंतऋतु" in cleaned or "हेमन्तऋतु" in cleaned or "हेमंत" in cleaned or "हेमन्त" in cleaned:
         return "hemant"
     if "शरदऋतु" in cleaned or "शरद" in cleaned:
@@ -2690,6 +2747,8 @@ def main() -> int:
 
     breakfast_recent = recent_items(history, target_date, repeat_window_days, "breakfast")
     meal_recent = recent_items(history, target_date, repeat_window_days, "meal")
+    breakfast_cycle_block_set = get_variety_cycle_used_items(history, target_date, "breakfast", ritu_key)
+    meal_cycle_block_set = get_variety_cycle_used_items(history, target_date, "meal", ritu_key)
     previous_day_breakfast_lock = get_previous_day_breakfast_lock(history, target_date)
     previous_day_repeat_families = get_previous_day_repeat_families(history, target_date)
 
@@ -2705,6 +2764,7 @@ def main() -> int:
         selected_observance_item = choose_item(
             items=observance_items,
             ekadashi=ekadashi,
+            cycle_block_set=breakfast_cycle_block_set | meal_cycle_block_set,
             recent_block_set=observance_recent,
             consecutive_day_block_families=previous_day_repeat_families,
             family_extractor=extract_any_repeat_families,
@@ -2756,6 +2816,7 @@ def main() -> int:
                     selected_breakfast = choose_item(
                         items=breakfast_choice_items,
                         ekadashi=ekadashi,
+                        cycle_block_set=breakfast_cycle_block_set,
                         recent_block_set=breakfast_recent,
                         consecutive_day_block_families=previous_day_repeat_families,
                         family_extractor=extract_breakfast_repeat_families,
@@ -2783,6 +2844,7 @@ def main() -> int:
                 selected_breakfast = choose_item(
                     items=breakfast_choice_items,
                     ekadashi=ekadashi,
+                    cycle_block_set=breakfast_cycle_block_set,
                     recent_block_set=breakfast_recent,
                     consecutive_day_block_families=previous_day_repeat_families,
                     family_extractor=extract_breakfast_repeat_families,
@@ -2819,6 +2881,7 @@ def main() -> int:
                     selected_breakfast = choose_item(
                         items=breakfast_choice_items,
                         ekadashi=ekadashi,
+                        cycle_block_set=breakfast_cycle_block_set,
                         recent_block_set=breakfast_recent,
                         consecutive_day_block_families=previous_day_repeat_families,
                         family_extractor=extract_breakfast_repeat_families,
@@ -2844,6 +2907,7 @@ def main() -> int:
                 selected_breakfast = choose_item(
                     items=breakfast_choice_items,
                     ekadashi=ekadashi,
+                    cycle_block_set=breakfast_cycle_block_set,
                     recent_block_set=breakfast_recent,
                     consecutive_day_block_families=previous_day_repeat_families,
                     family_extractor=extract_breakfast_repeat_families,
@@ -2864,6 +2928,7 @@ def main() -> int:
                 selected_breakfast = choose_item(
                     items=breakfast_choice_items,
                     ekadashi=ekadashi,
+                    cycle_block_set=breakfast_cycle_block_set,
                     recent_block_set=breakfast_recent,
                     consecutive_day_block_families=previous_day_repeat_families,
                     family_extractor=extract_breakfast_repeat_families,
@@ -2927,9 +2992,15 @@ def main() -> int:
             else:
                 next_day_breakfast_recent = recent_items(history, next_day.target_date, repeat_window_days, "breakfast")
                 next_day_breakfast_recent.add(selected_breakfast)
+                next_day_breakfast_cycle_block_set = get_variety_cycle_used_items(
+                    history, next_day.target_date, "breakfast", next_day.ritu_key
+                )
+                if next_day.ritu_key == ritu_key:
+                    next_day_breakfast_cycle_block_set.add(selected_breakfast)
                 planned_next_day_breakfast = choose_item(
                     items=next_day.breakfast_items,
                     ekadashi=next_day.ekadashi,
+                    cycle_block_set=next_day_breakfast_cycle_block_set,
                     recent_block_set=next_day_breakfast_recent,
                     consecutive_day_block_families=selected_breakfast_repeat_families,
                     family_extractor=extract_breakfast_repeat_families,
@@ -2960,6 +3031,7 @@ def main() -> int:
                 next_day_requires_rice_prep = True
                 selected_meal_pool = finalize_choice_pool(
                     base_pool=rice_support_meal_candidates,
+                    cycle_block_set=meal_cycle_block_set,
                     recent_block_set=meal_recent,
                     consecutive_day_block_families=previous_day_repeat_families,
                     family_extractor=extract_meal_repeat_families,
@@ -2979,6 +3051,7 @@ def main() -> int:
                 selected_meal = choose_item(
                     items=meal_items,
                     ekadashi=ekadashi,
+                    cycle_block_set=meal_cycle_block_set,
                     recent_block_set=meal_recent,
                     consecutive_day_block_families=previous_day_repeat_families,
                     family_extractor=extract_meal_repeat_families,
@@ -2998,6 +3071,7 @@ def main() -> int:
             selected_meal = choose_item(
                 items=meal_items,
                 ekadashi=ekadashi,
+                cycle_block_set=meal_cycle_block_set,
                 recent_block_set=meal_recent,
                 consecutive_day_block_families=previous_day_repeat_families,
                 family_extractor=extract_meal_repeat_families,
@@ -3021,6 +3095,7 @@ def main() -> int:
                 rebalanced_breakfast = choose_item(
                     items=breakfast_choice_items,
                     ekadashi=ekadashi,
+                    cycle_block_set=breakfast_cycle_block_set,
                     recent_block_set=breakfast_recent,
                     consecutive_day_block_families=previous_day_repeat_families,
                     family_extractor=extract_breakfast_repeat_families,
@@ -3046,6 +3121,7 @@ def main() -> int:
                 if next_day_requires_rice_prep and rice_support_meal_candidates:
                     rice_light_pool = finalize_choice_pool(
                         base_pool=rice_support_meal_candidates,
+                        cycle_block_set=meal_cycle_block_set,
                         recent_block_set=meal_recent,
                         consecutive_day_block_families=previous_day_repeat_families,
                         family_extractor=extract_meal_repeat_families,
@@ -3067,6 +3143,7 @@ def main() -> int:
                     rebalanced_meal = choose_item(
                         items=meal_items,
                         ekadashi=ekadashi,
+                        cycle_block_set=meal_cycle_block_set,
                         recent_block_set=meal_recent,
                         consecutive_day_block_families=previous_day_repeat_families,
                         family_extractor=extract_meal_repeat_families,
@@ -3094,6 +3171,7 @@ def main() -> int:
                 forced_light = choose_item(
                     items=light_fallback_items,
                     ekadashi=ekadashi,
+                    cycle_block_set=breakfast_cycle_block_set,
                     recent_block_set=set(),
                     consecutive_day_block_families=previous_day_repeat_families,
                     family_extractor=extract_breakfast_repeat_families,
@@ -3141,6 +3219,7 @@ def main() -> int:
         selected_breakfast,
         selected_meal,
         repeat_window_days,
+        ritu_key,
         next_day_breakfast_lock=next_day_breakfast_lock,
         next_day_requires_rice_prep=next_day_requires_rice_prep,
     )

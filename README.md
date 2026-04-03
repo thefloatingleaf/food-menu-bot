@@ -202,6 +202,13 @@ The generator also applies a recurring override for any festival day that is bot
 4. Example: if today contains `करेला`, tomorrow avoids `करेला`, `भरवां करेला`, or mixed items like `करेला-भिंडी`.
 5. If the seasonal pool becomes too small after this rule, the script falls back to the best available menu and adds a `*डेटा अलर्ट:*` note instead of failing.
 
+## Seasonal variety cycle rule
+
+1. Breakfast and भोजन now each maintain a separate variety cycle per active `ऋतु`.
+2. Within the same `ऋतु`, an item is not repeated in that category until every other currently suitable option in that seasonal pool has been used once.
+3. After the full eligible pool has been exhausted, the cycle resets automatically and selection starts a new round.
+4. The existing consecutive-day family rule still applies on top of the variety cycle, so the script continues to avoid back-to-back repeats even right after a cycle reset.
+
 ## Manual weather override format
 
 ```json
