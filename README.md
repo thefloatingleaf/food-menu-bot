@@ -244,7 +244,7 @@ If a date is missing in `panchang_2026_27.json`, script now auto-detects ऋत�
 ## GitHub Action schedule
 
 - Workflow file: `.github/workflows/daily-menu.yml`
-- Runs daily at `00:00 UTC` (5:30 AM IST)
+- Runs daily at `09:30 UTC` (3:00 PM IST)
 - Updates `daily_menu.txt` and `history.json`
 
 ## iPhone Shortcuts
