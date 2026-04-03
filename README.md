@@ -155,7 +155,14 @@ The generator also applies a recurring override for any festival day that is bot
 2. For वसंत days, output also includes:
    - `*वसंत अनिवार्य साथ:* नीम की चटनी / पुदीना की चटनी / लहसुन की चटनी / तीखा अचार (खट्टा नहीं) / मूंग दाल पापड़ / मसाला छाछ ...`
    - `*वसंत दशम-दिवस स्मरण:* नीम का घी बनाएं।` plus the 6-step recipe below it (only on the 10th day of वसंत ऋतु)
-3. Otherwise, script uses Shishir files:
+3. For any वसंत भोजन that uses `रोटी` and does not use `चावल`, the grain is restricted to exactly one of:
+   - `जौ (केवल पुराना)`
+   - `ज्वार (केवल पुराना)`
+   - `रागी (केवल पुराना)`
+   - `गेहूँ (केवल पुराना)`
+   - `चने और जौ की रोटी (मिस्सी रोटी)`
+4. These five वसंत रोटी grain options follow a strict rotation: once one option is used in an eligible वसंत meal, it is not repeated until each remaining option has appeared once in similar eligible meals.
+5. Otherwise, script uses Shishir files:
    - `breakfast_shishir.json`
    - `menu_shishir.json`
 4. If पंचांग ऋतु is `ग्रीष्म` or `ग्रीष्म ऋतु`, the script uses:

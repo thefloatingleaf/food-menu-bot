@@ -280,6 +280,24 @@ VASANT_REQUIRED_SIDES = [
     "मूंग दाल पापड़",
     "मसाला छाछ (जीरा, अजवाइन, कढ़ी पत्ता, हींग, घी का तड़का)",
 ]
+VASANT_ROTI_GRAIN_ROTATION_NOTE = (
+    "[वसंत रोटी चक्र] अनुमत अनाज विकल्पों का चक्र पूरा होने पर ही उसी अनाज को फिर दोहराया गया"
+)
+VASANT_ROTI_GRAIN_PREFIX_REPLACEMENTS = [
+    ("जो की रोटी", "जौ (केवल पुराना) की रोटी"),
+    ("ज्वार की रोटी", "ज्वार (केवल पुराना) की रोटी"),
+    ("रागी की रोटी", "रागी (केवल पुराना) की रोटी"),
+    ("गेहू की रोटी", "गेहूँ (केवल पुराना) की रोटी"),
+    ("गेहूँ की रोटी", "गेहूँ (केवल पुराना) की रोटी"),
+    ("चने और जो की रोटी (मिस्सी रोटी)", "चने और जौ की रोटी (मिस्सी रोटी)"),
+]
+VASANT_ROTI_GRAIN_OPTION_PREFIXES = [
+    ("जौ (केवल पुराना)", "जौ (केवल पुराना) की रोटी"),
+    ("ज्वार (केवल पुराना)", "ज्वार (केवल पुराना) की रोटी"),
+    ("रागी (केवल पुराना)", "रागी (केवल पुराना) की रोटी"),
+    ("गेहूँ (केवल पुराना)", "गेहूँ (केवल पुराना) की रोटी"),
+    ("चने और जौ की रोटी (मिस्सी रोटी)", "चने और जौ की रोटी (मिस्सी रोटी)"),
+]
 VASANT_NEEM_GHEE_NOTE = "नीम का घी बनाएं।"
 VASANT_NEEM_GHEE_RECIPE_LINES = [
     "1. ताज़ी नीम की पत्तियाँ अच्छी तरह साफ कर लें।",
@@ -867,7 +885,8 @@ def write_json(path: Path, value: Any) -> None:
 
 
 def normalize_item_key(item: str) -> str:
-    return re.sub(r"\s+", " ", item).strip()
+    normalized = re.sub(r"\s+", " ", item).strip()
+    return normalize_vasant_roti_meal_text(normalized)
 
 
 def normalize_repeat_family_text(text: str) -> str:
@@ -1567,6 +1586,83 @@ def is_rice_item(item: str) -> bool:
     return any(token in item for token in RICE_ITEM_TOKENS)
 
 
+def normalize_vasant_roti_meal_text(item: str) -> str:
+    normalized = item.strip()
+    for source_prefix, target_prefix in VASANT_ROTI_GRAIN_PREFIX_REPLACEMENTS:
+        if normalized.startswith(source_prefix):
+            return target_prefix + normalized[len(source_prefix) :]
+    return normalized
+
+
+def canonicalize_vasant_meal_items(items: list[str]) -> list[str]:
+    return dedupe_preserve_order([normalize_vasant_roti_meal_text(item) for item in items])
+
+
+def extract_vasant_roti_grain_option(item: str, ritu_key: str) -> str | None:
+    if normalize_ritu_key(ritu_key) != "vasant":
+        return None
+    normalized = normalize_vasant_roti_meal_text(item)
+    if "रोटी" not in normalized or is_rice_item(normalized):
+        return None
+    for option_label, option_prefix in VASANT_ROTI_GRAIN_OPTION_PREFIXES:
+        if normalized.startswith(option_prefix):
+            return option_label
+    return None
+
+
+def get_vasant_roti_grain_cycle_used_options(
+    history: list[dict[str, Any]], target_date: date, ritu_key: str
+) -> set[str]:
+    if normalize_ritu_key(ritu_key) != "vasant":
+        return set()
+    used: set[str] = set()
+    for row in history:
+        try:
+            row_date = datetime.strptime(row["date"], "%Y-%m-%d").date()
+        except (ValueError, KeyError):
+            continue
+        if row_date >= target_date:
+            continue
+        row_ritu_key = row.get("ritu_key")
+        if not isinstance(row_ritu_key, str) or normalize_ritu_key(row_ritu_key) != "vasant":
+            continue
+        meal_value = row.get("meal")
+        if not isinstance(meal_value, str) or not meal_value.strip():
+            continue
+        grain_option = extract_vasant_roti_grain_option(meal_value, "vasant")
+        if grain_option is not None:
+            used.add(grain_option)
+    return used
+
+
+def apply_vasant_roti_grain_rotation_rule(
+    pool: list[str],
+    cycle_used_options: set[str],
+    ritu_key: str,
+) -> tuple[list[str], bool]:
+    if normalize_ritu_key(ritu_key) != "vasant":
+        return pool[:], False
+
+    present_options = {
+        option
+        for option in (extract_vasant_roti_grain_option(item, "vasant") for item in pool)
+        if option is not None
+    }
+    if not present_options:
+        return pool[:], False
+
+    if present_options.issubset(cycle_used_options):
+        return pool[:], True
+
+    filtered = [
+        item
+        for item in pool
+        if (grain_option := extract_vasant_roti_grain_option(item, "vasant")) is None
+        or grain_option not in cycle_used_options
+    ]
+    return filtered if filtered else pool[:], False
+
+
 def parse_weather_thresholds(config: dict[str, Any]) -> dict[str, float]:
     raw = config.get("weather_thresholds", {})
     if not isinstance(raw, dict):
@@ -1993,14 +2089,36 @@ def load_weather_tags(items: list[str]) -> dict[str, list[str]]:
     if not isinstance(raw, dict):
         return bootstrap_weather_tags(items)
 
+    raw_by_normalized_key: dict[str, list[str]] = {}
+    for raw_item, raw_tags in raw.items():
+        if not isinstance(raw_item, str) or not isinstance(raw_tags, list):
+            continue
+        normalized_key = normalize_item_key(raw_item)
+        cleaned_tags = sorted({str(t).strip() for t in raw_tags if isinstance(t, str) and t.strip()})
+        if cleaned_tags:
+            raw_by_normalized_key[normalized_key] = cleaned_tags
+
     normalized: dict[str, list[str]] = {}
     for item in items:
-        tags = raw.get(item, [])
+        tags = raw.get(item)
+        if not isinstance(tags, list):
+            tags = raw_by_normalized_key.get(normalize_item_key(item), [])
         if isinstance(tags, list):
-            normalized[item] = sorted({str(t).strip() for t in tags if isinstance(t, str) and t.strip()})
+            cleaned_tags = sorted({str(t).strip() for t in tags if isinstance(t, str) and t.strip()})
+            normalized[item] = cleaned_tags or infer_tags_for_item(item)
         else:
-            normalized[item] = []
+            normalized[item] = infer_tags_for_item(item)
     return normalized
+
+
+def get_weather_tags_for_item(weather_tags: dict[str, list[str]], item: str) -> list[str]:
+    exact_tags = weather_tags.get(item)
+    if isinstance(exact_tags, list) and exact_tags:
+        return exact_tags
+    normalized_tags = weather_tags.get(normalize_item_key(item))
+    if isinstance(normalized_tags, list) and normalized_tags:
+        return normalized_tags
+    return infer_tags_for_item(item)
 
 
 def apply_weather_filter(
@@ -2013,7 +2131,7 @@ def apply_weather_filter(
     avoid = weather_rules.avoid_tags
 
     def tags_for(item: str) -> set[str]:
-        tags = set(weather_tags.get(item, []))
+        tags = set(get_weather_tags_for_item(weather_tags, item))
         if not tags:
             warn_bucket.add(item)
         return tags
@@ -2060,7 +2178,7 @@ def lightness_score(
         if manual == "light":
             return -1
 
-    tags = set(weather_tags.get(item, []))
+    tags = set(get_weather_tags_for_item(weather_tags, item))
     score = 0
     if "heavy" in tags:
         score += 3
@@ -2378,7 +2496,7 @@ def get_menu_lists_for_ritu(
                 missing_data_notes.append("वर्षा नाश्ता सूची उपलब्ध नहीं (fallback: हल्का डिफ़ॉल्ट)")
     elif ritu_key == "vasant":
         breakfast_items = breakfast_vasant_items[:]
-        meal_items = meal_vasant_items[:]
+        meal_items = canonicalize_vasant_meal_items(meal_vasant_items[:])
         if missing_data_notes is not None:
             if not meal_vasant_items:
                 missing_data_notes.append("वसंत भोजन सूची उपलब्ध नहीं (fallback: हल्का डिफ़ॉल्ट)")
@@ -2773,8 +2891,14 @@ def main() -> int:
     meal_recent = recent_items(history, target_date, repeat_window_days, "meal")
     breakfast_cycle_block_set = get_variety_cycle_used_items(history, target_date, "breakfast", ritu_key)
     meal_cycle_block_set = get_variety_cycle_used_items(history, target_date, "meal", ritu_key)
+    vasant_roti_grain_cycle_used_options = get_vasant_roti_grain_cycle_used_options(history, target_date, ritu_key)
     previous_day_breakfast_lock = get_previous_day_breakfast_lock(history, target_date)
     previous_day_repeat_families = get_previous_day_repeat_families(history, target_date)
+    meal_choice_items, vasant_roti_grain_cycle_reset = apply_vasant_roti_grain_rotation_rule(
+        meal_items, vasant_roti_grain_cycle_used_options, ritu_key
+    )
+    if vasant_roti_grain_cycle_reset:
+        missing_data_notes.append(VASANT_ROTI_GRAIN_ROTATION_NOTE)
 
     warning_items: set[str] = set()
 
@@ -2783,7 +2907,7 @@ def main() -> int:
     next_day_requires_rice_prep = False
     rice_support_meal_candidates: list[str] = []
     if shringdhara_info.active:
-        observance_items = dedupe_preserve_order(meal_items if meal_items else breakfast_items)
+        observance_items = dedupe_preserve_order(meal_choice_items if meal_choice_items else breakfast_items)
         observance_recent = breakfast_recent | meal_recent
         selected_observance_item = choose_item(
             items=observance_items,
@@ -3073,7 +3197,7 @@ def main() -> int:
                         "[अनुपलब्ध] अगले दिन का निर्धारित overnight नाश्ता पिछली रात के चावल-आधारित भोजन से समर्थित नहीं हो सका"
                     )
                 selected_meal = choose_item(
-                    items=meal_items,
+                    items=meal_choice_items,
                     ekadashi=ekadashi,
                     cycle_block_set=meal_cycle_block_set,
                     recent_block_set=meal_recent,
@@ -3093,7 +3217,7 @@ def main() -> int:
                 )
         else:
             selected_meal = choose_item(
-                items=meal_items,
+                items=meal_choice_items,
                 ekadashi=ekadashi,
                 cycle_block_set=meal_cycle_block_set,
                 recent_block_set=meal_recent,
@@ -3165,7 +3289,7 @@ def main() -> int:
                             selected_meal = rebalanced_meal
                 else:
                     rebalanced_meal = choose_item(
-                        items=meal_items,
+                        items=meal_choice_items,
                         ekadashi=ekadashi,
                         cycle_block_set=meal_cycle_block_set,
                         recent_block_set=meal_recent,
