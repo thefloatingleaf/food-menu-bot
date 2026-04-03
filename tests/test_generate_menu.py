@@ -139,6 +139,15 @@ class VarietyCycleRuleTests(unittest.TestCase):
         self.assertEqual(selected, "उपमा")
 
 
+class VasantDayTenTests(unittest.TestCase):
+    def test_is_vasant_day_ten_matches_tenth_day_from_vasant_start(self) -> None:
+        self.assertTrue(generate_menu.is_vasant_day_ten(date(2026, 3, 24), "vasant"))
+
+    def test_is_vasant_day_ten_rejects_other_days_or_ritus(self) -> None:
+        self.assertFalse(generate_menu.is_vasant_day_ten(date(2026, 3, 23), "vasant"))
+        self.assertFalse(generate_menu.is_vasant_day_ten(date(2026, 3, 24), "grishm"))
+
+
 class OvernightBreakfastFormattingTests(unittest.TestCase):
     def test_same_day_generation_cannot_apply_overnight_breakfast(self) -> None:
         self.assertFalse(

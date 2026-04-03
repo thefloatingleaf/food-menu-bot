@@ -280,6 +280,7 @@ VASANT_REQUIRED_SIDES = [
     "मूंग दाल पापड़",
     "मसाला छाछ (जीरा, अजवाइन, कढ़ी पत्ता, हींग, घी का तड़का)",
 ]
+VASANT_NEEM_GHEE_NOTE = "नीम का घी बनाएं।"
 
 GRISHM_BREAKFAST_REQUIRED_SIDES = [
     "छाछ (काफ़ी पतली)",
@@ -703,6 +704,13 @@ def current_season_start_date(current_key: str, target_date: datetime.date) -> d
     if candidate > target_date:
         candidate = datetime(target_date.year - 1, month, day).date()
     return candidate
+
+
+def is_vasant_day_ten(target_date: datetime.date, ritu_key: str) -> bool:
+    if normalize_ritu_key(ritu_key) != "vasant":
+        return False
+    vasant_start = current_season_start_date("vasant", target_date)
+    return (target_date - vasant_start).days == 9
 
 
 def season_weather_fit_score(season_key: str, weather: WeatherInfo) -> float:
@@ -2713,6 +2721,7 @@ def main() -> int:
     weather_rules = current_day.weather_rules
     ekadashi = current_day.ekadashi
     breakfast_item_override = current_day.breakfast_item_override
+    vasant_day_ten = is_vasant_day_ten(target_date, ritu_key)
 
     if festival_info.suppress_regular_menu:
         lines = [
@@ -2735,6 +2744,8 @@ def main() -> int:
             lines.append(f"*एकादशी:* {ekadashi.name_hi}")
         if weather_info is not None and should_show_weather_line(weather_info, weather_mode):
             lines.append(build_weather_line(weather_info, weather_city_hi))
+        if vasant_day_ten:
+            lines.append("*वसंत दशम-दिवस स्मरण:* " + VASANT_NEEM_GHEE_NOTE)
         if target_date.month == 1 and target_date.day == 1:
             lines.append("*वार्षिक स्मरण (1 जनवरी):* " + NEW_YEAR_KANJI_NOTE)
 
@@ -3273,6 +3284,9 @@ def main() -> int:
 
     if weather_info is not None and should_show_weather_line(weather_info, weather_mode):
         lines.append(build_weather_line(weather_info, weather_city_hi))
+
+    if vasant_day_ten:
+        lines.append("*वसंत दशम-दिवस स्मरण:* " + VASANT_NEEM_GHEE_NOTE)
 
     if not shringdhara_info.active:
         if ritu_key == "vasant":
