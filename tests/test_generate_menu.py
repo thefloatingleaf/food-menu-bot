@@ -340,6 +340,28 @@ class VasantDalRotationTests(unittest.TestCase):
             {"मसूर", "चने-लौकी की दाल"},
         )
 
+    def test_normalize_vasant_dal_meal_text_uses_requested_vasant_labels(self) -> None:
+        self.assertEqual(
+            generate_menu.normalize_vasant_dal_meal_text("धुली मूंग दाल खिचड़ी"),
+            "मूँग दाल खिचड़ी",
+        )
+        self.assertEqual(
+            generate_menu.normalize_vasant_dal_meal_text("काला चना और चावल"),
+            "चने-लौकी की दाल और चावल",
+        )
+        self.assertEqual(
+            generate_menu.normalize_vasant_dal_meal_text("जो की रोटी और लौकी का भरता"),
+            "जो की रोटी और लौकी का भरता (भुनी लौकी + सरसों का तड़का)",
+        )
+        self.assertEqual(
+            generate_menu.normalize_vasant_dal_meal_text("जो की रोटी और कद्दू की सब्ज़ी"),
+            "जो की रोटी और कद्दू की सब्ज़ी (मीठा या खट्टा-मीठा, बिना ज्यादा गुड़/अमचूर)",
+        )
+
+    def test_extract_vasant_dal_option_recognizes_new_exact_moong_variants(self) -> None:
+        self.assertEqual(generate_menu.extract_vasant_dal_option("मूँग दाल खिचड़ी", "vasant"), "मूँग")
+        self.assertEqual(generate_menu.extract_vasant_dal_option("सादी मूँग दाल", "vasant"), "मूँग")
+
 
 class OvernightBreakfastFormattingTests(unittest.TestCase):
     def test_same_day_generation_cannot_apply_overnight_breakfast(self) -> None:
