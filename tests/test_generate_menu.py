@@ -163,16 +163,17 @@ class VasantRotiRotationTests(unittest.TestCase):
                 "जो की रोटी और लौकी की सब्ज़ी",
                 "गेहू की रोटी और भिंडी की सूखी सब्ज़ी",
                 "चने और जो की रोटी (मिस्सी रोटी) और अरहर दाल",
+                "काला चना और चावल",
             ]
         )
 
-        self.assertEqual(
+        self.assertIn("जौ (केवल पुराना) की रोटी और लौकी की सब्ज़ी", canonical)
+        self.assertIn("गेहूँ (केवल पुराना) की रोटी और भिंडी की सूखी सब्ज़ी", canonical)
+        self.assertIn("चने और जौ की रोटी (मिस्सी रोटी) और अरहर दाल", canonical)
+        self.assertIn("चने-लौकी की दाल और चावल", canonical)
+        self.assertIn(
+            "चने और जौ की रोटी (मिस्सी रोटी) और चने-लौकी की दाल",
             canonical,
-            [
-                "जौ (केवल पुराना) की रोटी और लौकी की सब्ज़ी",
-                "गेहूँ (केवल पुराना) की रोटी और भिंडी की सूखी सब्ज़ी",
-                "चने और जौ की रोटी (मिस्सी रोटी) और अरहर दाल",
-            ],
         )
 
     def test_extract_vasant_roti_grain_option_identifies_allowed_option(self) -> None:
@@ -248,6 +249,95 @@ class VasantRotiRotationTests(unittest.TestCase):
         self.assertEqual(
             generate_menu.get_vasant_roti_grain_cycle_used_options(history, date(2026, 3, 18), "vasant"),
             {"जौ (केवल पुराना)", "ज्वार (केवल पुराना)"},
+        )
+
+
+class VasantDalRotationTests(unittest.TestCase):
+    def test_extract_vasant_dal_option_identifies_allowed_dals(self) -> None:
+        self.assertEqual(
+            generate_menu.extract_vasant_dal_option("मूंग दाल और चावल", "vasant"),
+            "मूँग",
+        )
+        self.assertEqual(
+            generate_menu.extract_vasant_dal_option(
+                "चने और जौ की रोटी (मिस्सी रोटी) और चने-लौकी की दाल",
+                "vasant",
+            ),
+            "चने-लौकी की दाल",
+        )
+        self.assertIsNone(
+            generate_menu.extract_vasant_dal_option(
+                "जौ (केवल पुराना) की रोटी और लौकी की सब्ज़ी",
+                "vasant",
+            )
+        )
+
+    def test_apply_vasant_dal_rotation_rule_filters_used_strict_dals_but_keeps_moong(self) -> None:
+        filtered, reset = generate_menu.apply_vasant_dal_rotation_rule(
+            [
+                "मूंग दाल और चावल",
+                "मसूर दाल और चावल",
+                "अरहर दाल और चावल",
+                "चने-लौकी की दाल और चावल",
+            ],
+            {"मसूर", "अरहर"},
+            "vasant",
+        )
+
+        self.assertEqual(
+            filtered,
+            [
+                "मूंग दाल और चावल",
+                "चने-लौकी की दाल और चावल",
+            ],
+        )
+        self.assertFalse(reset)
+
+    def test_apply_vasant_dal_rotation_rule_resets_only_after_strict_dals_are_exhausted(self) -> None:
+        filtered, reset = generate_menu.apply_vasant_dal_rotation_rule(
+            [
+                "मूंग दाल और चावल",
+                "मसूर दाल और चावल",
+                "अरहर दाल और चावल",
+                "चने-लौकी की दाल और चावल",
+            ],
+            {"मसूर", "अरहर", "चने-लौकी की दाल"},
+            "vasant",
+        )
+
+        self.assertEqual(
+            filtered,
+            [
+                "मूंग दाल और चावल",
+                "मसूर दाल और चावल",
+                "अरहर दाल और चावल",
+                "चने-लौकी की दाल और चावल",
+            ],
+        )
+        self.assertTrue(reset)
+
+    def test_get_vasant_dal_cycle_used_options_reads_only_strict_dals(self) -> None:
+        history = [
+            {
+                "date": "2026-03-15",
+                "meal": "मूंग दाल और चावल",
+                "ritu_key": "vasant",
+            },
+            {
+                "date": "2026-03-16",
+                "meal": "मसूर दाल और चावल",
+                "ritu_key": "vasant",
+            },
+            {
+                "date": "2026-03-17",
+                "meal": "काला चना और चावल",
+                "ritu_key": "vasant",
+            },
+        ]
+
+        self.assertEqual(
+            generate_menu.get_vasant_dal_cycle_used_options(history, date(2026, 3, 18), "vasant"),
+            {"मसूर", "चने-लौकी की दाल"},
         )
 
 

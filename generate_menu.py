@@ -283,6 +283,9 @@ VASANT_REQUIRED_SIDES = [
 VASANT_ROTI_GRAIN_ROTATION_NOTE = (
     "[वसंत रोटी चक्र] अनुमत अनाज विकल्पों का चक्र पूरा होने पर ही उसी अनाज को फिर दोहराया गया"
 )
+VASANT_DAL_ROTATION_NOTE = (
+    "[वसंत दाल चक्र] मसूर, अरहर और चने-लौकी की दाल का चक्र पूरा होने पर ही इनमें से किसी दाल को फिर दोहराया गया"
+)
 VASANT_ROTI_GRAIN_PREFIX_REPLACEMENTS = [
     ("जो की रोटी", "जौ (केवल पुराना) की रोटी"),
     ("ज्वार की रोटी", "ज्वार (केवल पुराना) की रोटी"),
@@ -298,6 +301,13 @@ VASANT_ROTI_GRAIN_OPTION_PREFIXES = [
     ("गेहूँ (केवल पुराना)", "गेहूँ (केवल पुराना) की रोटी"),
     ("चने और जौ की रोटी (मिस्सी रोटी)", "चने और जौ की रोटी (मिस्सी रोटी)"),
 ]
+VASANT_DAL_OPTION_ALIASES = {
+    "मूँग": ("मूंग दाल और चावल", "मूँग दाल और चावल", " और मूंग दाल", " और मूँग दाल"),
+    "मसूर": ("मसूर दाल और चावल", " और मसूर दाल"),
+    "अरहर": ("अरहर दाल और चावल", " और अरहर दाल"),
+    "चने-लौकी की दाल": ("चने-लौकी की दाल और चावल", " और चने-लौकी की दाल"),
+}
+VASANT_STRICT_DAL_OPTIONS = {"मसूर", "अरहर", "चने-लौकी की दाल"}
 VASANT_NEEM_GHEE_NOTE = "नीम का घी बनाएं।"
 VASANT_NEEM_GHEE_RECIPE_LINES = [
     "1. ताज़ी नीम की पत्तियाँ अच्छी तरह साफ कर लें।",
@@ -1586,8 +1596,15 @@ def is_rice_item(item: str) -> bool:
     return any(token in item for token in RICE_ITEM_TOKENS)
 
 
-def normalize_vasant_roti_meal_text(item: str) -> str:
+def normalize_vasant_dal_meal_text(item: str) -> str:
     normalized = item.strip()
+    if normalized == "काला चना और चावल":
+        return "चने-लौकी की दाल और चावल"
+    return normalized
+
+
+def normalize_vasant_roti_meal_text(item: str) -> str:
+    normalized = normalize_vasant_dal_meal_text(item)
     for source_prefix, target_prefix in VASANT_ROTI_GRAIN_PREFIX_REPLACEMENTS:
         if normalized.startswith(source_prefix):
             return target_prefix + normalized[len(source_prefix) :]
@@ -1595,7 +1612,11 @@ def normalize_vasant_roti_meal_text(item: str) -> str:
 
 
 def canonicalize_vasant_meal_items(items: list[str]) -> list[str]:
-    return dedupe_preserve_order([normalize_vasant_roti_meal_text(item) for item in items])
+    canonical = [normalize_vasant_roti_meal_text(item) for item in items]
+    canonical.extend(
+        f"{option_prefix} और चने-लौकी की दाल" for _, option_prefix in VASANT_ROTI_GRAIN_OPTION_PREFIXES
+    )
+    return dedupe_preserve_order(canonical)
 
 
 def extract_vasant_roti_grain_option(item: str, ritu_key: str) -> str | None:
@@ -1607,6 +1628,17 @@ def extract_vasant_roti_grain_option(item: str, ritu_key: str) -> str | None:
     for option_label, option_prefix in VASANT_ROTI_GRAIN_OPTION_PREFIXES:
         if normalized.startswith(option_prefix):
             return option_label
+    return None
+
+
+def extract_vasant_dal_option(item: str, ritu_key: str) -> str | None:
+    if normalize_ritu_key(ritu_key) != "vasant":
+        return None
+    normalized = normalize_vasant_roti_meal_text(item)
+    for option_label, aliases in VASANT_DAL_OPTION_ALIASES.items():
+        for alias in aliases:
+            if normalized.startswith(alias) or normalized.endswith(alias):
+                return option_label
     return None
 
 
@@ -1633,6 +1665,58 @@ def get_vasant_roti_grain_cycle_used_options(
         if grain_option is not None:
             used.add(grain_option)
     return used
+
+
+def get_vasant_dal_cycle_used_options(history: list[dict[str, Any]], target_date: date, ritu_key: str) -> set[str]:
+    if normalize_ritu_key(ritu_key) != "vasant":
+        return set()
+    used: set[str] = set()
+    for row in history:
+        try:
+            row_date = datetime.strptime(row["date"], "%Y-%m-%d").date()
+        except (ValueError, KeyError):
+            continue
+        if row_date >= target_date:
+            continue
+        row_ritu_key = row.get("ritu_key")
+        if not isinstance(row_ritu_key, str) or normalize_ritu_key(row_ritu_key) != "vasant":
+            continue
+        meal_value = row.get("meal")
+        if not isinstance(meal_value, str) or not meal_value.strip():
+            continue
+        dal_option = extract_vasant_dal_option(meal_value, "vasant")
+        if dal_option in VASANT_STRICT_DAL_OPTIONS:
+            used.add(dal_option)
+    return used
+
+
+def apply_vasant_dal_rotation_rule(
+    pool: list[str],
+    cycle_used_options: set[str],
+    ritu_key: str,
+) -> tuple[list[str], bool]:
+    if normalize_ritu_key(ritu_key) != "vasant":
+        return pool[:], False
+
+    present_strict_options = {
+        option
+        for option in (extract_vasant_dal_option(item, "vasant") for item in pool)
+        if option in VASANT_STRICT_DAL_OPTIONS
+    }
+    if not present_strict_options:
+        return pool[:], False
+
+    if present_strict_options.issubset(cycle_used_options):
+        return pool[:], True
+
+    filtered = [
+        item
+        for item in pool
+        if (dal_option := extract_vasant_dal_option(item, "vasant")) is None
+        or dal_option == "मूँग"
+        or dal_option not in cycle_used_options
+    ]
+    return filtered if filtered else pool[:], False
 
 
 def apply_vasant_roti_grain_rotation_rule(
@@ -2891,11 +2975,17 @@ def main() -> int:
     meal_recent = recent_items(history, target_date, repeat_window_days, "meal")
     breakfast_cycle_block_set = get_variety_cycle_used_items(history, target_date, "breakfast", ritu_key)
     meal_cycle_block_set = get_variety_cycle_used_items(history, target_date, "meal", ritu_key)
+    vasant_dal_cycle_used_options = get_vasant_dal_cycle_used_options(history, target_date, ritu_key)
     vasant_roti_grain_cycle_used_options = get_vasant_roti_grain_cycle_used_options(history, target_date, ritu_key)
     previous_day_breakfast_lock = get_previous_day_breakfast_lock(history, target_date)
     previous_day_repeat_families = get_previous_day_repeat_families(history, target_date)
+    meal_choice_items, vasant_dal_cycle_reset = apply_vasant_dal_rotation_rule(
+        meal_items, vasant_dal_cycle_used_options, ritu_key
+    )
+    if vasant_dal_cycle_reset:
+        missing_data_notes.append(VASANT_DAL_ROTATION_NOTE)
     meal_choice_items, vasant_roti_grain_cycle_reset = apply_vasant_roti_grain_rotation_rule(
-        meal_items, vasant_roti_grain_cycle_used_options, ritu_key
+        meal_choice_items, vasant_roti_grain_cycle_used_options, ritu_key
     )
     if vasant_roti_grain_cycle_reset:
         missing_data_notes.append(VASANT_ROTI_GRAIN_ROTATION_NOTE)

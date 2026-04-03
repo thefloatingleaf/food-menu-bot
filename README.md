@@ -162,7 +162,13 @@ The generator also applies a recurring override for any festival day that is bot
    - `गेहूँ (केवल पुराना)`
    - `चने और जौ की रोटी (मिस्सी रोटी)`
 4. These five वसंत रोटी grain options follow a strict rotation: once one option is used in an eligible वसंत meal, it is not repeated until each remaining option has appeared once in similar eligible meals.
-5. Otherwise, script uses Shishir files:
+5. For वसंत dal-based meals, only these dal options are used:
+   - `मूँग`
+   - `मसूर`
+   - `अरहर`
+   - `चने-लौकी की दाल`
+6. In eligible वसंत dal meals, `मसूर`, `अरहर`, and `चने-लौकी की दाल` follow strict rotation across meals; `मूँग` is exempt and may still appear before that strict dal cycle is complete.
+7. Otherwise, script uses Shishir files:
    - `breakfast_shishir.json`
    - `menu_shishir.json`
 4. If पंचांग ऋतु is `ग्रीष्म` or `ग्रीष्म ऋतु`, the script uses:
