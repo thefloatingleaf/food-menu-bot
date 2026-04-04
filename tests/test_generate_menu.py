@@ -123,6 +123,7 @@ class VarietyCycleRuleTests(unittest.TestCase):
             cycle_block_set={"पोहा"},
             recent_block_set=set(),
             consecutive_day_block_families=set(),
+            recent_family_block_families=set(),
             family_extractor=generate_menu.extract_breakfast_repeat_families,
             keywords=[],
             disallowed_keywords=[],
@@ -137,6 +138,50 @@ class VarietyCycleRuleTests(unittest.TestCase):
         )
 
         self.assertEqual(selected, "उपमा")
+
+    def test_choose_item_blocks_chilla_family_with_weekly_family_rule(self) -> None:
+        selected = generate_menu.choose_item(
+            items=["मूँग दाल चीला", "उपमा"],
+            ekadashi=generate_menu.EkadashiInfo(False, None, None),
+            cycle_block_set=set(),
+            recent_block_set=set(),
+            consecutive_day_block_families=set(),
+            recent_family_block_families={"चीला"},
+            family_extractor=generate_menu.extract_breakfast_repeat_families,
+            keywords=[],
+            disallowed_keywords=[],
+            fallback_policy="fallback_full_menu",
+            seed_key="2026-03-15:breakfast",
+            weather_rules=None,
+            weather_tags={},
+            warn_bucket=set(),
+            constraint_notes=[],
+            prefer_lighter=False,
+            light_fallback_items=[],
+        )
+
+        self.assertEqual(selected, "उपमा")
+
+    def test_get_recent_breakfast_family_block_families_tracks_chilla_within_window(self) -> None:
+        history = [
+            {
+                "date": "2026-03-10",
+                "breakfast": "मूँग दाल चीला",
+                "meal": "दाल और चावल",
+                "ritu_key": "vasant",
+            },
+            {
+                "date": "2026-03-02",
+                "breakfast": "बेसन चीला",
+                "meal": "भिंडी",
+                "ritu_key": "vasant",
+            },
+        ]
+
+        self.assertEqual(
+            generate_menu.get_recent_breakfast_family_block_families(history, date(2026, 3, 14), 7),
+            {"चीला"},
+        )
 
 
 class VasantDayTenTests(unittest.TestCase):

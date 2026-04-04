@@ -368,6 +368,10 @@ WEEKLY_PAZHAYA_SADAM_NOTE = (
 WEEKLY_PAZHAYA_SADAM_SAME_DAY_NOTE = (
     "[समय नियम] साप्ताहिक पझैया सादम नियम आज लागू नहीं किया गया क्योंकि overnight तैयारी का समय निकल चुका है"
 )
+WEEKLY_BREAKFAST_FAMILY_LIMITS = {"चीला"}
+WEEKLY_BREAKFAST_FAMILY_REPEAT_NOTE = (
+    "[साप्ताहिक नाश्ता नियम] किसी भी प्रकार का चीला/चिल्ला सप्ताह में एक बार से अधिक नहीं दोहराया गया"
+)
 PAZHAYA_SADAM_REQUIRED_WINDOWS = [
     (date(2026, 4, 8), date(2026, 4, 12)),
 ]
@@ -1599,6 +1603,28 @@ def get_previous_day_repeat_families(history: list[dict[str, Any]], target_date:
     return get_row_repeat_families(row)
 
 
+def get_recent_breakfast_family_block_families(
+    history: list[dict[str, Any]],
+    target_date: date,
+    window_days: int,
+) -> set[str]:
+    earliest = target_date - timedelta(days=window_days)
+    blocked: set[str] = set()
+    for row in history:
+        try:
+            row_date = datetime.strptime(row["date"], "%Y-%m-%d").date()
+        except (ValueError, KeyError):
+            continue
+        if not (earliest <= row_date < target_date):
+            continue
+        breakfast_value = row.get("breakfast")
+        if not isinstance(breakfast_value, str) or not breakfast_value.strip():
+            continue
+        families = extract_breakfast_repeat_families(breakfast_value)
+        blocked.update(families & WEEKLY_BREAKFAST_FAMILY_LIMITS)
+    return blocked
+
+
 def is_overnight_breakfast(item: str) -> bool:
     return item in OVERNIGHT_BREAKFAST_ITEMS
 
@@ -2429,6 +2455,7 @@ def finalize_choice_pool(
     cycle_block_set: set[str],
     recent_block_set: set[str],
     consecutive_day_block_families: set[str],
+    recent_family_block_families: set[str],
     family_extractor: Callable[[str], set[str]],
     weather_rules: WeatherRules | None,
     weather_tags: dict[str, list[str]],
@@ -2452,6 +2479,12 @@ def finalize_choice_pool(
     )
     if repeated_family_fallback and CONSECUTIVE_DAY_REPEAT_NOTE not in constraint_notes:
         constraint_notes.append(CONSECUTIVE_DAY_REPEAT_NOTE)
+
+    pool, weekly_family_fallback = apply_consecutive_day_repeat_rule(
+        pool, recent_family_block_families, family_extractor
+    )
+    if weekly_family_fallback and recent_family_block_families and WEEKLY_BREAKFAST_FAMILY_REPEAT_NOTE not in constraint_notes:
+        constraint_notes.append(WEEKLY_BREAKFAST_FAMILY_REPEAT_NOTE)
 
     if weather_rules is not None:
         weather_pool = apply_weather_filter(pool, weather_rules, weather_tags, warn_bucket)
@@ -2487,6 +2520,7 @@ def choose_item(
     cycle_block_set: set[str],
     recent_block_set: set[str],
     consecutive_day_block_families: set[str],
+    recent_family_block_families: set[str],
     family_extractor: Callable[[str], set[str]],
     keywords: list[str],
     disallowed_keywords: list[str],
@@ -2519,6 +2553,7 @@ def choose_item(
         cycle_block_set=cycle_block_set,
         recent_block_set=recent_block_set,
         consecutive_day_block_families=consecutive_day_block_families,
+        recent_family_block_families=recent_family_block_families,
         family_extractor=family_extractor,
         weather_rules=weather_rules,
         weather_tags=weather_tags,
@@ -3087,6 +3122,9 @@ def main() -> int:
     vasant_roti_grain_cycle_used_options = get_vasant_roti_grain_cycle_used_options(history, target_date, ritu_key)
     previous_day_breakfast_lock = get_previous_day_breakfast_lock(history, target_date)
     previous_day_repeat_families = get_previous_day_repeat_families(history, target_date)
+    breakfast_recent_family_block_families = get_recent_breakfast_family_block_families(
+        history, target_date, repeat_window_days
+    )
     meal_choice_items, vasant_dal_cycle_reset = apply_vasant_dal_rotation_rule(
         meal_items, vasant_dal_cycle_used_options, ritu_key
     )
@@ -3113,6 +3151,7 @@ def main() -> int:
             cycle_block_set=breakfast_cycle_block_set | meal_cycle_block_set,
             recent_block_set=observance_recent,
             consecutive_day_block_families=previous_day_repeat_families,
+            recent_family_block_families=breakfast_recent_family_block_families,
             family_extractor=extract_any_repeat_families,
             keywords=keywords,
             disallowed_keywords=disallowed_keywords,
@@ -3178,6 +3217,7 @@ def main() -> int:
                         cycle_block_set=breakfast_cycle_block_set,
                         recent_block_set=breakfast_recent,
                         consecutive_day_block_families=previous_day_repeat_families,
+                        recent_family_block_families=breakfast_recent_family_block_families,
                         family_extractor=extract_breakfast_repeat_families,
                         keywords=keywords,
                         disallowed_keywords=disallowed_keywords,
@@ -3206,6 +3246,7 @@ def main() -> int:
                     cycle_block_set=breakfast_cycle_block_set,
                     recent_block_set=breakfast_recent,
                     consecutive_day_block_families=previous_day_repeat_families,
+                    recent_family_block_families=breakfast_recent_family_block_families,
                     family_extractor=extract_breakfast_repeat_families,
                     keywords=keywords,
                     disallowed_keywords=disallowed_keywords,
@@ -3243,6 +3284,7 @@ def main() -> int:
                         cycle_block_set=breakfast_cycle_block_set,
                         recent_block_set=breakfast_recent,
                         consecutive_day_block_families=previous_day_repeat_families,
+                        recent_family_block_families=breakfast_recent_family_block_families,
                         family_extractor=extract_breakfast_repeat_families,
                         keywords=keywords,
                         disallowed_keywords=disallowed_keywords,
@@ -3269,6 +3311,7 @@ def main() -> int:
                     cycle_block_set=breakfast_cycle_block_set,
                     recent_block_set=breakfast_recent,
                     consecutive_day_block_families=previous_day_repeat_families,
+                    recent_family_block_families=breakfast_recent_family_block_families,
                     family_extractor=extract_breakfast_repeat_families,
                     keywords=keywords,
                     disallowed_keywords=disallowed_keywords,
@@ -3297,6 +3340,7 @@ def main() -> int:
                             cycle_block_set=breakfast_cycle_block_set,
                             recent_block_set=breakfast_recent,
                             consecutive_day_block_families=previous_day_repeat_families,
+                            recent_family_block_families=breakfast_recent_family_block_families,
                             family_extractor=extract_breakfast_repeat_families,
                             keywords=keywords,
                             disallowed_keywords=disallowed_keywords,
@@ -3323,6 +3367,7 @@ def main() -> int:
                             cycle_block_set=breakfast_cycle_block_set,
                             recent_block_set=breakfast_recent,
                             consecutive_day_block_families=previous_day_repeat_families,
+                            recent_family_block_families=breakfast_recent_family_block_families,
                             family_extractor=extract_breakfast_repeat_families,
                             keywords=keywords,
                             disallowed_keywords=disallowed_keywords,
@@ -3343,6 +3388,7 @@ def main() -> int:
                         cycle_block_set=breakfast_cycle_block_set,
                         recent_block_set=breakfast_recent,
                         consecutive_day_block_families=previous_day_repeat_families,
+                        recent_family_block_families=breakfast_recent_family_block_families,
                         family_extractor=extract_breakfast_repeat_families,
                         keywords=keywords,
                         disallowed_keywords=disallowed_keywords,
@@ -3404,6 +3450,12 @@ def main() -> int:
             else:
                 next_day_breakfast_recent = recent_items(history, next_day.target_date, repeat_window_days, "breakfast")
                 next_day_breakfast_recent.add(selected_breakfast)
+                next_day_breakfast_recent_family_block_families = get_recent_breakfast_family_block_families(
+                    history, next_day.target_date, repeat_window_days
+                )
+                next_day_breakfast_recent_family_block_families.update(
+                    extract_breakfast_repeat_families(selected_breakfast) & WEEKLY_BREAKFAST_FAMILY_LIMITS
+                )
                 next_day_breakfast_cycle_block_set = get_variety_cycle_used_items(
                     history, next_day.target_date, "breakfast", next_day.ritu_key
                 )
@@ -3415,6 +3467,7 @@ def main() -> int:
                     cycle_block_set=next_day_breakfast_cycle_block_set,
                     recent_block_set=next_day_breakfast_recent,
                     consecutive_day_block_families=selected_breakfast_repeat_families,
+                    recent_family_block_families=next_day_breakfast_recent_family_block_families,
                     family_extractor=extract_breakfast_repeat_families,
                     keywords=keywords,
                     disallowed_keywords=next_day.disallowed_keywords,
@@ -3446,6 +3499,7 @@ def main() -> int:
                     cycle_block_set=meal_cycle_block_set,
                     recent_block_set=meal_recent,
                     consecutive_day_block_families=previous_day_repeat_families,
+                    recent_family_block_families=set(),
                     family_extractor=extract_meal_repeat_families,
                     weather_rules=weather_rules,
                     weather_tags=weather_tags,
@@ -3466,6 +3520,7 @@ def main() -> int:
                     cycle_block_set=meal_cycle_block_set,
                     recent_block_set=meal_recent,
                     consecutive_day_block_families=previous_day_repeat_families,
+                    recent_family_block_families=set(),
                     family_extractor=extract_meal_repeat_families,
                     keywords=keywords,
                     disallowed_keywords=disallowed_keywords,
@@ -3486,6 +3541,7 @@ def main() -> int:
                 cycle_block_set=meal_cycle_block_set,
                 recent_block_set=meal_recent,
                 consecutive_day_block_families=previous_day_repeat_families,
+                recent_family_block_families=set(),
                 family_extractor=extract_meal_repeat_families,
                 keywords=keywords,
                 disallowed_keywords=disallowed_keywords,
@@ -3510,6 +3566,7 @@ def main() -> int:
                     cycle_block_set=breakfast_cycle_block_set,
                     recent_block_set=breakfast_recent,
                     consecutive_day_block_families=previous_day_repeat_families,
+                    recent_family_block_families=breakfast_recent_family_block_families,
                     family_extractor=extract_breakfast_repeat_families,
                     keywords=keywords,
                     disallowed_keywords=disallowed_keywords,
@@ -3536,6 +3593,7 @@ def main() -> int:
                         cycle_block_set=meal_cycle_block_set,
                         recent_block_set=meal_recent,
                         consecutive_day_block_families=previous_day_repeat_families,
+                        recent_family_block_families=set(),
                         family_extractor=extract_meal_repeat_families,
                         weather_rules=weather_rules,
                         weather_tags=weather_tags,
@@ -3558,6 +3616,7 @@ def main() -> int:
                         cycle_block_set=meal_cycle_block_set,
                         recent_block_set=meal_recent,
                         consecutive_day_block_families=previous_day_repeat_families,
+                        recent_family_block_families=set(),
                         family_extractor=extract_meal_repeat_families,
                         keywords=keywords,
                         disallowed_keywords=disallowed_keywords,
@@ -3586,6 +3645,7 @@ def main() -> int:
                     cycle_block_set=breakfast_cycle_block_set,
                     recent_block_set=set(),
                     consecutive_day_block_families=previous_day_repeat_families,
+                    recent_family_block_families=breakfast_recent_family_block_families,
                     family_extractor=extract_breakfast_repeat_families,
                     keywords=keywords,
                     disallowed_keywords=disallowed_keywords,
