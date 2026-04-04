@@ -449,6 +449,40 @@ class WeeklyPazhayaSadamRuleTests(unittest.TestCase):
     def test_should_not_force_weekly_pazhaya_sadam_outside_vasant_grishm(self) -> None:
         self.assertFalse(generate_menu.should_force_weekly_pazhaya_sadam([], date(2026, 7, 1), "varsha"))
 
+    def test_should_force_required_window_pazhaya_sadam_until_window_has_one(self) -> None:
+        history = [
+            {
+                "date": "2026-04-07",
+                "breakfast": "उपमा",
+                "meal": "दाल और चावल",
+                "ritu_key": "vasant",
+            },
+            {
+                "date": "2026-04-08",
+                "breakfast": "पोहा",
+                "meal": "लौकी",
+                "ritu_key": "vasant",
+            },
+        ]
+
+        self.assertTrue(generate_menu.should_force_required_window_pazhaya_sadam(history, date(2026, 4, 9)))
+
+    def test_should_not_force_required_window_pazhaya_sadam_after_window_use(self) -> None:
+        history = [
+            {
+                "date": "2026-04-09",
+                "breakfast": "पझैया सादम (Pazhaya Sadam): रात में 1 कटोरी कच्चे चावल अच्छी तरह धोकर सादा चावल पकाएँ।",
+                "meal": "दाल और चावल",
+                "ritu_key": "vasant",
+            }
+        ]
+
+        self.assertFalse(generate_menu.should_force_required_window_pazhaya_sadam(history, date(2026, 4, 10)))
+
+    def test_should_not_force_required_window_pazhaya_sadam_outside_window(self) -> None:
+        self.assertFalse(generate_menu.should_force_required_window_pazhaya_sadam([], date(2026, 4, 7)))
+        self.assertFalse(generate_menu.should_force_required_window_pazhaya_sadam([], date(2026, 4, 13)))
+
 
 class MangorePrepInstructionTests(unittest.TestCase):
     def test_requires_mangore_prep_for_mangaunde_spelling(self) -> None:
