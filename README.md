@@ -170,17 +170,18 @@ The generator also applies a recurring override for any festival day that is bot
    - `अरहर`
    - `चने-लौकी की दाल`
 6. In eligible वसंत dal meals, `मसूर`, `अरहर`, and `चने-लौकी की दाल` follow strict rotation across meals; `मूँग` is exempt and may still appear before that strict dal cycle is complete.
-7. Otherwise, script uses Shishir files:
+7. Across `वसंत` and `ग्रीष्म`, `पझैया सादम` is enforced as an overnight breakfast at least once in every 7-day window when the menu is generated in time for night-before preparation. If the menu is generated on the same morning, the generator records a timing note instead of forcing an impossible overnight prep.
+8. Otherwise, script uses Shishir files:
    - `breakfast_shishir.json`
    - `menu_shishir.json`
-4. If पंचांग ऋतु is `ग्रीष्म` or `ग्रीष्म ऋतु`, the script uses:
+9. If पंचांग ऋतु is `ग्रीष्म` or `ग्रीष्म ऋतु`, the script uses:
    - `breakfast_grishm.json`
    - `menu_grishm.json`
-5. For ग्रीष्म days, output also includes:
+10. For ग्रीष्म days, output also includes:
    - `*ग्रीष्म नाश्ता अनिवार्य साथ:* छाछ (काफ़ी पतली) / पुदीना की चटनी`
    - `*ग्रीष्म भोजन अनिवार्य साथ:* छाछ (काफ़ी पतली) / पुदीना की चटनी / खीरा और ककड़ी`
-6. `breakfast_grishm.json` duplicate entries are deduplicated (first occurrence kept) before random selection.
-7. If पंचांग ऋतु is `वर्षा` or `वर्षा ऋतु`, the script uses:
+11. `breakfast_grishm.json` duplicate entries are deduplicated (first occurrence kept) before random selection.
+12. If पंचांग ऋतु is `वर्षा` or `वर्षा ऋतु`, the script uses:
    - `breakfast_varsha.json`
    - `menu_varsha.json`
 8. For वर्षा days, output also includes:

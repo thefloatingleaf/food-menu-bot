@@ -359,6 +359,15 @@ MANGORE_PREP_NOTE = (
     "फिर उसे 3-4 कटोरी पानी में पूरी तरह डुबोकर ढककर 8-10 घंटे भिगोकर रखें, "
     "ताकि सुबह मंगौड़े समय पर तैयार किए जा सकें।"
 )
+WEEKLY_PAZHAYA_SADAM_TARGET_RITUS = {"vasant", "grishm"}
+WEEKLY_PAZHAYA_SADAM_WINDOW_DAYS = 7
+WEEKLY_PAZHAYA_SADAM_SHORT_LABEL = "पझैया सादम"
+WEEKLY_PAZHAYA_SADAM_NOTE = (
+    "[साप्ताहिक नियम] वसंत/ग्रीष्म में पझैया सादम को कम-से-कम सप्ताह में एक बार रखा गया"
+)
+WEEKLY_PAZHAYA_SADAM_SAME_DAY_NOTE = (
+    "[समय नियम] साप्ताहिक पझैया सादम नियम आज लागू नहीं किया गया क्योंकि overnight तैयारी का समय निकल चुका है"
+)
 RICE_ITEM_TOKENS = ("चावल", "राइस", "भात")
 
 VARSHA_COMMON_REQUIRED_SIDES = [
@@ -1597,6 +1606,42 @@ def exclude_overnight_breakfasts(items: list[str]) -> list[str]:
 
 def can_apply_overnight_breakfast_on_run_date(target_date: date, generation_date: date) -> bool:
     return target_date > generation_date
+
+
+def is_pazhaya_sadam_item(item: str) -> bool:
+    return WEEKLY_PAZHAYA_SADAM_SHORT_LABEL in format_overnight_breakfast_label(item)
+
+
+def find_pazhaya_sadam_item(items: list[str]) -> str | None:
+    for item in items:
+        if is_pazhaya_sadam_item(item):
+            return item
+    return None
+
+
+def should_force_weekly_pazhaya_sadam(
+    history: list[dict[str, Any]],
+    target_date: date,
+    ritu_key: str,
+) -> bool:
+    if normalize_ritu_key(ritu_key) not in WEEKLY_PAZHAYA_SADAM_TARGET_RITUS:
+        return False
+
+    earliest = target_date - timedelta(days=WEEKLY_PAZHAYA_SADAM_WINDOW_DAYS - 1)
+    for row in history:
+        try:
+            row_date = datetime.strptime(row["date"], "%Y-%m-%d").date()
+        except (ValueError, KeyError):
+            continue
+        if not (earliest <= row_date < target_date):
+            continue
+        row_ritu_key = row.get("ritu_key")
+        if not isinstance(row_ritu_key, str) or normalize_ritu_key(row_ritu_key) not in WEEKLY_PAZHAYA_SADAM_TARGET_RITUS:
+            continue
+        breakfast_value = row.get("breakfast")
+        if isinstance(breakfast_value, str) and is_pazhaya_sadam_item(breakfast_value):
+            return False
+    return True
 
 
 def is_mangore_item(item: str) -> bool:
@@ -3048,6 +3093,13 @@ def main() -> int:
     else:
         breakfast_fixed = False
         breakfast_choice_items = exclude_overnight_breakfasts(breakfast_items)
+        weekly_pazhaya_sadam_item = find_pazhaya_sadam_item(breakfast_items)
+        weekly_pazhaya_sadam_due = (
+            weekly_pazhaya_sadam_item is not None
+            and should_force_weekly_pazhaya_sadam(history, target_date, ritu_key)
+            and not previous_day_breakfast_lock
+            and not breakfast_item_override
+        )
 
         if previous_day_breakfast_lock:
             if is_overnight_breakfast(previous_day_breakfast_lock) and not can_apply_overnight_breakfast_on_run_date(
@@ -3188,25 +3240,52 @@ def main() -> int:
                 )
         else:
             if not previous_day_breakfast_lock:
-                selected_breakfast = choose_item(
-                    items=breakfast_choice_items,
-                    ekadashi=ekadashi,
-                    cycle_block_set=breakfast_cycle_block_set,
-                    recent_block_set=breakfast_recent,
-                    consecutive_day_block_families=previous_day_repeat_families,
-                    family_extractor=extract_breakfast_repeat_families,
-                    keywords=keywords,
-                    disallowed_keywords=disallowed_keywords,
-                    fallback_policy=fallback_policy,
-                    seed_key=f"{target_date_str}:breakfast",
-                    weather_rules=weather_rules,
-                    weather_tags=weather_tags,
-                    warn_bucket=warning_items,
-                    constraint_notes=missing_data_notes,
-                    prefer_lighter=transition_plan.prefer_lighter,
-                    light_fallback_items=light_fallback_items,
-                    heavy_light_classification=heavy_light_classification,
-                )
+                if weekly_pazhaya_sadam_due and weekly_pazhaya_sadam_item is not None:
+                    if can_apply_overnight_breakfast_on_run_date(target_date, generation_date):
+                        selected_breakfast = weekly_pazhaya_sadam_item
+                        breakfast_fixed = True
+                        missing_data_notes.append(WEEKLY_PAZHAYA_SADAM_NOTE)
+                    else:
+                        missing_data_notes.append(WEEKLY_PAZHAYA_SADAM_SAME_DAY_NOTE)
+                        selected_breakfast = choose_item(
+                            items=breakfast_choice_items,
+                            ekadashi=ekadashi,
+                            cycle_block_set=breakfast_cycle_block_set,
+                            recent_block_set=breakfast_recent,
+                            consecutive_day_block_families=previous_day_repeat_families,
+                            family_extractor=extract_breakfast_repeat_families,
+                            keywords=keywords,
+                            disallowed_keywords=disallowed_keywords,
+                            fallback_policy=fallback_policy,
+                            seed_key=f"{target_date_str}:breakfast",
+                            weather_rules=weather_rules,
+                            weather_tags=weather_tags,
+                            warn_bucket=warning_items,
+                            constraint_notes=missing_data_notes,
+                            prefer_lighter=transition_plan.prefer_lighter,
+                            light_fallback_items=light_fallback_items,
+                            heavy_light_classification=heavy_light_classification,
+                        )
+                else:
+                    selected_breakfast = choose_item(
+                        items=breakfast_choice_items,
+                        ekadashi=ekadashi,
+                        cycle_block_set=breakfast_cycle_block_set,
+                        recent_block_set=breakfast_recent,
+                        consecutive_day_block_families=previous_day_repeat_families,
+                        family_extractor=extract_breakfast_repeat_families,
+                        keywords=keywords,
+                        disallowed_keywords=disallowed_keywords,
+                        fallback_policy=fallback_policy,
+                        seed_key=f"{target_date_str}:breakfast",
+                        weather_rules=weather_rules,
+                        weather_tags=weather_tags,
+                        warn_bucket=warning_items,
+                        constraint_notes=missing_data_notes,
+                        prefer_lighter=transition_plan.prefer_lighter,
+                        light_fallback_items=light_fallback_items,
+                        heavy_light_classification=heavy_light_classification,
+                    )
 
         next_day = build_day_context(
             target_date + timedelta(days=1),
