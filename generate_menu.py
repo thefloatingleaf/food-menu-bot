@@ -300,6 +300,25 @@ VASANT_ROTI_GRAIN_ROTATION_NOTE = (
 VASANT_DAL_ROTATION_NOTE = (
     "[वसंत दाल चक्र] मसूर, अरहर और चने-लौकी की दाल का चक्र पूरा होने पर ही इनमें से किसी दाल को फिर दोहराया गया"
 )
+VASANT_FRUIT_TIMING_NOTE = "(फल 6–10 में न लें)"
+VASANT_PROHIBITED_SECTION_TITLE = "❌ वर्जित (वसंत ऋतु में विशेष रूप से निषिद्ध):"
+VASANT_PROHIBITED_RULES: list[tuple[str, tuple[str, ...]]] = [
+    ("तला हुआ", ("तला हुआ", "तली हुई", "तले हुए", "तला-भुना", "तला भुना")),
+    ("भारी", ("भारी",)),
+    ("मीठा", ("मीठा", "मीठी", "मीठे")),
+    ("खोया", ("खोया",)),
+    ("मावा", ("मावा", "मावे")),
+    ("मिठाई", ("मिठाई",)),
+    ("भैंस का दूध", ("भैंस का दूध",)),
+    ("दही", ("दही",)),
+    ("मैदा", ("मैदा",)),
+    ("खट्टे अचार", ("खट्टा अचार", "खट्टे अचार")),
+    ("इमली", ("इमली",)),
+    ("आइसक्रीम", ("आइसक्रीम", "आइस क्रीम")),
+    ("ठंडे पेय", ("ठंडे पेय", "ठंडा पेय", "कोल्ड ड्रिंक", "शीतल पेय")),
+    ("दिन में सोना", ("दिन में सोना",)),
+    ("फल सुबह 6 से 10 के बीच", ("फल सुबह 6 से 10", "फल 6-10 में लें", "फल 6–10 में लें")),
+]
 VASANT_ROTI_GRAIN_PREFIX_REPLACEMENTS = [
     ("जो की रोटी", "जौ (केवल पुराना) की रोटी"),
     ("ज्वार की रोटी", "ज्वार (केवल पुराना) की रोटी"),
@@ -1639,6 +1658,38 @@ def select_monthly_fruit(
     ]
     selected_fruit = weighted_deterministic_choice(weighted_candidates, f"{target_date.isoformat()}:fruit")
     return FruitSelection(fruit=selected_fruit, available=True)
+
+
+def format_today_fruit_line(fruit_selection: FruitSelection, ritu_key: str) -> str:
+    if fruit_selection.available and fruit_selection.fruit is not None:
+        line = f"*आज का फल:* {fruit_selection.fruit}"
+        if normalize_ritu_key(ritu_key) == "vasant":
+            line += f" {VASANT_FRUIT_TIMING_NOTE}"
+        return line
+    return "*आज का फल:* फल उपलब्ध नहीं है"
+
+
+def collect_vasant_prohibited_warnings(lines: list[str]) -> list[str]:
+    findings: list[str] = []
+    for label, patterns in VASANT_PROHIBITED_RULES:
+        for line in lines:
+            if label == "खट्टे अचार":
+                if (
+                    any(pattern in line for pattern in patterns)
+                    or ("अचार" in line and "(खट्टा" in line and "खट्टा नहीं" not in line)
+                ):
+                    findings.append(label)
+                    break
+                continue
+            if label == "फल सुबह 6 से 10 के बीच":
+                if any(pattern in line for pattern in patterns) and VASANT_FRUIT_TIMING_NOTE not in line:
+                    findings.append(label)
+                    break
+                continue
+            if any(pattern in line for pattern in patterns):
+                findings.append(label)
+                break
+    return findings
 
 
 def recent_items(
@@ -3252,10 +3303,7 @@ def main() -> int:
             special_menu_note_line = format_special_menu_note_line(festival_info)
             if special_menu_note_line:
                 lines.append(special_menu_note_line)
-        if fruit_selection.available and fruit_selection.fruit is not None:
-            lines.append(f"*फल:* {fruit_selection.fruit}")
-        else:
-            lines.append("*फल:* फल उपलब्ध नहीं है")
+        lines.append(format_today_fruit_line(fruit_selection, ritu_key))
         if ekadashi.is_ekadashi and ekadashi.name_hi:
             lines.append(f"*एकादशी:* {ekadashi.name_hi}")
         if weather_info is not None and should_show_weather_line(weather_info, weather_mode):
@@ -3869,10 +3917,7 @@ def main() -> int:
         lines.append("*विशेष अवधि:* शृंगधारा (यमराज की दाड़)")
         lines.append(f"*अवधि विवरण:* {shringdhara_info.reason_hi}")
         lines.append(f"*आज का हल्का सेवन:* {selected_observance_item}")
-        if fruit_selection.available and fruit_selection.fruit is not None:
-            lines.append(f"*फल:* {fruit_selection.fruit}")
-        else:
-            lines.append("*फल:* फल उपलब्ध नहीं है")
+        lines.append(format_today_fruit_line(fruit_selection, ritu_key))
         lines.append("*शृंगधारा स्मरण:* " + SHRINGDHARA_DAILY_REMINDER)
         lines.append("*परंपरागत हल्का विकल्प:* " + SHRINGDHARA_LIGHT_NOTE)
     else:
@@ -3894,10 +3939,7 @@ def main() -> int:
             elif ritu_key == "grishm":
                 lines.append("*नाश्ता स्वाद निर्देश:* ग्रीष्म में इसे सामान्य तीखापन रखें।")
         lines.append(f"*आज का भोजन:* {selected_meal}")
-        if fruit_selection.available and fruit_selection.fruit is not None:
-            lines.append(f"*फल:* {fruit_selection.fruit}")
-        else:
-            lines.append("*फल:* फल उपलब्ध नहीं है")
+        lines.append(format_today_fruit_line(fruit_selection, ritu_key))
         if requires_mangore_prep(selected_breakfast, selected_meal):
             lines.append("*फॉलोवर महोदय हेतु रात की तैयारी:* " + MANGORE_PREP_NOTE)
         if next_day_requires_rice_prep and next_day_breakfast_lock:
@@ -3939,6 +3981,13 @@ def main() -> int:
         if ritu_key == "hemant":
             lines.append("*हेमंत पूर्णतया निषिद्ध:* बासमती, मैदा, डिब्बा बंद, मोठ, दोबारा गर्म की हुई दाल/सब्ज़ी, जीरा, इमली, सॉस, अचार, कड़वा, कसैला, रिफाइंड, पनीर, एनर्जी ड्रिंक, प्याज़, दुबारा गर्म किया पानी")
             lines.append("*हेमंत जल नियम:* हमेशा गुनगुना, पीतल या तांबे में")
+
+    if ritu_key == "vasant":
+        vasant_prohibited_findings = collect_vasant_prohibited_warnings(lines)
+        if vasant_prohibited_findings:
+            lines.append(VASANT_PROHIBITED_SECTION_TITLE)
+            for item in vasant_prohibited_findings:
+                lines.append(f"- {item}")
 
     if target_date.month == 1 and target_date.day == 1:
         lines.append("*वार्षिक स्मरण (1 जनवरी):* " + NEW_YEAR_KANJI_NOTE)

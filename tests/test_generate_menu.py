@@ -263,6 +263,27 @@ class VarietyCycleRuleTests(unittest.TestCase):
 
         self.assertEqual(generate_menu.get_monthly_fruit_usage_counts(history, date(2026, 5, 2)), {"आम": 1})
 
+    def test_format_today_fruit_line_uses_new_label_and_vasant_timing_note(self) -> None:
+        line = generate_menu.format_today_fruit_line(generate_menu.FruitSelection("पपीता", True), "vasant")
+        self.assertEqual(line, "*आज का फल:* पपीता (फल 6–10 में न लें)")
+
+    def test_format_today_fruit_line_uses_unavailable_fallback(self) -> None:
+        line = generate_menu.format_today_fruit_line(generate_menu.FruitSelection(None, False), "vasant")
+        self.assertEqual(line, "*आज का फल:* फल उपलब्ध नहीं है")
+
+    def test_collect_vasant_prohibited_warnings_finds_actual_conflicts_only(self) -> None:
+        lines = [
+            "*आज का फल:* पपीता (फल 6–10 में न लें)",
+            "*नाश्ता विधि:* पझैया सादम में दही मिलाएँ।",
+            "*वसंत भोजन अनिवार्य साथ:* तीखा अचार (खट्टा नहीं) / मसाला छाछ",
+        ]
+
+        self.assertEqual(generate_menu.collect_vasant_prohibited_warnings(lines), ["दही"])
+
+    def test_collect_vasant_prohibited_warnings_detects_explicit_fruit_timing_violation(self) -> None:
+        lines = ["*आज का फल:* पपीता फल 6–10 में लें"]
+        self.assertEqual(generate_menu.collect_vasant_prohibited_warnings(lines), ["फल सुबह 6 से 10 के बीच"])
+
 
 class VasantDayTenTests(unittest.TestCase):
     def test_is_vasant_day_ten_matches_tenth_day_from_vasant_start(self) -> None:

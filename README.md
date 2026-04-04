@@ -79,7 +79,7 @@ python3 generate_menu.py --bootstrap-weather-tags
 - `*विशेष पारंपरिक सेवन/भोग:* <festival special note>` (only on festival no-menu dates)
 - `*सुबह का नाश्ता:* <item>`
 - `*आज का भोजन:* <item>`
-- `*फल:* <item>` or `*फल:* फल उपलब्ध नहीं है`
+- `*आज का फल:* <item>` or `*आज का फल:* फल उपलब्ध नहीं है`
 - `*फॉलोवर महोदय हेतु रात की तैयारी:* <instruction>` (only when the generated next-day menu includes मंगौड़े)
 - `*एकादशी:* <name_hi>` (only on Ekadashi/Gauna dates)
 - `*मौसम:* <details>` (only rainy/extreme days)
@@ -159,6 +159,8 @@ The generator also applies a recurring override for any festival day that is bot
    - `*वसंत नाश्ता अनिवार्य साथ:* नीम की चटनी / पुदीना की चटनी / लहसुन की चटनी / तीखा अचार (खट्टा नहीं) / मसाला छाछ ...`
    - `*वसंत भोजन अनिवार्य साथ:* नीम की चटनी / पुदीना की चटनी / लहसुन की चटनी / तीखा अचार (खट्टा नहीं) / मूंग दाल पापड़ / मसाला छाछ ...`
    - `*वसंत दशम-दिवस स्मरण:* नीम का घी बनाएं।` plus the 6-step recipe below it (only on the 10th day of वसंत ऋतु)
+   - every fruit line is rendered as `*आज का फल:* ... (फल 6–10 में न लें)`
+   - if the generated Vasant output contains prohibited items/behaviours, it also appends `❌ वर्जित (वसंत ऋतु में विशेष रूप से निषिद्ध):` with each actual conflict listed separately
 3. For any वसंत भोजन that uses `रोटी` and does not use `चावल`, the grain is restricted to exactly one of:
    - `जौ (केवल पुराना)`
    - `ज्वार (केवल पुराना)`
@@ -215,13 +217,13 @@ The generator also applies a recurring override for any festival day that is bot
 
 ## Monthly fruit behavior
 
-1. Every generated menu includes a `*फल:*` line in the main message, including regular days, festival-only days, and शृंगधारा days.
+1. Every generated menu includes a `*आज का फल:*` line in the main message, including regular days, festival-only days, and शृंगधारा days.
 2. Fruit choices come only from `fruit_months.json`, keyed by calendar month.
 3. Fruit rotation is tracked persistently in `history.json` using the generated date and selected fruit.
 4. Within the same calendar month, a fruit does not repeat until the other approved fruits for that month have been used at least once.
 5. If the monthly fruit list is exhausted, the fruit cycle resets automatically for that same month and selection starts again.
 6. In May and June, `आम` gets higher weight and may reappear before all other fruits are exhausted, but the selector still avoids unnecessary monotony such as immediate back-to-back repetition when other options are available.
-7. If a month has no configured fruit list, or no valid fruit can be selected, the menu prints `*फल:* फल उपलब्ध नहीं है`.
+7. If a month has no configured fruit list, or no valid fruit can be selected, the menu prints `*आज का फल:* फल उपलब्ध नहीं है`.
 
 ## Consecutive-day repeat rule
 
