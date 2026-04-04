@@ -79,6 +79,7 @@ python3 generate_menu.py --bootstrap-weather-tags
 - `*विशेष पारंपरिक सेवन/भोग:* <festival special note>` (only on festival no-menu dates)
 - `*सुबह का नाश्ता:* <item>`
 - `*आज का भोजन:* <item>`
+- `*फल:* <item>` or `*फल:* फल उपलब्ध नहीं है`
 - `*फॉलोवर महोदय हेतु रात की तैयारी:* <instruction>` (only when the generated next-day menu includes मंगौड़े)
 - `*एकादशी:* <name_hi>` (only on Ekadashi/Gauna dates)
 - `*मौसम:* <details>` (only rainy/extreme days)
@@ -104,6 +105,7 @@ python3 generate_menu.py --bootstrap-weather-tags
 - `festivals_2026_27.json`
 - `menu_weather_tags.json`
 - `manual_weather_override.json`
+- `fruit_months.json`
 - `lunar_calendar_2026_2027.json` (reference calendar: lunar months, sankranti, amavasya, purnima, ekadashi, partial daily tables)
 - `config.json`
 
@@ -210,6 +212,16 @@ The generator also applies a recurring override for any festival day that is bot
    - `*हेमंत पूर्णतया निषिद्ध:* बासमती, मैदा, डिब्बा बंद, मोठ, दोबारा गर्म की हुई दाल/सब्ज़ी, जीरा, इमली, सॉस, अचार, कड़वा, कसैला, रिफाइंड, पनीर, एनर्जी ड्रिंक, प्याज़, दुबारा गर्म किया पानी`
    - `*हेमंत जल नियम:* हमेशा गुनगुना, पीतल या तांबे में`
 15. हेमंत days enforce hard filtering for the same prohibited keywords listed above.
+
+## Monthly fruit behavior
+
+1. Every generated menu includes a `*फल:*` line in the main message, including regular days, festival-only days, and शृंगधारा days.
+2. Fruit choices come only from `fruit_months.json`, keyed by calendar month.
+3. Fruit rotation is tracked persistently in `history.json` using the generated date and selected fruit.
+4. Within the same calendar month, a fruit does not repeat until the other approved fruits for that month have been used at least once.
+5. If the monthly fruit list is exhausted, the fruit cycle resets automatically for that same month and selection starts again.
+6. In May and June, `आम` gets higher weight and may reappear before all other fruits are exhausted, but the selector still avoids unnecessary monotony such as immediate back-to-back repetition when other options are available.
+7. If a month has no configured fruit list, or no valid fruit can be selected, the menu prints `*फल:* फल उपलब्ध नहीं है`.
 
 ## Consecutive-day repeat rule
 

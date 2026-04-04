@@ -43,6 +43,7 @@ OUTPUT_FILE = BASE_DIR / "daily_menu.txt"
 WEATHER_TAGS_FILE = BASE_DIR / "menu_weather_tags.json"
 MANUAL_WEATHER_FILE = BASE_DIR / "manual_weather_override.json"
 HEAVY_LIGHT_CLASSIFICATION_FILE = BASE_DIR / "heavy_light_classification_food_items_revised_paratha_rule.csv"
+FRUIT_MONTHS_FILE = BASE_DIR / "fruit_months.json"
 
 
 @dataclass
@@ -66,6 +67,12 @@ class FestivalInfo:
     suppress_regular_menu: bool = False
     special_menu_note_hi: str | None = None
     special_menu_lines_hi: list[str] | None = None
+
+
+@dataclass
+class FruitSelection:
+    fruit: str | None
+    available: bool
 
 
 @dataclass
@@ -932,6 +939,25 @@ def write_json(path: Path, value: Any) -> None:
         f.write("\n")
 
 
+def weighted_deterministic_choice(weighted_items: list[tuple[str, int]], seed_key: str) -> str:
+    if not weighted_items:
+        raise RuntimeError("No weighted item available for selection")
+
+    seed_int = int(hashlib.sha256(seed_key.encode("utf-8")).hexdigest(), 16)
+    rng = random.Random(seed_int)
+    total_weight = sum(max(weight, 0) for _item, weight in weighted_items)
+    if total_weight <= 0:
+        return weighted_items[0][0]
+
+    pick = rng.uniform(0, total_weight)
+    cumulative = 0.0
+    for item, weight in weighted_items:
+        cumulative += max(weight, 0)
+        if pick <= cumulative:
+            return item
+    return weighted_items[-1][0]
+
+
 def normalize_item_key(item: str) -> str:
     normalized = re.sub(r"\s+", " ", item).strip()
     return normalize_vasant_roti_meal_text(normalized)
@@ -1461,12 +1487,15 @@ def normalize_history(raw: Any) -> list[dict[str, str]]:
 
         breakfast_val = row.get("breakfast")
         meal_val = row.get("meal")
+        fruit_val = row.get("fruit")
         ritu_key_val = row.get("ritu_key")
         next_day_breakfast_lock = row.get("next_day_breakfast_lock")
         next_day_requires_rice_prep = row.get("next_day_requires_rice_prep")
 
         if isinstance(breakfast_val, str) and isinstance(meal_val, str):
             normalized_row: dict[str, Any] = {"date": date_val, "breakfast": breakfast_val, "meal": meal_val}
+            if isinstance(fruit_val, str) and fruit_val.strip():
+                normalized_row["fruit"] = fruit_val.strip()
             if isinstance(ritu_key_val, str) and ritu_key_val.strip():
                 normalized_row["ritu_key"] = normalize_ritu_key(ritu_key_val.strip())
             if isinstance(next_day_breakfast_lock, str) and next_day_breakfast_lock.strip():
@@ -1480,6 +1509,8 @@ def normalize_history(raw: Any) -> list[dict[str, str]]:
         old_item = row.get("item")
         if isinstance(old_item, str):
             normalized_row = {"date": date_val, "meal": old_item}
+            if isinstance(fruit_val, str) and fruit_val.strip():
+                normalized_row["fruit"] = fruit_val.strip()
             if isinstance(ritu_key_val, str) and ritu_key_val.strip():
                 normalized_row["ritu_key"] = normalize_ritu_key(ritu_key_val.strip())
             if isinstance(next_day_breakfast_lock, str) and next_day_breakfast_lock.strip():
@@ -1490,6 +1521,124 @@ def normalize_history(raw: Any) -> list[dict[str, str]]:
             cleaned.append(normalized_row)
 
     return cleaned
+
+
+def load_monthly_fruit_config(path: Path) -> tuple[dict[int, list[str]], dict[str, dict[str, Any]]]:
+    raw = load_json(path)
+    if not isinstance(raw, dict):
+        return {}, {}
+
+    months_raw = raw.get("months", {})
+    if not isinstance(months_raw, dict):
+        months_raw = {}
+
+    months: dict[int, list[str]] = {}
+    for key, value in months_raw.items():
+        try:
+            month_number = int(str(key))
+        except ValueError:
+            continue
+        if not (1 <= month_number <= 12) or not isinstance(value, list):
+            continue
+        cleaned = [str(item).strip() for item in value if isinstance(item, str) and str(item).strip()]
+        if cleaned:
+            months[month_number] = cleaned
+
+    priority_raw = raw.get("priority_rules", {})
+    if not isinstance(priority_raw, dict):
+        priority_raw = {}
+
+    priority_rules: dict[str, dict[str, Any]] = {}
+    for fruit_name, rule in priority_raw.items():
+        if isinstance(fruit_name, str) and isinstance(rule, dict):
+            priority_rules[fruit_name.strip()] = rule
+
+    return months, priority_rules
+
+
+def get_monthly_fruit_list(monthly_fruit_map: dict[int, list[str]], target_date: date) -> list[str]:
+    return monthly_fruit_map.get(target_date.month, [])[:]
+
+
+def get_monthly_fruit_usage_counts(history: list[dict[str, Any]], target_date: date) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for row in history:
+        try:
+            row_date = datetime.strptime(row["date"], "%Y-%m-%d").date()
+        except (ValueError, KeyError):
+            continue
+        if row_date >= target_date or row_date.year != target_date.year or row_date.month != target_date.month:
+            continue
+        fruit_value = row.get("fruit")
+        if isinstance(fruit_value, str) and fruit_value.strip():
+            counts[fruit_value.strip()] = counts.get(fruit_value.strip(), 0) + 1
+    return counts
+
+
+def get_previous_day_fruit(history: list[dict[str, Any]], target_date: date) -> str | None:
+    previous_date_str = (target_date - timedelta(days=1)).isoformat()
+    row = get_history_row(history, previous_date_str)
+    if row is None:
+        return None
+    fruit_value = row.get("fruit")
+    if isinstance(fruit_value, str) and fruit_value.strip():
+        return fruit_value.strip()
+    return None
+
+
+def get_fruit_priority_weight(
+    fruit: str,
+    target_date: date,
+    priority_rules: dict[str, dict[str, Any]],
+) -> int:
+    rule = priority_rules.get(fruit)
+    if not isinstance(rule, dict):
+        return 1
+    months = rule.get("months", [])
+    if isinstance(months, list) and target_date.month in months:
+        try:
+            return max(1, int(rule.get("weight", 1)))
+        except (TypeError, ValueError):
+            return 1
+    return 1
+
+
+def select_monthly_fruit(
+    history: list[dict[str, Any]],
+    target_date: date,
+    monthly_fruit_map: dict[int, list[str]],
+    priority_rules: dict[str, dict[str, Any]],
+) -> FruitSelection:
+    approved_fruits = get_monthly_fruit_list(monthly_fruit_map, target_date)
+    if not approved_fruits:
+        return FruitSelection(fruit=None, available=False)
+
+    usage_counts = get_monthly_fruit_usage_counts(history, target_date)
+    used_fruits = {fruit for fruit in approved_fruits if usage_counts.get(fruit, 0) > 0}
+    previous_day_fruit = get_previous_day_fruit(history, target_date)
+
+    has_priority_mango = target_date.month in {5, 6} and "आम" in approved_fruits
+    unused_fruits = [fruit for fruit in approved_fruits if fruit not in used_fruits]
+
+    if unused_fruits:
+        candidate_fruits = unused_fruits[:]
+        if has_priority_mango and "आम" not in candidate_fruits:
+            candidate_fruits.append("आम")
+    else:
+        candidate_fruits = approved_fruits[:]
+
+    if previous_day_fruit and previous_day_fruit in candidate_fruits and len(candidate_fruits) > 1:
+        if not (has_priority_mango and previous_day_fruit == "आम" and unused_fruits == ["आम"]):
+            candidate_fruits = [fruit for fruit in candidate_fruits if fruit != previous_day_fruit]
+
+    if not candidate_fruits:
+        return FruitSelection(fruit=None, available=False)
+
+    weighted_candidates = [
+        (fruit, get_fruit_priority_weight(fruit, target_date, priority_rules)) for fruit in candidate_fruits
+    ]
+    selected_fruit = weighted_deterministic_choice(weighted_candidates, f"{target_date.isoformat()}:fruit")
+    return FruitSelection(fruit=selected_fruit, available=True)
 
 
 def recent_items(
@@ -2571,6 +2720,7 @@ def update_history(
     target_date: str,
     breakfast_item: str,
     meal_item: str,
+    fruit_item: str | None,
     keep_days: int,
     ritu_key: str,
     next_day_breakfast_lock: str | None = None,
@@ -2583,6 +2733,8 @@ def update_history(
         "meal": meal_item,
         "ritu_key": normalize_ritu_key(ritu_key),
     }
+    if isinstance(fruit_item, str) and fruit_item.strip():
+        new_row["fruit"] = fruit_item.strip()
     if isinstance(next_day_breakfast_lock, str) and next_day_breakfast_lock.strip():
         new_row["next_day_breakfast_lock"] = next_day_breakfast_lock.strip()
         new_row["next_day_requires_rice_prep"] = True
@@ -2905,6 +3057,7 @@ def main() -> int:
     args = parse_args()
 
     config = load_json(CONFIG_FILE)
+    monthly_fruit_map, fruit_priority_rules = load_monthly_fruit_config(FRUIT_MONTHS_FILE)
     breakfast_shishir_items = validate_menu_list(load_json(BREAKFAST_SHISHIR_FILE), "breakfast_shishir.json")
     meal_shishir_items = validate_menu_list(load_json(MENU_SHISHIR_FILE), "menu_shishir.json")
     breakfast_vasant_items = (
@@ -3080,6 +3233,7 @@ def main() -> int:
     ekadashi = current_day.ekadashi
     breakfast_item_override = current_day.breakfast_item_override
     vasant_day_ten = is_vasant_day_ten(target_date, ritu_key)
+    fruit_selection = select_monthly_fruit(history, target_date, monthly_fruit_map, fruit_priority_rules)
 
     if festival_info.suppress_regular_menu:
         lines = [
@@ -3098,6 +3252,10 @@ def main() -> int:
             special_menu_note_line = format_special_menu_note_line(festival_info)
             if special_menu_note_line:
                 lines.append(special_menu_note_line)
+        if fruit_selection.available and fruit_selection.fruit is not None:
+            lines.append(f"*फल:* {fruit_selection.fruit}")
+        else:
+            lines.append("*फल:* फल उपलब्ध नहीं है")
         if ekadashi.is_ekadashi and ekadashi.name_hi:
             lines.append(f"*एकादशी:* {ekadashi.name_hi}")
         if weather_info is not None and should_show_weather_line(weather_info, weather_mode):
@@ -3690,6 +3848,7 @@ def main() -> int:
         target_date_str,
         selected_breakfast,
         selected_meal,
+        fruit_selection.fruit if fruit_selection.available else None,
         repeat_window_days,
         ritu_key,
         next_day_breakfast_lock=next_day_breakfast_lock,
@@ -3710,6 +3869,10 @@ def main() -> int:
         lines.append("*विशेष अवधि:* शृंगधारा (यमराज की दाड़)")
         lines.append(f"*अवधि विवरण:* {shringdhara_info.reason_hi}")
         lines.append(f"*आज का हल्का सेवन:* {selected_observance_item}")
+        if fruit_selection.available and fruit_selection.fruit is not None:
+            lines.append(f"*फल:* {fruit_selection.fruit}")
+        else:
+            lines.append("*फल:* फल उपलब्ध नहीं है")
         lines.append("*शृंगधारा स्मरण:* " + SHRINGDHARA_DAILY_REMINDER)
         lines.append("*परंपरागत हल्का विकल्प:* " + SHRINGDHARA_LIGHT_NOTE)
     else:
@@ -3731,6 +3894,10 @@ def main() -> int:
             elif ritu_key == "grishm":
                 lines.append("*नाश्ता स्वाद निर्देश:* ग्रीष्म में इसे सामान्य तीखापन रखें।")
         lines.append(f"*आज का भोजन:* {selected_meal}")
+        if fruit_selection.available and fruit_selection.fruit is not None:
+            lines.append(f"*फल:* {fruit_selection.fruit}")
+        else:
+            lines.append("*फल:* फल उपलब्ध नहीं है")
         if requires_mangore_prep(selected_breakfast, selected_meal):
             lines.append("*फॉलोवर महोदय हेतु रात की तैयारी:* " + MANGORE_PREP_NOTE)
         if next_day_requires_rice_prep and next_day_breakfast_lock:

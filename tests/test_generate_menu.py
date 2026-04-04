@@ -65,6 +65,21 @@ class ConsecutiveDayRepeatRuleTests(unittest.TestCase):
 
 
 class VarietyCycleRuleTests(unittest.TestCase):
+    def test_normalize_history_preserves_fruit(self) -> None:
+        normalized = generate_menu.normalize_history(
+            [
+                {
+                    "date": "2026-04-10",
+                    "breakfast": "पोहा",
+                    "meal": "दाल और रोटी",
+                    "fruit": "बेल",
+                    "ritu_key": "वसंत",
+                }
+            ]
+        )
+
+        self.assertEqual(normalized[0]["fruit"], "बेल")
+
     def test_normalize_history_preserves_ritu_key(self) -> None:
         normalized = generate_menu.normalize_history(
             [
@@ -182,6 +197,71 @@ class VarietyCycleRuleTests(unittest.TestCase):
             generate_menu.get_recent_breakfast_family_block_families(history, date(2026, 3, 14), 7),
             {"चीला"},
         )
+
+    def test_select_monthly_fruit_prefers_unused_april_fruit(self) -> None:
+        history = [
+            {
+                "date": "2026-04-08",
+                "breakfast": "पोहा",
+                "meal": "दाल और चावल",
+                "fruit": "शहतूत",
+                "ritu_key": "vasant",
+            },
+            {
+                "date": "2026-04-09",
+                "breakfast": "उपमा",
+                "meal": "लौकी",
+                "fruit": "लोकाट",
+                "ritu_key": "vasant",
+            },
+        ]
+        monthly_fruit_map = {4: ["शहतूत", "लोकाट", "चीकू", "अंगूर"]}
+        selection = generate_menu.select_monthly_fruit(history, date(2026, 4, 10), monthly_fruit_map, {})
+
+        self.assertTrue(selection.available)
+        self.assertIn(selection.fruit, {"चीकू", "अंगूर"})
+
+    def test_select_monthly_fruit_allows_mango_priority_in_may(self) -> None:
+        history = [
+            {
+                "date": "2026-05-08",
+                "breakfast": "पोहा",
+                "meal": "दाल और चावल",
+                "fruit": "आम",
+                "ritu_key": "grishm",
+            }
+        ]
+        monthly_fruit_map = {5: ["आम", "तरबूज", "खरबूजा"]}
+        priority_rules = {"आम": {"months": [5, 6], "weight": 4}}
+        selection = generate_menu.select_monthly_fruit(history, date(2026, 5, 10), monthly_fruit_map, priority_rules)
+
+        self.assertTrue(selection.available)
+        self.assertIn(selection.fruit, {"आम", "तरबूज", "खरबूजा"})
+
+    def test_select_monthly_fruit_returns_unavailable_when_month_missing(self) -> None:
+        selection = generate_menu.select_monthly_fruit([], date(2026, 4, 10), {}, {})
+        self.assertFalse(selection.available)
+        self.assertIsNone(selection.fruit)
+
+    def test_get_monthly_fruit_usage_counts_resets_on_month_transition(self) -> None:
+        history = [
+            {
+                "date": "2026-04-30",
+                "breakfast": "पोहा",
+                "meal": "दाल और चावल",
+                "fruit": "बेल",
+                "ritu_key": "vasant",
+            },
+            {
+                "date": "2026-05-01",
+                "breakfast": "उपमा",
+                "meal": "लौकी",
+                "fruit": "आम",
+                "ritu_key": "grishm",
+            },
+        ]
+
+        self.assertEqual(generate_menu.get_monthly_fruit_usage_counts(history, date(2026, 5, 2)), {"आम": 1})
 
 
 class VasantDayTenTests(unittest.TestCase):
