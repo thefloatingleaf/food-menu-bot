@@ -83,8 +83,7 @@ python3 generate_menu.py --bootstrap-weather-tags
 - `*फॉलोवर महोदय हेतु रात की तैयारी:* <instruction>` (only when the generated next-day menu includes मंगौड़े)
 - `*एकादशी:* <name_hi>` (only on Ekadashi/Gauna dates)
 - `*मौसम:* <details>` (only rainy/extreme days)
-- `*वसंत नाश्ता अनिवार्य साथ:* ...` (only when ऋतु is वसंत)
-- `*वसंत भोजन अनिवार्य साथ:* ...` (only when ऋतु is वसंत)
+- `*भोजन के साथ अनिवार्य:* ...` (only when ऋतु is वसंत)
 
 ## Data files
 
@@ -156,8 +155,7 @@ The generator also applies a recurring override for any festival day that is bot
    - `breakfast_vasant.json`
    - `menu_vasant.json`
 2. For वसंत days, output also includes:
-   - `*वसंत नाश्ता अनिवार्य साथ:* नीम की चटनी / पुदीना की चटनी / लहसुन की चटनी / तीखा अचार (खट्टा नहीं) / मसाला छाछ ...`
-   - `*वसंत भोजन अनिवार्य साथ:* नीम की चटनी / पुदीना की चटनी / लहसुन की चटनी / तीखा अचार (खट्टा नहीं) / मूंग दाल पापड़ / मसाला छाछ ...`
+   - `*भोजन के साथ अनिवार्य:* नीम की चटनी / पुदीना की चटनी / लहसुन की चटनी / तीखा अचार (खट्टा नहीं) / मसाला छाछ ... / मूंग दाल पापड़`
    - `*वसंत दशम-दिवस स्मरण:* नीम का घी बनाएं।` plus the 6-step recipe below it (only on the 10th day of वसंत ऋतु)
    - every fruit line is rendered as `*आज का फल:* ... (फल 6–10 में न लें)`
    - if the generated Vasant output contains prohibited items/behaviours, it also appends `❌ वर्जित (वसंत ऋतु में विशेष रूप से निषिद्ध):` with each actual conflict listed separately

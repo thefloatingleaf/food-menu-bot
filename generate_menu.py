@@ -279,20 +279,13 @@ NAVRATRI_FALLBACKS.update(
 )
 
 
-VASANT_BREAKFAST_REQUIRED_SIDES = [
+VASANT_REQUIRED_SIDES = [
     "नीम की चटनी",
     "पुदीना की चटनी",
     "लहसुन की चटनी",
     "तीखा अचार (खट्टा नहीं)",
     "मसाला छाछ (जीरा, अजवाइन, कढ़ी पत्ता, हींग, घी का तड़का)",
-]
-VASANT_MEAL_REQUIRED_SIDES = [
-    "नीम की चटनी",
-    "पुदीना की चटनी",
-    "लहसुन की चटनी",
-    "तीखा अचार (खट्टा नहीं)",
     "मूंग दाल पापड़",
-    "मसाला छाछ (जीरा, अजवाइन, कढ़ी पत्ता, हींग, घी का तड़का)",
 ]
 VASANT_ROTI_GRAIN_ROTATION_NOTE = (
     "[वसंत रोटी चक्र] अनुमत अनाज विकल्पों का चक्र पूरा होने पर ही उसी अनाज को फिर दोहराया गया"
@@ -3976,8 +3969,7 @@ def main() -> int:
 
     if not shringdhara_info.active:
         if ritu_key == "vasant":
-            lines.append("*वसंत नाश्ता अनिवार्य साथ:* " + " / ".join(VASANT_BREAKFAST_REQUIRED_SIDES))
-            lines.append("*वसंत भोजन अनिवार्य साथ:* " + " / ".join(VASANT_MEAL_REQUIRED_SIDES))
+            lines.append("*भोजन के साथ अनिवार्य:* " + " / ".join(VASANT_REQUIRED_SIDES))
         if ritu_key == "grishm":
             lines.append("*ग्रीष्म नाश्ता अनिवार्य साथ:* " + " / ".join(GRISHM_BREAKFAST_REQUIRED_SIDES))
             lines.append("*ग्रीष्म भोजन अनिवार्य साथ:* " + " / ".join(GRISHM_MEAL_REQUIRED_SIDES))
