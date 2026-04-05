@@ -287,7 +287,7 @@ class VarietyCycleRuleTests(unittest.TestCase):
     def test_exclude_meals_incompatible_with_pazhaya_sadam(self) -> None:
         meals = ["छाछ की सब्ज़ी चावल के साथ", "मूंग दाल और चावल"]
         filtered = generate_menu.exclude_meals_incompatible_with_breakfast(
-            "पझैया सादम (Pazhaya Sadam): रात में 1 कटोरी कच्चे चावल अच्छी तरह धोकर सादा चावल पकाएँ।",
+            "पझैया सादम (Pazhaya Sadam): बचे हुए चावल लें या फिर 1 कटोरी कच्चे चावल अच्छी तरह धोकर सादा चावल पकाएँ।",
             meals,
         )
         self.assertEqual(filtered, ["मूंग दाल और चावल"])
@@ -596,7 +596,7 @@ class WeeklyPazhayaSadamRuleTests(unittest.TestCase):
         history = [
             {
                 "date": "2026-05-16",
-                "breakfast": "पझैया सादम (Pazhaya Sadam): रात में 1 कटोरी कच्चे चावल अच्छी तरह धोकर सादा चावल पकाएँ।",
+                "breakfast": "पझैया सादम (Pazhaya Sadam): बचे हुए चावल लें या फिर 1 कटोरी कच्चे चावल अच्छी तरह धोकर सादा चावल पकाएँ।",
                 "meal": "दाल और चावल",
                 "ritu_key": "grishm",
             }
@@ -629,7 +629,7 @@ class WeeklyPazhayaSadamRuleTests(unittest.TestCase):
         history = [
             {
                 "date": "2026-04-09",
-                "breakfast": "पझैया सादम (Pazhaya Sadam): रात में 1 कटोरी कच्चे चावल अच्छी तरह धोकर सादा चावल पकाएँ।",
+                "breakfast": "पझैया सादम (Pazhaya Sadam): बचे हुए चावल लें या फिर 1 कटोरी कच्चे चावल अच्छी तरह धोकर सादा चावल पकाएँ।",
                 "meal": "दाल और चावल",
                 "ritu_key": "vasant",
             }
