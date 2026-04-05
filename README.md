@@ -160,11 +160,11 @@ The generator also applies a recurring override for any festival day that is bot
    - every fruit line is rendered as `*आज का फल:* ... (फल सुबह 6–10 में न लें)`
    - if the generated Vasant output contains prohibited items/behaviours, it also appends `❌ वर्जित (वसंत ऋतु में विशेष रूप से निषिद्ध):` with each actual conflict listed separately
 3. For any वसंत भोजन that uses `रोटी` and does not use `चावल`, the grain is restricted to exactly one of:
-   - `जौ (केवल पुराना)`
-   - `ज्वार (केवल पुराना)`
-   - `रागी (केवल पुराना)`
-   - `गेहूँ (केवल पुराना)`
-   - `चने और जौ की रोटी (मिस्सी रोटी)`
+   - `जौ (Barley) (केवल पुराना)`
+   - `ज्वार (Sorghum) (केवल पुराना)`
+   - `रागी (Finger Millet) (केवल पुराना)`
+   - `गेहूँ (Wheat) (केवल पुराना)`
+   - `चने और जौ (Barley) की रोटी (मिस्सी रोटी)`
 4. These five वसंत रोटी grain options follow a strict rotation: once one option is used in an eligible वसंत meal, it is not repeated until each remaining option has appeared once in similar eligible meals.
 5. For वसंत dal-based meals, only these dal options are used:
    - `मूँग`

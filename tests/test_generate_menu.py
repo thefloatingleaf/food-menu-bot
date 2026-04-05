@@ -322,23 +322,23 @@ class VasantRotiRotationTests(unittest.TestCase):
             ]
         )
 
-        self.assertIn("जौ (केवल पुराना) की रोटी और लौकी की सब्ज़ी", canonical)
-        self.assertIn("गेहूँ (केवल पुराना) की रोटी और भिंडी की सूखी सब्ज़ी", canonical)
-        self.assertIn("चने और जौ की रोटी (मिस्सी रोटी) और अरहर दाल", canonical)
+        self.assertIn("जौ (Barley) (केवल पुराना) की रोटी और लौकी की सब्ज़ी", canonical)
+        self.assertIn("गेहूँ (Wheat) (केवल पुराना) की रोटी और भिंडी की सूखी सब्ज़ी", canonical)
+        self.assertIn("चने और जौ (Barley) की रोटी (मिस्सी रोटी) और अरहर दाल", canonical)
         self.assertIn("चने-लौकी की दाल और चावल", canonical)
-        self.assertIn("रागी (केवल पुराना) की रोटी और कटहल की सब्ज़ी", canonical)
+        self.assertIn("रागी (Finger Millet) (केवल पुराना) की रोटी और कटहल की सब्ज़ी", canonical)
         self.assertIn(
-            "चने और जौ की रोटी (मिस्सी रोटी) और चने-लौकी की दाल",
+            "चने और जौ (Barley) की रोटी (मिस्सी रोटी) और चने-लौकी की दाल",
             canonical,
         )
 
     def test_extract_vasant_roti_grain_option_identifies_allowed_option(self) -> None:
         self.assertEqual(
             generate_menu.extract_vasant_roti_grain_option(
-                "रागी (केवल पुराना) की रोटी और परवल की सब्ज़ी",
+                "रागी (Finger Millet) (केवल पुराना) की रोटी और परवल की सब्ज़ी",
                 "vasant",
             ),
-            "रागी (केवल पुराना)",
+            "रागी (Finger Millet) (केवल पुराना)",
         )
         self.assertIsNone(
             generate_menu.extract_vasant_roti_grain_option("मूंग दाल और चावल", "vasant")
@@ -347,18 +347,18 @@ class VasantRotiRotationTests(unittest.TestCase):
     def test_apply_vasant_roti_grain_rotation_rule_filters_used_grain_options(self) -> None:
         filtered, reset = generate_menu.apply_vasant_roti_grain_rotation_rule(
             [
-                "जौ (केवल पुराना) की रोटी और लौकी की सब्ज़ी",
-                "ज्वार (केवल पुराना) की रोटी और लौकी की सब्ज़ी",
+                "जौ (Barley) (केवल पुराना) की रोटी और लौकी की सब्ज़ी",
+                "ज्वार (Sorghum) (केवल पुराना) की रोटी और लौकी की सब्ज़ी",
                 "मूंग दाल और चावल",
             ],
-            {"जौ (केवल पुराना)"},
+            {"जौ (Barley) (केवल पुराना)"},
             "vasant",
         )
 
         self.assertEqual(
             filtered,
             [
-                "ज्वार (केवल पुराना) की रोटी और लौकी की सब्ज़ी",
+                "ज्वार (Sorghum) (केवल पुराना) की रोटी और लौकी की सब्ज़ी",
                 "मूंग दाल और चावल",
             ],
         )
@@ -367,18 +367,22 @@ class VasantRotiRotationTests(unittest.TestCase):
     def test_apply_vasant_roti_grain_rotation_rule_resets_after_all_present_options_are_used(self) -> None:
         filtered, reset = generate_menu.apply_vasant_roti_grain_rotation_rule(
             [
-                "जौ (केवल पुराना) की रोटी और लौकी की सब्ज़ी",
-                "ज्वार (केवल पुराना) की रोटी और भिंडी की सूखी सब्ज़ी",
+                "जौ (Barley) (केवल पुराना) की रोटी और लौकी की सब्ज़ी",
+                "ज्वार (Sorghum) (केवल पुराना) की रोटी और भिंडी की सूखी सब्ज़ी",
             ],
-            {"जौ (केवल पुराना)", "ज्वार (केवल पुराना)", "रागी (केवल पुराना)"},
+            {
+                "जौ (Barley) (केवल पुराना)",
+                "ज्वार (Sorghum) (केवल पुराना)",
+                "रागी (Finger Millet) (केवल पुराना)",
+            },
             "vasant",
         )
 
         self.assertEqual(
             filtered,
             [
-                "जौ (केवल पुराना) की रोटी और लौकी की सब्ज़ी",
-                "ज्वार (केवल पुराना) की रोटी और भिंडी की सूखी सब्ज़ी",
+                "जौ (Barley) (केवल पुराना) की रोटी और लौकी की सब्ज़ी",
+                "ज्वार (Sorghum) (केवल पुराना) की रोटी और भिंडी की सूखी सब्ज़ी",
             ],
         )
         self.assertTrue(reset)
@@ -397,14 +401,14 @@ class VasantRotiRotationTests(unittest.TestCase):
             },
             {
                 "date": "2026-03-17",
-                "meal": "ज्वार (केवल पुराना) की रोटी और अरहर दाल",
+                "meal": "ज्वार (Sorghum) (केवल पुराना) की रोटी और अरहर दाल",
                 "ritu_key": "vasant",
             },
         ]
 
         self.assertEqual(
             generate_menu.get_vasant_roti_grain_cycle_used_options(history, date(2026, 3, 18), "vasant"),
-            {"जौ (केवल पुराना)", "ज्वार (केवल पुराना)"},
+            {"जौ (Barley) (केवल पुराना)", "ज्वार (Sorghum) (केवल पुराना)"},
         )
 
 
@@ -416,14 +420,14 @@ class VasantDalRotationTests(unittest.TestCase):
         )
         self.assertEqual(
             generate_menu.extract_vasant_dal_option(
-                "चने और जौ की रोटी (मिस्सी रोटी) और चने-लौकी की दाल",
+                "चने और जौ (Barley) की रोटी (मिस्सी रोटी) और चने-लौकी की दाल",
                 "vasant",
             ),
             "चने-लौकी की दाल",
         )
         self.assertIsNone(
             generate_menu.extract_vasant_dal_option(
-                "जौ (केवल पुराना) की रोटी और लौकी की सब्ज़ी",
+                "जौ (Barley) (केवल पुराना) की रोटी और लौकी की सब्ज़ी",
                 "vasant",
             )
         )
