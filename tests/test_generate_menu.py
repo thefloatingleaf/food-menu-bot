@@ -265,7 +265,7 @@ class VarietyCycleRuleTests(unittest.TestCase):
 
     def test_format_today_fruit_line_uses_new_label_and_vasant_timing_note(self) -> None:
         line = generate_menu.format_today_fruit_line(generate_menu.FruitSelection("पपीता", True), "vasant")
-        self.assertEqual(line, "*आज का फल:* पपीता (फल 6–10 में न लें)")
+        self.assertEqual(line, "*आज का फल:* पपीता (फल सुबह 6–10 में न लें)")
 
     def test_format_today_fruit_line_uses_unavailable_fallback(self) -> None:
         line = generate_menu.format_today_fruit_line(generate_menu.FruitSelection(None, False), "vasant")
@@ -273,7 +273,7 @@ class VarietyCycleRuleTests(unittest.TestCase):
 
     def test_collect_vasant_prohibited_warnings_finds_actual_conflicts_only(self) -> None:
         lines = [
-            "*आज का फल:* पपीता (फल 6–10 में न लें)",
+            "*आज का फल:* पपीता (फल सुबह 6–10 में न लें)",
             "*नाश्ता विधि:* पझैया सादम में दही मिलाएँ।",
             "*वसंत भोजन अनिवार्य साथ:* तीखा अचार (खट्टा नहीं) / मसाला छाछ",
         ]

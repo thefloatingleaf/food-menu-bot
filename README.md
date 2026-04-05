@@ -157,7 +157,7 @@ The generator also applies a recurring override for any festival day that is bot
 2. For वसंत days, output also includes:
    - `*भोजन के साथ अनिवार्य:* नीम की चटनी / पुदीना की चटनी / लहसुन की चटनी / तीखा अचार (खट्टा नहीं) / मसाला छाछ ... / मूंग दाल पापड़`
    - `*वसंत दशम-दिवस स्मरण:* नीम का घी बनाएं।` plus the 6-step recipe below it (only on the 10th day of वसंत ऋतु)
-   - every fruit line is rendered as `*आज का फल:* ... (फल 6–10 में न लें)`
+   - every fruit line is rendered as `*आज का फल:* ... (फल सुबह 6–10 में न लें)`
    - if the generated Vasant output contains prohibited items/behaviours, it also appends `❌ वर्जित (वसंत ऋतु में विशेष रूप से निषिद्ध):` with each actual conflict listed separately
 3. For any वसंत भोजन that uses `रोटी` and does not use `चावल`, the grain is restricted to exactly one of:
    - `जौ (केवल पुराना)`

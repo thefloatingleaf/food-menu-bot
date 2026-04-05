@@ -293,7 +293,7 @@ VASANT_ROTI_GRAIN_ROTATION_NOTE = (
 VASANT_DAL_ROTATION_NOTE = (
     "[वसंत दाल चक्र] मसूर, अरहर और चने-लौकी की दाल का चक्र पूरा होने पर ही इनमें से किसी दाल को फिर दोहराया गया"
 )
-VASANT_FRUIT_TIMING_NOTE = "(फल 6–10 में न लें)"
+VASANT_FRUIT_TIMING_NOTE = "(फल सुबह 6–10 में न लें)"
 VASANT_PROHIBITED_SECTION_TITLE = "❌ वर्जित (वसंत ऋतु में विशेष रूप से निषिद्ध):"
 VASANT_PROHIBITED_RULES: list[tuple[str, tuple[str, ...]]] = [
     ("तला हुआ", ("तला हुआ", "तली हुई", "तले हुए", "तला-भुना", "तला भुना")),
