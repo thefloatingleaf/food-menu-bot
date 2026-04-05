@@ -177,17 +177,18 @@ The generator also applies a recurring override for any festival day that is bot
 7. Across `वसंत` and `ग्रीष्म`, `पझैया सादम` is enforced as an overnight breakfast at least once in every 7-day window when the menu is generated in time for night-before preparation. If the menu is generated on the same morning, the generator records a timing note instead of forcing an impossible overnight prep.
 8. A date-specific safeguard also forces `पझैया सादम` at least once in the window `08-Apr-2026` through `12-Apr-2026`, again only when there is enough lead time for overnight preparation.
 9. Any breakfast `चीला/चिल्ला` variant is blocked for the next 7 days after it appears, so no kind of चिल्ला is repeated more than once in a week.
-10. Otherwise, script uses Shishir files:
+10. `पझैया सादम` and `छाछ की सब्ज़ी चावल के साथ` are never allowed on the same day; if both would otherwise be selected, the meal side is changed to a different valid option.
+11. Otherwise, script uses Shishir files:
    - `breakfast_shishir.json`
    - `menu_shishir.json`
-11. If पंचांग ऋतु is `ग्रीष्म` or `ग्रीष्म ऋतु`, the script uses:
+12. If पंचांग ऋतु is `ग्रीष्म` or `ग्रीष्म ऋतु`, the script uses:
    - `breakfast_grishm.json`
    - `menu_grishm.json`
-12. For ग्रीष्म days, output also includes:
+13. For ग्रीष्म days, output also includes:
    - `*ग्रीष्म नाश्ता अनिवार्य साथ:* छाछ (काफ़ी पतली) / पुदीना की चटनी`
    - `*ग्रीष्म भोजन अनिवार्य साथ:* छाछ (काफ़ी पतली) / पुदीना की चटनी / खीरा और ककड़ी`
-13. `breakfast_grishm.json` duplicate entries are deduplicated (first occurrence kept) before random selection.
-14. If पंचांग ऋतु is `वर्षा` or `वर्षा ऋतु`, the script uses:
+14. `breakfast_grishm.json` duplicate entries are deduplicated (first occurrence kept) before random selection.
+15. If पंचांग ऋतु is `वर्षा` or `वर्षा ऋतु`, the script uses:
    - `breakfast_varsha.json`
    - `menu_varsha.json`
 8. For वर्षा days, output also includes:

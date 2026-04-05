@@ -398,6 +398,10 @@ WEEKLY_BREAKFAST_FAMILY_LIMITS = {"चीला"}
 WEEKLY_BREAKFAST_FAMILY_REPEAT_NOTE = (
     "[साप्ताहिक नाश्ता नियम] किसी भी प्रकार का चीला/चिल्ला सप्ताह में एक बार से अधिक नहीं दोहराया गया"
 )
+PAZHAYA_SADAM_INCOMPATIBLE_MEALS = {"छाछ की सब्ज़ी चावल के साथ"}
+PAZHAYA_SADAM_INCOMPATIBLE_MEAL_NOTE = (
+    "[नियम] पझैया सादम के साथ छाछ की सब्ज़ी चावल के साथ नहीं रखा गया"
+)
 PAZHAYA_SADAM_REQUIRED_WINDOWS = [
     (date(2026, 4, 8), date(2026, 4, 12)),
 ]
@@ -1915,6 +1919,13 @@ def is_mangore_item(item: str) -> bool:
 
 def requires_mangore_prep(*items: str) -> bool:
     return any(is_mangore_item(item) for item in items if item)
+
+
+def exclude_meals_incompatible_with_breakfast(breakfast_item: str, meals: list[str]) -> list[str]:
+    if not is_pazhaya_sadam_item(breakfast_item):
+        return meals[:]
+    filtered = [meal for meal in meals if meal not in PAZHAYA_SADAM_INCOMPATIBLE_MEALS]
+    return filtered if filtered else meals[:]
 
 
 def is_rice_item(item: str) -> bool:
@@ -3639,6 +3650,17 @@ def main() -> int:
         planned_next_day_overnight: str | None = None
         next_day_override = next_day.breakfast_item_override
         selected_breakfast_repeat_families = extract_breakfast_repeat_families(selected_breakfast)
+        original_meal_choice_items = meal_choice_items[:]
+        meal_choice_items = exclude_meals_incompatible_with_breakfast(selected_breakfast, meal_choice_items)
+        rice_support_meal_candidates = exclude_meals_incompatible_with_breakfast(
+            selected_breakfast,
+            apply_hard_filters([item for item in meal_items if is_rice_item(item)], ekadashi, keywords, disallowed_keywords),
+        )
+        if is_pazhaya_sadam_item(selected_breakfast) and any(
+            meal in PAZHAYA_SADAM_INCOMPATIBLE_MEALS for meal in original_meal_choice_items
+        ):
+            if PAZHAYA_SADAM_INCOMPATIBLE_MEAL_NOTE not in missing_data_notes:
+                missing_data_notes.append(PAZHAYA_SADAM_INCOMPATIBLE_MEAL_NOTE)
         if not shringdhara_info.active and not next_day.shringdhara_info.active:
             if next_day_override:
                 override_conflicts = get_item_repeat_family_conflicts(
@@ -3691,12 +3713,6 @@ def main() -> int:
                     planned_next_day_overnight = planned_next_day_breakfast
 
         if planned_next_day_overnight:
-            rice_support_meal_candidates = apply_hard_filters(
-                [item for item in meal_items if is_rice_item(item)],
-                ekadashi,
-                keywords,
-                disallowed_keywords,
-            )
             if rice_support_meal_candidates:
                 next_day_breakfast_lock = planned_next_day_overnight
                 next_day_requires_rice_prep = True

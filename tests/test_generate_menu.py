@@ -284,6 +284,14 @@ class VarietyCycleRuleTests(unittest.TestCase):
         lines = ["*आज का फल:* पपीता फल 6–10 में लें"]
         self.assertEqual(generate_menu.collect_vasant_prohibited_warnings(lines), ["फल सुबह 6 से 10 के बीच"])
 
+    def test_exclude_meals_incompatible_with_pazhaya_sadam(self) -> None:
+        meals = ["छाछ की सब्ज़ी चावल के साथ", "मूंग दाल और चावल"]
+        filtered = generate_menu.exclude_meals_incompatible_with_breakfast(
+            "पझैया सादम (Pazhaya Sadam): रात में 1 कटोरी कच्चे चावल अच्छी तरह धोकर सादा चावल पकाएँ।",
+            meals,
+        )
+        self.assertEqual(filtered, ["मूंग दाल और चावल"])
+
 
 class VasantDayTenTests(unittest.TestCase):
     def test_is_vasant_day_ten_matches_tenth_day_from_vasant_start(self) -> None:
