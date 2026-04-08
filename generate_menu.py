@@ -139,6 +139,8 @@ class DayContext:
     weather_info: WeatherInfo | None
     weather_rules: WeatherRules | None
     breakfast_item_override: str | None
+    meal_item_override: str | None
+    second_meal_item_override: str | None
 
 
 NAVRATRI_DAY_SPECIAL_NOTES = {
@@ -980,6 +982,36 @@ def weighted_deterministic_choice(weighted_items: list[tuple[str, int]], seed_ke
 def normalize_item_key(item: str) -> str:
     normalized = re.sub(r"\s+", " ", item).strip()
     return normalize_vasant_roti_meal_text(normalized)
+
+
+def resolve_available_override_item(override_item: str | None, available_items: list[str]) -> str | None:
+    if not override_item:
+        return None
+
+    normalized_override = normalize_item_key(override_item)
+    for item in available_items:
+        if normalize_item_key(item) == normalized_override:
+            return item
+    return None
+
+
+def apply_second_meal_override(
+    override_item: str | None,
+    primary_meal: str,
+    selected_second_meal: str | None,
+    available_items: list[str],
+) -> tuple[str | None, str | None]:
+    if not override_item:
+        return selected_second_meal, None
+
+    resolved_override = resolve_available_override_item(override_item, available_items)
+    if resolved_override is None:
+        return selected_second_meal, f"[अनुपलब्ध] निर्धारित दूसरा भोजन override सूची में नहीं मिला: {override_item}"
+    if normalize_item_key(resolved_override) == normalize_item_key(primary_meal):
+        return selected_second_meal, "[नियम] निर्धारित दूसरा भोजन override पहले भोजन से अलग होना चाहिए"
+    if is_rice_item(primary_meal) and is_rice_item(resolved_override):
+        return selected_second_meal, "[नियम] दोहरे भोजन वाले दिन दोनों भोजन में चावल नहीं रखे गए"
+    return resolved_override, None
 
 
 def normalize_repeat_family_text(text: str) -> str:
@@ -3116,6 +3148,8 @@ def build_day_context(
         ritu_key = base_ritu_key if shringdhara_info.active else transition_plan.selected_key
 
     breakfast_item_override = resolve_item_date_override(target_date, config, "breakfast_item_date_overrides")
+    meal_item_override = resolve_item_date_override(target_date, config, "meal_item_date_overrides")
+    second_meal_item_override = resolve_item_date_override(target_date, config, "second_meal_item_date_overrides")
 
     if missing_data_notes is not None:
         if panchang_lookup.status == "date_missing":
@@ -3167,6 +3201,8 @@ def build_day_context(
         weather_info=weather_info,
         weather_rules=weather_rules,
         breakfast_item_override=breakfast_item_override,
+        meal_item_override=meal_item_override,
+        second_meal_item_override=second_meal_item_override,
     )
 
 
@@ -3349,6 +3385,8 @@ def main() -> int:
     weather_rules = current_day.weather_rules
     ekadashi = current_day.ekadashi
     breakfast_item_override = current_day.breakfast_item_override
+    meal_item_override = current_day.meal_item_override
+    second_meal_item_override = current_day.second_meal_item_override
     vasant_day_ten = is_vasant_day_ten(target_date, ritu_key)
     fruit_selection = select_monthly_fruit(history, target_date, monthly_fruit_map, fruit_priority_rules)
 
@@ -3708,6 +3746,7 @@ def main() -> int:
         selected_breakfast_repeat_families = extract_breakfast_repeat_families(selected_breakfast)
         original_meal_choice_items = meal_choice_items[:]
         meal_choice_items = exclude_meals_incompatible_with_breakfast(selected_breakfast, meal_choice_items)
+        meal_override_items = exclude_meals_incompatible_with_breakfast(selected_breakfast, meal_items)
         rice_support_meal_candidates = exclude_meals_incompatible_with_breakfast(
             selected_breakfast,
             apply_hard_filters([item for item in meal_items if is_rice_item(item)], ekadashi, keywords, disallowed_keywords),
@@ -3940,6 +3979,15 @@ def main() -> int:
                 )
                 selected_breakfast = forced_light
 
+        if meal_item_override:
+            resolved_meal_override = resolve_available_override_item(meal_item_override, meal_override_items)
+            if resolved_meal_override is not None:
+                selected_meal = resolved_meal_override
+            else:
+                missing_data_notes.append(
+                    f"[अनुपलब्ध] निर्धारित भोजन override सूची में नहीं मिला: {meal_item_override}"
+                )
+
         today_repeat_families = extract_breakfast_repeat_families(selected_breakfast) | extract_meal_repeat_families(
             selected_meal
         )
@@ -3977,6 +4025,22 @@ def main() -> int:
                 light_fallback_items=light_fallback_items,
                 heavy_light_classification=heavy_light_classification,
             )
+            selected_second_meal, second_meal_override_note = apply_second_meal_override(
+                second_meal_item_override,
+                selected_meal,
+                selected_second_meal,
+                meal_override_items,
+            )
+            if second_meal_override_note:
+                missing_data_notes.append(second_meal_override_note)
+            if next_day_requires_rice_prep and not any(
+                is_rice_item(item) for item in [selected_meal, selected_second_meal] if item is not None
+            ):
+                next_day_breakfast_lock = None
+                next_day_requires_rice_prep = False
+        elif next_day_requires_rice_prep and not is_rice_item(selected_meal):
+            next_day_breakfast_lock = None
+            next_day_requires_rice_prep = False
 
     if warning_items:
         print(

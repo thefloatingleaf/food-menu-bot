@@ -109,6 +109,28 @@ python3 generate_menu.py --bootstrap-weather-tags
 - `lunar_calendar_2026_2027.json` (reference calendar: lunar months, sankranti, amavasya, purnima, ekadashi, partial daily tables)
 - `config.json`
 
+## Date-specific menu overrides
+
+`config.json` supports date-specific item pinning when a particular day needs a fixed output:
+
+- `breakfast_item_date_overrides`
+- `meal_item_date_overrides`
+- `second_meal_item_date_overrides`
+
+Each entry uses:
+
+```json
+{
+  "date": "2026-04-09",
+  "item": "सूजी की इडली"
+}
+```
+
+Notes:
+- `meal_item_date_overrides` sets the main `आज का भोजन` item.
+- `second_meal_item_date_overrides` applies only on dates that already use the temporary dual-meal output.
+- Meal overrides still validate against the active seasonal menu list, and the dual-meal rice guard still prevents both meals from containing rice on the same day.
+
 ## Festivals data format (Hindu + Sikh)
 
 ```json

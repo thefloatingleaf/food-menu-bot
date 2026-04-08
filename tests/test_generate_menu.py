@@ -278,6 +278,23 @@ class VarietyCycleRuleTests(unittest.TestCase):
         self.assertTrue(line.startswith("*रात की तैयारी (पखाला भात (Pakhala Bhata) के लिए):*"))
         self.assertNotIn("कल सुबह का नाश्ता", line)
 
+    def test_resolve_available_override_item_matches_canonical_vasant_meal_label(self) -> None:
+        resolved = generate_menu.resolve_available_override_item(
+            "ज्वार की रोटी और लौकी की सब्ज़ी",
+            ["ज्वार (Sorghum) (केवल पुराना) की रोटी और लौकी की सब्ज़ी"],
+        )
+        self.assertEqual(resolved, "ज्वार (Sorghum) (केवल पुराना) की रोटी और लौकी की सब्ज़ी")
+
+    def test_apply_second_meal_override_rejects_same_meal_as_first(self) -> None:
+        second, note = generate_menu.apply_second_meal_override(
+            "मूंग दाल और चावल",
+            "मूंग दाल और चावल",
+            "जौ (Barley) (केवल पुराना) की रोटी और लौकी की सब्ज़ी",
+            ["मूंग दाल और चावल", "जौ (Barley) (केवल पुराना) की रोटी और लौकी की सब्ज़ी"],
+        )
+        self.assertEqual(second, "जौ (Barley) (केवल पुराना) की रोटी और लौकी की सब्ज़ी")
+        self.assertEqual(note, "[नियम] निर्धारित दूसरा भोजन override पहले भोजन से अलग होना चाहिए")
+
     def test_collect_vasant_prohibited_warnings_finds_actual_conflicts_only(self) -> None:
         lines = [
             "*आज का फल:* पपीता (फल सुबह 6–10 में न लें)",
