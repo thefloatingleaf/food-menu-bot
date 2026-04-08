@@ -293,6 +293,20 @@ class VarietyCycleRuleTests(unittest.TestCase):
         self.assertEqual(filtered, ["मूंग दाल और चावल"])
 
 
+class DateResolutionTests(unittest.TestCase):
+    def test_resolve_date_shifts_explicit_date_forward_by_one_day(self) -> None:
+        self.assertEqual(
+            generate_menu.resolve_date("2026-04-06", "Asia/Kolkata"),
+            date(2026, 4, 7),
+        )
+
+    def test_resolve_date_shifts_current_date_forward_by_one_day(self) -> None:
+        self.assertEqual(
+            generate_menu.resolve_date(None, "Asia/Kolkata", now_date=date(2026, 4, 6)),
+            date(2026, 4, 7),
+        )
+
+
 class VasantDayTenTests(unittest.TestCase):
     def test_is_vasant_day_ten_matches_tenth_day_from_vasant_start(self) -> None:
         self.assertTrue(generate_menu.is_vasant_day_ten(date(2026, 3, 24), "vasant"))

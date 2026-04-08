@@ -1096,13 +1096,14 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def resolve_date(date_arg: str | None, timezone_name: str) -> datetime.date:
+def resolve_date(date_arg: str | None, timezone_name: str, now_date: date | None = None) -> datetime.date:
     if date_arg:
         try:
             return datetime.strptime(date_arg, "%Y-%m-%d").date() + timedelta(days=1)
         except ValueError as exc:
             raise ValueError("--date must be in YYYY-MM-DD format") from exc
-    return datetime.now(ZoneInfo(timezone_name)).date() + timedelta(days=1)
+    base_date = now_date if now_date is not None else datetime.now(ZoneInfo(timezone_name)).date()
+    return base_date + timedelta(days=1)
 
 
 def get_ekadashi_info(target_date: str, ekadashi_data: dict[str, Any]) -> EkadashiInfo:
