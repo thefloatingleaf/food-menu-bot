@@ -1835,6 +1835,13 @@ def format_overnight_breakfast_label(item: str) -> str:
     return primary if primary else item
 
 
+def build_next_day_overnight_prep_line(item: str) -> str:
+    return (
+        f"*रात की तैयारी ({format_overnight_breakfast_label(item)} के लिए):* "
+        + OVERNIGHT_RICE_PREP_NOTE
+    )
+
+
 def exclude_overnight_breakfasts(items: list[str]) -> list[str]:
     filtered = [item for item in items if item not in OVERNIGHT_BREAKFAST_ITEMS]
     return filtered if filtered else items[:]
@@ -4033,11 +4040,7 @@ def main() -> int:
         if requires_mangore_prep(selected_breakfast, selected_meal, selected_second_meal or ""):
             lines.append("*फॉलोवर महोदय हेतु रात की तैयारी:* " + MANGORE_PREP_NOTE)
         if next_day_requires_rice_prep and next_day_breakfast_lock:
-            lines.append(
-                "*कल सुबह का नाश्ता (रात की तैयारी से):* "
-                + format_overnight_breakfast_label(next_day_breakfast_lock)
-            )
-            lines.append("*रात की तैयारी:* " + OVERNIGHT_RICE_PREP_NOTE)
+            lines.append(build_next_day_overnight_prep_line(next_day_breakfast_lock))
 
     if ekadashi.is_ekadashi and ekadashi.name_hi:
         lines.append(f"*एकादशी:* {ekadashi.name_hi}")

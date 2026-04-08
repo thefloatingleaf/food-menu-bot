@@ -271,6 +271,13 @@ class VarietyCycleRuleTests(unittest.TestCase):
         line = generate_menu.format_today_fruit_line(generate_menu.FruitSelection(None, False), "vasant")
         self.assertEqual(line, "*आज का फल:* फल उपलब्ध नहीं है")
 
+    def test_build_next_day_overnight_prep_line_does_not_create_second_breakfast_heading(self) -> None:
+        line = generate_menu.build_next_day_overnight_prep_line(
+            "पखाला भात (Pakhala Bhata): रात में 1 कटोरी कच्चे चावल धोकर सादा चावल पकाएँ।"
+        )
+        self.assertTrue(line.startswith("*रात की तैयारी (पखाला भात (Pakhala Bhata) के लिए):*"))
+        self.assertNotIn("कल सुबह का नाश्ता", line)
+
     def test_collect_vasant_prohibited_warnings_finds_actual_conflicts_only(self) -> None:
         lines = [
             "*आज का फल:* पपीता (फल सुबह 6–10 में न लें)",
