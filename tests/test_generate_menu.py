@@ -306,6 +306,35 @@ class DateResolutionTests(unittest.TestCase):
             date(2026, 4, 7),
         )
 
+    def test_is_double_meal_window_matches_requested_april_range(self) -> None:
+        self.assertTrue(generate_menu.is_double_meal_window(date(2026, 4, 8)))
+        self.assertTrue(generate_menu.is_double_meal_window(date(2026, 4, 14)))
+        self.assertFalse(generate_menu.is_double_meal_window(date(2026, 4, 7)))
+        self.assertFalse(generate_menu.is_double_meal_window(date(2026, 4, 15)))
+
+    def test_select_second_meal_for_window_avoids_second_rice_meal(self) -> None:
+        second = generate_menu.select_second_meal_for_window(
+            selected_meal="मूंग दाल और चावल",
+            meal_choice_items=["मूंग दाल और चावल", "जौ (Barley) (केवल पुराना) की रोटी और लौकी की सब्ज़ी"],
+            ekadashi=generate_menu.EkadashiInfo(False, None, None),
+            meal_cycle_block_set=set(),
+            meal_recent=set(),
+            previous_day_repeat_families=set(),
+            keywords=[],
+            disallowed_keywords=[],
+            fallback_policy="fallback_full_menu",
+            target_date_str="2026-04-08",
+            weather_rules=None,
+            weather_tags={},
+            warning_items=set(),
+            missing_data_notes=[],
+            transition_prefer_lighter=False,
+            light_fallback_items=[],
+            heavy_light_classification=None,
+        )
+
+        self.assertEqual(second, "जौ (Barley) (केवल पुराना) की रोटी और लौकी की सब्ज़ी")
+
 
 class VasantDayTenTests(unittest.TestCase):
     def test_is_vasant_day_ten_matches_tenth_day_from_vasant_start(self) -> None:

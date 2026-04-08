@@ -398,6 +398,9 @@ PAZHAYA_SADAM_INCOMPATIBLE_MEAL_NOTE = (
 PAZHAYA_SADAM_REQUIRED_WINDOWS = [
     (date(2026, 4, 8), date(2026, 4, 12)),
 ]
+DOUBLE_MEAL_WINDOWS = [
+    (date(2026, 4, 8), date(2026, 4, 14)),
+]
 PAZHAYA_SADAM_REQUIRED_WINDOW_NOTE = (
     "[विशेष तिथि नियम] 08-Apr-2026 से 12-Apr-2026 के बीच पझैया सादम सुनिश्चित किया गया"
 )
@@ -1906,6 +1909,10 @@ def should_force_required_window_pazhaya_sadam(
     return True
 
 
+def is_double_meal_window(target_date: date) -> bool:
+    return any(start_date <= target_date <= end_date for start_date, end_date in DOUBLE_MEAL_WINDOWS)
+
+
 def is_mangore_item(item: str) -> bool:
     normalized_item = item.casefold()
     return any(token in normalized_item for token in MANGORE_ITEM_TOKENS)
@@ -1924,6 +1931,53 @@ def exclude_meals_incompatible_with_breakfast(breakfast_item: str, meals: list[s
 
 def is_rice_item(item: str) -> bool:
     return any(token in item for token in RICE_ITEM_TOKENS)
+
+
+def select_second_meal_for_window(
+    selected_meal: str,
+    meal_choice_items: list[str],
+    ekadashi: EkadashiInfo,
+    meal_cycle_block_set: set[str],
+    meal_recent: set[str],
+    previous_day_repeat_families: set[str],
+    keywords: list[str],
+    disallowed_keywords: list[str],
+    fallback_policy: str,
+    target_date_str: str,
+    weather_rules: WeatherRules | None,
+    weather_tags: dict[str, list[str]],
+    warning_items: set[str],
+    missing_data_notes: list[str],
+    transition_prefer_lighter: bool,
+    light_fallback_items: list[str],
+    heavy_light_classification: dict[str, str] | None,
+) -> str | None:
+    second_pool = [item for item in meal_choice_items if item != selected_meal]
+    if is_rice_item(selected_meal):
+        second_pool = [item for item in second_pool if not is_rice_item(item)]
+    if not second_pool:
+        return None
+
+    return choose_item(
+        items=second_pool,
+        ekadashi=ekadashi,
+        cycle_block_set=meal_cycle_block_set | {selected_meal},
+        recent_block_set=meal_recent | {selected_meal},
+        consecutive_day_block_families=previous_day_repeat_families | extract_meal_repeat_families(selected_meal),
+        recent_family_block_families=set(),
+        family_extractor=extract_meal_repeat_families,
+        keywords=keywords,
+        disallowed_keywords=disallowed_keywords,
+        fallback_policy=fallback_policy,
+        seed_key=f"{target_date_str}:meal:second",
+        weather_rules=weather_rules,
+        weather_tags=weather_tags,
+        warn_bucket=warning_items,
+        constraint_notes=missing_data_notes,
+        prefer_lighter=transition_prefer_lighter,
+        light_fallback_items=light_fallback_items,
+        heavy_light_classification=heavy_light_classification,
+    )
 
 
 def normalize_vasant_dal_meal_text(item: str) -> str:
@@ -3350,6 +3404,7 @@ def main() -> int:
     warning_items: set[str] = set()
 
     selected_observance_item: str | None = None
+    selected_second_meal: str | None = None
     next_day_breakfast_lock: str | None = None
     next_day_requires_rice_prep = False
     rice_support_meal_candidates: list[str] = []
@@ -3895,6 +3950,27 @@ def main() -> int:
                 next_day_breakfast_lock = None
                 next_day_requires_rice_prep = False
 
+        if is_double_meal_window(target_date):
+            selected_second_meal = select_second_meal_for_window(
+                selected_meal=selected_meal,
+                meal_choice_items=meal_choice_items,
+                ekadashi=ekadashi,
+                meal_cycle_block_set=meal_cycle_block_set,
+                meal_recent=meal_recent,
+                previous_day_repeat_families=previous_day_repeat_families,
+                keywords=keywords,
+                disallowed_keywords=disallowed_keywords,
+                fallback_policy=fallback_policy,
+                target_date_str=target_date_str,
+                weather_rules=weather_rules,
+                weather_tags=weather_tags,
+                warning_items=warning_items,
+                missing_data_notes=missing_data_notes,
+                transition_prefer_lighter=transition_plan.prefer_lighter,
+                light_fallback_items=light_fallback_items,
+                heavy_light_classification=heavy_light_classification,
+            )
+
     if warning_items:
         print(
             "WARN: Untagged items were included in weather filtering: " + ", ".join(sorted(warning_items)),
@@ -3948,9 +4024,13 @@ def main() -> int:
                 lines.append("*नाश्ता स्वाद निर्देश:* वसंत में इसे थोड़ा अधिक तीखा रखें।")
             elif ritu_key == "grishm":
                 lines.append("*नाश्ता स्वाद निर्देश:* ग्रीष्म में इसे सामान्य तीखापन रखें।")
-        lines.append(f"*आज का भोजन:* {selected_meal}")
+        if selected_second_meal is not None:
+            lines.append(f"*आज का भोजन 1:* {selected_meal}")
+            lines.append(f"*आज का भोजन 2:* {selected_second_meal}")
+        else:
+            lines.append(f"*आज का भोजन:* {selected_meal}")
         lines.append(format_today_fruit_line(fruit_selection, ritu_key))
-        if requires_mangore_prep(selected_breakfast, selected_meal):
+        if requires_mangore_prep(selected_breakfast, selected_meal, selected_second_meal or ""):
             lines.append("*फॉलोवर महोदय हेतु रात की तैयारी:* " + MANGORE_PREP_NOTE)
         if next_day_requires_rice_prep and next_day_breakfast_lock:
             lines.append(
