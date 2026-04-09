@@ -1122,7 +1122,10 @@ def load_heavy_light_classification(
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Generate daily food menu")
-    parser.add_argument("--date", help="Date in YYYY-MM-DD format")
+    parser.add_argument(
+        "--date",
+        help="Menu date in YYYY-MM-DD format; when omitted, tomorrow's menu is generated",
+    )
     parser.add_argument(
         "--bootstrap-weather-tags",
         action="store_true",
@@ -1134,7 +1137,7 @@ def parse_args() -> argparse.Namespace:
 def resolve_date(date_arg: str | None, timezone_name: str, now_date: date | None = None) -> datetime.date:
     if date_arg:
         try:
-            return datetime.strptime(date_arg, "%Y-%m-%d").date() + timedelta(days=1)
+            return datetime.strptime(date_arg, "%Y-%m-%d").date()
         except ValueError as exc:
             raise ValueError("--date must be in YYYY-MM-DD format") from exc
     base_date = now_date if now_date is not None else datetime.now(ZoneInfo(timezone_name)).date()

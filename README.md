@@ -42,6 +42,8 @@ python3 generate_menu.py
 python3 generate_menu.py --date 2026-02-27
 ```
 
+The `--date` value is the exact menu date to generate. If you omit `--date`, the script generates tomorrow's menu in the configured timezone.
+
 ## Menu generator tests
 
 ```bash
@@ -59,7 +61,7 @@ Expected result: three files are created in `test_outputs/menu_triggers/` for:
 - `pazhaya-sadam`
 - `pakhala-bhata`
 
-The script temporarily applies breakfast overrides, generates the next-day menus, saves the outputs, and then restores `config.json`, `history.json`, and `daily_menu.txt`.
+The script temporarily applies breakfast overrides, generates the requested target-date menus, saves the outputs, and then restores `config.json`, `history.json`, and `daily_menu.txt`.
 
 ## Bootstrap weather tags (one-time)
 

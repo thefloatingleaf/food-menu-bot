@@ -5,7 +5,6 @@ import json
 import subprocess
 import sys
 from contextlib import contextmanager
-from datetime import date, timedelta
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parents[1]
@@ -84,10 +83,8 @@ def preserved_runtime_files() -> None:
 
 
 def run_generator_for_target(target_date_str: str) -> str:
-    target_date = date.fromisoformat(target_date_str)
-    run_date = target_date - timedelta(days=1)
     subprocess.run(
-        [sys.executable, str(BASE_DIR / "generate_menu.py"), "--date", run_date.isoformat()],
+        [sys.executable, str(BASE_DIR / "generate_menu.py"), "--date", target_date_str],
         cwd=BASE_DIR,
         check=True,
         stdout=subprocess.PIPE,
