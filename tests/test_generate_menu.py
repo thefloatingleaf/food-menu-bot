@@ -22,6 +22,20 @@ class ConsecutiveDayRepeatRuleTests(unittest.TestCase):
             {"आलू", "करेला"},
         )
 
+    def test_previous_day_repeat_families_include_second_meal_sabzi(self) -> None:
+        history = [
+            {
+                "date": "2026-03-11",
+                "breakfast": "आलू प्याज़ की रोटी",
+                "meal": "ज्वार की रोटी, करेला, मूँग दाल धुली",
+                "second_meal": "गेहूँ की रोटी और भिंडी की सब्ज़ी",
+            }
+        ]
+        self.assertEqual(
+            generate_menu.get_previous_day_repeat_families(history, date(2026, 3, 12)),
+            {"आलू", "करेला", "भिंडी"},
+        )
+
     def test_breakfast_repeat_families_ignore_common_bases_and_track_main_breakfast(self) -> None:
         self.assertEqual(
             generate_menu.extract_breakfast_repeat_families("मूँग की दाल का चीला। पुदीने की चटनी।"),
@@ -94,6 +108,21 @@ class VarietyCycleRuleTests(unittest.TestCase):
 
         self.assertEqual(normalized[0]["ritu_key"], "vasant")
 
+    def test_normalize_history_preserves_second_meal(self) -> None:
+        normalized = generate_menu.normalize_history(
+            [
+                {
+                    "date": "2026-04-10",
+                    "breakfast": "पोहा",
+                    "meal": "दाल और रोटी",
+                    "second_meal": "भिंडी और रोटी",
+                    "ritu_key": "वसंत",
+                }
+            ]
+        )
+
+        self.assertEqual(normalized[0]["second_meal"], "भिंडी और रोटी")
+
     def test_get_variety_cycle_used_items_reads_same_ritu_only(self) -> None:
         history = [
             {
@@ -121,6 +150,67 @@ class VarietyCycleRuleTests(unittest.TestCase):
             {"पोहा", "इडली"},
         )
 
+    def test_recent_items_includes_second_meal_for_meal_history(self) -> None:
+        history = [
+            {
+                "date": "2026-04-09",
+                "breakfast": "उपमा",
+                "meal": "चने और जौ (Barley) की रोटी (मिस्सी रोटी) और परवल-मूँगदाल की सूखी सब्ज़ी",
+                "second_meal": "गेहूँ (Wheat) (केवल पुराना) की रोटी और भिंडी की सूखी सब्ज़ी",
+                "ritu_key": "vasant",
+            }
+        ]
+
+        self.assertEqual(
+            generate_menu.recent_items(history, date(2026, 4, 10), 7, "meal"),
+            {
+                "चने और जौ (Barley) की रोटी (मिस्सी रोटी) और परवल-मूँगदाल की सूखी सब्ज़ी",
+                "गेहूँ (Wheat) (केवल पुराना) की रोटी और भिंडी की सूखी सब्ज़ी",
+            },
+        )
+
+    def test_get_variety_cycle_used_items_includes_second_meal_for_meal_history(self) -> None:
+        history = [
+            {
+                "date": "2026-04-09",
+                "breakfast": "उपमा",
+                "meal": "चने और जौ (Barley) की रोटी (मिस्सी रोटी) और परवल-मूँगदाल की सूखी सब्ज़ी",
+                "second_meal": "गेहूँ (Wheat) (केवल पुराना) की रोटी और भिंडी की सूखी सब्ज़ी",
+                "ritu_key": "vasant",
+            }
+        ]
+
+        self.assertEqual(
+            generate_menu.get_variety_cycle_used_items(history, date(2026, 4, 10), "meal", "vasant"),
+            {
+                "चने और जौ (Barley) की रोटी (मिस्सी रोटी) और परवल-मूँगदाल की सूखी सब्ज़ी",
+                "गेहूँ (Wheat) (केवल पुराना) की रोटी और भिंडी की सूखी सब्ज़ी",
+            },
+        )
+
+    def test_vasant_meal_rotation_readers_include_second_meal(self) -> None:
+        history = [
+            {
+                "date": "2026-04-09",
+                "breakfast": "उपमा",
+                "meal": "ज्वार (Sorghum) (केवल पुराना) की रोटी और लौकी की सब्ज़ी",
+                "second_meal": "चने और जौ (Barley) की रोटी (मिस्सी रोटी) और अरहर दाल",
+                "ritu_key": "vasant",
+            }
+        ]
+
+        self.assertEqual(
+            generate_menu.get_vasant_roti_grain_cycle_used_options(history, date(2026, 4, 10), "vasant"),
+            {
+                "ज्वार (Sorghum) (केवल पुराना)",
+                "चने और जौ (Barley) की रोटी (मिस्सी रोटी)",
+            },
+        )
+        self.assertEqual(
+            generate_menu.get_vasant_dal_cycle_used_options(history, date(2026, 4, 10), "vasant"),
+            {"अरहर"},
+        )
+
     def test_apply_variety_cycle_rule_filters_until_cycle_exhausts(self) -> None:
         filtered, reset = generate_menu.apply_variety_cycle_rule(["पोहा", "उपमा", "इडली"], {"पोहा", "इडली"})
         self.assertEqual(filtered, ["उपमा"])
@@ -130,6 +220,23 @@ class VarietyCycleRuleTests(unittest.TestCase):
         filtered, reset = generate_menu.apply_variety_cycle_rule(["पोहा", "उपमा"], {"पोहा", "उपमा"})
         self.assertEqual(filtered, ["पोहा", "उपमा"])
         self.assertTrue(reset)
+
+    def test_update_history_persists_second_meal(self) -> None:
+        updated = generate_menu.update_history(
+            history=[],
+            target_date="2026-04-10",
+            breakfast_item="उपमा",
+            meal_item="ज्वार (Sorghum) (केवल पुराना) की रोटी और लौकी की सब्ज़ी",
+            second_meal_item="गेहूँ (Wheat) (केवल पुराना) की रोटी और भिंडी की सूखी सब्ज़ी",
+            fruit_item="सेब 🍎",
+            keep_days=7,
+            ritu_key="vasant",
+        )
+
+        self.assertEqual(
+            updated[0]["second_meal"],
+            "गेहूँ (Wheat) (केवल पुराना) की रोटी और भिंडी की सूखी सब्ज़ी",
+        )
 
     def test_choose_item_prefers_unused_item_in_same_ritu_cycle(self) -> None:
         selected = generate_menu.choose_item(

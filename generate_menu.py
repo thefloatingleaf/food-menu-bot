@@ -1528,7 +1528,7 @@ def is_blocked_item(item: str, keywords: list[str]) -> bool:
     return any(keyword in item for keyword in keywords)
 
 
-def normalize_history(raw: Any) -> list[dict[str, str]]:
+def normalize_history(raw: Any) -> list[dict[str, Any]]:
     if not isinstance(raw, list):
         return []
 
@@ -1542,6 +1542,7 @@ def normalize_history(raw: Any) -> list[dict[str, str]]:
 
         breakfast_val = row.get("breakfast")
         meal_val = row.get("meal")
+        second_meal_val = row.get("second_meal")
         fruit_val = row.get("fruit")
         ritu_key_val = row.get("ritu_key")
         next_day_breakfast_lock = row.get("next_day_breakfast_lock")
@@ -1549,6 +1550,8 @@ def normalize_history(raw: Any) -> list[dict[str, str]]:
 
         if isinstance(breakfast_val, str) and isinstance(meal_val, str):
             normalized_row: dict[str, Any] = {"date": date_val, "breakfast": breakfast_val, "meal": meal_val}
+            if isinstance(second_meal_val, str) and second_meal_val.strip():
+                normalized_row["second_meal"] = second_meal_val.strip()
             if isinstance(fruit_val, str) and fruit_val.strip():
                 normalized_row["fruit"] = fruit_val.strip()
             if isinstance(ritu_key_val, str) and ritu_key_val.strip():
@@ -1739,9 +1742,7 @@ def recent_items(
         except (ValueError, KeyError):
             continue
         if earliest <= row_date < target_date:
-            value = row.get(field)
-            if isinstance(value, str) and value:
-                blocked.add(value)
+            blocked.update(get_history_values_for_field(row, field))
     return blocked
 
 
@@ -1768,9 +1769,7 @@ def get_variety_cycle_used_items(
         row_ritu_key = row.get("ritu_key")
         if not isinstance(row_ritu_key, str) or normalize_ritu_key(row_ritu_key) != normalized_ritu_key:
             continue
-        value = row.get(field)
-        if isinstance(value, str) and value:
-            used.add(value)
+        used.update(get_history_values_for_field(row, field))
     return used
 
 
@@ -1815,19 +1814,33 @@ def get_previous_day_breakfast_lock(history: list[dict[str, Any]], target_date: 
     return None
 
 
+def get_history_values_for_field(row: dict[str, Any], field: str) -> set[str]:
+    values: set[str] = set()
+
+    value = row.get(field)
+    if isinstance(value, str) and value.strip():
+        values.add(value.strip())
+
+    if field == "meal":
+        second_meal_value = row.get("second_meal")
+        if isinstance(second_meal_value, str) and second_meal_value.strip():
+            values.add(second_meal_value.strip())
+
+        legacy_item_value = row.get("item")
+        if isinstance(legacy_item_value, str) and legacy_item_value.strip():
+            values.add(legacy_item_value.strip())
+
+    return values
+
+
 def get_row_repeat_families(row: dict[str, Any]) -> set[str]:
     families: set[str] = set()
     breakfast_value = row.get("breakfast")
     if isinstance(breakfast_value, str) and breakfast_value.strip():
         families.update(extract_breakfast_repeat_families(breakfast_value))
 
-    meal_value = row.get("meal")
-    if isinstance(meal_value, str) and meal_value.strip():
+    for meal_value in get_history_values_for_field(row, "meal"):
         families.update(extract_meal_repeat_families(meal_value))
-
-    legacy_item_value = row.get("item")
-    if isinstance(legacy_item_value, str) and legacy_item_value.strip():
-        families.update(extract_meal_repeat_families(legacy_item_value))
     return families
 
 
@@ -2093,12 +2106,10 @@ def get_vasant_roti_grain_cycle_used_options(
         row_ritu_key = row.get("ritu_key")
         if not isinstance(row_ritu_key, str) or normalize_ritu_key(row_ritu_key) != "vasant":
             continue
-        meal_value = row.get("meal")
-        if not isinstance(meal_value, str) or not meal_value.strip():
-            continue
-        grain_option = extract_vasant_roti_grain_option(meal_value, "vasant")
-        if grain_option is not None:
-            used.add(grain_option)
+        for meal_value in get_history_values_for_field(row, "meal"):
+            grain_option = extract_vasant_roti_grain_option(meal_value, "vasant")
+            if grain_option is not None:
+                used.add(grain_option)
     return used
 
 
@@ -2116,12 +2127,10 @@ def get_vasant_dal_cycle_used_options(history: list[dict[str, Any]], target_date
         row_ritu_key = row.get("ritu_key")
         if not isinstance(row_ritu_key, str) or normalize_ritu_key(row_ritu_key) != "vasant":
             continue
-        meal_value = row.get("meal")
-        if not isinstance(meal_value, str) or not meal_value.strip():
-            continue
-        dal_option = extract_vasant_dal_option(meal_value, "vasant")
-        if dal_option in VASANT_STRICT_DAL_OPTIONS:
-            used.add(dal_option)
+        for meal_value in get_history_values_for_field(row, "meal"):
+            dal_option = extract_vasant_dal_option(meal_value, "vasant")
+            if dal_option in VASANT_STRICT_DAL_OPTIONS:
+                used.add(dal_option)
     return used
 
 
@@ -2872,6 +2881,7 @@ def update_history(
     target_date: str,
     breakfast_item: str,
     meal_item: str,
+    second_meal_item: str | None,
     fruit_item: str | None,
     keep_days: int,
     ritu_key: str,
@@ -2885,6 +2895,8 @@ def update_history(
         "meal": meal_item,
         "ritu_key": normalize_ritu_key(ritu_key),
     }
+    if isinstance(second_meal_item, str) and second_meal_item.strip():
+        new_row["second_meal"] = second_meal_item.strip()
     if isinstance(fruit_item, str) and fruit_item.strip():
         new_row["fruit"] = fruit_item.strip()
     if isinstance(next_day_breakfast_lock, str) and next_day_breakfast_lock.strip():
@@ -3997,6 +4009,8 @@ def main() -> int:
         today_repeat_families = extract_breakfast_repeat_families(selected_breakfast) | extract_meal_repeat_families(
             selected_meal
         )
+        if selected_second_meal:
+            today_repeat_families.update(extract_meal_repeat_families(selected_second_meal))
         if next_day_breakfast_lock:
             next_day_lock_conflicts = get_item_repeat_family_conflicts(
                 next_day_breakfast_lock,
@@ -4059,6 +4073,7 @@ def main() -> int:
         target_date_str,
         selected_breakfast,
         selected_meal,
+        selected_second_meal,
         fruit_selection.fruit if fruit_selection.available else None,
         repeat_window_days,
         ritu_key,
