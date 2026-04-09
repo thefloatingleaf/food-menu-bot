@@ -118,6 +118,7 @@ python3 generate_menu.py --bootstrap-weather-tags
 - `breakfast_item_date_overrides`
 - `meal_item_date_overrides`
 - `second_meal_item_date_overrides`
+- `fruit_item_date_overrides`
 
 Each entry uses:
 
@@ -131,6 +132,7 @@ Each entry uses:
 Notes:
 - `meal_item_date_overrides` sets the main `आज का भोजन` item.
 - `second_meal_item_date_overrides` applies only on dates that already use the temporary dual-meal output.
+- `fruit_item_date_overrides` pins the exact `आज का फल` text for that date.
 - Meal overrides still validate against the active seasonal menu list, and the dual-meal rice guard still prevents both meals from containing rice on the same day.
 
 ## Festivals data format (Hindu + Sikh)

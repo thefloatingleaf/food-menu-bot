@@ -243,6 +243,20 @@ class VarietyCycleRuleTests(unittest.TestCase):
         self.assertFalse(selection.available)
         self.assertIsNone(selection.fruit)
 
+    def test_resolve_item_date_override_supports_fruit_override_entries(self) -> None:
+        override = generate_menu.resolve_item_date_override(
+            date(2026, 4, 12),
+            {
+                "fruit_item_date_overrides": [
+                    {"date": "2026-04-12", "item": "सेब 🍎"},
+                    {"date": "2026-04-13", "item": "नाशपाती"},
+                ]
+            },
+            "fruit_item_date_overrides",
+        )
+
+        self.assertEqual(override, "सेब 🍎")
+
     def test_get_monthly_fruit_usage_counts_resets_on_month_transition(self) -> None:
         history = [
             {

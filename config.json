@@ -30,6 +30,28 @@
       "item": "गेहूँ (Wheat) (केवल पुराना) की रोटी और भिंडी की सूखी सब्ज़ी"
     }
   ],
+  "fruit_item_date_overrides": [
+    {
+      "date": "2026-04-10",
+      "item": "सेब 🍎"
+    },
+    {
+      "date": "2026-04-11",
+      "item": "सेब 🍎"
+    },
+    {
+      "date": "2026-04-12",
+      "item": "सेब 🍎"
+    },
+    {
+      "date": "2026-04-13",
+      "item": "सेब 🍎"
+    },
+    {
+      "date": "2026-04-14",
+      "item": "सेब 🍎"
+    }
+  ],
   "ritu_hi": "शिशिर",
   "repeat_window_days": 7,
   "empty_filtered_pool_policy": "fallback_full_menu",

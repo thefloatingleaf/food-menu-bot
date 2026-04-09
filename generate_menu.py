@@ -3392,6 +3392,9 @@ def main() -> int:
     second_meal_item_override = current_day.second_meal_item_override
     vasant_day_ten = is_vasant_day_ten(target_date, ritu_key)
     fruit_selection = select_monthly_fruit(history, target_date, monthly_fruit_map, fruit_priority_rules)
+    fruit_item_override = resolve_item_date_override(target_date, config, "fruit_item_date_overrides")
+    if fruit_item_override:
+        fruit_selection = FruitSelection(fruit=fruit_item_override, available=True)
 
     if festival_info.suppress_regular_menu:
         lines = [
