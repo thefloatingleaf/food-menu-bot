@@ -3,6 +3,7 @@ import argparse
 import csv
 import hashlib
 import json
+import os
 import random
 import re
 import ssl
@@ -44,6 +45,7 @@ WEATHER_TAGS_FILE = BASE_DIR / "menu_weather_tags.json"
 MANUAL_WEATHER_FILE = BASE_DIR / "manual_weather_override.json"
 HEAVY_LIGHT_CLASSIFICATION_FILE = BASE_DIR / "heavy_light_classification_food_items_revised_paratha_rule.csv"
 FRUIT_MONTHS_FILE = BASE_DIR / "fruit_months.json"
+MENU_GENERATOR_NOW_DATE_ENV = "MENU_GENERATOR_NOW_DATE"
 
 
 @dataclass
@@ -1124,24 +1126,34 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Generate daily food menu")
     parser.add_argument(
         "--date",
-        help="Menu date in YYYY-MM-DD format; when omitted, tomorrow's menu is generated",
+        help=argparse.SUPPRESS,
     )
     parser.add_argument(
         "--bootstrap-weather-tags",
         action="store_true",
         help="Create or refresh weather tags file from keyword heuristics",
     )
-    return parser.parse_args()
+    args = parser.parse_args()
+    if args.date:
+        parser.error("--date is no longer supported; the menu is always generated for tomorrow's date")
+    return args
 
 
 def resolve_date(date_arg: str | None, timezone_name: str, now_date: date | None = None) -> datetime.date:
     if date_arg:
-        try:
-            return datetime.strptime(date_arg, "%Y-%m-%d").date()
-        except ValueError as exc:
-            raise ValueError("--date must be in YYYY-MM-DD format") from exc
-    base_date = now_date if now_date is not None else datetime.now(ZoneInfo(timezone_name)).date()
+        raise ValueError("--date is no longer supported; the menu is always generated for tomorrow's date")
+    base_date = now_date if now_date is not None else resolve_runtime_today(timezone_name)
     return base_date + timedelta(days=1)
+
+
+def resolve_runtime_today(timezone_name: str) -> date:
+    override = os.environ.get(MENU_GENERATOR_NOW_DATE_ENV)
+    if override:
+        try:
+            return datetime.strptime(override, "%Y-%m-%d").date()
+        except ValueError as exc:
+            raise ValueError(f"{MENU_GENERATOR_NOW_DATE_ENV} must be in YYYY-MM-DD format") from exc
+    return datetime.now(ZoneInfo(timezone_name)).date()
 
 
 def get_ekadashi_info(target_date: str, ekadashi_data: dict[str, Any]) -> EkadashiInfo:
@@ -2320,9 +2332,9 @@ def fetch_imd_city_weather(target_date: str, config: dict[str, Any], thresholds:
     base_date = parse_imd_base_date(html)
     if base_date is None:
         try:
-            base_date = datetime.now(ZoneInfo(timezone_name)).date()
+            base_date = resolve_runtime_today(timezone_name)
         except Exception:
-            base_date = datetime.now(ZoneInfo("Asia/Kolkata")).date()
+            base_date = resolve_runtime_today("Asia/Kolkata")
 
     day_offset = (target - base_date).days
     if day_offset < 0:
@@ -3340,7 +3352,7 @@ def main() -> int:
     target_date = resolve_date(args.date, timezone_name)
     target_date_str = target_date.strftime("%Y-%m-%d")
     target_date_display_str = target_date.strftime("%d-%b-%Y")
-    generation_date = datetime.now(ZoneInfo(timezone_name)).date()
+    generation_date = resolve_runtime_today(timezone_name)
 
     weather_enabled = bool(config.get("weather_enabled", True))
     weather_mode = str(config.get("weather_show_mode", "rain_or_extreme_only"))

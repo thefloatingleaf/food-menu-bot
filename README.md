@@ -36,13 +36,7 @@ source .venv/bin/activate
 python3 generate_menu.py
 ```
 
-## Test with specific date
-
-```bash
-python3 generate_menu.py --date 2026-02-27
-```
-
-The `--date` value is the exact menu date to generate. If you omit `--date`, the script generates tomorrow's menu in the configured timezone.
+The generator always identifies tomorrow in the configured timezone and builds the entire menu for that next date. It never generates today's menu.
 
 ## Menu generator tests
 
@@ -62,6 +56,7 @@ Expected result: three files are created in `test_outputs/menu_triggers/` for:
 - `pakhala-bhata`
 
 The script temporarily applies breakfast overrides, generates the requested target-date menus, saves the outputs, and then restores `config.json`, `history.json`, and `daily_menu.txt`.
+It simulates the previous day internally so each generated file is still produced through the same tomorrow-only runtime path as production.
 
 ## Bootstrap weather tags (one-time)
 

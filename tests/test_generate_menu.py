@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import patch
 from datetime import date
 
 import generate_menu
@@ -439,17 +440,19 @@ class VarietyCycleRuleTests(unittest.TestCase):
 
 
 class DateResolutionTests(unittest.TestCase):
-    def test_resolve_date_uses_explicit_date_as_target_menu_date(self) -> None:
-        self.assertEqual(
-            generate_menu.resolve_date("2026-04-06", "Asia/Kolkata"),
-            date(2026, 4, 6),
-        )
+    def test_resolve_date_rejects_explicit_date_override(self) -> None:
+        with self.assertRaisesRegex(ValueError, "always generated for tomorrow's date"):
+            generate_menu.resolve_date("2026-04-06", "Asia/Kolkata")
 
     def test_resolve_date_without_explicit_date_defaults_to_tomorrow(self) -> None:
         self.assertEqual(
             generate_menu.resolve_date(None, "Asia/Kolkata", now_date=date(2026, 4, 6)),
             date(2026, 4, 7),
         )
+
+    def test_resolve_runtime_today_uses_env_override_for_tomorrow_flow(self) -> None:
+        with patch.dict("os.environ", {generate_menu.MENU_GENERATOR_NOW_DATE_ENV: "2026-04-11"}, clear=False):
+            self.assertEqual(generate_menu.resolve_runtime_today("Asia/Kolkata"), date(2026, 4, 11))
 
 
 class WeatherTagWarningTests(unittest.TestCase):
