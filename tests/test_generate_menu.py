@@ -451,6 +451,31 @@ class DateResolutionTests(unittest.TestCase):
             date(2026, 4, 7),
         )
 
+
+class WeatherTagWarningTests(unittest.TestCase):
+    def test_infer_tags_for_common_breakfast_items_avoids_empty_results(self) -> None:
+        self.assertEqual(
+            set(generate_menu.infer_tags_for_item("पोहे")),
+            {"light", "summer_friendly"},
+        )
+        self.assertEqual(
+            set(generate_menu.infer_tags_for_item("बेसन का चीला")),
+            {"comfort_hot", "light", "rain_friendly"},
+        )
+        self.assertEqual(
+            set(generate_menu.infer_tags_for_item("उबले हुए मंगोड़े")),
+            {"comfort_hot", "light"},
+        )
+
+    def test_format_weather_tag_warning_explains_cause_and_fix(self) -> None:
+        warning = generate_menu.format_weather_tag_warning({"पोहे", "बेसन का चीला"})
+
+        self.assertIn("missing or empty", warning)
+        self.assertIn("neutral fallback", warning)
+        self.assertIn("menu_weather_tags.json", warning)
+        self.assertIn("पोहे", warning)
+        self.assertIn("बेसन का चीला", warning)
+
     def test_is_double_meal_window_matches_requested_april_range(self) -> None:
         self.assertTrue(generate_menu.is_double_meal_window(date(2026, 4, 8)))
         self.assertTrue(generate_menu.is_double_meal_window(date(2026, 4, 14)))

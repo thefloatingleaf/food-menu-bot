@@ -2599,6 +2599,12 @@ def infer_tags_for_item(item: str) -> list[str]:
         tags.add("rain_friendly")
     if any(word in text for word in ["उपमा", "दाल", "रोटी"]):
         tags.add("light")
+    if any(word in text for word in ["पोहे", "पोहा"]):
+        tags.update({"light", "summer_friendly"})
+    if any(word in text for word in ["चीला", "चिल्ला", "cheela", "chilla"]):
+        tags.update({"comfort_hot", "light", "rain_friendly"})
+    if "उबले" in text and any(word in text for word in ["मंगोड़े", "मंगौड़े", "मंगोड़ा", "मंगौड़ा"]):
+        tags.update({"comfort_hot", "light"})
 
     return sorted(tags)
 
@@ -2691,6 +2697,15 @@ def apply_weather_filter(
         return stage2
 
     return pool[:]
+
+
+def format_weather_tag_warning(items: set[str]) -> str:
+    return (
+        "WARN: Weather tags were missing or empty for these menu items, so the weather filter used a neutral "
+        "fallback instead of a weather-aware preference: "
+        + ", ".join(sorted(items))
+        + ". Add entries in menu_weather_tags.json or expand infer_tags_for_item()."
+    )
 
 
 def lightness_score(
@@ -4063,10 +4078,7 @@ def main() -> int:
             next_day_requires_rice_prep = False
 
     if warning_items:
-        print(
-            "WARN: Untagged items were included in weather filtering: " + ", ".join(sorted(warning_items)),
-            file=sys.stderr,
-        )
+        print(format_weather_tag_warning(warning_items), file=sys.stderr)
 
     new_history = update_history(
         history,
