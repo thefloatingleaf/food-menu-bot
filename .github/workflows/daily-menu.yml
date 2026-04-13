@@ -2,9 +2,9 @@ name: Daily Food Menu
 
 on:
   schedule:
-    # Target 15:00 Asia/Kolkata every day.
-    # 15:00 Asia/Kolkata = 09:30 UTC
-    - cron: "30 9 * * *"
+    # Target 14:00 Asia/Kolkata every day.
+    # 14:00 Asia/Kolkata = 08:30 UTC
+    - cron: "30 8 * * *"
   workflow_dispatch:
 
 permissions:
