@@ -264,8 +264,16 @@
     "date": "2026-04-13",
     "breakfast": "पोहे",
     "meal": "ज्वार (Sorghum) (केवल पुराना) की रोटी और कच्चे केले की सब्ज़ी",
-    "ritu_key": "vasant",
     "second_meal": "जौ (Barley) (केवल पुराना) की रोटी और मसूर दाल",
+    "fruit": "सेब 🍎",
+    "ritu_key": "vasant"
+  },
+  {
+    "date": "2026-04-14",
+    "breakfast": "जो के सत्तू की रोटी",
+    "meal": "रागी (Finger Millet) (केवल पुराना) की रोटी और लौकी के कोफ्ते",
+    "ritu_key": "vasant",
+    "second_meal": "रागी (Finger Millet) (केवल पुराना) की रोटी और परवल-मूँगदाल की सूखी सब्ज़ी",
     "fruit": "सेब 🍎"
   },
   {
