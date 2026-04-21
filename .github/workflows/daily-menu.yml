@@ -2,9 +2,10 @@ name: Daily Food Menu
 
 on:
   schedule:
-    # Target 14:00 Asia/Kolkata every day.
-    # 14:00 Asia/Kolkata = 08:30 UTC
-    - cron: "30 8 * * *"
+    # Publish well before the WhatsApp Shortcut fetches daily_menu.txt.
+    # GitHub scheduled workflows can start late, so this buffer prevents stale sends.
+    # 07:30 Asia/Kolkata = 02:00 UTC
+    - cron: "0 2 * * *"
   workflow_dispatch:
 
 permissions:

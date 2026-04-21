@@ -307,9 +307,11 @@ If a date is missing in `panchang_2026_27.json`, script now auto-detects ऋत�
 ## GitHub Action schedule
 
 - Workflow file: `.github/workflows/daily-menu.yml`
-- Runs daily at `09:30 UTC` (3:00 PM IST)
+- Runs daily at `02:00 UTC` (7:30 AM IST)
 - Updates `daily_menu.txt` and `history.json`
+- Publishes several hours before the WhatsApp Shortcut should send the message, because GitHub scheduled workflows can start late
 
 ## iPhone Shortcuts
 
 Use `Get Contents of URL` with raw GitHub URL of `daily_menu.txt`, then send the fetched text through WhatsApp action.
+If WhatsApp sends the same date twice, first check whether the Shortcut ran before the latest `chore: update daily menu` commit was pushed.
