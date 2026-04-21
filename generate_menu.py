@@ -1720,6 +1720,15 @@ def format_today_fruit_line(fruit_selection: FruitSelection, ritu_key: str) -> s
     return "*आज का फल:* फल उपलब्ध नहीं है"
 
 
+PARWAL_BHUJIYA_DAL_SUGGESTION = "साथ में सादी मूंग दाल"
+
+
+def format_meal_display(item: str) -> str:
+    if "परवल की भुजिया" in item and "दाल" not in item:
+        return f"{item}, {PARWAL_BHUJIYA_DAL_SUGGESTION}"
+    return item
+
+
 def collect_vasant_prohibited_warnings(lines: list[str]) -> list[str]:
     findings: list[str] = []
     for label, patterns in VASANT_PROHIBITED_RULES:
@@ -4141,10 +4150,10 @@ def main() -> int:
             elif ritu_key == "grishm":
                 lines.append("*नाश्ता स्वाद निर्देश:* ग्रीष्म में इसे सामान्य तीखापन रखें।")
         if selected_second_meal is not None:
-            lines.append(f"*आज का भोजन 1:* {selected_meal}")
-            lines.append(f"*आज का भोजन 2:* {selected_second_meal}")
+            lines.append(f"*आज का भोजन 1:* {format_meal_display(selected_meal)}")
+            lines.append(f"*आज का भोजन 2:* {format_meal_display(selected_second_meal)}")
         else:
-            lines.append(f"*आज का भोजन:* {selected_meal}")
+            lines.append(f"*आज का भोजन:* {format_meal_display(selected_meal)}")
         lines.append(format_today_fruit_line(fruit_selection, ritu_key))
         if requires_mangore_prep(selected_breakfast, selected_meal, selected_second_meal or ""):
             lines.append("*फॉलोवर महोदय हेतु रात की तैयारी:* " + MANGORE_PREP_NOTE)

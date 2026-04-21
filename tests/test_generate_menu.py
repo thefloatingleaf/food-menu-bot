@@ -393,6 +393,21 @@ class VarietyCycleRuleTests(unittest.TestCase):
         line = generate_menu.format_today_fruit_line(generate_menu.FruitSelection(None, False), "vasant")
         self.assertEqual(line, "*आज का फल:* फल उपलब्ध नहीं है")
 
+    def test_format_meal_display_adds_dal_with_parwal_bhujiya(self) -> None:
+        meal = "ज्वार (Sorghum) (केवल पुराना) की रोटी और परवल की भुजिया"
+        self.assertEqual(
+            generate_menu.format_meal_display(meal),
+            "ज्वार (Sorghum) (केवल पुराना) की रोटी और परवल की भुजिया, साथ में सादी मूंग दाल",
+        )
+
+    def test_format_meal_display_does_not_duplicate_existing_dal(self) -> None:
+        meal = "ज्वार की रोटी और परवल की भुजिया, साथ में मूंग दाल"
+        self.assertEqual(generate_menu.format_meal_display(meal), meal)
+
+    def test_format_meal_display_leaves_other_parwal_meals_unchanged(self) -> None:
+        meal = "ज्वार की रोटी और परवल-मूँगदाल की सूखी सब्ज़ी"
+        self.assertEqual(generate_menu.format_meal_display(meal), meal)
+
     def test_build_next_day_overnight_prep_line_does_not_create_second_breakfast_heading(self) -> None:
         line = generate_menu.build_next_day_overnight_prep_line(
             "पखाला भात (Pakhala Bhata): रात में 1 कटोरी कच्चे चावल धोकर सादा चावल पकाएँ।"
