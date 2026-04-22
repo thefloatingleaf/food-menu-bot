@@ -46,6 +46,21 @@ MANUAL_WEATHER_FILE = BASE_DIR / "manual_weather_override.json"
 HEAVY_LIGHT_CLASSIFICATION_FILE = BASE_DIR / "heavy_light_classification_food_items_revised_paratha_rule.csv"
 FRUIT_MONTHS_FILE = BASE_DIR / "fruit_months.json"
 MENU_GENERATOR_NOW_DATE_ENV = "MENU_GENERATOR_NOW_DATE"
+OUTPUT_DATE_HEADER_RE = re.compile(r"^\*(\d{2})-([A-Za-z]{3})-(\d{4}) तिथि के लिए भोजन:\*$")
+GREGORIAN_MONTH_ABBR_TO_NUMBER = {
+    "Jan": 1,
+    "Feb": 2,
+    "Mar": 3,
+    "Apr": 4,
+    "May": 5,
+    "Jun": 6,
+    "Jul": 7,
+    "Aug": 8,
+    "Sep": 9,
+    "Oct": 10,
+    "Nov": 11,
+    "Dec": 12,
+}
 
 
 @dataclass
@@ -1154,6 +1169,31 @@ def resolve_runtime_today(timezone_name: str) -> date:
         except ValueError as exc:
             raise ValueError(f"{MENU_GENERATOR_NOW_DATE_ENV} must be in YYYY-MM-DD format") from exc
     return datetime.now(ZoneInfo(timezone_name)).date()
+
+
+def parse_output_target_date(output_text: str) -> date:
+    first_line = next((line.strip() for line in output_text.splitlines() if line.strip()), "")
+    if not first_line:
+        raise ValueError("daily menu output is empty")
+
+    match = OUTPUT_DATE_HEADER_RE.match(first_line)
+    if not match:
+        raise ValueError("daily menu header is missing or malformed")
+
+    day_str, month_abbr, year_str = match.groups()
+    month_number = GREGORIAN_MONTH_ABBR_TO_NUMBER.get(month_abbr.title())
+    if month_number is None:
+        raise ValueError(f"unsupported month abbreviation in daily menu header: {month_abbr}")
+    return date(int(year_str), month_number, int(day_str))
+
+
+def verify_output_target_date(output_text: str, expected_target_date: date) -> None:
+    actual_target_date = parse_output_target_date(output_text)
+    if actual_target_date != expected_target_date:
+        raise ValueError(
+            "daily menu header date mismatch: "
+            f"expected {expected_target_date.isoformat()}, found {actual_target_date.isoformat()}"
+        )
 
 
 def get_ekadashi_info(target_date: str, ekadashi_data: dict[str, Any]) -> EkadashiInfo:

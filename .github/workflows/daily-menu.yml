@@ -2,14 +2,37 @@ name: Daily Food Menu
 
 on:
   schedule:
-    # Publish well before the WhatsApp Shortcut fetches daily_menu.txt.
-    # GitHub scheduled workflows can start late, so this buffer prevents stale sends.
-    # 07:30 Asia/Kolkata = 02:00 UTC
-    - cron: "0 2 * * *"
+    # Publish from morning through late afternoon IST so the repo self-heals
+    # if GitHub skips or delays any one scheduled window.
+    # 07:30, 09:30, 11:30, 13:30, 15:30 Asia/Kolkata
+    - cron: "0 2,4,6,8,10 * * *"
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/daily-menu.yml"
+      - "generate_menu.py"
+      - "config.json"
+      - "breakfast_*.json"
+      - "menu_*.json"
+      - "ekadashi_*.json"
+      - "panchang_*.json"
+      - "festivals_*.json"
+      - "fruit_months.json"
+      - "manual_weather_override.json"
+      - "menu_weather_tags.json"
+      - "lunar_calendar_*.json"
+      - "heavy_light_classification_food_items_revised_paratha_rule.csv"
+      - "scripts/generate-daily-menu.sh"
+      - "scripts/verify_daily_menu_freshness.py"
 
 permissions:
   contents: write
+
+concurrency:
+  group: daily-food-menu-publish
+  cancel-in-progress: false
 
 jobs:
   generate-and-publish:
@@ -23,9 +46,9 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Generate next-day menu (IST)
+      - name: Generate and verify next-day menu (IST)
         run: |
-          python generate_menu.py
+          ./scripts/generate-daily-menu.sh
 
       - name: Commit daily output
         run: |

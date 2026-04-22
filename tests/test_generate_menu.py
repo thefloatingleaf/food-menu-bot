@@ -470,6 +470,23 @@ class DateResolutionTests(unittest.TestCase):
             self.assertEqual(generate_menu.resolve_runtime_today("Asia/Kolkata"), date(2026, 4, 11))
 
 
+class OutputFreshnessTests(unittest.TestCase):
+    def test_parse_output_target_date_reads_header_date(self) -> None:
+        output_text = "*22-Apr-2026 तिथि के लिए भोजन:*\r\n*ऋतु:* वसंत"
+        self.assertEqual(generate_menu.parse_output_target_date(output_text), date(2026, 4, 22))
+
+    def test_parse_output_target_date_rejects_missing_header(self) -> None:
+        with self.assertRaisesRegex(ValueError, "missing or malformed"):
+            generate_menu.parse_output_target_date("*ऋतु:* वसंत")
+
+    def test_verify_output_target_date_rejects_stale_output(self) -> None:
+        with self.assertRaisesRegex(ValueError, "expected 2026-04-22, found 2026-04-21"):
+            generate_menu.verify_output_target_date(
+                "*21-Apr-2026 तिथि के लिए भोजन:*\r\n*ऋतु:* वसंत",
+                date(2026, 4, 22),
+            )
+
+
 class WeatherTagWarningTests(unittest.TestCase):
     def test_infer_tags_for_common_breakfast_items_avoids_empty_results(self) -> None:
         self.assertEqual(

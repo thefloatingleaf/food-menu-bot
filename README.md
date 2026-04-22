@@ -31,12 +31,11 @@ Expected result: lint and Vitest checks pass for the VPK module.
 ## Run locally
 
 ```bash
-cd "/Users/gg/Documents/Ayurveda"
-source .venv/bin/activate
-python3 generate_menu.py
+./scripts/generate-daily-menu.sh
 ```
 
 The generator always identifies tomorrow in the configured timezone and builds the entire menu for that next date. It never generates today's menu.
+The script also verifies that `daily_menu.txt` and `history.json` were both updated for that exact next date, so stale output fails fast.
 
 ## Menu generator tests
 
@@ -307,9 +306,9 @@ If a date is missing in `panchang_2026_27.json`, script now auto-detects ऋत�
 ## GitHub Action schedule
 
 - Workflow file: `.github/workflows/daily-menu.yml`
-- Runs daily at `02:00 UTC` (7:30 AM IST)
-- Updates `daily_menu.txt` and `history.json`
-- Publishes several hours before the WhatsApp Shortcut should send the message, because GitHub scheduled workflows can start late
+- Scheduled backup windows run at `02:00`, `04:00`, `06:00`, `08:00`, and `10:00 UTC` (7:30 AM through 3:30 PM IST)
+- Pushes to the generator, workflow, or menu data files also trigger an immediate refresh, so a workflow edit cannot leave the published file stale
+- Each run updates `daily_menu.txt` and `history.json`, then verifies that both match tomorrow's date before any commit is allowed
 
 ## iPhone Shortcuts
 
