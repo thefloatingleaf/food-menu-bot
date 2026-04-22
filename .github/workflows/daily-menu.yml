@@ -2,10 +2,12 @@ name: Daily Food Menu
 
 on:
   schedule:
-    # Publish from morning through late afternoon IST so the repo self-heals
+    # Publish from morning through mid-afternoon IST so the repo self-heals
     # if GitHub skips or delays any one scheduled window.
-    # 07:30, 09:30, 11:30, 13:30, 15:30 Asia/Kolkata
-    - cron: "0 2,4,6,8,10 * * *"
+    # 07:30, 09:30, 11:30, 13:30, 14:30 Asia/Kolkata
+    # The iPhone Shortcut sends at 15:10 Asia/Kolkata, so every safety window
+    # must still land before that send time.
+    - cron: "0 2,4,6,8,9 * * *"
   workflow_dispatch:
   push:
     branches:

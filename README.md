@@ -306,7 +306,8 @@ If a date is missing in `panchang_2026_27.json`, script now auto-detects ऋत�
 ## GitHub Action schedule
 
 - Workflow file: `.github/workflows/daily-menu.yml`
-- Scheduled backup windows run at `02:00`, `04:00`, `06:00`, `08:00`, and `10:00 UTC` (7:30 AM through 3:30 PM IST)
+- Scheduled backup windows run at `02:00`, `04:00`, `06:00`, `08:00`, and `09:00 UTC` (7:30 AM through 2:30 PM IST)
+- The last backup run is intentionally before the `15:10 IST` iPhone Shortcut send time
 - Pushes to the generator, workflow, or menu data files also trigger an immediate refresh, so a workflow edit cannot leave the published file stale
 - Each run updates `daily_menu.txt` and `history.json`, then verifies that both match tomorrow's date before any commit is allowed
 
