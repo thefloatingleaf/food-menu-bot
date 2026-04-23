@@ -999,6 +999,49 @@ class WeeklyChaachSabziRuleTests(unittest.TestCase):
         self.assertFalse(generate_menu.should_force_weekly_chaach_sabzi([], date(2026, 7, 1), "varsha"))
 
 
+class FortnightlyKadhiChawalRuleTests(unittest.TestCase):
+    def test_is_kadhi_chawal_item_requires_kadhi_and_rice(self) -> None:
+        self.assertTrue(generate_menu.is_kadhi_chawal_item("कढ़ी और चावल"))
+        self.assertTrue(generate_menu.is_kadhi_chawal_item("कढ़ी और शालि चावल"))
+        self.assertFalse(generate_menu.is_kadhi_chawal_item("कढ़ी और ज्वार की रोटी"))
+
+    def test_should_force_fortnightly_kadhi_chawal_when_missing_in_last_fourteen_days(self) -> None:
+        history = [
+            {"date": "2026-03-31", "breakfast": "उपमा", "meal": "दाल और चावल", "ritu_key": "vasant"},
+            {"date": "2026-04-01", "breakfast": "पोहा", "meal": "लौकी", "ritu_key": "vasant"},
+            {"date": "2026-04-02", "breakfast": "इडली", "meal": "परवल", "ritu_key": "vasant"},
+            {"date": "2026-04-03", "breakfast": "डोसा", "meal": "भिंडी", "ritu_key": "vasant"},
+            {"date": "2026-04-04", "breakfast": "दलिया", "meal": "मूंग दाल और चावल", "ritu_key": "vasant"},
+            {"date": "2026-04-05", "breakfast": "चीला", "meal": "मसूर दाल और चावल", "ritu_key": "vasant"},
+            {"date": "2026-04-06", "breakfast": "उपमा", "meal": "अरहर दाल और चावल", "ritu_key": "vasant"},
+            {"date": "2026-04-07", "breakfast": "पोहा", "meal": "काला चना और चावल", "ritu_key": "vasant"},
+            {"date": "2026-04-08", "breakfast": "इडली", "meal": "धुली मूंग दाल खिचड़ी", "ritu_key": "vasant"},
+            {"date": "2026-04-09", "breakfast": "डोसा", "meal": "सादी मूँग दाल", "ritu_key": "vasant"},
+            {"date": "2026-04-10", "breakfast": "दलिया", "meal": "जो की रोटी और लौकी की सब्ज़ी", "ritu_key": "vasant"},
+            {"date": "2026-04-11", "breakfast": "चीला", "meal": "जौ की रोटी, लौकी की सब्ज़ी, मूँग दाल धुली", "ritu_key": "grishm"},
+            {"date": "2026-04-12", "breakfast": "उपमा", "meal": "भिंडी की सब्ज़ी, गेहूँ की रोटी", "ritu_key": "varsha"},
+            {"date": "2026-04-13", "breakfast": "पोहा", "meal": "मूँग की दाल, और साठी चावल", "ritu_key": "sharad"},
+        ]
+
+        self.assertTrue(generate_menu.should_force_fortnightly_kadhi_chawal(history, date(2026, 4, 14), "vasant"))
+
+    def test_should_not_force_fortnightly_kadhi_chawal_when_recently_used(self) -> None:
+        history = [
+            {
+                "date": "2026-04-10",
+                "breakfast": "उपमा",
+                "meal": "दाल और चावल",
+                "second_meal": "कढ़ी और शालि चावल",
+                "ritu_key": "grishm",
+            }
+        ]
+
+        self.assertFalse(generate_menu.should_force_fortnightly_kadhi_chawal(history, date(2026, 4, 20), "grishm"))
+
+    def test_should_not_force_fortnightly_kadhi_chawal_in_varsha(self) -> None:
+        self.assertFalse(generate_menu.should_force_fortnightly_kadhi_chawal([], date(2026, 7, 20), "varsha"))
+
+
 class MangorePrepInstructionTests(unittest.TestCase):
     def test_requires_mangore_prep_for_mangaunde_spelling(self) -> None:
         self.assertTrue(generate_menu.requires_mangore_prep("उबले हुए मंगौड़े", "सादा भोजन"))

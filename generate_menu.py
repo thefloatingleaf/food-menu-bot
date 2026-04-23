@@ -432,6 +432,14 @@ WEEKLY_CHAACH_SABZI_WINDOW_DAYS = 7
 WEEKLY_CHAACH_SABZI_NOTE = (
     "[साप्ताहिक नियम] वसंत/ग्रीष्म में छाछ की सब्ज़ी को किसी चावल-वाले भोजन के साथ कम-से-कम सप्ताह में एक बार रखा गया"
 )
+FORTNIGHTLY_KADHI_CHAWAL_TARGET_RITUS = {"shishir", "vasant", "grishm", "sharad", "hemant"}
+FORTNIGHTLY_KADHI_CHAWAL_WINDOW_DAYS = 15
+FORTNIGHTLY_KADHI_CHAWAL_NOTE = (
+    "[पाक्षिक नियम] वर्षा ऋतु छोड़कर कढ़ी-चावल को कम-से-कम हर 15 दिनों में एक बार रखा गया"
+)
+FORTNIGHTLY_KADHI_CHAWAL_EKADASHI_NOTE = (
+    "[एकादशी नियम] कढ़ी-चावल का 15-दिन नियम आज लागू नहीं किया गया क्योंकि चावल एकादशी में वर्जित है"
+)
 RICE_ITEM_TOKENS = ("चावल", "राइस", "भात")
 
 VARSHA_COMMON_REQUIRED_SIDES = [
@@ -2195,6 +2203,44 @@ def should_force_weekly_chaach_sabzi(
         ):
             continue
         if any(is_chaach_sabzi_rice_item(value) for value in get_history_values_for_field(row, "meal")):
+            return False
+    return True
+
+
+def is_kadhi_chawal_item(item: str) -> bool:
+    return ("कढ़ी" in item or "कढी" in item or "karhi" in item.casefold()) and is_rice_item(item)
+
+
+def find_kadhi_chawal_item(items: list[str]) -> str | None:
+    for item in items:
+        if is_kadhi_chawal_item(item):
+            return item
+    return None
+
+
+def should_force_fortnightly_kadhi_chawal(
+    history: list[dict[str, Any]],
+    target_date: date,
+    ritu_key: str,
+) -> bool:
+    if normalize_ritu_key(ritu_key) not in FORTNIGHTLY_KADHI_CHAWAL_TARGET_RITUS:
+        return False
+
+    earliest = target_date - timedelta(days=FORTNIGHTLY_KADHI_CHAWAL_WINDOW_DAYS - 1)
+    for row in history:
+        try:
+            row_date = datetime.strptime(row["date"], "%Y-%m-%d").date()
+        except (ValueError, KeyError):
+            continue
+        if not (earliest <= row_date < target_date):
+            continue
+        row_ritu_key = row.get("ritu_key")
+        if (
+            not isinstance(row_ritu_key, str)
+            or normalize_ritu_key(row_ritu_key) not in FORTNIGHTLY_KADHI_CHAWAL_TARGET_RITUS
+        ):
+            continue
+        if any(is_kadhi_chawal_item(value) for value in get_history_values_for_field(row, "meal")):
             return False
     return True
 
@@ -4022,6 +4068,8 @@ def main() -> int:
         )
         weekly_chaach_sabzi_due = should_force_weekly_chaach_sabzi(history, target_date, ritu_key)
         weekly_chaach_sabzi_item = find_chaach_sabzi_rice_item(meal_choice_items)
+        fortnightly_kadhi_chawal_due = should_force_fortnightly_kadhi_chawal(history, target_date, ritu_key)
+        fortnightly_kadhi_chawal_item = find_kadhi_chawal_item(meal_choice_items)
         if is_pazhaya_sadam_item(selected_breakfast) and any(
             meal in PAZHAYA_SADAM_INCOMPATIBLE_MEALS for meal in original_meal_choice_items
         ):
@@ -4102,7 +4150,33 @@ def main() -> int:
                     missing_data_notes.append(
                         "[अनुपलब्ध] अगले दिन का निर्धारित overnight नाश्ता पिछली रात के चावल-आधारित भोजन से समर्थित नहीं हो सका"
                     )
-                if weekly_chaach_sabzi_due and weekly_chaach_sabzi_item is not None:
+                if fortnightly_kadhi_chawal_due and ekadashi.is_ekadashi:
+                    if FORTNIGHTLY_KADHI_CHAWAL_EKADASHI_NOTE not in missing_data_notes:
+                        missing_data_notes.append(FORTNIGHTLY_KADHI_CHAWAL_EKADASHI_NOTE)
+                    selected_meal = choose_item(
+                        items=meal_choice_items,
+                        ekadashi=ekadashi,
+                        cycle_block_set=meal_cycle_block_set,
+                        recent_block_set=meal_recent,
+                        consecutive_day_block_families=previous_day_repeat_families,
+                        recent_family_block_families=set(),
+                        family_extractor=extract_meal_repeat_families,
+                        keywords=keywords,
+                        disallowed_keywords=disallowed_keywords,
+                        fallback_policy=fallback_policy,
+                        seed_key=f"{target_date_str}:meal",
+                        weather_rules=weather_rules,
+                        weather_tags=weather_tags,
+                        warn_bucket=warning_items,
+                        constraint_notes=missing_data_notes,
+                        prefer_lighter=transition_plan.prefer_lighter,
+                        light_fallback_items=light_fallback_items,
+                        heavy_light_classification=heavy_light_classification,
+                    )
+                elif fortnightly_kadhi_chawal_due and fortnightly_kadhi_chawal_item is not None:
+                    selected_meal = fortnightly_kadhi_chawal_item
+                    missing_data_notes.append(FORTNIGHTLY_KADHI_CHAWAL_NOTE)
+                elif weekly_chaach_sabzi_due and weekly_chaach_sabzi_item is not None:
                     selected_meal = weekly_chaach_sabzi_item
                     missing_data_notes.append(WEEKLY_CHAACH_SABZI_NOTE)
                 else:
@@ -4127,7 +4201,33 @@ def main() -> int:
                         heavy_light_classification=heavy_light_classification,
                     )
         else:
-            if weekly_chaach_sabzi_due and weekly_chaach_sabzi_item is not None:
+            if fortnightly_kadhi_chawal_due and ekadashi.is_ekadashi:
+                if FORTNIGHTLY_KADHI_CHAWAL_EKADASHI_NOTE not in missing_data_notes:
+                    missing_data_notes.append(FORTNIGHTLY_KADHI_CHAWAL_EKADASHI_NOTE)
+                selected_meal = choose_item(
+                    items=meal_choice_items,
+                    ekadashi=ekadashi,
+                    cycle_block_set=meal_cycle_block_set,
+                    recent_block_set=meal_recent,
+                    consecutive_day_block_families=previous_day_repeat_families,
+                    recent_family_block_families=set(),
+                    family_extractor=extract_meal_repeat_families,
+                    keywords=keywords,
+                    disallowed_keywords=disallowed_keywords,
+                    fallback_policy=fallback_policy,
+                    seed_key=f"{target_date_str}:meal",
+                    weather_rules=weather_rules,
+                    weather_tags=weather_tags,
+                    warn_bucket=warning_items,
+                    constraint_notes=missing_data_notes,
+                    prefer_lighter=transition_plan.prefer_lighter,
+                    light_fallback_items=light_fallback_items,
+                    heavy_light_classification=heavy_light_classification,
+                )
+            elif fortnightly_kadhi_chawal_due and fortnightly_kadhi_chawal_item is not None:
+                selected_meal = fortnightly_kadhi_chawal_item
+                missing_data_notes.append(FORTNIGHTLY_KADHI_CHAWAL_NOTE)
+            elif weekly_chaach_sabzi_due and weekly_chaach_sabzi_item is not None:
                 selected_meal = weekly_chaach_sabzi_item
                 missing_data_notes.append(WEEKLY_CHAACH_SABZI_NOTE)
             else:

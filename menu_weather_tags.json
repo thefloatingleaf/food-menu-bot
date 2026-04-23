@@ -259,6 +259,10 @@
     "light",
     "summer_friendly"
   ],
+  "कढ़ी और चावल": [
+    "comfort_hot",
+    "light"
+  ],
   "छाछ की सब्ज़ी चावल के साथ": [
     "heavy",
     "hydrating"
@@ -1165,8 +1169,9 @@
     "light",
     "winter_friendly"
   ],
-  "कढ़ी चावल": [
-    "heavy"
+  "कढ़ी और साठी चावल": [
+    "comfort_hot",
+    "light"
   ],
   "मूँग की दाल, और साठी चावल": [
     "comfort_hot",
@@ -1180,6 +1185,10 @@
   "छाछ की सब्ज़ी और साठी चावल": [
     "heavy",
     "hydrating"
+  ],
+  "कढ़ी और शालि चावल": [
+    "comfort_hot",
+    "light"
   ],
   "छाछ की सब्ज़ी और शालि चावल": [
     "heavy",
