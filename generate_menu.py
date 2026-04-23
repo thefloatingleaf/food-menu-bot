@@ -410,9 +410,9 @@ WEEKLY_BREAKFAST_FAMILY_LIMITS = {"चीला"}
 WEEKLY_BREAKFAST_FAMILY_REPEAT_NOTE = (
     "[साप्ताहिक नाश्ता नियम] किसी भी प्रकार का चीला/चिल्ला सप्ताह में एक बार से अधिक नहीं दोहराया गया"
 )
-PAZHAYA_SADAM_INCOMPATIBLE_MEALS = {"छाछ की सब्ज़ी चावल के साथ"}
+PAZHAYA_SADAM_INCOMPATIBLE_MEALS = {"छाछ की सब्ज़ी चावल के साथ", "छाछ की सब्ज़ी और शालि चावल"}
 PAZHAYA_SADAM_INCOMPATIBLE_MEAL_NOTE = (
-    "[नियम] पझैया सादम के साथ छाछ की सब्ज़ी चावल के साथ नहीं रखा गया"
+    "[नियम] पझैया सादम के साथ छाछ की सब्ज़ी का चावल-वाला भोजन नहीं रखा गया"
 )
 PAZHAYA_SADAM_REQUIRED_WINDOWS = [
     (date(2026, 4, 8), date(2026, 4, 12)),
@@ -425,6 +425,11 @@ PAZHAYA_SADAM_REQUIRED_WINDOW_NOTE = (
 )
 PAZHAYA_SADAM_REQUIRED_WINDOW_SAME_DAY_NOTE = (
     "[समय नियम] 08-Apr-2026 से 12-Apr-2026 वाले पझैया सादम नियम को आज लागू नहीं किया गया क्योंकि overnight तैयारी का समय निकल चुका है"
+)
+WEEKLY_CHAACH_SABZI_TARGET_RITUS = {"vasant", "grishm"}
+WEEKLY_CHAACH_SABZI_WINDOW_DAYS = 7
+WEEKLY_CHAACH_SABZI_NOTE = (
+    "[साप्ताहिक नियम] वसंत/ग्रीष्म में छाछ की सब्ज़ी को किसी चावल-वाले भोजन के साथ कम-से-कम सप्ताह में एक बार रखा गया"
 )
 RICE_ITEM_TOKENS = ("चावल", "राइस", "भात")
 
@@ -2021,6 +2026,44 @@ def should_force_required_window_pazhaya_sadam(
             continue
         breakfast_value = row.get("breakfast")
         if isinstance(breakfast_value, str) and is_pazhaya_sadam_item(breakfast_value):
+            return False
+    return True
+
+
+def is_chaach_sabzi_rice_item(item: str) -> bool:
+    return "छाछ की सब्ज़ी" in item and is_rice_item(item)
+
+
+def find_chaach_sabzi_rice_item(items: list[str]) -> str | None:
+    for item in items:
+        if is_chaach_sabzi_rice_item(item):
+            return item
+    return None
+
+
+def should_force_weekly_chaach_sabzi(
+    history: list[dict[str, Any]],
+    target_date: date,
+    ritu_key: str,
+) -> bool:
+    if normalize_ritu_key(ritu_key) not in WEEKLY_CHAACH_SABZI_TARGET_RITUS:
+        return False
+
+    earliest = target_date - timedelta(days=WEEKLY_CHAACH_SABZI_WINDOW_DAYS - 1)
+    for row in history:
+        try:
+            row_date = datetime.strptime(row["date"], "%Y-%m-%d").date()
+        except (ValueError, KeyError):
+            continue
+        if not (earliest <= row_date < target_date):
+            continue
+        row_ritu_key = row.get("ritu_key")
+        if (
+            not isinstance(row_ritu_key, str)
+            or normalize_ritu_key(row_ritu_key) not in WEEKLY_CHAACH_SABZI_TARGET_RITUS
+        ):
+            continue
+        if any(is_chaach_sabzi_rice_item(value) for value in get_history_values_for_field(row, "meal")):
             return False
     return True
 
@@ -3845,6 +3888,8 @@ def main() -> int:
             selected_breakfast,
             apply_hard_filters([item for item in meal_items if is_rice_item(item)], ekadashi, keywords, disallowed_keywords),
         )
+        weekly_chaach_sabzi_due = should_force_weekly_chaach_sabzi(history, target_date, ritu_key)
+        weekly_chaach_sabzi_item = find_chaach_sabzi_rice_item(meal_choice_items)
         if is_pazhaya_sadam_item(selected_breakfast) and any(
             meal in PAZHAYA_SADAM_INCOMPATIBLE_MEALS for meal in original_meal_choice_items
         ):
@@ -3925,6 +3970,35 @@ def main() -> int:
                     missing_data_notes.append(
                         "[अनुपलब्ध] अगले दिन का निर्धारित overnight नाश्ता पिछली रात के चावल-आधारित भोजन से समर्थित नहीं हो सका"
                     )
+                if weekly_chaach_sabzi_due and weekly_chaach_sabzi_item is not None:
+                    selected_meal = weekly_chaach_sabzi_item
+                    missing_data_notes.append(WEEKLY_CHAACH_SABZI_NOTE)
+                else:
+                    selected_meal = choose_item(
+                        items=meal_choice_items,
+                        ekadashi=ekadashi,
+                        cycle_block_set=meal_cycle_block_set,
+                        recent_block_set=meal_recent,
+                        consecutive_day_block_families=previous_day_repeat_families,
+                        recent_family_block_families=set(),
+                        family_extractor=extract_meal_repeat_families,
+                        keywords=keywords,
+                        disallowed_keywords=disallowed_keywords,
+                        fallback_policy=fallback_policy,
+                        seed_key=f"{target_date_str}:meal",
+                        weather_rules=weather_rules,
+                        weather_tags=weather_tags,
+                        warn_bucket=warning_items,
+                        constraint_notes=missing_data_notes,
+                        prefer_lighter=transition_plan.prefer_lighter,
+                        light_fallback_items=light_fallback_items,
+                        heavy_light_classification=heavy_light_classification,
+                    )
+        else:
+            if weekly_chaach_sabzi_due and weekly_chaach_sabzi_item is not None:
+                selected_meal = weekly_chaach_sabzi_item
+                missing_data_notes.append(WEEKLY_CHAACH_SABZI_NOTE)
+            else:
                 selected_meal = choose_item(
                     items=meal_choice_items,
                     ekadashi=ekadashi,
@@ -3945,27 +4019,6 @@ def main() -> int:
                     light_fallback_items=light_fallback_items,
                     heavy_light_classification=heavy_light_classification,
                 )
-        else:
-            selected_meal = choose_item(
-                items=meal_choice_items,
-                ekadashi=ekadashi,
-                cycle_block_set=meal_cycle_block_set,
-                recent_block_set=meal_recent,
-                consecutive_day_block_families=previous_day_repeat_families,
-                recent_family_block_families=set(),
-                family_extractor=extract_meal_repeat_families,
-                keywords=keywords,
-                disallowed_keywords=disallowed_keywords,
-                fallback_policy=fallback_policy,
-                seed_key=f"{target_date_str}:meal",
-                weather_rules=weather_rules,
-                weather_tags=weather_tags,
-                warn_bucket=warning_items,
-                constraint_notes=missing_data_notes,
-                prefer_lighter=transition_plan.prefer_lighter,
-                light_fallback_items=light_fallback_items,
-                heavy_light_classification=heavy_light_classification,
-            )
 
         if is_heavy_item(selected_breakfast, weather_tags, heavy_light_classification) and is_heavy_item(
             selected_meal, weather_tags, heavy_light_classification

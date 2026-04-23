@@ -446,7 +446,7 @@ class VarietyCycleRuleTests(unittest.TestCase):
         self.assertEqual(generate_menu.collect_vasant_prohibited_warnings(lines), ["फल सुबह 6 से 10 के बीच"])
 
     def test_exclude_meals_incompatible_with_pazhaya_sadam(self) -> None:
-        meals = ["छाछ की सब्ज़ी चावल के साथ", "मूंग दाल और चावल"]
+        meals = ["छाछ की सब्ज़ी चावल के साथ", "छाछ की सब्ज़ी और शालि चावल", "मूंग दाल और चावल"]
         filtered = generate_menu.exclude_meals_incompatible_with_breakfast(
             "पझैया सादम (Pazhaya Sadam): बचे हुए चावल लें या फिर 1 कटोरी कच्चे चावल अच्छी तरह धोकर सादा चावल पकाएँ।",
             meals,
@@ -888,6 +888,72 @@ class WeeklyPazhayaSadamRuleTests(unittest.TestCase):
     def test_should_not_force_required_window_pazhaya_sadam_outside_window(self) -> None:
         self.assertFalse(generate_menu.should_force_required_window_pazhaya_sadam([], date(2026, 4, 7)))
         self.assertFalse(generate_menu.should_force_required_window_pazhaya_sadam([], date(2026, 4, 13)))
+
+
+class WeeklyChaachSabziRuleTests(unittest.TestCase):
+    def test_is_chaach_sabzi_rice_item_requires_both_chaach_sabzi_and_rice(self) -> None:
+        self.assertTrue(generate_menu.is_chaach_sabzi_rice_item("छाछ की सब्ज़ी चावल के साथ"))
+        self.assertTrue(generate_menu.is_chaach_sabzi_rice_item("छाछ की सब्ज़ी और शालि चावल"))
+        self.assertFalse(generate_menu.is_chaach_sabzi_rice_item("छाछ त्रिकटु के साथ"))
+
+    def test_should_force_weekly_chaach_sabzi_when_missing_in_last_six_days(self) -> None:
+        history = [
+            {
+                "date": "2026-04-10",
+                "breakfast": "उपमा",
+                "meal": "मूंग दाल और चावल",
+                "ritu_key": "vasant",
+            },
+            {
+                "date": "2026-04-11",
+                "breakfast": "पोहा",
+                "meal": "जौ (Barley) (केवल पुराना) की रोटी और लौकी की सब्ज़ी",
+                "ritu_key": "vasant",
+            },
+            {
+                "date": "2026-04-12",
+                "breakfast": "इडली",
+                "meal": "ज्वार (Sorghum) (केवल पुराना) की रोटी और परवल की सब्ज़ी",
+                "ritu_key": "vasant",
+            },
+            {
+                "date": "2026-04-13",
+                "breakfast": "डोसा",
+                "meal": "शालि चावल, मसूर दाल, लौकी की सब्ज़ी",
+                "ritu_key": "grishm",
+            },
+            {
+                "date": "2026-04-14",
+                "breakfast": "दलिया",
+                "meal": "पुराना गेहूं की रोटी, तोरई, अरहर दाल",
+                "ritu_key": "grishm",
+            },
+            {
+                "date": "2026-04-15",
+                "breakfast": "चीला",
+                "meal": "जौ की रोटी, लौकी की सब्ज़ी, मूँग दाल धुली",
+                "ritu_key": "grishm",
+            },
+        ]
+
+        self.assertTrue(generate_menu.should_force_weekly_chaach_sabzi(history, date(2026, 4, 16), "vasant"))
+        self.assertTrue(generate_menu.should_force_weekly_chaach_sabzi(history, date(2026, 5, 20), "grishm"))
+
+    def test_should_not_force_weekly_chaach_sabzi_when_recently_used_as_main_or_second_meal(self) -> None:
+        history = [
+            {
+                "date": "2026-04-15",
+                "breakfast": "उपमा",
+                "meal": "मूंग दाल और चावल",
+                "second_meal": "छाछ की सब्ज़ी चावल के साथ",
+                "ritu_key": "vasant",
+            }
+        ]
+
+        self.assertFalse(generate_menu.should_force_weekly_chaach_sabzi(history, date(2026, 4, 20), "vasant"))
+
+    def test_should_not_force_weekly_chaach_sabzi_outside_vasant_grishm(self) -> None:
+        self.assertFalse(generate_menu.should_force_weekly_chaach_sabzi([], date(2026, 7, 1), "varsha"))
 
 
 class MangorePrepInstructionTests(unittest.TestCase):
