@@ -1001,7 +1001,7 @@ class WeeklyChaachSabziRuleTests(unittest.TestCase):
 
 class FortnightlyKadhiChawalRuleTests(unittest.TestCase):
     def test_is_kadhi_chawal_item_requires_kadhi_and_rice(self) -> None:
-        self.assertTrue(generate_menu.is_kadhi_chawal_item("कढ़ी और चावल"))
+        self.assertTrue(generate_menu.is_kadhi_chawal_item("कढ़ी और बासमती चावल"))
         self.assertTrue(generate_menu.is_kadhi_chawal_item("कढ़ी और शालि चावल"))
         self.assertFalse(generate_menu.is_kadhi_chawal_item("कढ़ी और ज्वार की रोटी"))
 
