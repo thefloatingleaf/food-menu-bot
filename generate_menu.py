@@ -40,6 +40,7 @@ PANCHANG_FILE = BASE_DIR / "panchang_2026_27.json"
 FESTIVALS_FILE = BASE_DIR / "festivals_2026_27.json"
 CONFIG_FILE = BASE_DIR / "config.json"
 HISTORY_FILE = BASE_DIR / "history.json"
+PUBLISHED_ARCHIVE_FILE = BASE_DIR / "published_menu_archive.json"
 OUTPUT_FILE = BASE_DIR / "daily_menu.txt"
 WEATHER_TAGS_FILE = BASE_DIR / "menu_weather_tags.json"
 MANUAL_WEATHER_FILE = BASE_DIR / "manual_weather_override.json"
@@ -980,6 +981,136 @@ def write_json(path: Path, value: Any) -> None:
     with path.open("w", encoding="utf-8") as f:
         json.dump(value, f, ensure_ascii=False, indent=2)
         f.write("\n")
+
+
+def utc_now_iso() -> str:
+    return datetime.now(ZoneInfo("UTC")).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+
+
+def normalize_archive_history(raw: Any) -> list[dict[str, Any]]:
+    if not isinstance(raw, list):
+        return []
+
+    cleaned: list[dict[str, Any]] = []
+    for row in raw:
+        if not isinstance(row, dict):
+            continue
+        date_val = row.get("date")
+        archive_source = row.get("archive_source")
+        if not isinstance(date_val, str) or not date_val.strip():
+            continue
+        if not isinstance(archive_source, str) or not archive_source.strip():
+            continue
+        cleaned_row = {"date": date_val.strip(), "archive_source": archive_source.strip()}
+        for key in [
+            "captured_at",
+            "breakfast",
+            "meal",
+            "second_meal",
+            "fruit",
+            "ritu_key",
+            "next_day_breakfast_lock",
+            "next_day_requires_rice_prep",
+            "output_text",
+        ]:
+            value = row.get(key)
+            if isinstance(value, str) and value.strip():
+                cleaned_row[key] = value.strip()
+            elif isinstance(value, bool):
+                cleaned_row[key] = value
+        cleaned.append(cleaned_row)
+    cleaned.sort(key=lambda row: row["date"])
+    return cleaned
+
+
+def build_published_archive_entry(
+    target_date: str,
+    archive_source: str,
+    history_row: dict[str, Any] | None,
+    output_text: str | None,
+) -> dict[str, Any]:
+    entry: dict[str, Any] = {
+        "date": target_date,
+        "archive_source": archive_source,
+        "captured_at": utc_now_iso(),
+    }
+    if history_row:
+        for key in [
+            "breakfast",
+            "meal",
+            "second_meal",
+            "fruit",
+            "ritu_key",
+            "next_day_breakfast_lock",
+            "next_day_requires_rice_prep",
+        ]:
+            value = history_row.get(key)
+            if isinstance(value, str) and value.strip():
+                entry[key] = value.strip()
+            elif isinstance(value, bool):
+                entry[key] = value
+    if isinstance(output_text, str) and output_text.strip():
+        entry["output_text"] = output_text.strip()
+    return entry
+
+
+def bootstrap_published_archive_entries(
+    history: list[dict[str, Any]],
+    published_target_date: str,
+) -> list[dict[str, Any]]:
+    try:
+        ceiling_date = datetime.strptime(published_target_date, "%Y-%m-%d").date()
+    except ValueError:
+        return []
+
+    entries: list[dict[str, Any]] = []
+    for row in history:
+        try:
+            row_date = datetime.strptime(str(row.get("date", "")), "%Y-%m-%d").date()
+        except ValueError:
+            continue
+        if row_date > ceiling_date:
+            continue
+        entries.append(
+            build_published_archive_entry(
+                row_date.isoformat(),
+                "history_backfill",
+                row,
+                None,
+            )
+        )
+    entries.sort(key=lambda row: row["date"])
+    return entries
+
+
+def upsert_published_archive_entry(
+    entries: list[dict[str, Any]],
+    entry: dict[str, Any],
+) -> list[dict[str, Any]]:
+    updated = [row for row in entries if row.get("date") != entry.get("date")]
+    updated.append(entry)
+    updated.sort(key=lambda row: row["date"])
+    return updated
+
+
+def persist_published_archive(
+    history: list[dict[str, Any]],
+    target_date: str,
+    output_text: str,
+    history_row: dict[str, Any] | None,
+) -> None:
+    if PUBLISHED_ARCHIVE_FILE.exists():
+        existing_entries = normalize_archive_history(load_json(PUBLISHED_ARCHIVE_FILE))
+    else:
+        existing_entries = bootstrap_published_archive_entries(history, target_date)
+
+    current_entry = build_published_archive_entry(
+        target_date=target_date,
+        archive_source="publish_run",
+        history_row=history_row,
+        output_text=output_text,
+    )
+    write_json(PUBLISHED_ARCHIVE_FILE, upsert_published_archive_entry(existing_entries, current_entry))
 
 
 def weighted_deterministic_choice(weighted_items: list[tuple[str, int]], seed_key: str) -> str:
@@ -3555,6 +3686,7 @@ def main() -> int:
             lines.append("*वार्षिक स्मरण (1 जनवरी):* " + NEW_YEAR_KANJI_NOTE)
 
         output_text = build_output_text(lines)
+        persist_published_archive(history, target_date_str, output_text, None)
         with OUTPUT_FILE.open("w", encoding="utf-8") as f:
             f.write(output_text + "\n")
 
@@ -4296,6 +4428,8 @@ def main() -> int:
         lines.append("*वार्षिक स्मरण (1 जनवरी):* " + NEW_YEAR_KANJI_NOTE)
 
     output_text = build_output_text(lines)
+    current_history_row = get_history_row(new_history, target_date_str)
+    persist_published_archive(new_history, target_date_str, output_text, current_history_row)
 
     with OUTPUT_FILE.open("w", encoding="utf-8") as f:
         f.write(output_text + "\n")

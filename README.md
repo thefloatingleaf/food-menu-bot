@@ -36,6 +36,7 @@ Expected result: lint and Vitest checks pass for the VPK module.
 
 The generator always identifies tomorrow in the configured timezone and builds the entire menu for that next date. It never generates today's menu.
 The script also verifies that `daily_menu.txt` and `history.json` were both updated for that exact next date, so stale output fails fast.
+Each publish run also maintains `published_menu_archive.json`, which is the inspectable ledger for what was published by date.
 
 ## Menu generator tests
 

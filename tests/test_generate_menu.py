@@ -124,6 +124,49 @@ class VarietyCycleRuleTests(unittest.TestCase):
 
         self.assertEqual(normalized[0]["second_meal"], "भिंडी और रोटी")
 
+    def test_bootstrap_published_archive_entries_filters_future_rows(self) -> None:
+        history = [
+            {
+                "date": "2026-04-20",
+                "breakfast": "उपमा",
+                "meal": "दाल और चावल",
+                "ritu_key": "vasant",
+            },
+            {
+                "date": "2030-01-01",
+                "breakfast": "पोहा",
+                "meal": "लौकी",
+                "ritu_key": "vasant",
+            },
+        ]
+
+        entries = generate_menu.bootstrap_published_archive_entries(history, "2026-04-23")
+
+        self.assertEqual(len(entries), 1)
+        self.assertEqual(entries[0]["date"], "2026-04-20")
+        self.assertEqual(entries[0]["archive_source"], "history_backfill")
+
+    def test_upsert_published_archive_entry_replaces_same_date(self) -> None:
+        original = [
+            {
+                "date": "2026-04-22",
+                "archive_source": "history_backfill",
+                "meal": "दाल और चावल",
+            }
+        ]
+        replacement = {
+            "date": "2026-04-22",
+            "archive_source": "publish_run",
+            "meal": "छाछ की सब्ज़ी चावल के साथ",
+            "output_text": "*22-Apr-2026 तिथि के लिए भोजन:*",
+        }
+
+        updated = generate_menu.upsert_published_archive_entry(original, replacement)
+
+        self.assertEqual(len(updated), 1)
+        self.assertEqual(updated[0]["archive_source"], "publish_run")
+        self.assertEqual(updated[0]["meal"], "छाछ की सब्ज़ी चावल के साथ")
+
     def test_get_variety_cycle_used_items_reads_same_ritu_only(self) -> None:
         history = [
             {
