@@ -411,9 +411,10 @@ WEEKLY_BREAKFAST_FAMILY_LIMITS = {"चीला"}
 WEEKLY_BREAKFAST_FAMILY_REPEAT_NOTE = (
     "[साप्ताहिक नाश्ता नियम] किसी भी प्रकार का चीला/चिल्ला सप्ताह में एक बार से अधिक नहीं दोहराया गया"
 )
-PAZHAYA_SADAM_INCOMPATIBLE_MEALS = {"छाछ की सब्ज़ी चावल के साथ", "छाछ की सब्ज़ी और शालि चावल"}
-PAZHAYA_SADAM_INCOMPATIBLE_MEAL_NOTE = (
-    "[नियम] पझैया सादम के साथ छाछ की सब्ज़ी का चावल-वाला भोजन नहीं रखा गया"
+FERMENTED_RICE_BREAKFAST_INCOMPATIBLE_LABELS = ("पझैया सादम", "पखाला भात")
+CHAACH_SABZI_MEAL_TOKEN = "छाछ की सब्ज़ी"
+FERMENTED_RICE_BREAKFAST_INCOMPATIBLE_MEAL_NOTE = (
+    "[नियम] पझैया सादम/पखाला भात के साथ छाछ की सब्ज़ी नहीं रखी गई"
 )
 PAZHAYA_SADAM_REQUIRED_WINDOWS = [
     (date(2026, 4, 8), date(2026, 4, 12)),
@@ -2107,6 +2108,11 @@ def is_pazhaya_sadam_item(item: str) -> bool:
     return WEEKLY_PAZHAYA_SADAM_SHORT_LABEL in format_overnight_breakfast_label(item)
 
 
+def is_fermented_rice_breakfast_item(item: str) -> bool:
+    label = format_overnight_breakfast_label(item)
+    return any(token in label for token in FERMENTED_RICE_BREAKFAST_INCOMPATIBLE_LABELS)
+
+
 def find_pazhaya_sadam_item(items: list[str]) -> str | None:
     for item in items:
         if is_pazhaya_sadam_item(item):
@@ -2170,6 +2176,10 @@ def should_force_required_window_pazhaya_sadam(
 
 def is_chaach_sabzi_rice_item(item: str) -> bool:
     return "छाछ की सब्ज़ी" in item and is_rice_item(item)
+
+
+def is_chaach_sabzi_meal(item: str) -> bool:
+    return CHAACH_SABZI_MEAL_TOKEN in item
 
 
 def find_chaach_sabzi_rice_item(items: list[str]) -> str | None:
@@ -2258,10 +2268,9 @@ def requires_mangore_prep(*items: str) -> bool:
 
 
 def exclude_meals_incompatible_with_breakfast(breakfast_item: str, meals: list[str]) -> list[str]:
-    if not is_pazhaya_sadam_item(breakfast_item):
+    if not is_fermented_rice_breakfast_item(breakfast_item):
         return meals[:]
-    filtered = [meal for meal in meals if meal not in PAZHAYA_SADAM_INCOMPATIBLE_MEALS]
-    return filtered if filtered else meals[:]
+    return [meal for meal in meals if not is_chaach_sabzi_meal(meal)]
 
 
 def is_rice_item(item: str) -> bool:
@@ -4069,11 +4078,11 @@ def main() -> int:
         weekly_chaach_sabzi_item = find_chaach_sabzi_rice_item(meal_choice_items)
         fortnightly_kadhi_chawal_due = should_force_fortnightly_kadhi_chawal(history, target_date, ritu_key)
         fortnightly_kadhi_chawal_item = find_kadhi_chawal_item(meal_choice_items)
-        if is_pazhaya_sadam_item(selected_breakfast) and any(
-            meal in PAZHAYA_SADAM_INCOMPATIBLE_MEALS for meal in original_meal_choice_items
+        if is_fermented_rice_breakfast_item(selected_breakfast) and any(
+            is_chaach_sabzi_meal(meal) for meal in original_meal_choice_items
         ):
-            if PAZHAYA_SADAM_INCOMPATIBLE_MEAL_NOTE not in missing_data_notes:
-                missing_data_notes.append(PAZHAYA_SADAM_INCOMPATIBLE_MEAL_NOTE)
+            if FERMENTED_RICE_BREAKFAST_INCOMPATIBLE_MEAL_NOTE not in missing_data_notes:
+                missing_data_notes.append(FERMENTED_RICE_BREAKFAST_INCOMPATIBLE_MEAL_NOTE)
         if not shringdhara_info.active and not next_day.shringdhara_info.active:
             if next_day_override:
                 override_conflicts = get_item_repeat_family_conflicts(

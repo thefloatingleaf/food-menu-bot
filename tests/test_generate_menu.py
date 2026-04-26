@@ -496,6 +496,20 @@ class VarietyCycleRuleTests(unittest.TestCase):
         )
         self.assertEqual(filtered, ["मूंग दाल और चावल"])
 
+    def test_exclude_meals_incompatible_with_pakhala_bhata(self) -> None:
+        meals = ["छाछ की सब्ज़ी चावल के साथ", "छाछ की सब्ज़ी और साठी चावल", "मूंग दाल और चावल"]
+        filtered = generate_menu.exclude_meals_incompatible_with_breakfast(
+            "पखाला भात (Pakhala Bhata): रात में 1 कटोरी कच्चे चावल धोकर सादा चावल पकाएँ।",
+            meals,
+        )
+        self.assertEqual(filtered, ["मूंग दाल और चावल"])
+
+    def test_chaach_sabzi_meal_detection_matches_all_rice_variants(self) -> None:
+        self.assertTrue(generate_menu.is_chaach_sabzi_meal("छाछ की सब्ज़ी चावल के साथ"))
+        self.assertTrue(generate_menu.is_chaach_sabzi_meal("छाछ की सब्ज़ी और शालि चावल"))
+        self.assertTrue(generate_menu.is_chaach_sabzi_meal("छाछ की सब्ज़ी और साठी चावल"))
+        self.assertFalse(generate_menu.is_chaach_sabzi_meal("मसाला छाछ"))
+
 
 class DateResolutionTests(unittest.TestCase):
     def test_resolve_date_rejects_explicit_date_override(self) -> None:
