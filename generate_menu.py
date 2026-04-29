@@ -441,6 +441,13 @@ FORTNIGHTLY_KADHI_CHAWAL_NOTE = (
 FORTNIGHTLY_KADHI_CHAWAL_EKADASHI_NOTE = (
     "[एकादशी नियम] कढ़ी-चावल का 15-दिन नियम आज लागू नहीं किया गया क्योंकि चावल एकादशी में वर्जित है"
 )
+VASANT_RAGI_ROTI_ONLY_WINDOWS = [
+    (date(2026, 4, 30), date(2026, 5, 5)),
+]
+VASANT_RAGI_ROTI_ONLY_OPTION = "रागी (Finger Millet) (केवल पुराना)"
+VASANT_RAGI_ROTI_ONLY_NOTE = (
+    "[विशेष तिथि नियम] 30-Apr-2026 से 05-May-2026 तक वसंत के सभी रोटी-आधारित भोजन में केवल रागी रोटी रखी गई"
+)
 RICE_ITEM_TOKENS = ("चावल", "राइस", "भात")
 
 VARSHA_COMMON_REQUIRED_SIDES = [
@@ -2480,6 +2487,29 @@ def apply_vasant_roti_grain_rotation_rule(
     return filtered if filtered else pool[:], False
 
 
+def is_vasant_ragi_roti_only_window(target_date: date, ritu_key: str) -> bool:
+    if normalize_ritu_key(ritu_key) != "vasant":
+        return False
+    return any(start_date <= target_date <= end_date for start_date, end_date in VASANT_RAGI_ROTI_ONLY_WINDOWS)
+
+
+def apply_vasant_ragi_roti_only_window_rule(
+    pool: list[str],
+    target_date: date,
+    ritu_key: str,
+) -> tuple[list[str], bool]:
+    if not is_vasant_ragi_roti_only_window(target_date, ritu_key):
+        return pool[:], False
+
+    filtered = [
+        item
+        for item in pool
+        if (grain_option := extract_vasant_roti_grain_option(item, "vasant")) is None
+        or grain_option == VASANT_RAGI_ROTI_ONLY_OPTION
+    ]
+    return (filtered if filtered else pool[:], filtered != pool)
+
+
 def parse_weather_thresholds(config: dict[str, Any]) -> dict[str, float]:
     raw = config.get("weather_thresholds", {})
     if not isinstance(raw, dict):
@@ -3763,11 +3793,17 @@ def main() -> int:
     )
     if vasant_dal_cycle_reset:
         missing_data_notes.append(VASANT_DAL_ROTATION_NOTE)
-    meal_choice_items, vasant_roti_grain_cycle_reset = apply_vasant_roti_grain_rotation_rule(
-        meal_choice_items, vasant_roti_grain_cycle_used_options, ritu_key
+    meal_choice_items, vasant_ragi_roti_only_applied = apply_vasant_ragi_roti_only_window_rule(
+        meal_choice_items, target_date, ritu_key
     )
-    if vasant_roti_grain_cycle_reset:
-        missing_data_notes.append(VASANT_ROTI_GRAIN_ROTATION_NOTE)
+    if vasant_ragi_roti_only_applied:
+        missing_data_notes.append(VASANT_RAGI_ROTI_ONLY_NOTE)
+    else:
+        meal_choice_items, vasant_roti_grain_cycle_reset = apply_vasant_roti_grain_rotation_rule(
+            meal_choice_items, vasant_roti_grain_cycle_used_options, ritu_key
+        )
+        if vasant_roti_grain_cycle_reset:
+            missing_data_notes.append(VASANT_ROTI_GRAIN_ROTATION_NOTE)
 
     warning_items: set[str] = set()
 

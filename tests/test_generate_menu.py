@@ -692,6 +692,33 @@ class VasantRotiRotationTests(unittest.TestCase):
         )
         self.assertTrue(reset)
 
+    def test_is_vasant_ragi_roti_only_window_matches_requested_dates(self) -> None:
+        self.assertTrue(generate_menu.is_vasant_ragi_roti_only_window(date(2026, 4, 30), "vasant"))
+        self.assertTrue(generate_menu.is_vasant_ragi_roti_only_window(date(2026, 5, 5), "vasant"))
+        self.assertFalse(generate_menu.is_vasant_ragi_roti_only_window(date(2026, 4, 29), "vasant"))
+        self.assertFalse(generate_menu.is_vasant_ragi_roti_only_window(date(2026, 5, 6), "vasant"))
+        self.assertFalse(generate_menu.is_vasant_ragi_roti_only_window(date(2026, 5, 1), "grishm"))
+
+    def test_apply_vasant_ragi_roti_only_window_rule_keeps_only_ragi_among_roti_items(self) -> None:
+        filtered, applied = generate_menu.apply_vasant_ragi_roti_only_window_rule(
+            [
+                "जौ (Barley) (केवल पुराना) की रोटी और लौकी की सब्ज़ी",
+                "रागी (Finger Millet) (केवल पुराना) की रोटी और परवल की सब्ज़ी",
+                "मूंग दाल और चावल",
+            ],
+            date(2026, 5, 1),
+            "vasant",
+        )
+
+        self.assertEqual(
+            filtered,
+            [
+                "रागी (Finger Millet) (केवल पुराना) की रोटी और परवल की सब्ज़ी",
+                "मूंग दाल और चावल",
+            ],
+        )
+        self.assertTrue(applied)
+
     def test_get_vasant_roti_grain_cycle_used_options_reads_history_by_option(self) -> None:
         history = [
             {
