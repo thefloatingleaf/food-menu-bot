@@ -347,6 +347,25 @@ VASANT_ROTI_GRAIN_OPTION_PREFIXES = [
     ("गेहूँ (Wheat) (केवल पुराना)", "गेहूँ (Wheat) (केवल पुराना) की रोटी"),
     ("चने और जौ (Barley) की रोटी (मिस्सी रोटी)", "चने और जौ (Barley) की रोटी (मिस्सी रोटी)"),
 ]
+VASANT_ROTI_GRAIN_PREFERENCE_WEIGHTS = {
+    "जौ (Barley) (केवल पुराना)": 30,
+    "ज्वार (Sorghum) (केवल पुराना)": 25,
+    "रागी (Finger Millet) (केवल पुराना)": 20,
+    "चने और जौ (Barley) की रोटी (मिस्सी रोटी)": 20,
+    "गेहूँ (Wheat) (केवल पुराना)": 5,
+}
+GRISHM_ROTI_GRAIN_PREFIXES = [
+    ("ज्वार", "ज्वार की रोटी"),
+    ("जौ", "जौ की रोटी"),
+    ("झंगोरा", "झंगोरा आटा की रोटी"),
+    ("पुराना गेहूं", "पुराना गेहूं की रोटी"),
+]
+GRISHM_ROTI_GRAIN_PREFERENCE_WEIGHTS = {
+    "ज्वार": 35,
+    "जौ": 30,
+    "झंगोरा": 25,
+    "पुराना गेहूं": 10,
+}
 VASANT_DAL_OPTION_ALIASES = {
     "मूँग": (
         "मूंग दाल और चावल",
@@ -2293,6 +2312,7 @@ def is_rice_item(item: str) -> bool:
 def select_second_meal_for_window(
     selected_meal: str,
     meal_choice_items: list[str],
+    ritu_key: str,
     ekadashi: EkadashiInfo,
     meal_cycle_block_set: set[str],
     meal_recent: set[str],
@@ -2334,6 +2354,7 @@ def select_second_meal_for_window(
         prefer_lighter=transition_prefer_lighter,
         light_fallback_items=light_fallback_items,
         heavy_light_classification=heavy_light_classification,
+        item_weight_getter=lambda item: get_ritu_roti_grain_preference_weight(item, ritu_key),
     )
 
 
@@ -2379,6 +2400,38 @@ def extract_vasant_roti_grain_option(item: str, ritu_key: str) -> str | None:
         if normalized.startswith(option_prefix):
             return option_label
     return None
+
+
+def extract_grishm_roti_grain_option(item: str, ritu_key: str) -> str | None:
+    if normalize_ritu_key(ritu_key) != "grishm":
+        return None
+    normalized = item.strip()
+    if "रोटी" not in normalized or is_rice_item(normalized):
+        return None
+    for option_label, option_prefix in GRISHM_ROTI_GRAIN_PREFIXES:
+        if normalized.startswith(option_prefix):
+            return option_label
+    return None
+
+
+def get_ritu_roti_grain_preference_weight(item: str, ritu_key: str) -> int:
+    normalized_ritu_key = normalize_ritu_key(ritu_key)
+    if normalized_ritu_key == "vasant":
+        grain_option = extract_vasant_roti_grain_option(item, ritu_key)
+        if grain_option is not None:
+            return VASANT_ROTI_GRAIN_PREFERENCE_WEIGHTS.get(grain_option, 1)
+    if normalized_ritu_key == "grishm":
+        grain_option = extract_grishm_roti_grain_option(item, ritu_key)
+        if grain_option is not None:
+            return GRISHM_ROTI_GRAIN_PREFERENCE_WEIGHTS.get(grain_option, 1)
+    return 1
+
+
+def choose_weighted_meal_item(pool: list[str], seed_key: str, ritu_key: str) -> str:
+    weighted_pool = [(item, get_ritu_roti_grain_preference_weight(item, ritu_key)) for item in pool]
+    if all(weight == 1 for _item, weight in weighted_pool):
+        return deterministic_choice(pool, seed_key)
+    return weighted_deterministic_choice(weighted_pool, seed_key)
 
 
 def extract_vasant_dal_option(item: str, ritu_key: str) -> str | None:
@@ -3184,6 +3237,7 @@ def choose_item(
     light_fallback_items: list[str],
     max_lightness_score: int | None = None,
     heavy_light_classification: dict[str, str] | None = None,
+    item_weight_getter: Callable[[str], int] | None = None,
 ) -> str:
     full_pool = items[:] if items else light_fallback_items[:]
 
@@ -3213,7 +3267,10 @@ def choose_item(
         max_lightness_score=max_lightness_score,
         heavy_light_classification=heavy_light_classification,
     )
-    return deterministic_choice(pool, seed_key)
+    if item_weight_getter is None:
+        return deterministic_choice(pool, seed_key)
+    weighted_pool = [(item, max(1, int(item_weight_getter(item)))) for item in pool]
+    return weighted_deterministic_choice(weighted_pool, seed_key)
 
 
 def update_history(
@@ -3804,14 +3861,9 @@ def main() -> int:
     )
     if vasant_ragi_roti_only_applied:
         missing_data_notes.append(VASANT_RAGI_ROTI_ONLY_NOTE)
-    else:
-        meal_choice_items, vasant_roti_grain_cycle_reset = apply_vasant_roti_grain_rotation_rule(
-            meal_choice_items, vasant_roti_grain_cycle_used_options, ritu_key
-        )
-        if vasant_roti_grain_cycle_reset:
-            missing_data_notes.append(VASANT_ROTI_GRAIN_ROTATION_NOTE)
 
     warning_items: set[str] = set()
+    meal_item_weight_getter = lambda item: get_ritu_roti_grain_preference_weight(item, ritu_key)
 
     selected_observance_item: str | None = None
     selected_second_meal: str | None = None
@@ -3906,6 +3958,7 @@ def main() -> int:
                         prefer_lighter=transition_plan.prefer_lighter,
                         light_fallback_items=light_fallback_items,
                         heavy_light_classification=heavy_light_classification,
+                        item_weight_getter=meal_item_weight_getter,
                     )
         if breakfast_item_override:
             if previous_day_breakfast_lock:
@@ -3973,6 +4026,7 @@ def main() -> int:
                         prefer_lighter=transition_plan.prefer_lighter,
                         light_fallback_items=light_fallback_items,
                         heavy_light_classification=heavy_light_classification,
+                        item_weight_getter=meal_item_weight_getter,
                     )
                 else:
                     selected_breakfast = breakfast_item_override
@@ -4000,6 +4054,7 @@ def main() -> int:
                     prefer_lighter=transition_plan.prefer_lighter,
                     light_fallback_items=light_fallback_items,
                     heavy_light_classification=heavy_light_classification,
+                    item_weight_getter=meal_item_weight_getter,
                 )
         else:
             if not previous_day_breakfast_lock:
@@ -4194,7 +4249,9 @@ def main() -> int:
                     prefer_lighter=transition_plan.prefer_lighter,
                     heavy_light_classification=heavy_light_classification,
                 )
-                selected_meal = deterministic_choice(selected_meal_pool, f"{target_date_str}:meal:rice-support")
+                selected_meal = choose_weighted_meal_item(
+                    selected_meal_pool, f"{target_date_str}:meal:rice-support", ritu_key
+                )
             else:
                 if next_day_override and is_overnight_breakfast(next_day_override):
                     missing_data_notes.append(
@@ -4273,6 +4330,7 @@ def main() -> int:
                     prefer_lighter=transition_plan.prefer_lighter,
                     light_fallback_items=light_fallback_items,
                     heavy_light_classification=heavy_light_classification,
+                    item_weight_getter=meal_item_weight_getter,
                 )
             elif fortnightly_kadhi_chawal_due and fortnightly_kadhi_chawal_item is not None:
                 selected_meal = fortnightly_kadhi_chawal_item
@@ -4350,8 +4408,8 @@ def main() -> int:
                         heavy_light_classification=heavy_light_classification,
                     )
                     if rice_light_pool:
-                        rebalanced_meal = deterministic_choice(
-                            rice_light_pool, f"{target_date_str}:meal:rice-support:light-balance"
+                        rebalanced_meal = choose_weighted_meal_item(
+                            rice_light_pool, f"{target_date_str}:meal:rice-support:light-balance", ritu_key
                         )
                         if not is_heavy_item(rebalanced_meal, weather_tags, heavy_light_classification):
                             selected_meal = rebalanced_meal
@@ -4376,6 +4434,7 @@ def main() -> int:
                         light_fallback_items=light_fallback_items,
                         max_lightness_score=0,
                         heavy_light_classification=heavy_light_classification,
+                        item_weight_getter=meal_item_weight_getter,
                     )
                     if not is_heavy_item(rebalanced_meal, weather_tags, heavy_light_classification):
                         selected_meal = rebalanced_meal
@@ -4440,6 +4499,7 @@ def main() -> int:
             selected_second_meal = select_second_meal_for_window(
                 selected_meal=selected_meal,
                 meal_choice_items=meal_choice_items,
+                ritu_key=ritu_key,
                 ekadashi=ekadashi,
                 meal_cycle_block_set=meal_cycle_block_set,
                 meal_recent=meal_recent,

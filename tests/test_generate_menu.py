@@ -578,6 +578,7 @@ class WeatherTagWarningTests(unittest.TestCase):
         second = generate_menu.select_second_meal_for_window(
             selected_meal="मूंग दाल और चावल",
             meal_choice_items=["मूंग दाल और चावल", "जौ (Barley) (केवल पुराना) की रोटी और लौकी की सब्ज़ी"],
+            ritu_key="vasant",
             ekadashi=generate_menu.EkadashiInfo(False, None, None),
             meal_cycle_block_set=set(),
             meal_recent=set(),
@@ -648,6 +649,56 @@ class VasantRotiRotationTests(unittest.TestCase):
         self.assertIsNone(
             generate_menu.extract_vasant_roti_grain_option("मूंग दाल और चावल", "vasant")
         )
+
+    def test_extract_grishm_roti_grain_option_identifies_allowed_option(self) -> None:
+        self.assertEqual(
+            generate_menu.extract_grishm_roti_grain_option(
+                "पुराना गेहूं की रोटी, लौकी और चना दाल",
+                "grishm",
+            ),
+            "पुराना गेहूं",
+        )
+
+    def test_get_ritu_roti_grain_preference_weight_keeps_wheat_lowest(self) -> None:
+        self.assertEqual(
+            generate_menu.get_ritu_roti_grain_preference_weight(
+                "गेहूँ (Wheat) (केवल पुराना) की रोटी और लौकी की सब्ज़ी",
+                "vasant",
+            ),
+            5,
+        )
+        self.assertEqual(
+            generate_menu.get_ritu_roti_grain_preference_weight(
+                "जौ (Barley) (केवल पुराना) की रोटी और लौकी की सब्ज़ी",
+                "vasant",
+            ),
+            30,
+        )
+        self.assertEqual(
+            generate_menu.get_ritu_roti_grain_preference_weight(
+                "पुराना गेहूं की रोटी, लौकी और चना दाल",
+                "grishm",
+            ),
+            10,
+        )
+        self.assertEqual(
+            generate_menu.get_ritu_roti_grain_preference_weight(
+                "ज्वार की रोटी, लौकी की सब्ज़ी, मसूर दाल",
+                "grishm",
+            ),
+            35,
+        )
+
+    def test_choose_weighted_meal_item_prefers_higher_weight_grain_over_many_seeds(self) -> None:
+        pool = [
+            "ज्वार की रोटी, लौकी की सब्ज़ी, मसूर दाल",
+            "पुराना गेहूं की रोटी, लौकी और चना दाल",
+        ]
+        counts = {item: 0 for item in pool}
+        for index in range(200):
+            selected = generate_menu.choose_weighted_meal_item(pool, f"seed-{index}", "grishm")
+            counts[selected] += 1
+        self.assertGreater(counts["ज्वार की रोटी, लौकी की सब्ज़ी, मसूर दाल"], counts["पुराना गेहूं की रोटी, लौकी और चना दाल"])
 
     def test_apply_vasant_roti_grain_rotation_rule_filters_used_grain_options(self) -> None:
         filtered, reset = generate_menu.apply_vasant_roti_grain_rotation_rule(
