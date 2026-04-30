@@ -25,8 +25,6 @@ on:
       - "manual_weather_override.json"
       - "menu_weather_tags.json"
       - "lunar_calendar_*.json"
-      - "menu_media_assets.json"
-      - "media/**"
       - "heavy_light_classification_food_items_revised_paratha_rule.csv"
       - "scripts/generate-daily-menu.sh"
       - "scripts/verify_daily_menu_freshness.py"
@@ -58,7 +56,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add daily_menu.txt daily_menu_payload.json history.json published_menu_archive.json
+          git add daily_menu.txt history.json published_menu_archive.json
           if git diff --cached --quiet; then
             echo "No changes to commit"
             exit 0

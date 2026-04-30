@@ -14,7 +14,7 @@ from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Any, Callable
 from urllib.error import URLError
-from urllib.parse import quote, urlencode
+from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
 try:
@@ -42,14 +42,11 @@ CONFIG_FILE = BASE_DIR / "config.json"
 HISTORY_FILE = BASE_DIR / "history.json"
 PUBLISHED_ARCHIVE_FILE = BASE_DIR / "published_menu_archive.json"
 OUTPUT_FILE = BASE_DIR / "daily_menu.txt"
-OUTPUT_PAYLOAD_FILE = BASE_DIR / "daily_menu_payload.json"
 WEATHER_TAGS_FILE = BASE_DIR / "menu_weather_tags.json"
 MANUAL_WEATHER_FILE = BASE_DIR / "manual_weather_override.json"
 HEAVY_LIGHT_CLASSIFICATION_FILE = BASE_DIR / "heavy_light_classification_food_items_revised_paratha_rule.csv"
 FRUIT_MONTHS_FILE = BASE_DIR / "fruit_months.json"
-MENU_MEDIA_ASSETS_FILE = BASE_DIR / "menu_media_assets.json"
 MENU_GENERATOR_NOW_DATE_ENV = "MENU_GENERATOR_NOW_DATE"
-GITHUB_RAW_BASE_URL = "https://raw.githubusercontent.com/thefloatingleaf/food-menu-bot/main"
 OUTPUT_DATE_HEADER_RE = re.compile(r"^\*(\d{2})-([A-Za-z]{3})-(\d{4}) तिथि के लिए भोजन:\*$")
 GREGORIAN_MONTH_ABBR_TO_NUMBER = {
     "Jan": 1,
@@ -162,13 +159,6 @@ class DayContext:
     breakfast_item_override: str | None
     meal_item_override: str | None
     second_meal_item_override: str | None
-
-
-@dataclass(frozen=True)
-class CompanionMedia:
-    label_hi: str
-    asset_path: str
-    url: str
 
 
 NAVRATRI_DAY_SPECIAL_NOTES = {
@@ -1012,134 +1002,6 @@ def utc_now_iso() -> str:
     return datetime.now(ZoneInfo("UTC")).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
 
-def normalize_companion_media_entries(raw: Any) -> list[dict[str, str]]:
-    if not isinstance(raw, list):
-        return []
-
-    cleaned: list[dict[str, str]] = []
-    for row in raw:
-        if not isinstance(row, dict):
-            continue
-        label_hi = row.get("label_hi")
-        asset_path = row.get("asset_path")
-        url = row.get("url")
-        if not all(isinstance(value, str) and value.strip() for value in [label_hi, asset_path, url]):
-            continue
-        cleaned.append(
-            {
-                "label_hi": label_hi.strip(),
-                "asset_path": asset_path.strip(),
-                "url": url.strip(),
-            }
-        )
-    return cleaned
-
-
-def normalize_menu_media_assets(raw: Any) -> list[dict[str, str]]:
-    if not isinstance(raw, list):
-        return []
-
-    cleaned: list[dict[str, str]] = []
-    for row in raw:
-        if not isinstance(row, dict):
-            continue
-        match_scope = row.get("match_scope")
-        match_text = row.get("match_text")
-        label_hi = row.get("label_hi")
-        asset_path = row.get("asset_path")
-        if match_scope not in {"breakfast", "meal", "second_meal", "any"}:
-            continue
-        if not all(isinstance(value, str) and value.strip() for value in [match_text, label_hi, asset_path]):
-            continue
-        asset_rel_path = asset_path.strip()
-        if not (BASE_DIR / asset_rel_path).exists():
-            continue
-        cleaned.append(
-            {
-                "match_scope": match_scope,
-                "match_text": match_text.strip(),
-                "label_hi": label_hi.strip(),
-                "asset_path": asset_rel_path,
-            }
-        )
-    return cleaned
-
-
-def load_menu_media_assets() -> list[dict[str, str]]:
-    if not MENU_MEDIA_ASSETS_FILE.exists():
-        return []
-    return normalize_menu_media_assets(load_json(MENU_MEDIA_ASSETS_FILE))
-
-
-def build_github_raw_url(relative_path: str) -> str:
-    cleaned = "/".join(part for part in relative_path.split("/") if part)
-    return f"{GITHUB_RAW_BASE_URL}/{quote(cleaned, safe='/')}"
-
-
-def select_companion_media(
-    media_assets: list[dict[str, str]],
-    selected_breakfast: str,
-    selected_meal: str,
-    selected_second_meal: str | None,
-) -> list[CompanionMedia]:
-    scope_values = {
-        "breakfast": selected_breakfast,
-        "meal": selected_meal,
-        "second_meal": selected_second_meal or "",
-        "any": " ".join(part for part in [selected_breakfast, selected_meal, selected_second_meal or ""] if part),
-    }
-    selected: list[CompanionMedia] = []
-    seen_asset_paths: set[str] = set()
-    for row in media_assets:
-        haystack = scope_values.get(row["match_scope"], "")
-        if row["match_text"] not in haystack:
-            continue
-        asset_path = row["asset_path"]
-        if asset_path in seen_asset_paths:
-            continue
-        seen_asset_paths.add(asset_path)
-        selected.append(
-            CompanionMedia(
-                label_hi=row["label_hi"],
-                asset_path=asset_path,
-                url=build_github_raw_url(asset_path),
-            )
-        )
-    return selected
-
-
-def build_companion_media_lines(companion_media: list[CompanionMedia]) -> list[str]:
-    return [f"*{item.label_hi}:* {item.url}" for item in companion_media]
-
-
-def build_daily_menu_payload(
-    target_date: str,
-    output_text: str,
-    companion_media: list[CompanionMedia],
-) -> dict[str, Any]:
-    return {
-        "date": target_date,
-        "captured_at": utc_now_iso(),
-        "output_text": output_text.strip(),
-        "media": [
-            {
-                "label_hi": item.label_hi,
-                "asset_path": item.asset_path,
-                "url": item.url,
-            }
-            for item in companion_media
-        ],
-    }
-
-
-def write_daily_menu_payload(
-    target_date: str,
-    output_text: str,
-    companion_media: list[CompanionMedia],
-) -> None:
-    write_json(OUTPUT_PAYLOAD_FILE, build_daily_menu_payload(target_date, output_text, companion_media))
-
-
 def normalize_archive_history(raw: Any) -> list[dict[str, Any]]:
     if not isinstance(raw, list):
         return []
@@ -1171,9 +1033,6 @@ def normalize_archive_history(raw: Any) -> list[dict[str, Any]]:
                 cleaned_row[key] = value.strip()
             elif isinstance(value, bool):
                 cleaned_row[key] = value
-        companion_media = normalize_companion_media_entries(row.get("companion_media"))
-        if companion_media:
-            cleaned_row["companion_media"] = companion_media
         cleaned.append(cleaned_row)
     cleaned.sort(key=lambda row: row["date"])
     return cleaned
@@ -1184,7 +1043,6 @@ def build_published_archive_entry(
     archive_source: str,
     history_row: dict[str, Any] | None,
     output_text: str | None,
-    companion_media: list[CompanionMedia] | None = None,
 ) -> dict[str, Any]:
     entry: dict[str, Any] = {
         "date": target_date,
@@ -1208,15 +1066,6 @@ def build_published_archive_entry(
                 entry[key] = value
     if isinstance(output_text, str) and output_text.strip():
         entry["output_text"] = output_text.strip()
-    if companion_media:
-        entry["companion_media"] = [
-            {
-                "label_hi": item.label_hi,
-                "asset_path": item.asset_path,
-                "url": item.url,
-            }
-            for item in companion_media
-        ]
     return entry
 
 
@@ -1264,7 +1113,6 @@ def persist_published_archive(
     target_date: str,
     output_text: str,
     history_row: dict[str, Any] | None,
-    companion_media: list[CompanionMedia] | None = None,
 ) -> None:
     if PUBLISHED_ARCHIVE_FILE.exists():
         existing_entries = normalize_archive_history(load_json(PUBLISHED_ARCHIVE_FILE))
@@ -1276,7 +1124,6 @@ def persist_published_archive(
         archive_source="publish_run",
         history_row=history_row,
         output_text=output_text,
-        companion_media=companion_media,
     )
     write_json(PUBLISHED_ARCHIVE_FILE, upsert_published_archive_entry(existing_entries, current_entry))
 
@@ -2253,6 +2100,12 @@ def build_next_day_overnight_prep_line(item: str) -> str:
         f"*रात की तैयारी ({format_overnight_breakfast_label(item)} के लिए):* "
         + OVERNIGHT_RICE_PREP_NOTE
     )
+
+
+def build_pakhala_serving_note(selected_breakfast: str) -> str | None:
+    if "पखाला भात" not in format_overnight_breakfast_label(selected_breakfast):
+        return None
+    return "*साथ में:* मोटा चौकोर कटा प्याज"
 
 
 def exclude_overnight_breakfasts(items: list[str]) -> list[str]:
@@ -3923,8 +3776,7 @@ def main() -> int:
             lines.append("*वार्षिक स्मरण (1 जनवरी):* " + NEW_YEAR_KANJI_NOTE)
 
         output_text = build_output_text(lines)
-        write_daily_menu_payload(target_date_str, output_text, [])
-        persist_published_archive(history, target_date_str, output_text, None, [])
+        persist_published_archive(history, target_date_str, output_text, None)
         with OUTPUT_FILE.open("w", encoding="utf-8") as f:
             f.write(output_text + "\n")
 
@@ -4672,6 +4524,9 @@ def main() -> int:
                 lines.append("*नाश्ता स्वाद निर्देश:* वसंत में इसे थोड़ा अधिक तीखा रखें।")
             elif ritu_key == "grishm":
                 lines.append("*नाश्ता स्वाद निर्देश:* ग्रीष्म में इसे सामान्य तीखापन रखें।")
+            pakhala_serving_note = build_pakhala_serving_note(selected_breakfast)
+            if pakhala_serving_note:
+                lines.append(pakhala_serving_note)
         if selected_second_meal is not None:
             lines.append(f"*आज का भोजन 1:* {format_meal_display(selected_meal)}")
             lines.append(f"*आज का भोजन 2:* {format_meal_display(selected_second_meal)}")
@@ -4682,14 +4537,6 @@ def main() -> int:
             lines.append("*फॉलोवर महोदय हेतु रात की तैयारी:* " + MANGORE_PREP_NOTE)
         if next_day_requires_rice_prep and next_day_breakfast_lock:
             lines.append(build_next_day_overnight_prep_line(next_day_breakfast_lock))
-
-    companion_media = select_companion_media(
-        load_menu_media_assets(),
-        selected_breakfast,
-        selected_meal,
-        selected_second_meal,
-    )
-    lines.extend(build_companion_media_lines(companion_media))
 
     if ekadashi.is_ekadashi and ekadashi.name_hi:
         lines.append(f"*एकादशी:* {ekadashi.name_hi}")
@@ -4735,8 +4582,7 @@ def main() -> int:
 
     output_text = build_output_text(lines)
     current_history_row = get_history_row(new_history, target_date_str)
-    write_daily_menu_payload(target_date_str, output_text, companion_media)
-    persist_published_archive(new_history, target_date_str, output_text, current_history_row, companion_media)
+    persist_published_archive(new_history, target_date_str, output_text, current_history_row)
 
     with OUTPUT_FILE.open("w", encoding="utf-8") as f:
         f.write(output_text + "\n")

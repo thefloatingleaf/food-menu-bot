@@ -37,7 +37,6 @@ Expected result: lint and Vitest checks pass for the VPK module.
 The generator always identifies tomorrow in the configured timezone and builds the entire menu for that next date. It never generates today's menu.
 The script also verifies that `daily_menu.txt` and `history.json` were both updated for that exact next date, so stale output fails fast.
 Each publish run also maintains `published_menu_archive.json`, which is the inspectable ledger for what was published by date.
-Each publish run also writes `daily_menu_payload.json`, which carries the same text plus any companion image URLs for the Shortcut.
 
 ## Menu generator tests
 
@@ -56,7 +55,7 @@ Expected result: three files are created in `test_outputs/menu_triggers/` for:
 - `pazhaya-sadam`
 - `pakhala-bhata`
 
-The script temporarily applies breakfast overrides, generates the requested target-date menus, saves the outputs, and then restores `config.json`, `history.json`, `daily_menu.txt`, and `daily_menu_payload.json`.
+The script temporarily applies breakfast overrides, generates the requested target-date menus, saves the outputs, and then restores `config.json`, `history.json`, and `daily_menu.txt`.
 It simulates the previous day internally so each generated file is still produced through the same tomorrow-only runtime path as production.
 
 ## Bootstrap weather tags (one-time)
@@ -80,7 +79,7 @@ python3 generate_menu.py --bootstrap-weather-tags
 - `*आज का भोजन 1:* <item>` and `*आज का भोजन 2:* <item>` (only for the temporary 08-Apr-2026 through 14-Apr-2026 dual-meal window)
 - `*आज का फल:* <item>` or `*आज का फल:* फल उपलब्ध नहीं है`
 - `*फॉलोवर महोदय हेतु रात की तैयारी:* <instruction>` (only when the generated next-day menu includes मंगौड़े)
-- `*साथ में चित्र:* <raw GitHub image URL>` (only when the selected menu has a companion image asset)
+- `*साथ में:* मोटा चौकोर कटा प्याज` (only when the selected breakfast is `पखाला भात`)
 - `*एकादशी:* <name_hi>` (only on Ekadashi/Gauna dates)
 - `*मौसम:* <details>` (only rainy/extreme days)
 - `*भोजन के साथ अनिवार्य:* ...` (only when ऋतु is वसंत)
@@ -105,8 +104,6 @@ python3 generate_menu.py --bootstrap-weather-tags
 - `menu_weather_tags.json`
 - `manual_weather_override.json`
 - `fruit_months.json`
-- `menu_media_assets.json`
-- `media/`
 - `lunar_calendar_2026_2027.json` (reference calendar: lunar months, sankranti, amavasya, purnima, ekadashi, partial daily tables)
 - `config.json`
 
@@ -322,5 +319,4 @@ If a date is missing in `panchang_2026_27.json`, script now auto-detects ऋत�
 ## iPhone Shortcuts
 
 Use `Get Contents of URL` with raw GitHub URL of `daily_menu.txt`, then send the fetched text through WhatsApp action.
-To send companion images too, fetch raw GitHub `daily_menu_payload.json` instead and, when its `media` array is non-empty, use the first `url` as the WhatsApp image attachment along with `output_text`.
 If WhatsApp sends the same date twice, first check whether the Shortcut ran before the latest `chore: update daily menu` commit was pushed.

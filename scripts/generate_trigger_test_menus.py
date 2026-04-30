@@ -19,7 +19,6 @@ import generate_menu
 CONFIG_FILE = BASE_DIR / "config.json"
 HISTORY_FILE = BASE_DIR / "history.json"
 OUTPUT_FILE = BASE_DIR / "daily_menu.txt"
-OUTPUT_PAYLOAD_FILE = BASE_DIR / "daily_menu_payload.json"
 PUBLISHED_ARCHIVE_FILE = BASE_DIR / "published_menu_archive.json"
 TEST_OUTPUT_DIR = BASE_DIR / "test_outputs" / "menu_triggers"
 
@@ -78,7 +77,6 @@ def preserved_runtime_files() -> None:
     original_config = read_text_if_exists(CONFIG_FILE)
     original_history = read_text_if_exists(HISTORY_FILE)
     original_output = read_text_if_exists(OUTPUT_FILE)
-    original_payload = read_text_if_exists(OUTPUT_PAYLOAD_FILE)
     original_archive = read_text_if_exists(PUBLISHED_ARCHIVE_FILE)
     try:
         yield
@@ -86,7 +84,6 @@ def preserved_runtime_files() -> None:
         restore_text(CONFIG_FILE, original_config)
         restore_text(HISTORY_FILE, original_history)
         restore_text(OUTPUT_FILE, original_output)
-        restore_text(OUTPUT_PAYLOAD_FILE, original_payload)
         restore_text(PUBLISHED_ARCHIVE_FILE, original_archive)
 
 

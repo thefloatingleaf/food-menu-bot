@@ -880,60 +880,15 @@ class OvernightBreakfastFormattingTests(unittest.TestCase):
         self.assertEqual(generate_menu.format_overnight_breakfast_label(plain_item), plain_item)
 
 
-class CompanionMediaTests(unittest.TestCase):
-    def test_load_menu_media_assets_includes_pakhala_breakfast_rule(self) -> None:
-        assets = generate_menu.load_menu_media_assets()
-        self.assertIn(
-            {
-                "match_scope": "breakfast",
-                "match_text": "पखाला भात",
-                "label_hi": "साथ में चित्र",
-                "asset_path": "media/pakhala-bhata-companion.svg",
-            },
-            assets,
-        )
-
-    def test_select_companion_media_matches_pakhala_bhata_breakfast(self) -> None:
-        companion_media = generate_menu.select_companion_media(
-            generate_menu.load_menu_media_assets(),
-            "पखाला भात (Pakhala Bhata)",
-            "मूंग दाल और चावल",
-            None,
-        )
-        self.assertEqual(len(companion_media), 1)
-        self.assertEqual(companion_media[0].label_hi, "साथ में चित्र")
-        self.assertEqual(companion_media[0].asset_path, "media/pakhala-bhata-companion.svg")
-        self.assertTrue(companion_media[0].url.endswith("/media/pakhala-bhata-companion.svg"))
-
-    def test_build_companion_media_lines_uses_output_label(self) -> None:
-        companion_media = [
-            generate_menu.CompanionMedia(
-                label_hi="साथ में चित्र",
-                asset_path="media/pakhala-bhata-companion.svg",
-                url="https://example.com/media/pakhala-bhata-companion.svg",
-            )
-        ]
+class PakhalaServingNoteTests(unittest.TestCase):
+    def test_build_pakhala_serving_note_returns_hindi_onion_note(self) -> None:
         self.assertEqual(
-            generate_menu.build_companion_media_lines(companion_media),
-            ["*साथ में चित्र:* https://example.com/media/pakhala-bhata-companion.svg"],
+            generate_menu.build_pakhala_serving_note("पखाला भात (Pakhala Bhata): रात में 1 कटोरी कच्चे चावल धोकर सादा चावल पकाएँ।"),
+            "*साथ में:* मोटा चौकोर कटा प्याज",
         )
 
-    def test_build_daily_menu_payload_includes_media_rows(self) -> None:
-        payload = generate_menu.build_daily_menu_payload(
-            "2026-07-22",
-            "*22-Jul-2026 तिथि के लिए भोजन:*\r\n\r\n*सुबह का नाश्ता:* पखाला भात (Pakhala Bhata)",
-            [
-                generate_menu.CompanionMedia(
-                    label_hi="साथ में चित्र",
-                    asset_path="media/pakhala-bhata-companion.svg",
-                    url="https://example.com/media/pakhala-bhata-companion.svg",
-                )
-            ],
-        )
-        self.assertEqual(payload["date"], "2026-07-22")
-        self.assertEqual(payload["media"][0]["label_hi"], "साथ में चित्र")
-        self.assertEqual(payload["media"][0]["asset_path"], "media/pakhala-bhata-companion.svg")
-        self.assertEqual(payload["media"][0]["url"], "https://example.com/media/pakhala-bhata-companion.svg")
+    def test_build_pakhala_serving_note_skips_non_pakhala_breakfast(self) -> None:
+        self.assertIsNone(generate_menu.build_pakhala_serving_note("पझैया सादम (Pazhaya Sadam)"))
 
 
 class WeeklyPazhayaSadamRuleTests(unittest.TestCase):
