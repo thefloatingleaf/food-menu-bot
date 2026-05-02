@@ -954,6 +954,27 @@ class CurdRuleTests(unittest.TestCase):
             "*दही रूप:* केवल लौकी/खीरे का रायता",
         )
 
+    def test_build_curd_raita_note_skips_when_specific_raita_is_already_named(self) -> None:
+        self.assertIsNone(
+            generate_menu.build_curd_raita_note(
+                "grishm",
+                "उपमा",
+                "ज्वार की रोटी, लौकी की सब्ज़ी, मसूर दाल, लौकी का रायता",
+                None,
+            )
+        )
+
+    def test_build_curd_raita_note_still_applies_when_other_curd_item_is_unspecified(self) -> None:
+        self.assertEqual(
+            generate_menu.build_curd_raita_note(
+                "grishm",
+                "मूंग दाल दहीवाले फरे (भाप में पकाएं)",
+                "ज्वार की रोटी, लौकी की सब्ज़ी, मसूर दाल, लौकी का रायता",
+                None,
+            ),
+            "*दही रूप:* केवल लौकी/खीरे का रायता",
+        )
+
     def test_build_curd_raita_note_skips_non_vasant_grishm_ritu(self) -> None:
         self.assertIsNone(
             generate_menu.build_curd_raita_note(

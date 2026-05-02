@@ -197,7 +197,7 @@ The generator also applies a recurring override for any festival day that is bot
    - `अरहर`
    - `चने-लौकी की दाल`
 8. In eligible वसंत dal meals, `मसूर`, `अरहर`, and `चने-लौकी की दाल` follow strict rotation across meals; `मूँग` is exempt and may still appear before that strict dal cycle is complete.
-9. In `वसंत` and `ग्रीष्म`, whenever a selected breakfast or भोजन contains `दही`/`रायता`, output also adds the short note `*दही रूप:* केवल लौकी/खीरे का रायता`.
+9. In `वसंत` and `ग्रीष्म`, whenever a selected breakfast or भोजन contains `दही`/`रायता`, output adds the short note `*दही रूप:* केवल लौकी/खीरे का रायता` only as a fallback. If the selected item already names a specific raita such as `लौकी का रायता`, that extra note is skipped for that item path.
 10. Outside `हेमंत` and `शिशिर`, any exact breakfast or भोजन item that needs `दही`/`रायता` is blocked from repeating again within the same calendar year, using `published_menu_archive.json` as the annual memory.
 11. Across `वसंत` and `ग्रीष्म`, `पझैया सादम` is enforced as an overnight breakfast at least once in every 7-day window when the menu is generated in time for night-before preparation. If the menu is generated on the same morning, the generator records a timing note instead of forcing an impossible overnight prep.
 12. A date-specific safeguard also forces `पझैया सादम` at least once in the window `08-Apr-2026` through `12-Apr-2026`, again only when there is enough lead time for overnight preparation.

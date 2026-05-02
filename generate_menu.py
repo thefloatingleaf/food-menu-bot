@@ -470,6 +470,7 @@ VASANT_RAGI_ROTI_ONLY_NOTE = (
 RICE_ITEM_TOKENS = ("चावल", "राइस", "भात")
 CURD_ITEM_TOKENS = ("दही", "रायता")
 CURD_RAITA_NOTE_HI = "*दही रूप:* केवल लौकी/खीरे का रायता"
+SPECIFIC_RAITA_PATTERN = re.compile(r"[\w\u0900-\u097F/-]+(?:\s+[\w\u0900-\u097F/-]+){0,4}\s+क[ािे]\s+रायता")
 
 VARSHA_COMMON_REQUIRED_SIDES = [
     "आचार",
@@ -1178,6 +1179,13 @@ def item_contains_curd(item: str) -> bool:
     return any(token in normalized for token in CURD_ITEM_TOKENS)
 
 
+def item_mentions_specific_raita(item: str) -> bool:
+    normalized = re.sub(r"\s+", " ", item).strip().lower()
+    if "रायता" not in normalized:
+        return False
+    return bool(SPECIFIC_RAITA_PATTERN.search(normalized))
+
+
 def is_curd_repeat_restricted_ritu(ritu_key: str) -> bool:
     return normalize_ritu_key(ritu_key) not in {"hemant", "shishir"}
 
@@ -1232,7 +1240,8 @@ def build_curd_raita_note(
     selected_items = [selected_breakfast, selected_meal]
     if selected_second_meal:
         selected_items.append(selected_second_meal)
-    if any(item_contains_curd(item) for item in selected_items):
+    curd_items = [item for item in selected_items if item_contains_curd(item)]
+    if curd_items and any(not item_mentions_specific_raita(item) for item in curd_items):
         return CURD_RAITA_NOTE_HI
     return None
 
