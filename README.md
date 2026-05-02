@@ -197,15 +197,17 @@ The generator also applies a recurring override for any festival day that is bot
    - `अरहर`
    - `चने-लौकी की दाल`
 8. In eligible वसंत dal meals, `मसूर`, `अरहर`, and `चने-लौकी की दाल` follow strict rotation across meals; `मूँग` is exempt and may still appear before that strict dal cycle is complete.
-9. Across `वसंत` and `ग्रीष्म`, `पझैया सादम` is enforced as an overnight breakfast at least once in every 7-day window when the menu is generated in time for night-before preparation. If the menu is generated on the same morning, the generator records a timing note instead of forcing an impossible overnight prep.
-10. A date-specific safeguard also forces `पझैया सादम` at least once in the window `08-Apr-2026` through `12-Apr-2026`, again only when there is enough lead time for overnight preparation.
-11. Any breakfast `चीला/चिल्ला` variant is blocked for the next 7 days after it appears, so no kind of चिल्ला is repeated more than once in a week.
-12. Year-round except in `वर्षा`, `कढ़ी` with the active-season rice variant is enforced at least once in every 15-day window. This rule never overrides Ekadashi because rice remains disallowed there. `शिशिर` and `हेमंत` use `बासमती चावल`, `ग्रीष्म` uses `शालि चावल`, and `शरद` uses `साठी चावल`.
-13. Across `वसंत` and `ग्रीष्म`, a `छाछ की सब्ज़ी` meal paired with a rice variant is enforced at least once in every 7-day window.
-14. `पझैया सादम` or `पखाला भात` and any `छाछ की सब्ज़ी` meal are never allowed on the same day; if both would otherwise be selected, the meal side is changed to a different valid option.
-15. For the target menu dates `08-Apr-2026` through `14-Apr-2026`, breakfast selection remains unchanged but the output includes two meal lines: `*आज का भोजन 1:* ...` and `*आज का भोजन 2:* ...`.
-16. In that same temporary dual-meal window, rice is allowed in at most one of the two daily meal selections.
-17. Otherwise, script uses Shishir files:
+9. In `वसंत` and `ग्रीष्म`, whenever a selected breakfast or भोजन contains `दही`/`रायता`, output also adds the short note `*दही रूप:* केवल लौकी/खीरे का रायता`.
+10. Outside `हेमंत` and `शिशिर`, any exact breakfast or भोजन item that needs `दही`/`रायता` is blocked from repeating again within the same calendar year, using `published_menu_archive.json` as the annual memory.
+11. Across `वसंत` and `ग्रीष्म`, `पझैया सादम` is enforced as an overnight breakfast at least once in every 7-day window when the menu is generated in time for night-before preparation. If the menu is generated on the same morning, the generator records a timing note instead of forcing an impossible overnight prep.
+12. A date-specific safeguard also forces `पझैया सादम` at least once in the window `08-Apr-2026` through `12-Apr-2026`, again only when there is enough lead time for overnight preparation.
+13. Any breakfast `चीला/चिल्ला` variant is blocked for the next 7 days after it appears, so no kind of चिल्ला is repeated more than once in a week.
+14. Year-round except in `वर्षा`, `कढ़ी` with the active-season rice variant is enforced at least once in every 15-day window. This rule never overrides Ekadashi because rice remains disallowed there. `शिशिर` and `हेमंत` use `बासमती चावल`, `ग्रीष्म` uses `शालि चावल`, and `शरद` uses `साठी चावल`.
+15. Across `वसंत` and `ग्रीष्म`, a `छाछ की सब्ज़ी` meal paired with a rice variant is enforced at least once in every 7-day window.
+16. `पझैया सादम` or `पखाला भात` and any `छाछ की सब्ज़ी` meal are never allowed on the same day; if both would otherwise be selected, the meal side is changed to a different valid option.
+17. For the target menu dates `08-Apr-2026` through `14-Apr-2026`, breakfast selection remains unchanged but the output includes two meal lines: `*आज का भोजन 1:* ...` and `*आज का भोजन 2:* ...`.
+18. In that same temporary dual-meal window, rice is allowed in at most one of the two daily meal selections.
+19. Otherwise, script uses Shishir files:
    - `breakfast_shishir.json`
    - `menu_shishir.json`
 16. If पंचांग ऋतु is `ग्रीष्म` or `ग्रीष्म ऋतु`, the script uses:

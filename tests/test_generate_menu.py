@@ -942,6 +942,75 @@ class PakhalaServingNoteTests(unittest.TestCase):
         self.assertIsNone(generate_menu.build_pakhala_serving_note("पझैया सादम (Pazhaya Sadam)"))
 
 
+class CurdRuleTests(unittest.TestCase):
+    def test_build_curd_raita_note_returns_short_hindi_note_for_vasant(self) -> None:
+        self.assertEqual(
+            generate_menu.build_curd_raita_note(
+                "vasant",
+                "मूंग दाल दहीवाले फरे (भाप में पकाएं)",
+                "मूंग दाल और चावल",
+                None,
+            ),
+            "*दही रूप:* केवल लौकी/खीरे का रायता",
+        )
+
+    def test_build_curd_raita_note_skips_non_vasant_grishm_ritu(self) -> None:
+        self.assertIsNone(
+            generate_menu.build_curd_raita_note(
+                "shishir",
+                "उपमा",
+                "धुली उड़द दाल - गेहूँ रोटी और चकुंदर का रायता",
+                None,
+            )
+        )
+
+    def test_get_yearly_used_curd_items_ignores_hemant_shishir_entries(self) -> None:
+        archive = [
+            {
+                "date": "2026-01-15",
+                "breakfast": "उपमा",
+                "meal": "धुली उड़द दाल - गेहूँ रोटी और चकुंदर का रायता",
+                "ritu_key": "shishir",
+            },
+            {
+                "date": "2026-05-15",
+                "breakfast": "मूंग दाल दहीवाले फरे (भाप में पकाएं)",
+                "meal": "मूंग दाल और चावल",
+                "ritu_key": "vasant",
+            },
+        ]
+        used = generate_menu.get_yearly_used_curd_items(archive, date(2026, 6, 1))
+        self.assertIn(
+            generate_menu.normalize_item_key("मूंग दाल दहीवाले फरे (भाप में पकाएं)"),
+            used,
+        )
+        self.assertNotIn(
+            generate_menu.normalize_item_key("धुली उड़द दाल - गेहूँ रोटी और चकुंदर का रायता"),
+            used,
+        )
+
+    def test_apply_yearly_curd_repeat_rule_blocks_repeated_curd_item_outside_winter(self) -> None:
+        filtered, applied = generate_menu.apply_yearly_curd_repeat_rule(
+            [
+                "मूंग दाल दहीवाले फरे (भाप में पकाएं)",
+                "उपमा",
+            ],
+            {generate_menu.normalize_item_key("मूंग दाल दहीवाले फरे (भाप में पकाएं)")},
+            "vasant",
+        )
+        self.assertEqual(filtered, ["उपमा"])
+        self.assertTrue(applied)
+
+    def test_apply_yearly_curd_repeat_rule_does_not_block_winter(self) -> None:
+        filtered, applied = generate_menu.apply_yearly_curd_repeat_rule(
+            ["धुली उड़द दाल - गेहूँ रोटी और चकुंदर का रायता"],
+            {generate_menu.normalize_item_key("धुली उड़द दाल - गेहूँ रोटी और चकुंदर का रायता")},
+            "shishir",
+        )
+        self.assertEqual(filtered, ["धुली उड़द दाल - गेहूँ रोटी और चकुंदर का रायता"])
+        self.assertFalse(applied)
+
+
 class WeeklyPazhayaSadamRuleTests(unittest.TestCase):
     def test_should_force_weekly_pazhaya_sadam_when_missing_in_last_six_days(self) -> None:
         history = [
