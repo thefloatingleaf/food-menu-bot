@@ -1,10 +1,10 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-05-09T16:22:06.370Z",
+  "generated_at": "2026-05-09T18:01:32.139Z",
   "overview": {
-    "purchaseCount": 30,
-    "trackedItemCount": 28,
-    "totalSpend": 12417.75,
+    "purchaseCount": 95,
+    "trackedItemCount": 29,
+    "totalSpend": 26242.75,
     "currentMonthSpend": 4697.5
   },
   "monthly_spend": [
@@ -13,12 +13,16 @@
       "amount": 3640
     },
     {
+      "month": "2026-01",
+      "amount": 2730
+    },
+    {
       "month": "2026-02",
-      "amount": 1884.25
+      "amount": 6714.25
     },
     {
       "month": "2026-04",
-      "amount": 2196
+      "amount": 8461
     },
     {
       "month": "2026-05",
@@ -26,6 +30,10 @@
     }
   ],
   "category_spend": [
+    {
+      "category": "Dairy",
+      "amount": 13825
+    },
     {
       "category": "Groceries",
       "amount": 10696.75
@@ -40,6 +48,39 @@
     }
   ],
   "item_insights": [
+    {
+      "itemName": "Amor Farm Fresh Milk",
+      "category": "Dairy",
+      "purchaseCount": 65,
+      "lastPurchaseDate": "2026-04-30",
+      "averageQuantityPurchased": 3.04,
+      "quantityUnit": "litre",
+      "averageConsumptionRate": null,
+      "expectedStockDurationDays": 1.6,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": 1.6,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-01",
+          "purchases": 13,
+          "spend": 2730
+        },
+        {
+          "month": "2026-02",
+          "purchases": 22,
+          "spend": 4830
+        },
+        {
+          "month": "2026-04",
+          "purchases": 30,
+          "spend": 6265
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "A reorder reminder around every 2 days would match current purchase history."
+      ]
+    },
     {
       "itemName": "Amul Salted Butter",
       "category": "Needs Review",

@@ -43,3 +43,11 @@ Expected result: the app compiles successfully for production.
 2. Use `Purchase Log` to paste raw purchase records.
 3. Use `Consumption & Analysis` to review stock-duration, reorder, spend, and possible-anomaly insights.
 4. The app reads and writes the shared ledger at `../../data/household_purchases/`.
+
+## Amor Farm PDF import
+
+```bash
+npm run import:amor-farm -- --milk-only /absolute/path/to/invoice.pdf
+```
+
+Expected result: the monthly vendor PDF is parsed and the milk line items are appended to the shared ledger without duplicating already imported rows.

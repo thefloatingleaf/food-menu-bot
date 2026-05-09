@@ -56,6 +56,14 @@ Expected result: the standalone Next development server starts at `http://localh
 
 Expected result: lint and Vitest checks pass for the household inventory module.
 
+### Amor Farm invoice import
+
+```bash
+./scripts/import-household-amor-farm.sh --milk-only /absolute/path/to/invoice.pdf
+```
+
+Expected result: the Amor Farm monthly PDF is parsed and its milk entries are added to the shared household ledger while repeated imports skip already saved rows.
+
 ## Run locally
 
 ```bash

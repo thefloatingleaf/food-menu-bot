@@ -340,7 +340,7 @@ export function normalizeInventoryEntry(
     review_status: reviewNotes.length > 0 ? "needs_review" : "ok",
     review_notes: Array.from(new Set(reviewNotes)),
     entered_at: normalizeText(input.entered_at) ?? nowIso(),
-    last_updated_at: nowIso(),
+    last_updated_at: normalizeText(input.last_updated_at) ?? nowIso(),
   };
 }
 
@@ -607,7 +607,7 @@ export function loadInventoryAnalysis() {
   };
 }
 
-function saveInventoryAnalysis(analysis: InventoryAnalysis) {
+export function saveInventoryAnalysis(analysis: InventoryAnalysis) {
   writeJsonFile(analysisFilePath(), analysis);
 }
 
