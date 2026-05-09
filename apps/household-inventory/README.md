@@ -40,8 +40,8 @@ Expected result: the app compiles successfully for production.
 ## Current flow
 
 1. Open the standalone app at `http://localhost:3001`.
-2. Use `Purchase Log` to paste raw purchase records.
-3. Use `Consumption & Analysis` to review stock-duration, reorder, spend, and possible-anomaly insights.
+2. Use the dashboard landing page to paste raw purchase records and review reorder, stock, confidence, and possible-anomaly signals.
+3. Use `View Detailed Purchase Log` when you need the full transaction register at `http://localhost:3001/purchase-log`.
 4. The app reads and writes the shared ledger at `../../data/household_purchases/`.
 
 ## Amor Farm PDF import

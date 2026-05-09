@@ -1,11 +1,21 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-05-09T18:01:32.139Z",
+  "generated_at": "2026-05-09T18:27:03.170Z",
   "overview": {
     "purchaseCount": 95,
     "trackedItemCount": 29,
     "totalSpend": 26242.75,
-    "currentMonthSpend": 4697.5
+    "currentMonthSpend": 4697.5,
+    "itemsToOrderTodayCount": 1,
+    "itemsToOrderSoonCount": 1,
+    "stableItemCount": 1,
+    "reviewItemCount": 1,
+    "totalMonthlyHouseholdConsumptionValue": 4697.5,
+    "monthOnMonthSpendingChange": -44.5,
+    "monthOnMonthConsumptionChange": -45.5,
+    "inventoryHealthScore": 99,
+    "householdConsumptionStabilityScore": 43,
+    "duplicateEntryCount": 0
   },
   "monthly_spend": [
     {
@@ -32,19 +42,15 @@
   "category_spend": [
     {
       "category": "Dairy",
-      "amount": 13825
+      "amount": 14069
     },
     {
       "category": "Groceries",
-      "amount": 10696.75
-    },
-    {
-      "category": "Needs Review",
-      "amount": 244
+      "amount": 12125.75
     },
     {
       "category": "Unclear",
-      "amount": 1477
+      "amount": 48
     }
   ],
   "item_insights": [
@@ -53,12 +59,29 @@
       "category": "Dairy",
       "purchaseCount": 65,
       "lastPurchaseDate": "2026-04-30",
+      "lastPurchasedQuantity": 3,
+      "lastPurchaseSpend": 210,
       "averageQuantityPurchased": 3.04,
       "quantityUnit": "litre",
-      "averageConsumptionRate": null,
+      "averageDailyConsumption": 1.9,
+      "averageWeeklyConsumption": 13.3,
+      "averageConsumptionRate": "1.90 litre/day",
+      "averageDailyConsumptionLabel": "1.90 litre/day",
+      "averageWeeklyConsumptionLabel": "13.30 litre/week",
+      "consumptionBasis": "purchase_history",
       "expectedStockDurationDays": 1.6,
+      "estimatedDaysOfStockRemaining": 0,
       "actualConsumptionDurationDays": null,
       "reorderFrequencyDays": 1.6,
+      "normalPurchaseFrequencyDays": 1.6,
+      "recommendedReorderDate": "2026-05-02",
+      "suggestedReorderQuantity": 3.5,
+      "currentConsumptionTrend": "Higher than usual",
+      "reorderPriorityScore": 100,
+      "stockBucket": "Items to Order Today",
+      "dataConfidenceScore": 100,
+      "dataConfidenceLabel": "High",
+      "daysSinceLastPurchase": 9,
       "monthlyPurchasePattern": [
         {
           "month": "2026-01",
@@ -76,298 +99,69 @@
           "spend": 6265
         }
       ],
-      "flags": [],
-      "suggestions": [
-        "A reorder reminder around every 2 days would match current purchase history."
-      ]
-    },
-    {
-      "itemName": "Amul Salted Butter",
-      "category": "Needs Review",
-      "purchaseCount": 1,
-      "lastPurchaseDate": "2026-05-09",
-      "averageQuantityPurchased": 400,
-      "quantityUnit": "g",
-      "averageConsumptionRate": null,
-      "expectedStockDurationDays": null,
-      "actualConsumptionDurationDays": null,
-      "reorderFrequencyDays": null,
-      "monthlyPurchasePattern": [
+      "monthlyQuantityPattern": [
         {
-          "month": "2026-05",
-          "purchases": 1,
-          "spend": 244
+          "month": "2026-01",
+          "purchases": 13,
+          "quantity": 39,
+          "spend": 2730,
+          "unit": "litre"
+        },
+        {
+          "month": "2026-02",
+          "purchases": 22,
+          "quantity": 69,
+          "spend": 4830,
+          "unit": "litre"
+        },
+        {
+          "month": "2026-04",
+          "purchases": 30,
+          "quantity": 89.5,
+          "spend": 6265,
+          "unit": "litre"
         }
       ],
-      "flags": [],
-      "suggestions": [
-        "Review raw entry details for missing date, quantity, or category."
-      ]
-    },
-    {
-      "itemName": "Davidoff Espresso 57 Instant Coffee 11/12 Intensity",
-      "category": "Groceries",
-      "purchaseCount": 1,
-      "lastPurchaseDate": "2026-05-09",
-      "averageQuantityPurchased": 100,
-      "quantityUnit": "g",
-      "averageConsumptionRate": null,
-      "expectedStockDurationDays": null,
-      "actualConsumptionDurationDays": null,
-      "reorderFrequencyDays": null,
-      "monthlyPurchasePattern": [
-        {
-          "month": "2026-05",
-          "purchases": 1,
-          "spend": 790
-        }
+      "flags": [
+        "possible fast consumption",
+        "stock-out risk",
+        "not purchased for a long time",
+        "possible dead stock"
       ],
-      "flags": [],
       "suggestions": [
-        "Continue collecting purchase entries to improve stock-duration and reorder estimates."
-      ]
-    },
-    {
-      "itemName": "Davidoff Fine Aroma Instant Coffee 7/12 Intensity",
-      "category": "Groceries",
-      "purchaseCount": 1,
-      "lastPurchaseDate": "2026-05-09",
-      "averageQuantityPurchased": 100,
-      "quantityUnit": "g",
-      "averageConsumptionRate": null,
-      "expectedStockDurationDays": null,
-      "actualConsumptionDurationDays": null,
-      "reorderFrequencyDays": null,
-      "monthlyPurchasePattern": [
-        {
-          "month": "2026-05",
-          "purchases": 1,
-          "spend": 739
-        }
+        "Order now.",
+        "Verify consumption and check for an unusual usage spike."
       ],
-      "flags": [],
-      "suggestions": [
-        "Continue collecting purchase entries to improve stock-duration and reorder estimates."
-      ]
-    },
-    {
-      "itemName": "Everest Sambhar Masala",
-      "category": "Groceries",
-      "purchaseCount": 1,
-      "lastPurchaseDate": "2026-05-09",
-      "averageQuantityPurchased": 100,
-      "quantityUnit": "g",
-      "averageConsumptionRate": null,
-      "expectedStockDurationDays": null,
-      "actualConsumptionDurationDays": null,
-      "reorderFrequencyDays": null,
-      "monthlyPurchasePattern": [
-        {
-          "month": "2026-05",
-          "purchases": 1,
-          "spend": 63
-        }
-      ],
-      "flags": [],
-      "suggestions": [
-        "Continue collecting purchase entries to improve stock-duration and reorder estimates."
-      ]
-    },
-    {
-      "itemName": "Kellogg's Corn Flakes Original",
-      "category": "Unclear",
-      "purchaseCount": 1,
-      "lastPurchaseDate": "2026-05-09",
-      "averageQuantityPurchased": 1.15,
-      "quantityUnit": "kg",
-      "averageConsumptionRate": null,
-      "expectedStockDurationDays": null,
-      "actualConsumptionDurationDays": null,
-      "reorderFrequencyDays": null,
-      "monthlyPurchasePattern": [
-        {
-          "month": "2026-05",
-          "purchases": 1,
-          "spend": 367
-        }
-      ],
-      "flags": [],
-      "suggestions": [
-        "Review raw entry details for missing date, quantity, or category."
-      ]
-    },
-    {
-      "itemName": "Let's Try Masala Peanuts With Rock Salt",
-      "category": "Groceries",
-      "purchaseCount": 1,
-      "lastPurchaseDate": "2026-05-08",
-      "averageQuantityPurchased": 153,
-      "quantityUnit": "g",
-      "averageConsumptionRate": null,
-      "expectedStockDurationDays": null,
-      "actualConsumptionDurationDays": null,
-      "reorderFrequencyDays": null,
-      "monthlyPurchasePattern": [
-        {
-          "month": "2026-05",
-          "purchases": 1,
-          "spend": 80
-        }
-      ],
-      "flags": [],
-      "suggestions": [
-        "Continue collecting purchase entries to improve stock-duration and reorder estimates."
-      ]
-    },
-    {
-      "itemName": "Let's Try Sabudana Falhari Mixture",
-      "category": "Unclear",
-      "purchaseCount": 1,
-      "lastPurchaseDate": "2026-05-08",
-      "averageQuantityPurchased": 214,
-      "quantityUnit": "g",
-      "averageConsumptionRate": null,
-      "expectedStockDurationDays": null,
-      "actualConsumptionDurationDays": null,
-      "reorderFrequencyDays": null,
-      "monthlyPurchasePattern": [
-        {
-          "month": "2026-05",
-          "purchases": 1,
-          "spend": 95
-        }
-      ],
-      "flags": [],
-      "suggestions": [
-        "Review raw entry details for missing date, quantity, or category."
-      ]
-    },
-    {
-      "itemName": "Lijjat Moong Dal Papad",
-      "category": "Groceries",
-      "purchaseCount": 1,
-      "lastPurchaseDate": "2026-05-09",
-      "averageQuantityPurchased": 400,
-      "quantityUnit": "g",
-      "averageConsumptionRate": null,
-      "expectedStockDurationDays": null,
-      "actualConsumptionDurationDays": null,
-      "reorderFrequencyDays": null,
-      "monthlyPurchasePattern": [
-        {
-          "month": "2026-05",
-          "purchases": 1,
-          "spend": 154
-        }
-      ],
-      "flags": [],
-      "suggestions": [
-        "Continue collecting purchase entries to improve stock-duration and reorder estimates."
-      ]
-    },
-    {
-      "itemName": "Tata Sampann Coriander Seeds (Dhaniya), Whole Spices",
-      "category": "Unclear",
-      "purchaseCount": 1,
-      "lastPurchaseDate": "2026-05-09",
-      "averageQuantityPurchased": 100,
-      "quantityUnit": "g",
-      "averageConsumptionRate": null,
-      "expectedStockDurationDays": null,
-      "actualConsumptionDurationDays": null,
-      "reorderFrequencyDays": null,
-      "monthlyPurchasePattern": [
-        {
-          "month": "2026-05",
-          "purchases": 1,
-          "spend": 38
-        }
-      ],
-      "flags": [],
-      "suggestions": [
-        "Review raw entry details for missing date, quantity, or category."
-      ]
-    },
-    {
-      "itemName": "Tata Sampann Unpolished Chana Dal",
-      "category": "Groceries",
-      "purchaseCount": 1,
-      "lastPurchaseDate": "2026-05-09",
-      "averageQuantityPurchased": 500,
-      "quantityUnit": "g",
-      "averageConsumptionRate": null,
-      "expectedStockDurationDays": null,
-      "actualConsumptionDurationDays": null,
-      "reorderFrequencyDays": null,
-      "monthlyPurchasePattern": [
-        {
-          "month": "2026-05",
-          "purchases": 1,
-          "spend": 0
-        }
-      ],
-      "flags": [],
-      "suggestions": [
-        "Continue collecting purchase entries to improve stock-duration and reorder estimates."
-      ]
-    },
-    {
-      "itemName": "Tata Sampann Unpolished Green Moong Dal (Chilka)",
-      "category": "Groceries",
-      "purchaseCount": 1,
-      "lastPurchaseDate": "2026-05-09",
-      "averageQuantityPurchased": 500,
-      "quantityUnit": "g",
-      "averageConsumptionRate": null,
-      "expectedStockDurationDays": null,
-      "actualConsumptionDurationDays": null,
-      "reorderFrequencyDays": null,
-      "monthlyPurchasePattern": [
-        {
-          "month": "2026-05",
-          "purchases": 1,
-          "spend": 94
-        }
-      ],
-      "flags": [],
-      "suggestions": [
-        "Continue collecting purchase entries to improve stock-duration and reorder estimates."
-      ]
-    },
-    {
-      "itemName": "Tata Sampann Unpolished Yellow Moong Dal (Dhuli) Split",
-      "category": "Groceries",
-      "purchaseCount": 1,
-      "lastPurchaseDate": "2026-05-09",
-      "averageQuantityPurchased": 1000,
-      "quantityUnit": "g",
-      "averageConsumptionRate": null,
-      "expectedStockDurationDays": null,
-      "actualConsumptionDurationDays": null,
-      "reorderFrequencyDays": null,
-      "monthlyPurchasePattern": [
-        {
-          "month": "2026-05",
-          "purchases": 1,
-          "spend": 208
-        }
-      ],
-      "flags": [],
-      "suggestions": [
-        "Continue collecting purchase entries to improve stock-duration and reorder estimates."
-      ]
+      "totalSpend": 13825
     },
     {
       "itemName": "THF Multigrain Bread",
-      "category": "Unclear",
+      "category": "Groceries",
       "purchaseCount": 2,
       "lastPurchaseDate": "2026-05-09",
+      "lastPurchasedQuantity": 300,
+      "lastPurchaseSpend": 70,
       "averageQuantityPurchased": 300,
       "quantityUnit": "g",
-      "averageConsumptionRate": null,
+      "averageDailyConsumption": 300,
+      "averageWeeklyConsumption": 2100,
+      "averageConsumptionRate": "300.00 g/day",
+      "averageDailyConsumptionLabel": "300.00 g/day",
+      "averageWeeklyConsumptionLabel": "2100.00 g/week",
+      "consumptionBasis": "purchase_history",
       "expectedStockDurationDays": 1,
+      "estimatedDaysOfStockRemaining": 1,
       "actualConsumptionDurationDays": null,
       "reorderFrequencyDays": 1,
+      "normalPurchaseFrequencyDays": 1,
+      "recommendedReorderDate": "2026-05-10",
+      "suggestedReorderQuantity": 300,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": 70,
+      "stockBucket": "Items to Order Within 3 Days",
+      "dataConfidenceScore": 81,
+      "dataConfidenceLabel": "High",
+      "daysSinceLastPurchase": 0,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -375,92 +169,49 @@
           "spend": 140
         }
       ],
-      "flags": [],
-      "suggestions": [
-        "Review raw entry details for missing date, quantity, or category.",
-        "A reorder reminder around every 1 days would match current purchase history."
-      ]
-    },
-    {
-      "itemName": "TWF Atta",
-      "category": "Groceries",
-      "purchaseCount": 1,
-      "lastPurchaseDate": "2026-05-09",
-      "averageQuantityPurchased": 25,
-      "quantityUnit": "kg",
-      "averageConsumptionRate": null,
-      "expectedStockDurationDays": null,
-      "actualConsumptionDurationDays": null,
-      "reorderFrequencyDays": null,
-      "monthlyPurchasePattern": [
+      "monthlyQuantityPattern": [
         {
           "month": "2026-05",
-          "purchases": 1,
-          "spend": 997.5
+          "purchases": 2,
+          "quantity": 600,
+          "spend": 140,
+          "unit": "g"
         }
       ],
       "flags": [],
       "suggestions": [
-        "Continue collecting purchase entries to improve stock-duration and reorder estimates."
-      ]
-    },
-    {
-      "itemName": "TWF Atta [Non NCR]",
-      "category": "Groceries",
-      "purchaseCount": 1,
-      "lastPurchaseDate": "2026-02-11",
-      "averageQuantityPurchased": 25,
-      "quantityUnit": "kg",
-      "averageConsumptionRate": null,
-      "expectedStockDurationDays": null,
-      "actualConsumptionDurationDays": null,
-      "reorderFrequencyDays": null,
-      "monthlyPurchasePattern": [
-        {
-          "month": "2026-02",
-          "purchases": 1,
-          "spend": 1286.25
-        }
+        "Order soon."
       ],
-      "flags": [],
-      "suggestions": [
-        "Continue collecting purchase entries to improve stock-duration and reorder estimates."
-      ]
-    },
-    {
-      "itemName": "TWF Baker’s Salt - Pink Rock Salt",
-      "category": "Groceries",
-      "purchaseCount": 1,
-      "lastPurchaseDate": "2025-12-07",
-      "averageQuantityPurchased": 1,
-      "quantityUnit": "kg",
-      "averageConsumptionRate": null,
-      "expectedStockDurationDays": null,
-      "actualConsumptionDurationDays": null,
-      "reorderFrequencyDays": null,
-      "monthlyPurchasePattern": [
-        {
-          "month": "2025-12",
-          "purchases": 1,
-          "spend": 199
-        }
-      ],
-      "flags": [],
-      "suggestions": [
-        "Continue collecting purchase entries to improve stock-duration and reorder estimates."
-      ]
+      "totalSpend": 140
     },
     {
       "itemName": "TWF Channa Sattu Flour",
       "category": "Groceries",
       "purchaseCount": 2,
       "lastPurchaseDate": "2026-05-09",
+      "lastPurchasedQuantity": 2,
+      "lastPurchaseSpend": 598,
       "averageQuantityPurchased": 2,
       "quantityUnit": "kg",
-      "averageConsumptionRate": null,
+      "averageDailyConsumption": 0.06,
+      "averageWeeklyConsumption": 0.42,
+      "averageConsumptionRate": "0.06 kg/day",
+      "averageDailyConsumptionLabel": "0.06 kg/day",
+      "averageWeeklyConsumptionLabel": "0.42 kg/week",
+      "consumptionBasis": "purchase_history",
       "expectedStockDurationDays": 33,
+      "estimatedDaysOfStockRemaining": 33,
       "actualConsumptionDurationDays": null,
       "reorderFrequencyDays": 33,
+      "normalPurchaseFrequencyDays": 33,
+      "recommendedReorderDate": "2026-06-11",
+      "suggestedReorderQuantity": 2,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": 18,
+      "stockBucket": "Items Sufficient for More Than 7 Days",
+      "dataConfidenceScore": 81,
+      "dataConfidenceLabel": "High",
+      "daysSinceLastPurchase": 0,
       "monthlyPurchasePattern": [
         {
           "month": "2026-04",
@@ -473,22 +224,809 @@
           "spend": 598
         }
       ],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2026-04",
+          "purchases": 1,
+          "quantity": 2,
+          "spend": 598,
+          "unit": "kg"
+        },
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "quantity": 2,
+          "spend": 598,
+          "unit": "kg"
+        }
+      ],
       "flags": [],
       "suggestions": [
-        "A reorder reminder around every 33 days would match current purchase history."
-      ]
+        "Order later.",
+        "A reminder roughly every 33 days would match current history."
+      ],
+      "totalSpend": 1196
+    },
+    {
+      "itemName": "Amul Salted Butter",
+      "category": "Dairy",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-09",
+      "lastPurchasedQuantity": 400,
+      "lastPurchaseSpend": 244,
+      "averageQuantityPurchased": 400,
+      "quantityUnit": "g",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 400,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 51,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 0,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 244
+        }
+      ],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "quantity": 400,
+          "spend": 244,
+          "unit": "g"
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Continue collecting purchase entries to strengthen the estimate."
+      ],
+      "totalSpend": 244
+    },
+    {
+      "itemName": "Davidoff Espresso 57 Instant Coffee 11/12 Intensity",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-09",
+      "lastPurchasedQuantity": 100,
+      "lastPurchaseSpend": 790,
+      "averageQuantityPurchased": 100,
+      "quantityUnit": "g",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 100,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 51,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 0,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 790
+        }
+      ],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "quantity": 100,
+          "spend": 790,
+          "unit": "g"
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Continue collecting purchase entries to strengthen the estimate."
+      ],
+      "totalSpend": 790
+    },
+    {
+      "itemName": "Davidoff Fine Aroma Instant Coffee 7/12 Intensity",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-09",
+      "lastPurchasedQuantity": 100,
+      "lastPurchaseSpend": 739,
+      "averageQuantityPurchased": 100,
+      "quantityUnit": "g",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 100,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 51,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 0,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 739
+        }
+      ],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "quantity": 100,
+          "spend": 739,
+          "unit": "g"
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Continue collecting purchase entries to strengthen the estimate."
+      ],
+      "totalSpend": 739
+    },
+    {
+      "itemName": "Everest Sambhar Masala",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-09",
+      "lastPurchasedQuantity": 100,
+      "lastPurchaseSpend": 63,
+      "averageQuantityPurchased": 100,
+      "quantityUnit": "g",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 100,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 51,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 0,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 63
+        }
+      ],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "quantity": 100,
+          "spend": 63,
+          "unit": "g"
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Continue collecting purchase entries to strengthen the estimate."
+      ],
+      "totalSpend": 63
+    },
+    {
+      "itemName": "Kellogg's Corn Flakes Original",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-09",
+      "lastPurchasedQuantity": 1.15,
+      "lastPurchaseSpend": 367,
+      "averageQuantityPurchased": 1.15,
+      "quantityUnit": "kg",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 1.15,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 51,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 0,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 367
+        }
+      ],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "quantity": 1.15,
+          "spend": 367,
+          "unit": "kg"
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Continue collecting purchase entries to strengthen the estimate."
+      ],
+      "totalSpend": 367
+    },
+    {
+      "itemName": "Let's Try Masala Peanuts With Rock Salt",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-08",
+      "lastPurchasedQuantity": 153,
+      "lastPurchaseSpend": 80,
+      "averageQuantityPurchased": 153,
+      "quantityUnit": "g",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 153,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 51,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 1,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 80
+        }
+      ],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "quantity": 153,
+          "spend": 80,
+          "unit": "g"
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Continue collecting purchase entries to strengthen the estimate."
+      ],
+      "totalSpend": 80
+    },
+    {
+      "itemName": "Let's Try Sabudana Falhari Mixture",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-08",
+      "lastPurchasedQuantity": 214,
+      "lastPurchaseSpend": 95,
+      "averageQuantityPurchased": 214,
+      "quantityUnit": "g",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 214,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 51,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 1,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 95
+        }
+      ],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "quantity": 214,
+          "spend": 95,
+          "unit": "g"
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Continue collecting purchase entries to strengthen the estimate."
+      ],
+      "totalSpend": 95
+    },
+    {
+      "itemName": "Lijjat Moong Dal Papad",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-09",
+      "lastPurchasedQuantity": 400,
+      "lastPurchaseSpend": 154,
+      "averageQuantityPurchased": 400,
+      "quantityUnit": "g",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 400,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 51,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 0,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 154
+        }
+      ],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "quantity": 400,
+          "spend": 154,
+          "unit": "g"
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Continue collecting purchase entries to strengthen the estimate."
+      ],
+      "totalSpend": 154
+    },
+    {
+      "itemName": "Tata Sampann Coriander Seeds (Dhaniya), Whole Spices",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-09",
+      "lastPurchasedQuantity": 100,
+      "lastPurchaseSpend": 38,
+      "averageQuantityPurchased": 100,
+      "quantityUnit": "g",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 100,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 51,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 0,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 38
+        }
+      ],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "quantity": 100,
+          "spend": 38,
+          "unit": "g"
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Continue collecting purchase entries to strengthen the estimate."
+      ],
+      "totalSpend": 38
+    },
+    {
+      "itemName": "Tata Sampann Unpolished Chana Dal",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-09",
+      "lastPurchasedQuantity": 500,
+      "lastPurchaseSpend": null,
+      "averageQuantityPurchased": 500,
+      "quantityUnit": "g",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 500,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 51,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 0,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 0
+        }
+      ],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "quantity": 500,
+          "spend": 0,
+          "unit": "g"
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Continue collecting purchase entries to strengthen the estimate."
+      ],
+      "totalSpend": 0
+    },
+    {
+      "itemName": "Tata Sampann Unpolished Green Moong Dal (Chilka)",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-09",
+      "lastPurchasedQuantity": 500,
+      "lastPurchaseSpend": 94,
+      "averageQuantityPurchased": 500,
+      "quantityUnit": "g",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 500,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 51,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 0,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 94
+        }
+      ],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "quantity": 500,
+          "spend": 94,
+          "unit": "g"
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Continue collecting purchase entries to strengthen the estimate."
+      ],
+      "totalSpend": 94
+    },
+    {
+      "itemName": "Tata Sampann Unpolished Yellow Moong Dal (Dhuli) Split",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-09",
+      "lastPurchasedQuantity": 1000,
+      "lastPurchaseSpend": 208,
+      "averageQuantityPurchased": 1000,
+      "quantityUnit": "g",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 1000,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 51,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 0,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 208
+        }
+      ],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "quantity": 1000,
+          "spend": 208,
+          "unit": "g"
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Continue collecting purchase entries to strengthen the estimate."
+      ],
+      "totalSpend": 208
+    },
+    {
+      "itemName": "TWF Atta",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-09",
+      "lastPurchasedQuantity": 25,
+      "lastPurchaseSpend": 997.5,
+      "averageQuantityPurchased": 25,
+      "quantityUnit": "kg",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 25,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 51,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 0,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 997.5
+        }
+      ],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "quantity": 25,
+          "spend": 997.5,
+          "unit": "kg"
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Continue collecting purchase entries to strengthen the estimate."
+      ],
+      "totalSpend": 997.5
+    },
+    {
+      "itemName": "TWF Atta [Non NCR]",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-02-11",
+      "lastPurchasedQuantity": 25,
+      "lastPurchaseSpend": 1286.25,
+      "averageQuantityPurchased": 25,
+      "quantityUnit": "kg",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 25,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 51,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 87,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-02",
+          "purchases": 1,
+          "spend": 1286.25
+        }
+      ],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2026-02",
+          "purchases": 1,
+          "quantity": 25,
+          "spend": 1286.25,
+          "unit": "kg"
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Continue collecting purchase entries to strengthen the estimate."
+      ],
+      "totalSpend": 1286.25
+    },
+    {
+      "itemName": "TWF Baker’s Salt - Pink Rock Salt",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2025-12-07",
+      "lastPurchasedQuantity": 1,
+      "lastPurchaseSpend": 199,
+      "averageQuantityPurchased": 1,
+      "quantityUnit": "kg",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 1,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 51,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 153,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2025-12",
+          "purchases": 1,
+          "spend": 199
+        }
+      ],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2025-12",
+          "purchases": 1,
+          "quantity": 1,
+          "spend": 199,
+          "unit": "kg"
+        }
+      ],
+      "flags": [
+        "possible dead stock"
+      ],
+      "suggestions": [
+        "Continue collecting purchase entries to strengthen the estimate."
+      ],
+      "totalSpend": 199
     },
     {
       "itemName": "TWF Dusting Semolina for Pizzas",
-      "category": "Unclear",
+      "category": "Groceries",
       "purchaseCount": 1,
       "lastPurchaseDate": "2025-12-07",
+      "lastPurchasedQuantity": 1,
+      "lastPurchaseSpend": 149,
       "averageQuantityPurchased": 1,
       "quantityUnit": "kg",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
       "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
       "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
       "actualConsumptionDurationDays": null,
       "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 1,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 51,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 153,
       "monthlyPurchasePattern": [
         {
           "month": "2025-12",
@@ -496,22 +1034,51 @@
           "spend": 149
         }
       ],
-      "flags": [],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2025-12",
+          "purchases": 1,
+          "quantity": 1,
+          "spend": 149,
+          "unit": "kg"
+        }
+      ],
+      "flags": [
+        "possible dead stock"
+      ],
       "suggestions": [
-        "Review raw entry details for missing date, quantity, or category."
-      ]
+        "Continue collecting purchase entries to strengthen the estimate."
+      ],
+      "totalSpend": 149
     },
     {
       "itemName": "TWF Highland - Sharbati Roti Flour",
       "category": "Groceries",
       "purchaseCount": 1,
       "lastPurchaseDate": "2025-12-07",
+      "lastPurchasedQuantity": 10,
+      "lastPurchaseSpend": 1299,
       "averageQuantityPurchased": 10,
       "quantityUnit": "kg",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
       "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
       "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
       "actualConsumptionDurationDays": null,
       "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 10,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 51,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 153,
       "monthlyPurchasePattern": [
         {
           "month": "2025-12",
@@ -519,22 +1086,51 @@
           "spend": 1299
         }
       ],
-      "flags": [],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2025-12",
+          "purchases": 1,
+          "quantity": 10,
+          "spend": 1299,
+          "unit": "kg"
+        }
+      ],
+      "flags": [
+        "possible dead stock"
+      ],
       "suggestions": [
-        "Continue collecting purchase entries to improve stock-duration and reorder estimates."
-      ]
+        "Continue collecting purchase entries to strengthen the estimate."
+      ],
+      "totalSpend": 1299
     },
     {
       "itemName": "TWF Reliq - Heirloom Rotis",
-      "category": "Unclear",
+      "category": "Groceries",
       "purchaseCount": 1,
       "lastPurchaseDate": "2025-12-07",
+      "lastPurchasedQuantity": 2,
+      "lastPurchaseSpend": 598,
       "averageQuantityPurchased": 2,
       "quantityUnit": "kg",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
       "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
       "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
       "actualConsumptionDurationDays": null,
       "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 2,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 51,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 153,
       "monthlyPurchasePattern": [
         {
           "month": "2025-12",
@@ -542,22 +1138,51 @@
           "spend": 598
         }
       ],
-      "flags": [],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2025-12",
+          "purchases": 1,
+          "quantity": 2,
+          "spend": 598,
+          "unit": "kg"
+        }
+      ],
+      "flags": [
+        "possible dead stock"
+      ],
       "suggestions": [
-        "Review raw entry details for missing date, quantity, or category."
-      ]
+        "Continue collecting purchase entries to strengthen the estimate."
+      ],
+      "totalSpend": 598
     },
     {
       "itemName": "TWF Series C-8714 Sourdough Bread Flour",
       "category": "Groceries",
       "purchaseCount": 1,
       "lastPurchaseDate": "2025-12-07",
+      "lastPurchasedQuantity": 1,
+      "lastPurchaseSpend": 499,
       "averageQuantityPurchased": 1,
       "quantityUnit": "kg",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
       "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
       "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
       "actualConsumptionDurationDays": null,
       "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 1,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 51,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 153,
       "monthlyPurchasePattern": [
         {
           "month": "2025-12",
@@ -565,22 +1190,51 @@
           "spend": 499
         }
       ],
-      "flags": [],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2025-12",
+          "purchases": 1,
+          "quantity": 1,
+          "spend": 499,
+          "unit": "kg"
+        }
+      ],
+      "flags": [
+        "possible dead stock"
+      ],
       "suggestions": [
-        "Continue collecting purchase entries to improve stock-duration and reorder estimates."
-      ]
+        "Continue collecting purchase entries to strengthen the estimate."
+      ],
+      "totalSpend": 499
     },
     {
       "itemName": "TWF Sprouted Ragi Flour",
       "category": "Groceries",
       "purchaseCount": 1,
       "lastPurchaseDate": "2026-02-11",
+      "lastPurchasedQuantity": 2,
+      "lastPurchaseSpend": 598,
       "averageQuantityPurchased": 2,
       "quantityUnit": "kg",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
       "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
       "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
       "actualConsumptionDurationDays": null,
       "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 2,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 51,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 87,
       "monthlyPurchasePattern": [
         {
           "month": "2026-02",
@@ -588,22 +1242,49 @@
           "spend": 598
         }
       ],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2026-02",
+          "purchases": 1,
+          "quantity": 2,
+          "spend": 598,
+          "unit": "kg"
+        }
+      ],
       "flags": [],
       "suggestions": [
-        "Continue collecting purchase entries to improve stock-duration and reorder estimates."
-      ]
+        "Continue collecting purchase entries to strengthen the estimate."
+      ],
+      "totalSpend": 598
     },
     {
       "itemName": "TWF Virgin Barley Flour",
       "category": "Groceries",
       "purchaseCount": 1,
       "lastPurchaseDate": "2025-12-07",
+      "lastPurchasedQuantity": 2,
+      "lastPurchaseSpend": 318,
       "averageQuantityPurchased": 2,
       "quantityUnit": "kg",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
       "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
       "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
       "actualConsumptionDurationDays": null,
       "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 2,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 51,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 153,
       "monthlyPurchasePattern": [
         {
           "month": "2025-12",
@@ -611,22 +1292,51 @@
           "spend": 318
         }
       ],
-      "flags": [],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2025-12",
+          "purchases": 1,
+          "quantity": 2,
+          "spend": 318,
+          "unit": "kg"
+        }
+      ],
+      "flags": [
+        "possible dead stock"
+      ],
       "suggestions": [
-        "Continue collecting purchase entries to improve stock-duration and reorder estimates."
-      ]
+        "Continue collecting purchase entries to strengthen the estimate."
+      ],
+      "totalSpend": 318
     },
     {
       "itemName": "TWF Virgin Khapli (Emmer) Flour",
       "category": "Groceries",
       "purchaseCount": 1,
       "lastPurchaseDate": "2025-12-07",
+      "lastPurchasedQuantity": 2,
+      "lastPurchaseSpend": 578,
       "averageQuantityPurchased": 2,
       "quantityUnit": "kg",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
       "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
       "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
       "actualConsumptionDurationDays": null,
       "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 2,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 51,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 153,
       "monthlyPurchasePattern": [
         {
           "month": "2025-12",
@@ -634,22 +1344,51 @@
           "spend": 578
         }
       ],
-      "flags": [],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2025-12",
+          "purchases": 1,
+          "quantity": 2,
+          "spend": 578,
+          "unit": "kg"
+        }
+      ],
+      "flags": [
+        "possible dead stock"
+      ],
       "suggestions": [
-        "Continue collecting purchase entries to improve stock-duration and reorder estimates."
-      ]
+        "Continue collecting purchase entries to strengthen the estimate."
+      ],
+      "totalSpend": 578
     },
     {
       "itemName": "TWF Virgin Ragi Flour",
       "category": "Groceries",
       "purchaseCount": 1,
       "lastPurchaseDate": "2026-04-06",
+      "lastPurchasedQuantity": 5,
+      "lastPurchaseSpend": 699,
       "averageQuantityPurchased": 5,
       "quantityUnit": "kg",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
       "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
       "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
       "actualConsumptionDurationDays": null,
       "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 5,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 51,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 33,
       "monthlyPurchasePattern": [
         {
           "month": "2026-04",
@@ -657,22 +1396,49 @@
           "spend": 699
         }
       ],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2026-04",
+          "purchases": 1,
+          "quantity": 5,
+          "spend": 699,
+          "unit": "kg"
+        }
+      ],
       "flags": [],
       "suggestions": [
-        "Continue collecting purchase entries to improve stock-duration and reorder estimates."
-      ]
+        "Continue collecting purchase entries to strengthen the estimate."
+      ],
+      "totalSpend": 699
     },
     {
       "itemName": "TWF Virgin Sorghum Flour",
       "category": "Groceries",
       "purchaseCount": 1,
       "lastPurchaseDate": "2026-04-06",
+      "lastPurchasedQuantity": 5,
+      "lastPurchaseSpend": 899,
       "averageQuantityPurchased": 5,
       "quantityUnit": "kg",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
       "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
       "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
       "actualConsumptionDurationDays": null,
       "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 5,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 51,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 33,
       "monthlyPurchasePattern": [
         {
           "month": "2026-04",
@@ -680,22 +1446,49 @@
           "spend": 899
         }
       ],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2026-04",
+          "purchases": 1,
+          "quantity": 5,
+          "spend": 899,
+          "unit": "kg"
+        }
+      ],
       "flags": [],
       "suggestions": [
-        "Continue collecting purchase entries to improve stock-duration and reorder estimates."
-      ]
+        "Continue collecting purchase entries to strengthen the estimate."
+      ],
+      "totalSpend": 899
     },
     {
       "itemName": "Whole Farm Premium Fennel Seeds / Moti Saunf",
-      "category": "Unclear",
+      "category": "Groceries",
       "purchaseCount": 1,
       "lastPurchaseDate": "2026-05-09",
+      "lastPurchasedQuantity": 100,
+      "lastPurchaseSpend": 42,
       "averageQuantityPurchased": 100,
       "quantityUnit": "g",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
       "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
       "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
       "actualConsumptionDurationDays": null,
       "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 100,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 51,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 0,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -703,22 +1496,49 @@
           "spend": 42
         }
       ],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "quantity": 100,
+          "spend": 42,
+          "unit": "g"
+        }
+      ],
       "flags": [],
       "suggestions": [
-        "Review raw entry details for missing date, quantity, or category."
-      ]
+        "Continue collecting purchase entries to strengthen the estimate."
+      ],
+      "totalSpend": 42
     },
     {
       "itemName": "Whole Farm Premium Red Chilli Whole",
       "category": "Unclear",
       "purchaseCount": 1,
       "lastPurchaseDate": "2026-05-09",
+      "lastPurchasedQuantity": 100,
+      "lastPurchaseSpend": 48,
       "averageQuantityPurchased": 100,
       "quantityUnit": "g",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
       "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
       "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
       "actualConsumptionDurationDays": null,
       "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 100,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 30,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 0,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -726,11 +1546,1839 @@
           "spend": 48
         }
       ],
-      "flags": [],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "quantity": 100,
+          "spend": 48,
+          "unit": "g"
+        }
+      ],
+      "flags": [
+        "requires review",
+        "category unclear"
+      ],
       "suggestions": [
-        "Review raw entry details for missing date, quantity, or category."
-      ]
+        "Requires review before relying on the estimate fully.",
+        "Confirm the category."
+      ],
+      "totalSpend": 48
     }
   ],
-  "possible_anomalies": []
+  "possible_anomalies": [
+    {
+      "itemName": "Amor Farm Fresh Milk",
+      "kind": "possible_fast_consumption",
+      "severity": "medium",
+      "message": "Amor Farm Fresh Milk was reordered sooner than its earlier pattern. Treat this only as a possible anomaly until more context is reviewed."
+    }
+  ],
+  "dashboard": {
+    "items_to_order_today": [
+      {
+        "itemName": "Amor Farm Fresh Milk",
+        "category": "Dairy",
+        "purchaseCount": 65,
+        "lastPurchaseDate": "2026-04-30",
+        "lastPurchasedQuantity": 3,
+        "lastPurchaseSpend": 210,
+        "averageQuantityPurchased": 3.04,
+        "quantityUnit": "litre",
+        "averageDailyConsumption": 1.9,
+        "averageWeeklyConsumption": 13.3,
+        "averageConsumptionRate": "1.90 litre/day",
+        "averageDailyConsumptionLabel": "1.90 litre/day",
+        "averageWeeklyConsumptionLabel": "13.30 litre/week",
+        "consumptionBasis": "purchase_history",
+        "expectedStockDurationDays": 1.6,
+        "estimatedDaysOfStockRemaining": 0,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": 1.6,
+        "normalPurchaseFrequencyDays": 1.6,
+        "recommendedReorderDate": "2026-05-02",
+        "suggestedReorderQuantity": 3.5,
+        "currentConsumptionTrend": "Higher than usual",
+        "reorderPriorityScore": 100,
+        "stockBucket": "Items to Order Today",
+        "dataConfidenceScore": 100,
+        "dataConfidenceLabel": "High",
+        "daysSinceLastPurchase": 9,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2026-01",
+            "purchases": 13,
+            "spend": 2730
+          },
+          {
+            "month": "2026-02",
+            "purchases": 22,
+            "spend": 4830
+          },
+          {
+            "month": "2026-04",
+            "purchases": 30,
+            "spend": 6265
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2026-01",
+            "purchases": 13,
+            "quantity": 39,
+            "spend": 2730,
+            "unit": "litre"
+          },
+          {
+            "month": "2026-02",
+            "purchases": 22,
+            "quantity": 69,
+            "spend": 4830,
+            "unit": "litre"
+          },
+          {
+            "month": "2026-04",
+            "purchases": 30,
+            "quantity": 89.5,
+            "spend": 6265,
+            "unit": "litre"
+          }
+        ],
+        "flags": [
+          "possible fast consumption",
+          "stock-out risk",
+          "not purchased for a long time",
+          "possible dead stock"
+        ],
+        "suggestions": [
+          "Order now.",
+          "Verify consumption and check for an unusual usage spike."
+        ],
+        "totalSpend": 13825
+      }
+    ],
+    "items_to_order_within_3_days": [
+      {
+        "itemName": "THF Multigrain Bread",
+        "category": "Groceries",
+        "purchaseCount": 2,
+        "lastPurchaseDate": "2026-05-09",
+        "lastPurchasedQuantity": 300,
+        "lastPurchaseSpend": 70,
+        "averageQuantityPurchased": 300,
+        "quantityUnit": "g",
+        "averageDailyConsumption": 300,
+        "averageWeeklyConsumption": 2100,
+        "averageConsumptionRate": "300.00 g/day",
+        "averageDailyConsumptionLabel": "300.00 g/day",
+        "averageWeeklyConsumptionLabel": "2100.00 g/week",
+        "consumptionBasis": "purchase_history",
+        "expectedStockDurationDays": 1,
+        "estimatedDaysOfStockRemaining": 1,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": 1,
+        "normalPurchaseFrequencyDays": 1,
+        "recommendedReorderDate": "2026-05-10",
+        "suggestedReorderQuantity": 300,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": 70,
+        "stockBucket": "Items to Order Within 3 Days",
+        "dataConfidenceScore": 81,
+        "dataConfidenceLabel": "High",
+        "daysSinceLastPurchase": 0,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2026-05",
+            "purchases": 2,
+            "spend": 140
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2026-05",
+            "purchases": 2,
+            "quantity": 600,
+            "spend": 140,
+            "unit": "g"
+          }
+        ],
+        "flags": [],
+        "suggestions": [
+          "Order soon."
+        ],
+        "totalSpend": 140
+      }
+    ],
+    "items_sufficient_for_more_than_7_days": [
+      {
+        "itemName": "TWF Channa Sattu Flour",
+        "category": "Groceries",
+        "purchaseCount": 2,
+        "lastPurchaseDate": "2026-05-09",
+        "lastPurchasedQuantity": 2,
+        "lastPurchaseSpend": 598,
+        "averageQuantityPurchased": 2,
+        "quantityUnit": "kg",
+        "averageDailyConsumption": 0.06,
+        "averageWeeklyConsumption": 0.42,
+        "averageConsumptionRate": "0.06 kg/day",
+        "averageDailyConsumptionLabel": "0.06 kg/day",
+        "averageWeeklyConsumptionLabel": "0.42 kg/week",
+        "consumptionBasis": "purchase_history",
+        "expectedStockDurationDays": 33,
+        "estimatedDaysOfStockRemaining": 33,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": 33,
+        "normalPurchaseFrequencyDays": 33,
+        "recommendedReorderDate": "2026-06-11",
+        "suggestedReorderQuantity": 2,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": 18,
+        "stockBucket": "Items Sufficient for More Than 7 Days",
+        "dataConfidenceScore": 81,
+        "dataConfidenceLabel": "High",
+        "daysSinceLastPurchase": 0,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2026-04",
+            "purchases": 1,
+            "spend": 598
+          },
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "spend": 598
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2026-04",
+            "purchases": 1,
+            "quantity": 2,
+            "spend": 598,
+            "unit": "kg"
+          },
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "quantity": 2,
+            "spend": 598,
+            "unit": "kg"
+          }
+        ],
+        "flags": [],
+        "suggestions": [
+          "Order later.",
+          "A reminder roughly every 33 days would match current history."
+        ],
+        "totalSpend": 1196
+      }
+    ],
+    "unusual_consumption_alerts": [
+      {
+        "itemName": "Amor Farm Fresh Milk",
+        "label": "Higher than usual",
+        "detail": "Recent replenishment came sooner than the earlier pattern.",
+        "severity": "medium",
+        "suggestion": "Verify consumption and check for any unusual demand."
+      }
+    ],
+    "possible_wastage_indicators": [],
+    "unexplained_depletion_indicators": [],
+    "items_consumed_faster_than_expected": [
+      {
+        "itemName": "Amor Farm Fresh Milk",
+        "category": "Dairy",
+        "purchaseCount": 65,
+        "lastPurchaseDate": "2026-04-30",
+        "lastPurchasedQuantity": 3,
+        "lastPurchaseSpend": 210,
+        "averageQuantityPurchased": 3.04,
+        "quantityUnit": "litre",
+        "averageDailyConsumption": 1.9,
+        "averageWeeklyConsumption": 13.3,
+        "averageConsumptionRate": "1.90 litre/day",
+        "averageDailyConsumptionLabel": "1.90 litre/day",
+        "averageWeeklyConsumptionLabel": "13.30 litre/week",
+        "consumptionBasis": "purchase_history",
+        "expectedStockDurationDays": 1.6,
+        "estimatedDaysOfStockRemaining": 0,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": 1.6,
+        "normalPurchaseFrequencyDays": 1.6,
+        "recommendedReorderDate": "2026-05-02",
+        "suggestedReorderQuantity": 3.5,
+        "currentConsumptionTrend": "Higher than usual",
+        "reorderPriorityScore": 100,
+        "stockBucket": "Items to Order Today",
+        "dataConfidenceScore": 100,
+        "dataConfidenceLabel": "High",
+        "daysSinceLastPurchase": 9,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2026-01",
+            "purchases": 13,
+            "spend": 2730
+          },
+          {
+            "month": "2026-02",
+            "purchases": 22,
+            "spend": 4830
+          },
+          {
+            "month": "2026-04",
+            "purchases": 30,
+            "spend": 6265
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2026-01",
+            "purchases": 13,
+            "quantity": 39,
+            "spend": 2730,
+            "unit": "litre"
+          },
+          {
+            "month": "2026-02",
+            "purchases": 22,
+            "quantity": 69,
+            "spend": 4830,
+            "unit": "litre"
+          },
+          {
+            "month": "2026-04",
+            "purchases": 30,
+            "quantity": 89.5,
+            "spend": 6265,
+            "unit": "litre"
+          }
+        ],
+        "flags": [
+          "possible fast consumption",
+          "stock-out risk",
+          "not purchased for a long time",
+          "possible dead stock"
+        ],
+        "suggestions": [
+          "Order now.",
+          "Verify consumption and check for an unusual usage spike."
+        ],
+        "totalSpend": 13825
+      }
+    ],
+    "items_consumed_slower_than_expected": [],
+    "items_not_purchased_for_a_long_time": [
+      {
+        "itemName": "Amor Farm Fresh Milk",
+        "category": "Dairy",
+        "purchaseCount": 65,
+        "lastPurchaseDate": "2026-04-30",
+        "lastPurchasedQuantity": 3,
+        "lastPurchaseSpend": 210,
+        "averageQuantityPurchased": 3.04,
+        "quantityUnit": "litre",
+        "averageDailyConsumption": 1.9,
+        "averageWeeklyConsumption": 13.3,
+        "averageConsumptionRate": "1.90 litre/day",
+        "averageDailyConsumptionLabel": "1.90 litre/day",
+        "averageWeeklyConsumptionLabel": "13.30 litre/week",
+        "consumptionBasis": "purchase_history",
+        "expectedStockDurationDays": 1.6,
+        "estimatedDaysOfStockRemaining": 0,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": 1.6,
+        "normalPurchaseFrequencyDays": 1.6,
+        "recommendedReorderDate": "2026-05-02",
+        "suggestedReorderQuantity": 3.5,
+        "currentConsumptionTrend": "Higher than usual",
+        "reorderPriorityScore": 100,
+        "stockBucket": "Items to Order Today",
+        "dataConfidenceScore": 100,
+        "dataConfidenceLabel": "High",
+        "daysSinceLastPurchase": 9,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2026-01",
+            "purchases": 13,
+            "spend": 2730
+          },
+          {
+            "month": "2026-02",
+            "purchases": 22,
+            "spend": 4830
+          },
+          {
+            "month": "2026-04",
+            "purchases": 30,
+            "spend": 6265
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2026-01",
+            "purchases": 13,
+            "quantity": 39,
+            "spend": 2730,
+            "unit": "litre"
+          },
+          {
+            "month": "2026-02",
+            "purchases": 22,
+            "quantity": 69,
+            "spend": 4830,
+            "unit": "litre"
+          },
+          {
+            "month": "2026-04",
+            "purchases": 30,
+            "quantity": 89.5,
+            "spend": 6265,
+            "unit": "litre"
+          }
+        ],
+        "flags": [
+          "possible fast consumption",
+          "stock-out risk",
+          "not purchased for a long time",
+          "possible dead stock"
+        ],
+        "suggestions": [
+          "Order now.",
+          "Verify consumption and check for an unusual usage spike."
+        ],
+        "totalSpend": 13825
+      }
+    ],
+    "items_purchased_too_frequently": [
+      {
+        "itemName": "Amor Farm Fresh Milk",
+        "category": "Dairy",
+        "purchaseCount": 65,
+        "lastPurchaseDate": "2026-04-30",
+        "lastPurchasedQuantity": 3,
+        "lastPurchaseSpend": 210,
+        "averageQuantityPurchased": 3.04,
+        "quantityUnit": "litre",
+        "averageDailyConsumption": 1.9,
+        "averageWeeklyConsumption": 13.3,
+        "averageConsumptionRate": "1.90 litre/day",
+        "averageDailyConsumptionLabel": "1.90 litre/day",
+        "averageWeeklyConsumptionLabel": "13.30 litre/week",
+        "consumptionBasis": "purchase_history",
+        "expectedStockDurationDays": 1.6,
+        "estimatedDaysOfStockRemaining": 0,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": 1.6,
+        "normalPurchaseFrequencyDays": 1.6,
+        "recommendedReorderDate": "2026-05-02",
+        "suggestedReorderQuantity": 3.5,
+        "currentConsumptionTrend": "Higher than usual",
+        "reorderPriorityScore": 100,
+        "stockBucket": "Items to Order Today",
+        "dataConfidenceScore": 100,
+        "dataConfidenceLabel": "High",
+        "daysSinceLastPurchase": 9,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2026-01",
+            "purchases": 13,
+            "spend": 2730
+          },
+          {
+            "month": "2026-02",
+            "purchases": 22,
+            "spend": 4830
+          },
+          {
+            "month": "2026-04",
+            "purchases": 30,
+            "spend": 6265
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2026-01",
+            "purchases": 13,
+            "quantity": 39,
+            "spend": 2730,
+            "unit": "litre"
+          },
+          {
+            "month": "2026-02",
+            "purchases": 22,
+            "quantity": 69,
+            "spend": 4830,
+            "unit": "litre"
+          },
+          {
+            "month": "2026-04",
+            "purchases": 30,
+            "quantity": 89.5,
+            "spend": 6265,
+            "unit": "litre"
+          }
+        ],
+        "flags": [
+          "possible fast consumption",
+          "stock-out risk",
+          "not purchased for a long time",
+          "possible dead stock"
+        ],
+        "suggestions": [
+          "Order now.",
+          "Verify consumption and check for an unusual usage spike."
+        ],
+        "totalSpend": 13825
+      }
+    ],
+    "items_purchased_in_excess_quantity": [],
+    "items_usually_ordered_together": [
+      {
+        "pairLabel": "Amul Salted Butter + Davidoff Espresso 57 Instant Coffee 11/12 Intensity",
+        "frequency": 1,
+        "lastSeenDate": "2026-05-09"
+      },
+      {
+        "pairLabel": "Amul Salted Butter + Davidoff Fine Aroma Instant Coffee 7/12 Intensity",
+        "frequency": 1,
+        "lastSeenDate": "2026-05-09"
+      },
+      {
+        "pairLabel": "Amul Salted Butter + Everest Sambhar Masala",
+        "frequency": 1,
+        "lastSeenDate": "2026-05-09"
+      },
+      {
+        "pairLabel": "Amul Salted Butter + Kellogg's Corn Flakes Original",
+        "frequency": 1,
+        "lastSeenDate": "2026-05-09"
+      },
+      {
+        "pairLabel": "Amul Salted Butter + Lijjat Moong Dal Papad",
+        "frequency": 1,
+        "lastSeenDate": "2026-05-09"
+      },
+      {
+        "pairLabel": "Amul Salted Butter + Tata Sampann Coriander Seeds (Dhaniya), Whole Spices",
+        "frequency": 1,
+        "lastSeenDate": "2026-05-09"
+      },
+      {
+        "pairLabel": "Amul Salted Butter + Tata Sampann Unpolished Chana Dal",
+        "frequency": 1,
+        "lastSeenDate": "2026-05-09"
+      },
+      {
+        "pairLabel": "Amul Salted Butter + Tata Sampann Unpolished Green Moong Dal (Chilka)",
+        "frequency": 1,
+        "lastSeenDate": "2026-05-09"
+      },
+      {
+        "pairLabel": "Amul Salted Butter + Tata Sampann Unpolished Yellow Moong Dal (Dhuli) Split",
+        "frequency": 1,
+        "lastSeenDate": "2026-05-09"
+      },
+      {
+        "pairLabel": "Amul Salted Butter + THF Multigrain Bread",
+        "frequency": 1,
+        "lastSeenDate": "2026-05-09"
+      }
+    ],
+    "monthly_item_consumption_trend": [
+      {
+        "itemName": "Amor Farm Fresh Milk",
+        "unit": "litre",
+        "months": [
+          {
+            "month": "2026-01",
+            "purchases": 13,
+            "quantity": 39,
+            "spend": 2730
+          },
+          {
+            "month": "2026-02",
+            "purchases": 22,
+            "quantity": 69,
+            "spend": 4830
+          },
+          {
+            "month": "2026-04",
+            "purchases": 30,
+            "quantity": 89.5,
+            "spend": 6265
+          }
+        ]
+      },
+      {
+        "itemName": "TWF Channa Sattu Flour",
+        "unit": "kg",
+        "months": [
+          {
+            "month": "2026-04",
+            "purchases": 1,
+            "quantity": 2,
+            "spend": 598
+          },
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "quantity": 2,
+            "spend": 598
+          }
+        ]
+      },
+      {
+        "itemName": "THF Multigrain Bread",
+        "unit": "g",
+        "months": [
+          {
+            "month": "2026-05",
+            "purchases": 2,
+            "quantity": 600,
+            "spend": 140
+          }
+        ]
+      },
+      {
+        "itemName": "TWF Highland - Sharbati Roti Flour",
+        "unit": "kg",
+        "months": [
+          {
+            "month": "2025-12",
+            "purchases": 1,
+            "quantity": 10,
+            "spend": 1299
+          }
+        ]
+      },
+      {
+        "itemName": "TWF Atta [Non NCR]",
+        "unit": "kg",
+        "months": [
+          {
+            "month": "2026-02",
+            "purchases": 1,
+            "quantity": 25,
+            "spend": 1286.25
+          }
+        ]
+      },
+      {
+        "itemName": "TWF Atta",
+        "unit": "kg",
+        "months": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "quantity": 25,
+            "spend": 997.5
+          }
+        ]
+      },
+      {
+        "itemName": "TWF Virgin Sorghum Flour",
+        "unit": "kg",
+        "months": [
+          {
+            "month": "2026-04",
+            "purchases": 1,
+            "quantity": 5,
+            "spend": 899
+          }
+        ]
+      },
+      {
+        "itemName": "Davidoff Espresso 57 Instant Coffee 11/12 Intensity",
+        "unit": "g",
+        "months": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "quantity": 100,
+            "spend": 790
+          }
+        ]
+      },
+      {
+        "itemName": "Davidoff Fine Aroma Instant Coffee 7/12 Intensity",
+        "unit": "g",
+        "months": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "quantity": 100,
+            "spend": 739
+          }
+        ]
+      },
+      {
+        "itemName": "TWF Virgin Ragi Flour",
+        "unit": "kg",
+        "months": [
+          {
+            "month": "2026-04",
+            "purchases": 1,
+            "quantity": 5,
+            "spend": 699
+          }
+        ]
+      }
+    ],
+    "monthly_category_consumption_trend": [
+      {
+        "category": "Dairy",
+        "months": [
+          {
+            "month": "2026-01",
+            "purchases": 13,
+            "spend": 2730
+          },
+          {
+            "month": "2026-02",
+            "purchases": 22,
+            "spend": 4830
+          },
+          {
+            "month": "2026-04",
+            "purchases": 30,
+            "spend": 6265
+          },
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "spend": 244
+          }
+        ]
+      },
+      {
+        "category": "Groceries",
+        "months": [
+          {
+            "month": "2025-12",
+            "purchases": 7,
+            "spend": 3640
+          },
+          {
+            "month": "2026-02",
+            "purchases": 2,
+            "spend": 1884.25
+          },
+          {
+            "month": "2026-04",
+            "purchases": 3,
+            "spend": 2196
+          },
+          {
+            "month": "2026-05",
+            "purchases": 16,
+            "spend": 4405.5
+          }
+        ]
+      },
+      {
+        "category": "Unclear",
+        "months": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "spend": 48
+          }
+        ]
+      }
+    ],
+    "monthly_category_spending_trend": [
+      {
+        "category": "Dairy",
+        "months": [
+          {
+            "month": "2026-01",
+            "purchases": 13,
+            "spend": 2730
+          },
+          {
+            "month": "2026-02",
+            "purchases": 22,
+            "spend": 4830
+          },
+          {
+            "month": "2026-04",
+            "purchases": 30,
+            "spend": 6265
+          },
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "spend": 244
+          }
+        ]
+      },
+      {
+        "category": "Groceries",
+        "months": [
+          {
+            "month": "2025-12",
+            "purchases": 7,
+            "spend": 3640
+          },
+          {
+            "month": "2026-02",
+            "purchases": 2,
+            "spend": 1884.25
+          },
+          {
+            "month": "2026-04",
+            "purchases": 3,
+            "spend": 2196
+          },
+          {
+            "month": "2026-05",
+            "purchases": 16,
+            "spend": 4405.5
+          }
+        ]
+      },
+      {
+        "category": "Unclear",
+        "months": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "spend": 48
+          }
+        ]
+      }
+    ],
+    "top_frequently_purchased_items": [
+      {
+        "itemName": "Amor Farm Fresh Milk",
+        "value": 65,
+        "label": "65 purchases"
+      },
+      {
+        "itemName": "TWF Channa Sattu Flour",
+        "value": 2,
+        "label": "2 purchases"
+      },
+      {
+        "itemName": "THF Multigrain Bread",
+        "value": 2,
+        "label": "2 purchases"
+      },
+      {
+        "itemName": "TWF Highland - Sharbati Roti Flour",
+        "value": 1,
+        "label": "1 purchases"
+      },
+      {
+        "itemName": "TWF Atta [Non NCR]",
+        "value": 1,
+        "label": "1 purchases"
+      },
+      {
+        "itemName": "TWF Atta",
+        "value": 1,
+        "label": "1 purchases"
+      },
+      {
+        "itemName": "TWF Virgin Sorghum Flour",
+        "value": 1,
+        "label": "1 purchases"
+      },
+      {
+        "itemName": "Davidoff Espresso 57 Instant Coffee 11/12 Intensity",
+        "value": 1,
+        "label": "1 purchases"
+      },
+      {
+        "itemName": "Davidoff Fine Aroma Instant Coffee 7/12 Intensity",
+        "value": 1,
+        "label": "1 purchases"
+      },
+      {
+        "itemName": "TWF Virgin Ragi Flour",
+        "value": 1,
+        "label": "1 purchases"
+      }
+    ],
+    "top_highest_spending_items": [
+      {
+        "itemName": "Amor Farm Fresh Milk",
+        "value": 13825,
+        "label": "₹13825.00"
+      },
+      {
+        "itemName": "TWF Highland - Sharbati Roti Flour",
+        "value": 1299,
+        "label": "₹1299.00"
+      },
+      {
+        "itemName": "TWF Atta [Non NCR]",
+        "value": 1286.25,
+        "label": "₹1286.25"
+      },
+      {
+        "itemName": "TWF Channa Sattu Flour",
+        "value": 1196,
+        "label": "₹1196.00"
+      },
+      {
+        "itemName": "TWF Atta",
+        "value": 997.5,
+        "label": "₹997.50"
+      },
+      {
+        "itemName": "TWF Virgin Sorghum Flour",
+        "value": 899,
+        "label": "₹899.00"
+      },
+      {
+        "itemName": "Davidoff Espresso 57 Instant Coffee 11/12 Intensity",
+        "value": 790,
+        "label": "₹790.00"
+      },
+      {
+        "itemName": "Davidoff Fine Aroma Instant Coffee 7/12 Intensity",
+        "value": 739,
+        "label": "₹739.00"
+      },
+      {
+        "itemName": "TWF Virgin Ragi Flour",
+        "value": 699,
+        "label": "₹699.00"
+      },
+      {
+        "itemName": "TWF Reliq - Heirloom Rotis",
+        "value": 598,
+        "label": "₹598.00"
+      }
+    ],
+    "items_with_rising_consumption": [
+      {
+        "itemName": "Amor Farm Fresh Milk",
+        "category": "Dairy",
+        "purchaseCount": 65,
+        "lastPurchaseDate": "2026-04-30",
+        "lastPurchasedQuantity": 3,
+        "lastPurchaseSpend": 210,
+        "averageQuantityPurchased": 3.04,
+        "quantityUnit": "litre",
+        "averageDailyConsumption": 1.9,
+        "averageWeeklyConsumption": 13.3,
+        "averageConsumptionRate": "1.90 litre/day",
+        "averageDailyConsumptionLabel": "1.90 litre/day",
+        "averageWeeklyConsumptionLabel": "13.30 litre/week",
+        "consumptionBasis": "purchase_history",
+        "expectedStockDurationDays": 1.6,
+        "estimatedDaysOfStockRemaining": 0,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": 1.6,
+        "normalPurchaseFrequencyDays": 1.6,
+        "recommendedReorderDate": "2026-05-02",
+        "suggestedReorderQuantity": 3.5,
+        "currentConsumptionTrend": "Higher than usual",
+        "reorderPriorityScore": 100,
+        "stockBucket": "Items to Order Today",
+        "dataConfidenceScore": 100,
+        "dataConfidenceLabel": "High",
+        "daysSinceLastPurchase": 9,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2026-01",
+            "purchases": 13,
+            "spend": 2730
+          },
+          {
+            "month": "2026-02",
+            "purchases": 22,
+            "spend": 4830
+          },
+          {
+            "month": "2026-04",
+            "purchases": 30,
+            "spend": 6265
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2026-01",
+            "purchases": 13,
+            "quantity": 39,
+            "spend": 2730,
+            "unit": "litre"
+          },
+          {
+            "month": "2026-02",
+            "purchases": 22,
+            "quantity": 69,
+            "spend": 4830,
+            "unit": "litre"
+          },
+          {
+            "month": "2026-04",
+            "purchases": 30,
+            "quantity": 89.5,
+            "spend": 6265,
+            "unit": "litre"
+          }
+        ],
+        "flags": [
+          "possible fast consumption",
+          "stock-out risk",
+          "not purchased for a long time",
+          "possible dead stock"
+        ],
+        "suggestions": [
+          "Order now.",
+          "Verify consumption and check for an unusual usage spike."
+        ],
+        "totalSpend": 13825
+      }
+    ],
+    "items_with_falling_consumption": [],
+    "seasonal_consumption_pattern": [
+      "Insufficient data for seasonal consumption patterns."
+    ],
+    "guest_event_festival_impact": [
+      "No guest, event, or festival tags are recorded yet, so impact cannot be separated from normal purchases."
+    ],
+    "perishable_items_requiring_faster_use": [],
+    "slow_moving_items": [
+      {
+        "itemName": "Amor Farm Fresh Milk",
+        "category": "Dairy",
+        "purchaseCount": 65,
+        "lastPurchaseDate": "2026-04-30",
+        "lastPurchasedQuantity": 3,
+        "lastPurchaseSpend": 210,
+        "averageQuantityPurchased": 3.04,
+        "quantityUnit": "litre",
+        "averageDailyConsumption": 1.9,
+        "averageWeeklyConsumption": 13.3,
+        "averageConsumptionRate": "1.90 litre/day",
+        "averageDailyConsumptionLabel": "1.90 litre/day",
+        "averageWeeklyConsumptionLabel": "13.30 litre/week",
+        "consumptionBasis": "purchase_history",
+        "expectedStockDurationDays": 1.6,
+        "estimatedDaysOfStockRemaining": 0,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": 1.6,
+        "normalPurchaseFrequencyDays": 1.6,
+        "recommendedReorderDate": "2026-05-02",
+        "suggestedReorderQuantity": 3.5,
+        "currentConsumptionTrend": "Higher than usual",
+        "reorderPriorityScore": 100,
+        "stockBucket": "Items to Order Today",
+        "dataConfidenceScore": 100,
+        "dataConfidenceLabel": "High",
+        "daysSinceLastPurchase": 9,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2026-01",
+            "purchases": 13,
+            "spend": 2730
+          },
+          {
+            "month": "2026-02",
+            "purchases": 22,
+            "spend": 4830
+          },
+          {
+            "month": "2026-04",
+            "purchases": 30,
+            "spend": 6265
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2026-01",
+            "purchases": 13,
+            "quantity": 39,
+            "spend": 2730,
+            "unit": "litre"
+          },
+          {
+            "month": "2026-02",
+            "purchases": 22,
+            "quantity": 69,
+            "spend": 4830,
+            "unit": "litre"
+          },
+          {
+            "month": "2026-04",
+            "purchases": 30,
+            "quantity": 89.5,
+            "spend": 6265,
+            "unit": "litre"
+          }
+        ],
+        "flags": [
+          "possible fast consumption",
+          "stock-out risk",
+          "not purchased for a long time",
+          "possible dead stock"
+        ],
+        "suggestions": [
+          "Order now.",
+          "Verify consumption and check for an unusual usage spike."
+        ],
+        "totalSpend": 13825
+      }
+    ],
+    "dead_stock_items": [
+      {
+        "itemName": "TWF Baker’s Salt - Pink Rock Salt",
+        "category": "Groceries",
+        "purchaseCount": 1,
+        "lastPurchaseDate": "2025-12-07",
+        "lastPurchasedQuantity": 1,
+        "lastPurchaseSpend": 199,
+        "averageQuantityPurchased": 1,
+        "quantityUnit": "kg",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 1,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 51,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": 153,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2025-12",
+            "purchases": 1,
+            "spend": 199
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2025-12",
+            "purchases": 1,
+            "quantity": 1,
+            "spend": 199,
+            "unit": "kg"
+          }
+        ],
+        "flags": [
+          "possible dead stock"
+        ],
+        "suggestions": [
+          "Continue collecting purchase entries to strengthen the estimate."
+        ],
+        "totalSpend": 199
+      },
+      {
+        "itemName": "TWF Dusting Semolina for Pizzas",
+        "category": "Groceries",
+        "purchaseCount": 1,
+        "lastPurchaseDate": "2025-12-07",
+        "lastPurchasedQuantity": 1,
+        "lastPurchaseSpend": 149,
+        "averageQuantityPurchased": 1,
+        "quantityUnit": "kg",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 1,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 51,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": 153,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2025-12",
+            "purchases": 1,
+            "spend": 149
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2025-12",
+            "purchases": 1,
+            "quantity": 1,
+            "spend": 149,
+            "unit": "kg"
+          }
+        ],
+        "flags": [
+          "possible dead stock"
+        ],
+        "suggestions": [
+          "Continue collecting purchase entries to strengthen the estimate."
+        ],
+        "totalSpend": 149
+      },
+      {
+        "itemName": "TWF Highland - Sharbati Roti Flour",
+        "category": "Groceries",
+        "purchaseCount": 1,
+        "lastPurchaseDate": "2025-12-07",
+        "lastPurchasedQuantity": 10,
+        "lastPurchaseSpend": 1299,
+        "averageQuantityPurchased": 10,
+        "quantityUnit": "kg",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 10,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 51,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": 153,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2025-12",
+            "purchases": 1,
+            "spend": 1299
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2025-12",
+            "purchases": 1,
+            "quantity": 10,
+            "spend": 1299,
+            "unit": "kg"
+          }
+        ],
+        "flags": [
+          "possible dead stock"
+        ],
+        "suggestions": [
+          "Continue collecting purchase entries to strengthen the estimate."
+        ],
+        "totalSpend": 1299
+      },
+      {
+        "itemName": "TWF Reliq - Heirloom Rotis",
+        "category": "Groceries",
+        "purchaseCount": 1,
+        "lastPurchaseDate": "2025-12-07",
+        "lastPurchasedQuantity": 2,
+        "lastPurchaseSpend": 598,
+        "averageQuantityPurchased": 2,
+        "quantityUnit": "kg",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 2,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 51,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": 153,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2025-12",
+            "purchases": 1,
+            "spend": 598
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2025-12",
+            "purchases": 1,
+            "quantity": 2,
+            "spend": 598,
+            "unit": "kg"
+          }
+        ],
+        "flags": [
+          "possible dead stock"
+        ],
+        "suggestions": [
+          "Continue collecting purchase entries to strengthen the estimate."
+        ],
+        "totalSpend": 598
+      },
+      {
+        "itemName": "TWF Series C-8714 Sourdough Bread Flour",
+        "category": "Groceries",
+        "purchaseCount": 1,
+        "lastPurchaseDate": "2025-12-07",
+        "lastPurchasedQuantity": 1,
+        "lastPurchaseSpend": 499,
+        "averageQuantityPurchased": 1,
+        "quantityUnit": "kg",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 1,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 51,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": 153,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2025-12",
+            "purchases": 1,
+            "spend": 499
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2025-12",
+            "purchases": 1,
+            "quantity": 1,
+            "spend": 499,
+            "unit": "kg"
+          }
+        ],
+        "flags": [
+          "possible dead stock"
+        ],
+        "suggestions": [
+          "Continue collecting purchase entries to strengthen the estimate."
+        ],
+        "totalSpend": 499
+      },
+      {
+        "itemName": "TWF Virgin Barley Flour",
+        "category": "Groceries",
+        "purchaseCount": 1,
+        "lastPurchaseDate": "2025-12-07",
+        "lastPurchasedQuantity": 2,
+        "lastPurchaseSpend": 318,
+        "averageQuantityPurchased": 2,
+        "quantityUnit": "kg",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 2,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 51,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": 153,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2025-12",
+            "purchases": 1,
+            "spend": 318
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2025-12",
+            "purchases": 1,
+            "quantity": 2,
+            "spend": 318,
+            "unit": "kg"
+          }
+        ],
+        "flags": [
+          "possible dead stock"
+        ],
+        "suggestions": [
+          "Continue collecting purchase entries to strengthen the estimate."
+        ],
+        "totalSpend": 318
+      },
+      {
+        "itemName": "TWF Virgin Khapli (Emmer) Flour",
+        "category": "Groceries",
+        "purchaseCount": 1,
+        "lastPurchaseDate": "2025-12-07",
+        "lastPurchasedQuantity": 2,
+        "lastPurchaseSpend": 578,
+        "averageQuantityPurchased": 2,
+        "quantityUnit": "kg",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 2,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 51,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": 153,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2025-12",
+            "purchases": 1,
+            "spend": 578
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2025-12",
+            "purchases": 1,
+            "quantity": 2,
+            "spend": 578,
+            "unit": "kg"
+          }
+        ],
+        "flags": [
+          "possible dead stock"
+        ],
+        "suggestions": [
+          "Continue collecting purchase entries to strengthen the estimate."
+        ],
+        "totalSpend": 578
+      },
+      {
+        "itemName": "Amor Farm Fresh Milk",
+        "category": "Dairy",
+        "purchaseCount": 65,
+        "lastPurchaseDate": "2026-04-30",
+        "lastPurchasedQuantity": 3,
+        "lastPurchaseSpend": 210,
+        "averageQuantityPurchased": 3.04,
+        "quantityUnit": "litre",
+        "averageDailyConsumption": 1.9,
+        "averageWeeklyConsumption": 13.3,
+        "averageConsumptionRate": "1.90 litre/day",
+        "averageDailyConsumptionLabel": "1.90 litre/day",
+        "averageWeeklyConsumptionLabel": "13.30 litre/week",
+        "consumptionBasis": "purchase_history",
+        "expectedStockDurationDays": 1.6,
+        "estimatedDaysOfStockRemaining": 0,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": 1.6,
+        "normalPurchaseFrequencyDays": 1.6,
+        "recommendedReorderDate": "2026-05-02",
+        "suggestedReorderQuantity": 3.5,
+        "currentConsumptionTrend": "Higher than usual",
+        "reorderPriorityScore": 100,
+        "stockBucket": "Items to Order Today",
+        "dataConfidenceScore": 100,
+        "dataConfidenceLabel": "High",
+        "daysSinceLastPurchase": 9,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2026-01",
+            "purchases": 13,
+            "spend": 2730
+          },
+          {
+            "month": "2026-02",
+            "purchases": 22,
+            "spend": 4830
+          },
+          {
+            "month": "2026-04",
+            "purchases": 30,
+            "spend": 6265
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2026-01",
+            "purchases": 13,
+            "quantity": 39,
+            "spend": 2730,
+            "unit": "litre"
+          },
+          {
+            "month": "2026-02",
+            "purchases": 22,
+            "quantity": 69,
+            "spend": 4830,
+            "unit": "litre"
+          },
+          {
+            "month": "2026-04",
+            "purchases": 30,
+            "quantity": 89.5,
+            "spend": 6265,
+            "unit": "litre"
+          }
+        ],
+        "flags": [
+          "possible fast consumption",
+          "stock-out risk",
+          "not purchased for a long time",
+          "possible dead stock"
+        ],
+        "suggestions": [
+          "Order now.",
+          "Verify consumption and check for an unusual usage spike."
+        ],
+        "totalSpend": 13825
+      }
+    ],
+    "stock_out_risk_items": [
+      {
+        "itemName": "Amor Farm Fresh Milk",
+        "category": "Dairy",
+        "purchaseCount": 65,
+        "lastPurchaseDate": "2026-04-30",
+        "lastPurchasedQuantity": 3,
+        "lastPurchaseSpend": 210,
+        "averageQuantityPurchased": 3.04,
+        "quantityUnit": "litre",
+        "averageDailyConsumption": 1.9,
+        "averageWeeklyConsumption": 13.3,
+        "averageConsumptionRate": "1.90 litre/day",
+        "averageDailyConsumptionLabel": "1.90 litre/day",
+        "averageWeeklyConsumptionLabel": "13.30 litre/week",
+        "consumptionBasis": "purchase_history",
+        "expectedStockDurationDays": 1.6,
+        "estimatedDaysOfStockRemaining": 0,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": 1.6,
+        "normalPurchaseFrequencyDays": 1.6,
+        "recommendedReorderDate": "2026-05-02",
+        "suggestedReorderQuantity": 3.5,
+        "currentConsumptionTrend": "Higher than usual",
+        "reorderPriorityScore": 100,
+        "stockBucket": "Items to Order Today",
+        "dataConfidenceScore": 100,
+        "dataConfidenceLabel": "High",
+        "daysSinceLastPurchase": 9,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2026-01",
+            "purchases": 13,
+            "spend": 2730
+          },
+          {
+            "month": "2026-02",
+            "purchases": 22,
+            "spend": 4830
+          },
+          {
+            "month": "2026-04",
+            "purchases": 30,
+            "spend": 6265
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2026-01",
+            "purchases": 13,
+            "quantity": 39,
+            "spend": 2730,
+            "unit": "litre"
+          },
+          {
+            "month": "2026-02",
+            "purchases": 22,
+            "quantity": 69,
+            "spend": 4830,
+            "unit": "litre"
+          },
+          {
+            "month": "2026-04",
+            "purchases": 30,
+            "quantity": 89.5,
+            "spend": 6265,
+            "unit": "litre"
+          }
+        ],
+        "flags": [
+          "possible fast consumption",
+          "stock-out risk",
+          "not purchased for a long time",
+          "possible dead stock"
+        ],
+        "suggestions": [
+          "Order now.",
+          "Verify consumption and check for an unusual usage spike."
+        ],
+        "totalSpend": 13825
+      }
+    ],
+    "overstock_risk_items": [],
+    "items_requiring_manual_review": [
+      {
+        "itemName": "Whole Farm Premium Red Chilli Whole",
+        "category": "Unclear",
+        "purchaseCount": 1,
+        "lastPurchaseDate": "2026-05-09",
+        "lastPurchasedQuantity": 100,
+        "lastPurchaseSpend": 48,
+        "averageQuantityPurchased": 100,
+        "quantityUnit": "g",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 100,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 30,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": 0,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "spend": 48
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "quantity": 100,
+            "spend": 48,
+            "unit": "g"
+          }
+        ],
+        "flags": [
+          "requires review",
+          "category unclear"
+        ],
+        "suggestions": [
+          "Requires review before relying on the estimate fully.",
+          "Confirm the category."
+        ],
+        "totalSpend": 48
+      }
+    ],
+    "recently_added_purchase_data": [
+      {
+        "purchaseId": "amor-farm-54bc028d8b2b",
+        "dateOfPurchase": "2026-04-14",
+        "itemName": "Amor Farm Fresh Milk",
+        "category": "Dairy",
+        "quantityLabel": "3 litre",
+        "amountLabel": "₹210.00",
+        "reviewStatus": "ok",
+        "reviewNotes": [],
+        "enteredAt": "2026-05-09T18:01:15.836Z"
+      },
+      {
+        "purchaseId": "amor-farm-c63f2a88ba2a",
+        "dateOfPurchase": "2026-04-15",
+        "itemName": "Amor Farm Fresh Milk",
+        "category": "Dairy",
+        "quantityLabel": "3 litre",
+        "amountLabel": "₹210.00",
+        "reviewStatus": "ok",
+        "reviewNotes": [],
+        "enteredAt": "2026-05-09T18:01:15.836Z"
+      },
+      {
+        "purchaseId": "amor-farm-b248902fca8c",
+        "dateOfPurchase": "2026-04-16",
+        "itemName": "Amor Farm Fresh Milk",
+        "category": "Dairy",
+        "quantityLabel": "3 litre",
+        "amountLabel": "₹210.00",
+        "reviewStatus": "ok",
+        "reviewNotes": [],
+        "enteredAt": "2026-05-09T18:01:15.836Z"
+      },
+      {
+        "purchaseId": "amor-farm-fa455cda1920",
+        "dateOfPurchase": "2026-04-17",
+        "itemName": "Amor Farm Fresh Milk",
+        "category": "Dairy",
+        "quantityLabel": "3 litre",
+        "amountLabel": "₹210.00",
+        "reviewStatus": "ok",
+        "reviewNotes": [],
+        "enteredAt": "2026-05-09T18:01:15.836Z"
+      },
+      {
+        "purchaseId": "amor-farm-be3649b780b8",
+        "dateOfPurchase": "2026-04-18",
+        "itemName": "Amor Farm Fresh Milk",
+        "category": "Dairy",
+        "quantityLabel": "3 litre",
+        "amountLabel": "₹210.00",
+        "reviewStatus": "ok",
+        "reviewNotes": [],
+        "enteredAt": "2026-05-09T18:01:15.836Z"
+      },
+      {
+        "purchaseId": "amor-farm-1c9f5432e2a3",
+        "dateOfPurchase": "2026-04-19",
+        "itemName": "Amor Farm Fresh Milk",
+        "category": "Dairy",
+        "quantityLabel": "3 litre",
+        "amountLabel": "₹210.00",
+        "reviewStatus": "ok",
+        "reviewNotes": [],
+        "enteredAt": "2026-05-09T18:01:15.836Z"
+      },
+      {
+        "purchaseId": "amor-farm-28816f1e81e8",
+        "dateOfPurchase": "2026-04-20",
+        "itemName": "Amor Farm Fresh Milk",
+        "category": "Dairy",
+        "quantityLabel": "3 litre",
+        "amountLabel": "₹210.00",
+        "reviewStatus": "ok",
+        "reviewNotes": [],
+        "enteredAt": "2026-05-09T18:01:15.836Z"
+      },
+      {
+        "purchaseId": "amor-farm-e0911469668b",
+        "dateOfPurchase": "2026-04-21",
+        "itemName": "Amor Farm Fresh Milk",
+        "category": "Dairy",
+        "quantityLabel": "3 litre",
+        "amountLabel": "₹210.00",
+        "reviewStatus": "ok",
+        "reviewNotes": [],
+        "enteredAt": "2026-05-09T18:01:15.836Z"
+      }
+    ],
+    "recently_parsed_items_needing_correction": [
+      {
+        "purchaseId": "2281decd-4fc4-446e-b80c-d1c07f10ab25",
+        "dateOfPurchase": "2026-05-09",
+        "itemName": "Whole Farm Premium Red Chilli Whole",
+        "category": "Unclear",
+        "quantityLabel": "100 g",
+        "amountLabel": "₹48.00",
+        "reviewStatus": "needs_review",
+        "reviewNotes": [
+          "Category needs review"
+        ],
+        "enteredAt": "2026-05-09T16:22:06.359Z"
+      }
+    ],
+    "duplicate_or_suspicious_entries": [],
+    "items_with_unclear_quantity_or_unit": [],
+    "items_with_unclear_category": [
+      {
+        "itemName": "Whole Farm Premium Red Chilli Whole",
+        "category": "Unclear",
+        "purchaseCount": 1,
+        "lastPurchaseDate": "2026-05-09",
+        "lastPurchasedQuantity": 100,
+        "lastPurchaseSpend": 48,
+        "averageQuantityPurchased": 100,
+        "quantityUnit": "g",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 100,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 30,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": 0,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "spend": 48
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "quantity": 100,
+            "spend": 48,
+            "unit": "g"
+          }
+        ],
+        "flags": [
+          "requires review",
+          "category unclear"
+        ],
+        "suggestions": [
+          "Requires review before relying on the estimate fully.",
+          "Confirm the category."
+        ],
+        "totalSpend": 48
+      }
+    ],
+    "auto_categorisation": {
+      "autoEntryCount": 94,
+      "needsReviewEntryCount": 1,
+      "autoEntryRate": 98.9,
+      "autoItemCount": 28,
+      "needsReviewItemCount": 1
+    }
+  }
 }

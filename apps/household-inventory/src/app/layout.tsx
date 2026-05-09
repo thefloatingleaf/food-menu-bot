@@ -1,9 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, Manrope } from "next/font/google";
+import { Manrope, Space_Grotesk } from "next/font/google";
 
 import "./globals.css";
 
-const displayFont = Cormorant_Garamond({
+const displayFont = Space_Grotesk({
   variable: "--font-display",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
@@ -16,7 +16,7 @@ const bodyFont = Manrope({
 
 export const metadata: Metadata = {
   title: "Household Inventory",
-  description: "Private household purchase log and consumption analysis.",
+  description: "Private household inventory decisions, reorder planning, and review signals.",
 };
 
 export const viewport: Viewport = {

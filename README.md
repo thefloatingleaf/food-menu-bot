@@ -100,9 +100,8 @@ This repo maintains a shared household purchase ledger used by the standalone Ho
 ### Internal interface
 
 - Open the standalone Household Inventory app at `http://localhost:3001`.
-- The app provides exactly two working views:
-  - `Purchase Log`
-  - `Consumption & Analysis`
+- The landing page is a decision-oriented dashboard for reorder timing, consumption pace, stock risk, and review signals.
+- The complete transaction register remains available separately at `http://localhost:3001/purchase-log`.
 
 ### Supported purchase fields
 
