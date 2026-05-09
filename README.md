@@ -44,6 +44,56 @@ Each publish run also maintains `published_menu_archive.json`, which is the insp
 python3 -m unittest discover -s tests
 ```
 
+## Household purchase ledger
+
+This repo now also maintains a silent background household purchase ledger. It does not create any landing page, dashboard, or visible interface.
+
+### Storage files
+
+- `data/household_purchases/purchase_ledger.json`
+- `data/household_purchases/analysis_snapshot.json`
+
+### Supported purchase fields
+
+- `date_of_purchase`
+- `item_name`
+- `category`
+- `quantity_purchased`
+- `unit_of_measurement`
+- `price`
+- `currency`
+- `vendor_source`
+- `mode_of_payment`
+- `payment_reference`
+- `bill_invoice_reference`
+- `expected_consumption_period`
+- `actual_consumption_period`
+- `remarks`
+
+### One-command initialization
+
+```bash
+python3 household_purchase_ledger.py ensure
+```
+
+Expected result: the purchase ledger and analysis snapshot files exist and validate as empty structured records.
+
+### One-command validation
+
+```bash
+python3 household_purchase_ledger.py validate
+```
+
+Expected result: the current purchase ledger passes schema checks with no output.
+
+### One-command summary refresh
+
+```bash
+python3 household_purchase_ledger.py summarize
+```
+
+Expected result: `analysis_snapshot.json` is refreshed with item-wise consumption, reorder, spend, and possible-anomaly insights derived only from available data.
+
 ## Generate the 3 trigger menus for manual checking
 
 ```bash

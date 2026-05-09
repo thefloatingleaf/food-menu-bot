@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-05-09T16:06:25Z",
+  "totals": {
+    "purchase_count": 0,
+    "tracked_item_count": 0,
+    "currency": "INR",
+    "total_spend": 0.0
+  },
+  "items": {},
+  "possible_anomalies": [],
+  "monthly_spend": {},
+  "category_spend": {}
+}
