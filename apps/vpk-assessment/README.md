@@ -53,12 +53,9 @@ Expected result: the app compiles successfully for production.
 
 1. Sign in with the admin account or a user account created by the admin.
 2. Admin users can open `Manage Accounts` and create additional logins with passwords.
-3. Admin users also get an internal `Household Inventory` module at `/inventory` with two simple tabs: `Purchase Log` and `Consumption & Analysis`.
-4. The Purchase Log accepts pasted raw purchase text, auto-parses details, auto-detects categories, and saves uncertain rows with review flags instead of blocking the save.
-5. The Consumption & Analysis tab derives reorder cadence, stock-duration estimates, monthly purchase patterns, and only possible-anomaly flags from the saved records.
-6. Regular user accounts receive one assessment attempt at a time, with a 6-hour test window starting from an eligible login.
-7. Admin accounts can complete the assessment multiple times and can use `Allow Test Again` to reopen access for any regular account.
-8. Assessment content is protected with disabled copy/select/context-menu/print behavior and visible watermarking.
+3. Regular user accounts receive one assessment attempt at a time, with a 6-hour test window starting from an eligible login.
+4. Admin accounts can complete the assessment multiple times and can use `Allow Test Again` to reopen access for any regular account.
+5. Assessment content is protected with disabled copy/select/context-menu/print behavior and visible watermarking.
 
 ## Privacy note
 

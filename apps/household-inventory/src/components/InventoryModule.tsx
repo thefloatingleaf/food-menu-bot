@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { FormEvent, useState } from "react";
 
 import type { InventoryAnalysis, InventoryEntry } from "@/lib/inventory";
@@ -9,15 +8,9 @@ type InventoryModuleProps = {
   initialEntries: InventoryEntry[];
   initialAnalysis: InventoryAnalysis;
   initialTab: "log" | "analysis";
-  accountDisplayName: string;
 };
 
-export function InventoryModule({
-  initialEntries,
-  initialAnalysis,
-  initialTab,
-  accountDisplayName,
-}: InventoryModuleProps) {
+export function InventoryModule({ initialEntries, initialAnalysis, initialTab }: InventoryModuleProps) {
   const [entries, setEntries] = useState(initialEntries);
   const [analysis, setAnalysis] = useState(initialAnalysis);
   const [activeTab, setActiveTab] = useState<"log" | "analysis">(initialTab);
@@ -63,7 +56,7 @@ export function InventoryModule({
         <header className="inventory-header panel stack">
           <div className="badge-row">
             <span className="badge">Private internal module</span>
-            <span className="badge">Signed in as {accountDisplayName}</span>
+            <span className="badge">Standalone from VPK</span>
           </div>
           <div className="inventory-header__topline">
             <div className="stack">
@@ -72,11 +65,6 @@ export function InventoryModule({
               <p className="muted">
                 Paste raw purchase records as they come. The system parses what it can, auto-detects categories, saves uncertain rows with review flags, and keeps the analysis private and utilitarian.
               </p>
-            </div>
-            <div className="inventory-header__actions">
-              <Link className="button button--secondary" href="/">
-                Assessment Home
-              </Link>
             </div>
           </div>
           <div className="inventory-tabs" role="tablist" aria-label="Inventory views">

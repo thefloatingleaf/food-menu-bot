@@ -102,7 +102,7 @@ const CATEGORY_RULES: Array<{ category: InventoryCategory; keywords: string[] }>
   { category: "Baby Items", keywords: ["diaper", "wipes", "formula", "baby", "feeding bottle", "rash cream", "nappy"] },
   { category: "Medicines", keywords: ["tablet", "capsule", "syrup", "ointment", "medicine", "medicines", "paracetamol", "crocin", "dolo", "vitamin"] },
   { category: "Household Consumables", keywords: ["tissue", "foil", "garbage bag", "dustbin bag", "candle", "matchbox", "battery", "toothpaste", "toothbrush", "napkin"] },
-  { category: "Groceries", keywords: ["atta", "rice", "dal", "daliya", "flour", "besan", "oil", "sugar", "salt", "masala", "turmeric", "haldi", "jeera", "tea", "coffee", "poha", "suji", "rava", "grocery"] },
+  { category: "Groceries", keywords: ["atta", "rice", "dal", "daliya", "flour", "besan", "oil", "sugar", "salt", "masala", "turmeric", "haldi", "jeera", "tea", "coffee", "poha", "suji", "rava", "grocery", "papad", "sattu", "corn flakes", "peanuts", "sabudana"] },
 ];
 const KNOWN_VENDOR_PATTERNS = [
   "amazon",
@@ -116,6 +116,7 @@ const KNOWN_VENDOR_PATTERNS = [
   "reliance fresh",
   "apna bazar",
   "local mandi",
+  "twf",
 ];
 
 function repoRoot() {
@@ -182,9 +183,9 @@ function normalizeDate(value: unknown): string | null {
     candidates.unshift(`${year}-${month}-${day}`);
   }
   for (const candidate of candidates) {
-    const date = new Date(candidate);
-    if (!Number.isNaN(date.getTime())) {
-      return date.toISOString().slice(0, 10);
+    const parsed = new Date(candidate);
+    if (!Number.isNaN(parsed.getTime())) {
+      return parsed.toISOString().slice(0, 10);
     }
   }
   return null;
@@ -305,9 +306,13 @@ function normalizeUnit(value: string | null): string | null {
   return aliases[normalized] ?? value.trim();
 }
 
-export function normalizeInventoryEntry(input: Partial<InventoryEntry> & { item_name?: string | null; raw_source_text?: string | null }): InventoryEntry {
+export function normalizeInventoryEntry(
+  input: Partial<InventoryEntry> & { item_name?: string | null; raw_source_text?: string | null },
+): InventoryEntry {
   const itemName = normalizeText(input.item_name) ?? normalizeText(input.raw_source_text)?.slice(0, 80) ?? "Unclear item";
-  const categoryResolution = input.category ? { category: input.category, status: input.category_status ?? "auto" } : detectCategory(itemName);
+  const categoryResolution = input.category
+    ? { category: input.category, status: input.category_status ?? "auto" }
+    : detectCategory(itemName);
   const reviewNotes: string[] = Array.isArray(input.review_notes) ? input.review_notes.filter(Boolean) : [];
   if (!normalizeDate(input.date_of_purchase ?? null)) {
     reviewNotes.push("Date missing or unclear");
@@ -343,7 +348,9 @@ function normalizeStoredLedger(rawLedger: unknown): InventoryLedger {
   const ledger = (typeof rawLedger === "object" && rawLedger !== null ? rawLedger : {}) as Partial<InventoryLedger> & {
     purchases?: unknown[];
   };
-  const purchases = Array.isArray(ledger.purchases) ? ledger.purchases.map((entry) => normalizeInventoryEntry(entry as Partial<InventoryEntry>)) : [];
+  const purchases = Array.isArray(ledger.purchases)
+    ? ledger.purchases.map((entry) => normalizeInventoryEntry(entry as Partial<InventoryEntry>))
+    : [];
   return {
     schema_version: SCHEMA_VERSION,
     created_at: normalizeText(ledger.created_at) ?? nowIso(),
@@ -438,16 +445,36 @@ export function buildInventoryAnalysis(entries: InventoryEntry[]): InventoryAnal
   const possibleAnomalies: InventoryAnalysis["possible_anomalies"] = [];
 
   for (const itemEntries of byItem.values()) {
-    const sortedEntries = [...itemEntries].sort((left, right) => (left.date_of_purchase ?? "").localeCompare(right.date_of_purchase ?? ""));
-    const dates = sortedEntries.map((entry) => (entry.date_of_purchase ? new Date(entry.date_of_purchase) : null)).filter(Boolean) as Date[];
-    const quantities = sortedEntries.map((entry) => entry.quantity_purchased).filter((value): value is number => value !== null);
-    const actualDurations = sortedEntries.map((entry) => periodToDays(entry.actual_consumption_period)).filter((value): value is number => value !== null);
-    const expectedDurations = sortedEntries.map((entry) => periodToDays(entry.expected_consumption_period)).filter((value): value is number => value !== null);
-    const reorderIntervals = dates.slice(1).map((value, index) => Math.round((value.getTime() - dates[index].getTime()) / 86400000));
-    const averageQuantityPurchased = quantities.length ? Number((quantities.reduce((sum, value) => sum + value, 0) / quantities.length).toFixed(2)) : null;
-    const reorderFrequencyDays = reorderIntervals.length ? Number((reorderIntervals.reduce((sum, value) => sum + value, 0) / reorderIntervals.length).toFixed(1)) : null;
-    const averageActualDurationDays = actualDurations.length ? Number((actualDurations.reduce((sum, value) => sum + value, 0) / actualDurations.length).toFixed(1)) : null;
-    const averageExpectedDurationDays = expectedDurations.length ? Number((expectedDurations.reduce((sum, value) => sum + value, 0) / expectedDurations.length).toFixed(1)) : null;
+    const sortedEntries = [...itemEntries].sort((left, right) =>
+      (left.date_of_purchase ?? "").localeCompare(right.date_of_purchase ?? ""),
+    );
+    const dates = sortedEntries
+      .map((entry) => (entry.date_of_purchase ? new Date(entry.date_of_purchase) : null))
+      .filter(Boolean) as Date[];
+    const quantities = sortedEntries
+      .map((entry) => entry.quantity_purchased)
+      .filter((value): value is number => value !== null);
+    const actualDurations = sortedEntries
+      .map((entry) => periodToDays(entry.actual_consumption_period))
+      .filter((value): value is number => value !== null);
+    const expectedDurations = sortedEntries
+      .map((entry) => periodToDays(entry.expected_consumption_period))
+      .filter((value): value is number => value !== null);
+    const reorderIntervals = dates
+      .slice(1)
+      .map((value, index) => Math.round((value.getTime() - dates[index].getTime()) / 86400000));
+    const averageQuantityPurchased = quantities.length
+      ? Number((quantities.reduce((sum, value) => sum + value, 0) / quantities.length).toFixed(2))
+      : null;
+    const reorderFrequencyDays = reorderIntervals.length
+      ? Number((reorderIntervals.reduce((sum, value) => sum + value, 0) / reorderIntervals.length).toFixed(1))
+      : null;
+    const averageActualDurationDays = actualDurations.length
+      ? Number((actualDurations.reduce((sum, value) => sum + value, 0) / actualDurations.length).toFixed(1))
+      : null;
+    const averageExpectedDurationDays = expectedDurations.length
+      ? Number((expectedDurations.reduce((sum, value) => sum + value, 0) / expectedDurations.length).toFixed(1))
+      : null;
     const expectedStockDurationDays = averageActualDurationDays ?? averageExpectedDurationDays ?? reorderFrequencyDays;
 
     let averageConsumptionRate: string | null = null;
@@ -457,7 +484,9 @@ export function buildInventoryAnalysis(entries: InventoryEntry[]): InventoryAnal
           quantity: entry.quantity_purchased,
           days: periodToDays(entry.actual_consumption_period),
         }))
-        .filter((pair): pair is { quantity: number; days: number } => pair.quantity !== null && pair.days !== null && pair.days > 0);
+        .filter(
+          (pair): pair is { quantity: number; days: number } => pair.quantity !== null && pair.days !== null && pair.days > 0,
+        );
       if (pairValues.length) {
         const totalQuantity = pairValues.reduce((sum, pair) => sum + pair.quantity, 0);
         const totalDays = pairValues.reduce((sum, pair) => sum + pair.days, 0);
@@ -468,7 +497,8 @@ export function buildInventoryAnalysis(entries: InventoryEntry[]): InventoryAnal
     const flags: string[] = [];
     if (reorderIntervals.length >= 2) {
       const currentInterval = reorderIntervals[reorderIntervals.length - 1];
-      const baselineInterval = reorderIntervals.slice(0, -1).reduce((sum, value) => sum + value, 0) / (reorderIntervals.length - 1);
+      const baselineInterval =
+        reorderIntervals.slice(0, -1).reduce((sum, value) => sum + value, 0) / (reorderIntervals.length - 1);
       if (baselineInterval > 0 && currentInterval <= baselineInterval * 0.6) {
         flags.push("possible fast consumption");
         possibleAnomalies.push({
@@ -609,7 +639,9 @@ function parseQuantityAndUnit(raw: string): { quantity: number | null; unit: str
 }
 
 function parsePrice(raw: string): { price: number | null; matchedText: string | null } {
-  const match = raw.match(/(?:₹|rs\.?|inr)\s*([0-9]+(?:\.[0-9]+)?)/i) ?? raw.match(/(?:amount|price|total)\s*[:\-]?\s*([0-9]+(?:\.[0-9]+)?)/i);
+  const match =
+    raw.match(/(?:₹|rs\.?|inr)\s*([0-9]+(?:\.[0-9]+)?)/i) ??
+    raw.match(/(?:amount|price|total)\s*[:\-]?\s*([0-9]+(?:\.[0-9]+)?)/i);
   if (!match) {
     return { price: null, matchedText: null };
   }
@@ -668,8 +700,12 @@ function parseKeyValueBlock(block: string): (Partial<InventoryEntry> & { item_na
     price: normalizeNumber(values.get("price") ?? values.get("amount") ?? null),
     vendor_source: values.get("vendor") ?? values.get("source") ?? undefined,
     remarks: values.get("remarks") ?? values.get("remark") ?? undefined,
-    expected_consumption_period: normalizePeriod(values.get("expected consumption period") ?? values.get("expected period") ?? null),
-    actual_consumption_period: normalizePeriod(values.get("actual consumption period") ?? values.get("actual period") ?? null),
+    expected_consumption_period: normalizePeriod(
+      values.get("expected consumption period") ?? values.get("expected period") ?? null,
+    ),
+    actual_consumption_period: normalizePeriod(
+      values.get("actual consumption period") ?? values.get("actual period") ?? null,
+    ),
     raw_source_text: block,
   };
 }
@@ -725,8 +761,7 @@ export function parseRawInventoryText(rawText: string): { entries: InventoryEntr
       .trim();
 
     const itemName = residue.split(" / ")[0].trim() || block.slice(0, 80);
-    const remarks =
-      residue && itemName !== residue ? residue.replace(itemName, "").trim() || block : block;
+    const remarks = residue && itemName !== residue ? residue.replace(itemName, "").trim() || block : block;
 
     const normalized = normalizeInventoryEntry({
       date_of_purchase: dateInfo.date,

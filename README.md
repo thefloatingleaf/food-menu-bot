@@ -2,7 +2,7 @@
 
 ## VPK Questionnaire Web App
 
-The repository now also contains a self-contained VPK questionnaire application at `apps/vpk-assessment`.
+The repository contains a self-contained VPK questionnaire application at `apps/vpk-assessment`.
 
 ### One-command setup
 
@@ -28,6 +28,34 @@ Expected result: the Next development server starts and prints a local URL such 
 
 Expected result: lint and Vitest checks pass for the VPK module.
 
+## Household Inventory App
+
+The repository also contains a completely separate standalone Household Inventory application at `apps/household-inventory`.
+
+### One-command setup
+
+```bash
+./scripts/setup-household-inventory.sh
+```
+
+Expected result: npm dependencies install, the inventory app is ready, and the shared household purchase ledger files are initialized if missing.
+
+### One-command run
+
+```bash
+./scripts/dev-household-inventory.sh
+```
+
+Expected result: the standalone Next development server starts at `http://localhost:3001`.
+
+### One-command tests
+
+```bash
+./scripts/test-household-inventory.sh
+```
+
+Expected result: lint and Vitest checks pass for the household inventory module.
+
 ## Run locally
 
 ```bash
@@ -46,7 +74,7 @@ python3 -m unittest discover -s tests
 
 ## Household purchase ledger
 
-This repo now also maintains a household purchase ledger with a simple private internal interface inside the VPK app. It is not a public-facing landing page or decorative dashboard.
+This repo maintains a shared household purchase ledger used by the standalone Household Inventory app. It is not attached to the VPK app.
 
 ### Storage files
 
@@ -55,9 +83,8 @@ This repo now also maintains a household purchase ledger with a simple private i
 
 ### Internal interface
 
-- Open the VPK app and sign in with the admin account.
-- Use the admin-only `Household Inventory` entrypoint.
-- The module provides exactly two working views:
+- Open the standalone Household Inventory app at `http://localhost:3001`.
+- The app provides exactly two working views:
   - `Purchase Log`
   - `Consumption & Analysis`
 
