@@ -1,14 +1,695 @@
 {
-  "schema_version": 1,
-  "generated_at": "2026-05-09T16:06:25Z",
-  "totals": {
-    "purchase_count": 0,
-    "tracked_item_count": 0,
-    "currency": "INR",
-    "total_spend": 0.0
+  "schema_version": 2,
+  "generated_at": "2026-05-09T16:22:06.370Z",
+  "overview": {
+    "purchaseCount": 30,
+    "trackedItemCount": 28,
+    "totalSpend": 12417.75,
+    "currentMonthSpend": 4697.5
   },
-  "items": {},
-  "possible_anomalies": [],
-  "monthly_spend": {},
-  "category_spend": {}
+  "monthly_spend": [
+    {
+      "month": "2025-12",
+      "amount": 3640
+    },
+    {
+      "month": "2026-02",
+      "amount": 1884.25
+    },
+    {
+      "month": "2026-04",
+      "amount": 2196
+    },
+    {
+      "month": "2026-05",
+      "amount": 4697.5
+    }
+  ],
+  "category_spend": [
+    {
+      "category": "Groceries",
+      "amount": 10696.75
+    },
+    {
+      "category": "Needs Review",
+      "amount": 244
+    },
+    {
+      "category": "Unclear",
+      "amount": 1477
+    }
+  ],
+  "item_insights": [
+    {
+      "itemName": "Amul Salted Butter",
+      "category": "Needs Review",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-09",
+      "averageQuantityPurchased": 400,
+      "quantityUnit": "g",
+      "averageConsumptionRate": null,
+      "expectedStockDurationDays": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 244
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Review raw entry details for missing date, quantity, or category."
+      ]
+    },
+    {
+      "itemName": "Davidoff Espresso 57 Instant Coffee 11/12 Intensity",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-09",
+      "averageQuantityPurchased": 100,
+      "quantityUnit": "g",
+      "averageConsumptionRate": null,
+      "expectedStockDurationDays": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 790
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Continue collecting purchase entries to improve stock-duration and reorder estimates."
+      ]
+    },
+    {
+      "itemName": "Davidoff Fine Aroma Instant Coffee 7/12 Intensity",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-09",
+      "averageQuantityPurchased": 100,
+      "quantityUnit": "g",
+      "averageConsumptionRate": null,
+      "expectedStockDurationDays": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 739
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Continue collecting purchase entries to improve stock-duration and reorder estimates."
+      ]
+    },
+    {
+      "itemName": "Everest Sambhar Masala",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-09",
+      "averageQuantityPurchased": 100,
+      "quantityUnit": "g",
+      "averageConsumptionRate": null,
+      "expectedStockDurationDays": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 63
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Continue collecting purchase entries to improve stock-duration and reorder estimates."
+      ]
+    },
+    {
+      "itemName": "Kellogg's Corn Flakes Original",
+      "category": "Unclear",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-09",
+      "averageQuantityPurchased": 1.15,
+      "quantityUnit": "kg",
+      "averageConsumptionRate": null,
+      "expectedStockDurationDays": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 367
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Review raw entry details for missing date, quantity, or category."
+      ]
+    },
+    {
+      "itemName": "Let's Try Masala Peanuts With Rock Salt",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-08",
+      "averageQuantityPurchased": 153,
+      "quantityUnit": "g",
+      "averageConsumptionRate": null,
+      "expectedStockDurationDays": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 80
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Continue collecting purchase entries to improve stock-duration and reorder estimates."
+      ]
+    },
+    {
+      "itemName": "Let's Try Sabudana Falhari Mixture",
+      "category": "Unclear",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-08",
+      "averageQuantityPurchased": 214,
+      "quantityUnit": "g",
+      "averageConsumptionRate": null,
+      "expectedStockDurationDays": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 95
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Review raw entry details for missing date, quantity, or category."
+      ]
+    },
+    {
+      "itemName": "Lijjat Moong Dal Papad",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-09",
+      "averageQuantityPurchased": 400,
+      "quantityUnit": "g",
+      "averageConsumptionRate": null,
+      "expectedStockDurationDays": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 154
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Continue collecting purchase entries to improve stock-duration and reorder estimates."
+      ]
+    },
+    {
+      "itemName": "Tata Sampann Coriander Seeds (Dhaniya), Whole Spices",
+      "category": "Unclear",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-09",
+      "averageQuantityPurchased": 100,
+      "quantityUnit": "g",
+      "averageConsumptionRate": null,
+      "expectedStockDurationDays": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 38
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Review raw entry details for missing date, quantity, or category."
+      ]
+    },
+    {
+      "itemName": "Tata Sampann Unpolished Chana Dal",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-09",
+      "averageQuantityPurchased": 500,
+      "quantityUnit": "g",
+      "averageConsumptionRate": null,
+      "expectedStockDurationDays": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 0
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Continue collecting purchase entries to improve stock-duration and reorder estimates."
+      ]
+    },
+    {
+      "itemName": "Tata Sampann Unpolished Green Moong Dal (Chilka)",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-09",
+      "averageQuantityPurchased": 500,
+      "quantityUnit": "g",
+      "averageConsumptionRate": null,
+      "expectedStockDurationDays": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 94
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Continue collecting purchase entries to improve stock-duration and reorder estimates."
+      ]
+    },
+    {
+      "itemName": "Tata Sampann Unpolished Yellow Moong Dal (Dhuli) Split",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-09",
+      "averageQuantityPurchased": 1000,
+      "quantityUnit": "g",
+      "averageConsumptionRate": null,
+      "expectedStockDurationDays": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 208
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Continue collecting purchase entries to improve stock-duration and reorder estimates."
+      ]
+    },
+    {
+      "itemName": "THF Multigrain Bread",
+      "category": "Unclear",
+      "purchaseCount": 2,
+      "lastPurchaseDate": "2026-05-09",
+      "averageQuantityPurchased": 300,
+      "quantityUnit": "g",
+      "averageConsumptionRate": null,
+      "expectedStockDurationDays": 1,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": 1,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 2,
+          "spend": 140
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Review raw entry details for missing date, quantity, or category.",
+        "A reorder reminder around every 1 days would match current purchase history."
+      ]
+    },
+    {
+      "itemName": "TWF Atta",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-09",
+      "averageQuantityPurchased": 25,
+      "quantityUnit": "kg",
+      "averageConsumptionRate": null,
+      "expectedStockDurationDays": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 997.5
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Continue collecting purchase entries to improve stock-duration and reorder estimates."
+      ]
+    },
+    {
+      "itemName": "TWF Atta [Non NCR]",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-02-11",
+      "averageQuantityPurchased": 25,
+      "quantityUnit": "kg",
+      "averageConsumptionRate": null,
+      "expectedStockDurationDays": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-02",
+          "purchases": 1,
+          "spend": 1286.25
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Continue collecting purchase entries to improve stock-duration and reorder estimates."
+      ]
+    },
+    {
+      "itemName": "TWF Baker’s Salt - Pink Rock Salt",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2025-12-07",
+      "averageQuantityPurchased": 1,
+      "quantityUnit": "kg",
+      "averageConsumptionRate": null,
+      "expectedStockDurationDays": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2025-12",
+          "purchases": 1,
+          "spend": 199
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Continue collecting purchase entries to improve stock-duration and reorder estimates."
+      ]
+    },
+    {
+      "itemName": "TWF Channa Sattu Flour",
+      "category": "Groceries",
+      "purchaseCount": 2,
+      "lastPurchaseDate": "2026-05-09",
+      "averageQuantityPurchased": 2,
+      "quantityUnit": "kg",
+      "averageConsumptionRate": null,
+      "expectedStockDurationDays": 33,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": 33,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-04",
+          "purchases": 1,
+          "spend": 598
+        },
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 598
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "A reorder reminder around every 33 days would match current purchase history."
+      ]
+    },
+    {
+      "itemName": "TWF Dusting Semolina for Pizzas",
+      "category": "Unclear",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2025-12-07",
+      "averageQuantityPurchased": 1,
+      "quantityUnit": "kg",
+      "averageConsumptionRate": null,
+      "expectedStockDurationDays": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2025-12",
+          "purchases": 1,
+          "spend": 149
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Review raw entry details for missing date, quantity, or category."
+      ]
+    },
+    {
+      "itemName": "TWF Highland - Sharbati Roti Flour",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2025-12-07",
+      "averageQuantityPurchased": 10,
+      "quantityUnit": "kg",
+      "averageConsumptionRate": null,
+      "expectedStockDurationDays": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2025-12",
+          "purchases": 1,
+          "spend": 1299
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Continue collecting purchase entries to improve stock-duration and reorder estimates."
+      ]
+    },
+    {
+      "itemName": "TWF Reliq - Heirloom Rotis",
+      "category": "Unclear",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2025-12-07",
+      "averageQuantityPurchased": 2,
+      "quantityUnit": "kg",
+      "averageConsumptionRate": null,
+      "expectedStockDurationDays": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2025-12",
+          "purchases": 1,
+          "spend": 598
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Review raw entry details for missing date, quantity, or category."
+      ]
+    },
+    {
+      "itemName": "TWF Series C-8714 Sourdough Bread Flour",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2025-12-07",
+      "averageQuantityPurchased": 1,
+      "quantityUnit": "kg",
+      "averageConsumptionRate": null,
+      "expectedStockDurationDays": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2025-12",
+          "purchases": 1,
+          "spend": 499
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Continue collecting purchase entries to improve stock-duration and reorder estimates."
+      ]
+    },
+    {
+      "itemName": "TWF Sprouted Ragi Flour",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-02-11",
+      "averageQuantityPurchased": 2,
+      "quantityUnit": "kg",
+      "averageConsumptionRate": null,
+      "expectedStockDurationDays": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-02",
+          "purchases": 1,
+          "spend": 598
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Continue collecting purchase entries to improve stock-duration and reorder estimates."
+      ]
+    },
+    {
+      "itemName": "TWF Virgin Barley Flour",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2025-12-07",
+      "averageQuantityPurchased": 2,
+      "quantityUnit": "kg",
+      "averageConsumptionRate": null,
+      "expectedStockDurationDays": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2025-12",
+          "purchases": 1,
+          "spend": 318
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Continue collecting purchase entries to improve stock-duration and reorder estimates."
+      ]
+    },
+    {
+      "itemName": "TWF Virgin Khapli (Emmer) Flour",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2025-12-07",
+      "averageQuantityPurchased": 2,
+      "quantityUnit": "kg",
+      "averageConsumptionRate": null,
+      "expectedStockDurationDays": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2025-12",
+          "purchases": 1,
+          "spend": 578
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Continue collecting purchase entries to improve stock-duration and reorder estimates."
+      ]
+    },
+    {
+      "itemName": "TWF Virgin Ragi Flour",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-04-06",
+      "averageQuantityPurchased": 5,
+      "quantityUnit": "kg",
+      "averageConsumptionRate": null,
+      "expectedStockDurationDays": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-04",
+          "purchases": 1,
+          "spend": 699
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Continue collecting purchase entries to improve stock-duration and reorder estimates."
+      ]
+    },
+    {
+      "itemName": "TWF Virgin Sorghum Flour",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-04-06",
+      "averageQuantityPurchased": 5,
+      "quantityUnit": "kg",
+      "averageConsumptionRate": null,
+      "expectedStockDurationDays": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-04",
+          "purchases": 1,
+          "spend": 899
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Continue collecting purchase entries to improve stock-duration and reorder estimates."
+      ]
+    },
+    {
+      "itemName": "Whole Farm Premium Fennel Seeds / Moti Saunf",
+      "category": "Unclear",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-09",
+      "averageQuantityPurchased": 100,
+      "quantityUnit": "g",
+      "averageConsumptionRate": null,
+      "expectedStockDurationDays": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 42
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Review raw entry details for missing date, quantity, or category."
+      ]
+    },
+    {
+      "itemName": "Whole Farm Premium Red Chilli Whole",
+      "category": "Unclear",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-09",
+      "averageQuantityPurchased": 100,
+      "quantityUnit": "g",
+      "averageConsumptionRate": null,
+      "expectedStockDurationDays": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 48
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Review raw entry details for missing date, quantity, or category."
+      ]
+    }
+  ],
+  "possible_anomalies": []
 }
