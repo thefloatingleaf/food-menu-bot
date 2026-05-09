@@ -46,12 +46,20 @@ python3 -m unittest discover -s tests
 
 ## Household purchase ledger
 
-This repo now also maintains a silent background household purchase ledger. It does not create any landing page, dashboard, or visible interface.
+This repo now also maintains a household purchase ledger with a simple private internal interface inside the VPK app. It is not a public-facing landing page or decorative dashboard.
 
 ### Storage files
 
 - `data/household_purchases/purchase_ledger.json`
 - `data/household_purchases/analysis_snapshot.json`
+
+### Internal interface
+
+- Open the VPK app and sign in with the admin account.
+- Use the admin-only `Household Inventory` entrypoint.
+- The module provides exactly two working views:
+  - `Purchase Log`
+  - `Consumption & Analysis`
 
 ### Supported purchase fields
 
@@ -61,14 +69,12 @@ This repo now also maintains a silent background household purchase ledger. It d
 - `quantity_purchased`
 - `unit_of_measurement`
 - `price`
-- `currency`
 - `vendor_source`
-- `mode_of_payment`
-- `payment_reference`
-- `bill_invoice_reference`
 - `expected_consumption_period`
 - `actual_consumption_period`
 - `remarks`
+
+The internal importer can accept raw pasted purchase text from notes, bills, messages, or order history and will auto-detect category where possible. Uncertain rows are saved with `Needs Review` or `Unclear` labels instead of being discarded.
 
 ### One-command initialization
 

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { FormEvent, useEffect, useMemo, useState } from "react";
 
 import { PieResultsChart } from "@/components/PieResultsChart";
@@ -635,6 +636,11 @@ export function AssessmentApp({
         >
           Home
         </button>
+        {account.role === "admin" ? (
+          <Link className="button button--secondary" href="/inventory">
+            Household Inventory
+          </Link>
+        ) : null}
         {account.role === "admin" ? (
           <button
             className={`button button--secondary ${adminPanelOpen ? "button--home-active" : ""}`}
