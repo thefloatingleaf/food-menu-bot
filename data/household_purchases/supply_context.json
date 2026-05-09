@@ -1,0 +1,30 @@
+{
+  "schema_version": 2,
+  "created_at": "2026-05-09T18:04:50.849Z",
+  "updated_at": "2026-05-09T18:06:44.668Z",
+  "entries": [
+    {
+      "context_id": "navishti-special-cow-milk",
+      "item_name": "Milk",
+      "category": "Dairy",
+      "quantity_per_day": 0.5,
+      "unit_of_measurement": "litre",
+      "beneficiary": "Navishti",
+      "source_name": null,
+      "source_description": "special cows from another place",
+      "effective_start_date": null,
+      "effective_end_date": null,
+      "active": true,
+      "price": null,
+      "remarks": "In addition to recorded milk purchases, half a litre of milk comes daily from another place from special cows for Navishti.",
+      "review_status": "needs_review",
+      "review_notes": [
+        "Source name not yet provided",
+        "Start date not yet provided",
+        "Price not yet provided"
+      ],
+      "entered_at": "2026-05-09T18:06:44.665Z",
+      "last_updated_at": "2026-05-09T18:06:44.668Z"
+    }
+  ]
+}

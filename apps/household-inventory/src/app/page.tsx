@@ -16,6 +16,8 @@ export default async function Home({ searchParams }: HomeProps) {
     <InventoryModule
       initialEntries={snapshot.ledger.purchases}
       initialAnalysis={snapshot.analysis}
+      initialContextNotes={snapshot.contextNotes}
+      initialSupplyContext={snapshot.supplyContext}
       initialTab={initialTab}
     />
   );

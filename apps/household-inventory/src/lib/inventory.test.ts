@@ -93,4 +93,30 @@ describe("inventory parsing and analysis", () => {
       ),
     ).toBe(true);
   });
+
+  it("stores recurring supply context separately from purchase rows and exposes an analysis note", async () => {
+    const inventory = await loadInventoryModule(fs.mkdtempSync(path.join(os.tmpdir(), "inventory-")));
+    inventory.upsertSupplyContextEntries([
+      {
+        context_id: "navishti-special-cow-milk",
+        item_name: "Milk",
+        quantity_per_day: 0.5,
+        unit_of_measurement: "litre",
+        beneficiary: "Navishti",
+        source_description: "special cows from another place",
+        active: true,
+        remarks: "User reported this as a daily non-purchase milk source.",
+      },
+    ]);
+
+    const snapshot = inventory.getInventorySnapshot();
+
+    expect(snapshot.ledger.purchases).toHaveLength(0);
+    expect(snapshot.supplyContext).toHaveLength(1);
+    expect(snapshot.supplyContext[0].review_status).toBe("needs_review");
+    expect(snapshot.contextNotes).toHaveLength(1);
+    expect(snapshot.contextNotes[0].message).toContain("0.5 litre/day");
+    expect(snapshot.contextNotes[0].message).toContain("Navishti");
+    expect(snapshot.contextNotes[0].message).toContain("purchase");
+  });
 });

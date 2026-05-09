@@ -9,7 +9,8 @@
     "start": "next start --port 3001",
     "lint": "eslint",
     "test": "vitest run --coverage",
-    "import:amor-farm": "tsx scripts/import-amor-farm-pdf.ts"
+    "import:amor-farm": "tsx scripts/import-amor-farm-pdf.ts",
+    "add:supply-context": "tsx scripts/add-supply-context.ts"
   },
   "dependencies": {
     "next": "16.1.6",

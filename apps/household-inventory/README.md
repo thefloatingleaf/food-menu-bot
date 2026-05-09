@@ -51,3 +51,11 @@ npm run import:amor-farm -- --milk-only /absolute/path/to/invoice.pdf
 ```
 
 Expected result: the monthly vendor PDF is parsed and the milk line items are appended to the shared ledger without duplicating already imported rows.
+
+## Recurring supply context
+
+```bash
+npm run add:supply-context -- --stdin
+```
+
+Expected result: a non-purchase recurring supply fact, such as daily milk coming from another source, is stored separately so the analysis can show it as context without pretending it was a normal paid invoice row.

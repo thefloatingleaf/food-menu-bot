@@ -64,6 +64,14 @@ Expected result: lint and Vitest checks pass for the household inventory module.
 
 Expected result: the Amor Farm monthly PDF is parsed and its milk entries are added to the shared household ledger while repeated imports skip already saved rows.
 
+### Recurring supply context
+
+```bash
+./scripts/add-household-supply-context.sh --stdin
+```
+
+Expected result: daily or standing household supply facts can be recorded separately from purchase entries, so analysis remains honest when some stock comes from a non-invoice source.
+
 ## Run locally
 
 ```bash

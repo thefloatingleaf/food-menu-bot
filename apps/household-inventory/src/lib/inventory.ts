@@ -83,16 +83,53 @@ export type InventoryAnalysis = {
   }>;
 };
 
+export type SupplyContextEntry = {
+  context_id: string;
+  item_name: string;
+  category: InventoryCategory;
+  quantity_per_day: number | null;
+  unit_of_measurement: string | null;
+  beneficiary: string | null;
+  source_name: string | null;
+  source_description: string | null;
+  effective_start_date: string | null;
+  effective_end_date: string | null;
+  active: boolean;
+  price: number | null;
+  remarks: string | null;
+  review_status: "ok" | "needs_review";
+  review_notes: string[];
+  entered_at: string;
+  last_updated_at: string;
+};
+
+export type ContextNote = {
+  context_id: string;
+  severity: "info" | "needs_review";
+  title: string;
+  message: string;
+};
+
+export type InventorySnapshot = {
+  analysis: InventoryAnalysis;
+  contextNotes: ContextNote[];
+  ledger: InventoryLedger;
+  supplyContext: SupplyContextEntry[];
+};
+
 export type ParsedInventoryPayload = {
   savedEntries: InventoryEntry[];
   notes: string[];
   ledger: InventoryLedger;
   analysis: InventoryAnalysis;
+  contextNotes: ContextNote[];
+  supplyContext: SupplyContextEntry[];
 };
 
 const SCHEMA_VERSION = 2;
 const DEFAULT_LEDGER_FILE = "purchase_ledger.json";
 const DEFAULT_ANALYSIS_FILE = "analysis_snapshot.json";
+const DEFAULT_SUPPLY_CONTEXT_FILE = "supply_context.json";
 const CATEGORY_RULES: Array<{ category: InventoryCategory; keywords: string[] }> = [
   { category: "Fruits", keywords: ["apple", "banana", "mango", "papaya", "orange", "grape", "kiwi", "pear", "guava", "melon", "watermelon", "muskmelon", "litchi", "lichi", "anar", "amrood", "seb", "kela", "aam", "chikoo", "sapota", "pomegranate", "coconut", "phal", "fruit"] },
   { category: "Vegetables", keywords: ["potato", "onion", "tomato", "lauki", "bhindi", "parwal", "parval", "tori", "torai", "cabbage", "cauliflower", "palak", "spinach", "carrot", "beetroot", "cucumber", "karela", "ginger", "garlic", "methi", "sabzi", "vegetable", "veg"] },
@@ -134,6 +171,10 @@ function analysisFilePath() {
   return path.join(repoRoot(), DEFAULT_ANALYSIS_FILE);
 }
 
+function supplyContextFilePath() {
+  return path.join(repoRoot(), DEFAULT_SUPPLY_CONTEXT_FILE);
+}
+
 function nowIso() {
   return new Date().toISOString();
 }
@@ -158,6 +199,22 @@ function ensureInventoryStorage() {
   }
   if (!fs.existsSync(analysisFilePath())) {
     fs.writeFileSync(analysisFilePath(), JSON.stringify(emptyAnalysis(), null, 2) + "\n", "utf-8");
+  }
+  if (!fs.existsSync(supplyContextFilePath())) {
+    fs.writeFileSync(
+      supplyContextFilePath(),
+      JSON.stringify(
+        {
+          schema_version: SCHEMA_VERSION,
+          created_at: nowIso(),
+          updated_at: nowIso(),
+          entries: [],
+        },
+        null,
+        2,
+      ) + "\n",
+      "utf-8",
+    );
   }
 }
 
@@ -306,6 +363,48 @@ function normalizeUnit(value: string | null): string | null {
   return aliases[normalized] ?? value.trim();
 }
 
+function normalizeSupplyContextEntry(input: Partial<SupplyContextEntry> & { item_name?: string | null }): SupplyContextEntry {
+  const itemName = normalizeText(input.item_name) ?? "Unclear item";
+  const categoryResolution = input.category
+    ? { category: input.category, status: "auto" as const }
+    : detectCategory(itemName);
+  const reviewNotes: string[] = Array.isArray(input.review_notes) ? input.review_notes.filter(Boolean) : [];
+  if (normalizeNumber(input.quantity_per_day ?? null) === null) {
+    reviewNotes.push("Daily quantity missing or unclear");
+  }
+  if (!normalizeText(input.source_name ?? null)) {
+    reviewNotes.push("Source name not yet provided");
+  }
+  if (!normalizeDate(input.effective_start_date ?? null)) {
+    reviewNotes.push("Start date not yet provided");
+  }
+  if (normalizeNumber(input.price ?? null) === null) {
+    reviewNotes.push("Price not yet provided");
+  }
+  if (categoryResolution.status === "needs_review") {
+    reviewNotes.push("Category needs review");
+  }
+  return {
+    context_id: input.context_id ?? crypto.randomUUID(),
+    item_name: itemName,
+    category: categoryResolution.category,
+    quantity_per_day: normalizeNumber(input.quantity_per_day ?? null),
+    unit_of_measurement: normalizeUnit(normalizeText(input.unit_of_measurement ?? null)),
+    beneficiary: normalizeText(input.beneficiary ?? null),
+    source_name: normalizeText(input.source_name ?? null),
+    source_description: normalizeText(input.source_description ?? null),
+    effective_start_date: normalizeDate(input.effective_start_date ?? null),
+    effective_end_date: normalizeDate(input.effective_end_date ?? null),
+    active: input.active ?? true,
+    price: normalizeNumber(input.price ?? null),
+    remarks: normalizeText(input.remarks ?? null),
+    review_status: reviewNotes.length > 0 ? "needs_review" : "ok",
+    review_notes: Array.from(new Set(reviewNotes)),
+    entered_at: normalizeText(input.entered_at) ?? nowIso(),
+    last_updated_at: normalizeText(input.last_updated_at) ?? nowIso(),
+  };
+}
+
 export function normalizeInventoryEntry(
   input: Partial<InventoryEntry> & { item_name?: string | null; raw_source_text?: string | null },
 ): InventoryEntry {
@@ -374,6 +473,67 @@ export function saveInventoryLedger(ledger: InventoryLedger) {
     schema_version: SCHEMA_VERSION,
     updated_at: nowIso(),
   });
+}
+
+function normalizeStoredSupplyContext(rawContext: unknown): {
+  created_at: string;
+  entries: SupplyContextEntry[];
+  schema_version: number;
+  updated_at: string;
+} {
+  const supplyContext =
+    typeof rawContext === "object" && rawContext !== null
+      ? (rawContext as { created_at?: unknown; entries?: unknown[]; updated_at?: unknown })
+      : {};
+  const entries = Array.isArray(supplyContext.entries)
+    ? supplyContext.entries.map((entry) => normalizeSupplyContextEntry(entry as Partial<SupplyContextEntry>))
+    : [];
+  return {
+    schema_version: SCHEMA_VERSION,
+    created_at: normalizeText(supplyContext.created_at) ?? nowIso(),
+    updated_at: normalizeText(supplyContext.updated_at) ?? nowIso(),
+    entries,
+  };
+}
+
+export function loadSupplyContext() {
+  ensureInventoryStorage();
+  return normalizeStoredSupplyContext(readJsonFile(supplyContextFilePath()));
+}
+
+export function saveSupplyContext(context: { created_at: string; entries: SupplyContextEntry[]; schema_version: number; updated_at: string }) {
+  writeJsonFile(supplyContextFilePath(), {
+    ...context,
+    schema_version: SCHEMA_VERSION,
+    updated_at: nowIso(),
+  });
+}
+
+export function upsertSupplyContextEntries(
+  rawEntries: Array<Partial<SupplyContextEntry> & { item_name?: string | null }>,
+) {
+  const context = loadSupplyContext();
+  const entryMap = new Map(context.entries.map((entry) => [entry.context_id, entry]));
+  const savedEntries: SupplyContextEntry[] = [];
+
+  for (const rawEntry of rawEntries) {
+    const contextId = rawEntry.context_id ?? crypto.randomUUID();
+    const normalized = normalizeSupplyContextEntry({
+      ...entryMap.get(contextId),
+      ...rawEntry,
+      context_id: contextId,
+      entered_at: entryMap.get(contextId)?.entered_at ?? rawEntry.entered_at,
+    });
+    entryMap.set(contextId, normalized);
+    savedEntries.push(normalized);
+  }
+
+  const merged = {
+    ...context,
+    entries: Array.from(entryMap.values()).sort((left, right) => left.item_name.localeCompare(right.item_name)),
+  };
+  saveSupplyContext(merged);
+  return merged;
 }
 
 function emptyAnalysis(): InventoryAnalysis {
@@ -611,6 +771,33 @@ export function saveInventoryAnalysis(analysis: InventoryAnalysis) {
   writeJsonFile(analysisFilePath(), analysis);
 }
 
+export function buildContextNotes(supplyContext: SupplyContextEntry[]): ContextNote[] {
+  return supplyContext
+    .filter((entry) => entry.active)
+    .map((entry) => {
+      const sourceLabel = entry.source_name ?? entry.source_description ?? "another source";
+      const quantityLabel =
+        entry.quantity_per_day !== null && entry.unit_of_measurement
+          ? `${entry.quantity_per_day} ${entry.unit_of_measurement}/day`
+          : "daily quantity not yet fully recorded";
+      const beneficiaryLabel = entry.beneficiary ? ` for ${entry.beneficiary}` : "";
+      const historyQualifier = entry.effective_start_date
+        ? `This supply is marked active from ${entry.effective_start_date}.`
+        : "Historical purchase-based analysis does not backfill this supply because its start date is not yet recorded.";
+      const spendQualifier =
+        entry.price !== null
+          ? "Price has been recorded separately where available."
+          : "Purchase totals and spend on this page do not include this supply because no price has been recorded yet.";
+
+      return {
+        context_id: entry.context_id,
+        severity: entry.review_status === "needs_review" ? "needs_review" : "info",
+        title: `${entry.item_name}: recurring supply context`,
+        message: `Additional recurring supply recorded: ${quantityLabel} of ${entry.item_name} from ${sourceLabel}${beneficiaryLabel}. ${historyQualifier} ${spendQualifier}`,
+      };
+    });
+}
+
 function removeMatchedSegment(source: string, matchedText: string | null) {
   return matchedText ? source.replace(matchedText, " ") : source;
 }
@@ -802,6 +989,8 @@ export function appendParsedInventoryEntries(rawText: string): ParsedInventoryPa
     }),
   };
   const analysis = buildInventoryAnalysis(mergedLedger.purchases);
+  const supplyContext = loadSupplyContext().entries;
+  const contextNotes = buildContextNotes(supplyContext);
   saveInventoryLedger(mergedLedger);
   saveInventoryAnalysis(analysis);
 
@@ -810,15 +999,21 @@ export function appendParsedInventoryEntries(rawText: string): ParsedInventoryPa
     notes,
     ledger: mergedLedger,
     analysis,
+    supplyContext,
+    contextNotes,
   };
 }
 
-export function getInventorySnapshot() {
+export function getInventorySnapshot(): InventorySnapshot {
   const ledger = loadInventoryLedger();
   const analysis = buildInventoryAnalysis(ledger.purchases);
+  const supplyContext = loadSupplyContext().entries;
+  const contextNotes = buildContextNotes(supplyContext);
   saveInventoryAnalysis(analysis);
   return {
     ledger,
     analysis,
+    supplyContext,
+    contextNotes,
   };
 }

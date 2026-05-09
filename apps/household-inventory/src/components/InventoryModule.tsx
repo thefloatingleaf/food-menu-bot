@@ -2,17 +2,27 @@
 
 import { FormEvent, useState } from "react";
 
-import type { InventoryAnalysis, InventoryEntry } from "@/lib/inventory";
+import type { ContextNote, InventoryAnalysis, InventoryEntry, SupplyContextEntry } from "@/lib/inventory";
 
 type InventoryModuleProps = {
   initialEntries: InventoryEntry[];
   initialAnalysis: InventoryAnalysis;
+  initialContextNotes: ContextNote[];
+  initialSupplyContext: SupplyContextEntry[];
   initialTab: "log" | "analysis";
 };
 
-export function InventoryModule({ initialEntries, initialAnalysis, initialTab }: InventoryModuleProps) {
+export function InventoryModule({
+  initialEntries,
+  initialAnalysis,
+  initialContextNotes,
+  initialSupplyContext,
+  initialTab,
+}: InventoryModuleProps) {
   const [entries, setEntries] = useState(initialEntries);
   const [analysis, setAnalysis] = useState(initialAnalysis);
+  const [contextNotes, setContextNotes] = useState(initialContextNotes);
+  const [supplyContext] = useState(initialSupplyContext);
   const [activeTab, setActiveTab] = useState<"log" | "analysis">(initialTab);
   const [rawText, setRawText] = useState("");
   const [saving, setSaving] = useState(false);
@@ -39,6 +49,7 @@ export function InventoryModule({ initialEntries, initialAnalysis, initialTab }:
       }
       setEntries(payload.ledger.purchases);
       setAnalysis(payload.analysis);
+      setContextNotes(payload.contextNotes ?? []);
       setImportNotes(payload.notes ?? []);
       setSuccess(`${payload.savedEntries?.length ?? 0} purchase entr${payload.savedEntries?.length === 1 ? "y" : "ies"} saved.`);
       setRawText("");
@@ -129,6 +140,28 @@ export function InventoryModule({ initialEntries, initialAnalysis, initialTab }:
                 </div>
               ) : null}
             </section>
+
+            {contextNotes.length ? (
+              <section className="panel stack">
+                <div className="inventory-section-heading">
+                  <div>
+                    <h2 className="section-title">Known Supply Context</h2>
+                    <p className="muted">
+                      These notes prevent over-interpretation when some household supply does not arrive through normal purchase records.
+                    </p>
+                  </div>
+                  <span className="badge">{supplyContext.length} active note{supplyContext.length === 1 ? "" : "s"}</span>
+                </div>
+                <ul className="inventory-anomaly-list">
+                  {contextNotes.map((note) => (
+                    <li key={note.context_id}>
+                      <strong>{note.title}</strong>
+                      <span>{note.message}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ) : null}
 
             <section className="panel stack">
               <div className="inventory-section-heading">
