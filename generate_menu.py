@@ -467,6 +467,53 @@ VASANT_RAGI_ROTI_ONLY_OPTION = "रागी (Finger Millet) (केवल प�
 VASANT_RAGI_ROTI_ONLY_NOTE = (
     "[विशेष तिथि नियम] 30-Apr-2026 से 05-May-2026 तक वसंत के सभी रोटी-आधारित भोजन में केवल रागी रोटी रखी गई"
 )
+DATE_SPECIFIC_ROTI_ATTA_SCHEDULE = {
+    date(2026, 5, 10): (("रागी",), "स्प्राउटेड रागी"),
+    date(2026, 5, 11): (("रागी",), "स्प्राउटेड रागी"),
+    date(2026, 5, 12): (("रागी",), "स्प्राउटेड रागी"),
+    date(2026, 5, 13): (("रागी",), "स्प्राउटेड रागी"),
+    date(2026, 5, 14): (("रागी",), "स्प्राउटेड रागी"),
+    date(2026, 5, 15): (("रागी",), "स्प्राउटेड रागी"),
+    date(2026, 5, 16): (("रागी",), "स्प्राउटेड रागी"),
+    date(2026, 5, 17): (("ज्वार",), "ज्वार"),
+    date(2026, 5, 18): (("जौ",), "जौ"),
+    date(2026, 5, 19): (("ज्वार",), "ज्वार"),
+    date(2026, 5, 20): (("रागी",), "रागी"),
+    date(2026, 5, 21): (("ज्वार",), "ज्वार"),
+    date(2026, 5, 22): (("जौ",), "जौ"),
+    date(2026, 5, 23): (("ज्वार",), "ज्वार"),
+    date(2026, 5, 24): (("रागी",), "रागी"),
+    date(2026, 5, 25): (("ज्वार",), "ज्वार"),
+    date(2026, 5, 26): (("जौ",), "जौ"),
+    date(2026, 5, 27): (("ज्वार",), "ज्वार"),
+    date(2026, 5, 28): (("रागी",), "रागी"),
+    date(2026, 5, 29): (("ज्वार",), "ज्वार"),
+    date(2026, 5, 30): (("जौ",), "जौ"),
+    date(2026, 5, 31): (("ज्वार",), "ज्वार"),
+    date(2026, 6, 1): (("रागी",), "रागी"),
+    date(2026, 6, 2): (("ज्वार",), "ज्वार"),
+    date(2026, 6, 3): (("जौ",), "जौ"),
+    date(2026, 6, 4): (("ज्वार",), "ज्वार"),
+    date(2026, 6, 5): (("रागी",), "रागी"),
+    date(2026, 6, 6): (("ज्वार",), "ज्वार"),
+    date(2026, 6, 7): (("जौ",), "जौ"),
+    date(2026, 6, 8): (("ज्वार",), "ज्वार"),
+    date(2026, 6, 9): (("रागी",), "रागी"),
+    date(2026, 6, 10): (("ज्वार",), "ज्वार"),
+    date(2026, 6, 11): (("जौ",), "जौ"),
+    date(2026, 6, 12): (("ज्वार",), "ज्वार"),
+    date(2026, 6, 13): (("रागी",), "रागी"),
+    date(2026, 6, 14): (("ज्वार",), "ज्वार"),
+    date(2026, 6, 15): (("जौ",), "जौ"),
+    date(2026, 6, 16): (("ज्वार",), "ज्वार"),
+    date(2026, 6, 17): (("रागी",), "रागी"),
+    date(2026, 6, 18): (("ज्वार",), "ज्वार"),
+    date(2026, 6, 19): (("जौ", "ज्वार"), "जौ"),
+    date(2026, 6, 20): (("ज्वार", "रागी"), "ज्वार"),
+}
+DATE_SPECIFIC_CHANA_SATTU_EXCLUSION_WINDOWS = [
+    (date(2026, 5, 9), date(2026, 5, 14)),
+]
 RICE_ITEM_TOKENS = ("चावल", "राइस", "भात")
 CURD_ITEM_TOKENS = ("दही", "रायता")
 CURD_RAITA_NOTE_HI = "*दही रूप:* केवल लौकी/खीरे का रायता"
@@ -2392,6 +2439,106 @@ def is_rice_item(item: str) -> bool:
     return any(token in item for token in RICE_ITEM_TOKENS)
 
 
+def is_roti_item(item: str) -> bool:
+    return "रोटी" in re.sub(r"\s+", " ", item).strip()
+
+
+def get_date_specific_roti_atta_rule(target_date: date) -> tuple[tuple[str, ...], str] | None:
+    return DATE_SPECIFIC_ROTI_ATTA_SCHEDULE.get(target_date)
+
+
+def is_chana_sattu_roti_excluded_on_date(target_date: date) -> bool:
+    return any(start_date <= target_date <= end_date for start_date, end_date in DATE_SPECIFIC_CHANA_SATTU_EXCLUSION_WINDOWS)
+
+
+def extract_roti_atta_key(item: str) -> str | None:
+    normalized = normalize_vasant_roti_meal_text(re.sub(r"\s+", " ", item).strip())
+    if "रोटी" not in normalized:
+        return None
+    if "चने के सत्तू की रोटी" in normalized:
+        return "चने का सत्तू"
+    if "चने और जौ (Barley) की रोटी (मिस्सी रोटी)" in normalized:
+        return "मिस्सी"
+    if normalized.startswith("जौ (Barley) (केवल पुराना) की रोटी") or normalized.startswith("जौ की रोटी"):
+        return "जौ"
+    if normalized.startswith("जौ के सत्तू की रोटी") or normalized.startswith("जो के सत्तू की रोटी"):
+        return "जौ"
+    if normalized.startswith("ज्वार (Sorghum) (केवल पुराना) की रोटी") or normalized.startswith("ज्वार की रोटी"):
+        return "ज्वार"
+    if normalized.startswith("रागी (Finger Millet) (केवल पुराना) की रोटी") or normalized.startswith("रागी की रोटी"):
+        return "रागी"
+    if normalized.startswith("झंगोरा आटा की रोटी"):
+        return "झंगोरा"
+    if normalized.startswith("पुराना गेहूं की रोटी") or normalized.startswith("गेहूँ (Wheat) (केवल पुराना) की रोटी"):
+        return "गेहूँ"
+    return None
+
+
+def apply_date_specific_roti_atta_rule(pool: list[str], target_date: date) -> tuple[list[str], bool]:
+    filtered = pool[:]
+    applied = False
+
+    if is_chana_sattu_roti_excluded_on_date(target_date):
+        without_chana_sattu = [item for item in filtered if extract_roti_atta_key(item) != "चने का सत्तू"]
+        if without_chana_sattu:
+            applied = applied or without_chana_sattu != filtered
+            filtered = without_chana_sattu
+
+    rule = get_date_specific_roti_atta_rule(target_date)
+    if rule is None:
+        return filtered, applied
+
+    preferred_attas, _display_label = rule
+    roti_items = [item for item in filtered if is_roti_item(item)]
+    if not roti_items:
+        return filtered, applied
+
+    available_attas = {atta for atta in (extract_roti_atta_key(item) for item in roti_items) if atta is not None}
+    active_attas = (preferred_attas[0],)
+    if preferred_attas[0] not in available_attas and len(preferred_attas) > 1:
+        active_attas = preferred_attas[1:]
+
+    roti_filtered = [
+        item
+        for item in filtered
+        if not is_roti_item(item) or extract_roti_atta_key(item) in active_attas
+    ]
+    if roti_filtered:
+        applied = applied or roti_filtered != filtered
+        filtered = roti_filtered
+    return filtered, applied
+
+
+def build_roti_atta_note(
+    target_date: date,
+    selected_breakfast: str,
+    selected_meal: str,
+    selected_second_meal: str | None,
+) -> str | None:
+    rule = get_date_specific_roti_atta_rule(target_date)
+    if rule is None:
+        return None
+
+    selected_items = [selected_breakfast, selected_meal]
+    if selected_second_meal:
+        selected_items.append(selected_second_meal)
+
+    if not any(is_roti_item(item) for item in selected_items):
+        return None
+
+    preferred_attas, display_label = rule
+    for item in selected_items:
+        atta_key = extract_roti_atta_key(item)
+        if atta_key is None:
+            continue
+        if atta_key == preferred_attas[0]:
+            resolved_label = display_label
+        else:
+            resolved_label = atta_key
+        return f"*आज का आटा:* {resolved_label}"
+    return None
+
+
 def select_second_meal_for_window(
     selected_meal: str,
     meal_choice_items: list[str],
@@ -3948,6 +4095,9 @@ def main() -> int:
     )
     if vasant_ragi_roti_only_applied:
         missing_data_notes.append(VASANT_RAGI_ROTI_ONLY_NOTE)
+    breakfast_items, _ = apply_date_specific_roti_atta_rule(breakfast_items, target_date)
+    meal_items, _ = apply_date_specific_roti_atta_rule(meal_items, target_date)
+    meal_choice_items, _ = apply_date_specific_roti_atta_rule(meal_choice_items, target_date)
 
     warning_items: set[str] = set()
     meal_item_weight_getter = lambda item: get_ritu_roti_grain_preference_weight(item, ritu_key)
@@ -4748,6 +4898,9 @@ def main() -> int:
             lines.append(f"*आज का भोजन 2:* {format_meal_display(selected_second_meal)}")
         else:
             lines.append(f"*आज का भोजन:* {format_meal_display(selected_meal)}")
+        roti_atta_note = build_roti_atta_note(target_date, selected_breakfast, selected_meal, selected_second_meal)
+        if roti_atta_note:
+            lines.append(roti_atta_note)
         curd_raita_note = build_curd_raita_note(ritu_key, selected_breakfast, selected_meal, selected_second_meal)
         if curd_raita_note:
             lines.append(curd_raita_note)

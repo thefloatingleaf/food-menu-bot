@@ -1032,6 +1032,72 @@ class CurdRuleTests(unittest.TestCase):
         self.assertFalse(applied)
 
 
+class DateSpecificRotiAttaRuleTests(unittest.TestCase):
+    def test_apply_date_specific_roti_atta_rule_removes_chana_sattu_in_exclusion_window(self) -> None:
+        filtered, applied = generate_menu.apply_date_specific_roti_atta_rule(
+            [
+                "जो के सत्तू की रोटी",
+                "चने के सत्तू की रोटी (बिना खटास के)",
+                "उपमा",
+            ],
+            date(2026, 5, 9),
+        )
+        self.assertEqual(filtered, ["जो के सत्तू की रोटी", "उपमा"])
+        self.assertTrue(applied)
+
+    def test_apply_date_specific_roti_atta_rule_restricts_to_ragi_during_sprouted_window(self) -> None:
+        filtered, applied = generate_menu.apply_date_specific_roti_atta_rule(
+            [
+                "ज्वार (Sorghum) (केवल पुराना) की रोटी और लौकी की सब्ज़ी",
+                "रागी (Finger Millet) (केवल पुराना) की रोटी और लौकी की सब्ज़ी",
+                "मूंग दाल और चावल",
+            ],
+            date(2026, 5, 12),
+        )
+        self.assertEqual(
+            filtered,
+            [
+                "रागी (Finger Millet) (केवल पुराना) की रोटी और लौकी की सब्ज़ी",
+                "मूंग दाल और चावल",
+            ],
+        )
+        self.assertTrue(applied)
+
+    def test_apply_date_specific_roti_atta_rule_uses_fallback_only_when_primary_missing(self) -> None:
+        filtered, applied = generate_menu.apply_date_specific_roti_atta_rule(
+            [
+                "ज्वार की रोटी, लौकी की सब्ज़ी, मसूर दाल",
+                "मूंग दाल और चावल",
+            ],
+            date(2026, 6, 19),
+        )
+        self.assertEqual(filtered, ["ज्वार की रोटी, लौकी की सब्ज़ी, मसूर दाल", "मूंग दाल और चावल"])
+        self.assertFalse(applied)
+
+    def test_apply_date_specific_roti_atta_rule_prefers_primary_when_available(self) -> None:
+        filtered, applied = generate_menu.apply_date_specific_roti_atta_rule(
+            [
+                "जौ की रोटी, लौकी की सब्ज़ी, मूँग दाल धुली",
+                "ज्वार की रोटी, लौकी की सब्ज़ी, मसूर दाल",
+                "मूंग दाल और चावल",
+            ],
+            date(2026, 6, 19),
+        )
+        self.assertEqual(filtered, ["जौ की रोटी, लौकी की सब्ज़ी, मूँग दाल धुली", "मूंग दाल और चावल"])
+        self.assertTrue(applied)
+
+    def test_build_roti_atta_note_uses_scheduled_display_label(self) -> None:
+        self.assertEqual(
+            generate_menu.build_roti_atta_note(
+                date(2026, 5, 12),
+                "उपमा",
+                "रागी (Finger Millet) (केवल पुराना) की रोटी और लौकी की सब्ज़ी",
+                None,
+            ),
+            "*आज का आटा:* स्प्राउटेड रागी",
+        )
+
+
 class WeeklyPazhayaSadamRuleTests(unittest.TestCase):
     def test_should_force_weekly_pazhaya_sadam_when_missing_in_last_six_days(self) -> None:
         history = [
