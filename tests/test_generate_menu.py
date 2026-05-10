@@ -1259,10 +1259,54 @@ class WeeklyChaachSabziRuleTests(unittest.TestCase):
 
 
 class FortnightlyKadhiChawalRuleTests(unittest.TestCase):
+    def test_is_kadhi_item_matches_named_and_majjida_variants(self) -> None:
+        self.assertTrue(generate_menu.is_kadhi_item("कढ़ी और बासमती चावल"))
+        self.assertTrue(generate_menu.is_kadhi_item("चावल और मजीदा कढ़ी"))
+        self.assertTrue(generate_menu.is_kadhi_item("Majjida Karhi"))
+        self.assertFalse(generate_menu.is_kadhi_item("ज्वार की रोटी और लौकी की सब्ज़ी"))
+
     def test_is_kadhi_chawal_item_requires_kadhi_and_rice(self) -> None:
         self.assertTrue(generate_menu.is_kadhi_chawal_item("कढ़ी और बासमती चावल"))
         self.assertTrue(generate_menu.is_kadhi_chawal_item("कढ़ी और शालि चावल"))
         self.assertFalse(generate_menu.is_kadhi_chawal_item("कढ़ी और ज्वार की रोटी"))
+
+    def test_exclude_kadhi_items_on_rainy_day_filters_all_kadhi_variants(self) -> None:
+        rainy_weather = generate_menu.WeatherInfo(
+            morning_temp_c=25,
+            max_temp_c=31,
+            rain_probability_pct=80,
+            is_rainy=True,
+            is_extreme_cold=False,
+            is_extreme_hot=False,
+            source_hi="test",
+        )
+        filtered, applied = generate_menu.exclude_kadhi_items_on_rainy_day(
+            [
+                "कढ़ी और शालि चावल",
+                "चावल और मजीदा कढ़ी",
+                "ज्वार की रोटी और लौकी की सब्ज़ी",
+            ],
+            rainy_weather,
+        )
+
+        self.assertEqual(filtered, ["ज्वार की रोटी और लौकी की सब्ज़ी"])
+        self.assertTrue(applied)
+
+    def test_exclude_kadhi_items_on_non_rainy_day_keeps_pool(self) -> None:
+        clear_weather = generate_menu.WeatherInfo(
+            morning_temp_c=24,
+            max_temp_c=33,
+            rain_probability_pct=15,
+            is_rainy=False,
+            is_extreme_cold=False,
+            is_extreme_hot=False,
+            source_hi="test",
+        )
+        pool = ["कढ़ी और शालि चावल", "ज्वार की रोटी और लौकी की सब्ज़ी"]
+        filtered, applied = generate_menu.exclude_kadhi_items_on_rainy_day(pool, clear_weather)
+
+        self.assertEqual(filtered, pool)
+        self.assertFalse(applied)
 
     def test_should_force_fortnightly_kadhi_chawal_when_missing_in_last_fourteen_days(self) -> None:
         history = [

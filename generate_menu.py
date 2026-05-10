@@ -460,6 +460,10 @@ FORTNIGHTLY_KADHI_CHAWAL_NOTE = (
 FORTNIGHTLY_KADHI_CHAWAL_EKADASHI_NOTE = (
     "[एकादशी नियम] कढ़ी-चावल का 15-दिन नियम आज लागू नहीं किया गया क्योंकि चावल एकादशी में वर्जित है"
 )
+FORTNIGHTLY_KADHI_CHAWAL_RAIN_NOTE = (
+    "[मौसम नियम] बरसात/वर्षा वाले दिन कढ़ी नहीं रखी गई, इसलिए 15-दिन वाला कढ़ी-चावल नियम आज लागू नहीं किया गया"
+)
+RAINY_DAY_KADHI_OVERRIDE_NOTE = "[मौसम नियम] बरसात/वर्षा वाले दिन निर्धारित कढ़ी override लागू नहीं किया गया"
 VASANT_RAGI_ROTI_ONLY_WINDOWS = [
     (date(2026, 4, 30), date(2026, 5, 5)),
 ]
@@ -2378,8 +2382,27 @@ def should_force_weekly_chaach_sabzi(
     return True
 
 
+def is_kadhi_item(item: str) -> bool:
+    normalized_item = item.casefold()
+    return "कढ़ी" in item or "कढी" in item or "karhi" in normalized_item or "kadhi" in normalized_item
+
+
 def is_kadhi_chawal_item(item: str) -> bool:
-    return ("कढ़ी" in item or "कढी" in item or "karhi" in item.casefold()) and is_rice_item(item)
+    return is_kadhi_item(item) and is_rice_item(item)
+
+
+def is_rainy_day_for_kadhi(weather_info: WeatherInfo | None) -> bool:
+    return weather_info is not None and weather_info.is_rainy
+
+
+def exclude_kadhi_items_on_rainy_day(
+    pool: list[str],
+    weather_info: WeatherInfo | None,
+) -> tuple[list[str], bool]:
+    if not is_rainy_day_for_kadhi(weather_info):
+        return pool[:], False
+    filtered = [item for item in pool if not is_kadhi_item(item)]
+    return filtered, filtered != pool
 
 
 def find_kadhi_chawal_item(items: list[str]) -> str | None:
@@ -4098,6 +4121,8 @@ def main() -> int:
     breakfast_items, _ = apply_date_specific_roti_atta_rule(breakfast_items, target_date)
     meal_items, _ = apply_date_specific_roti_atta_rule(meal_items, target_date)
     meal_choice_items, _ = apply_date_specific_roti_atta_rule(meal_choice_items, target_date)
+    meal_items, _ = exclude_kadhi_items_on_rainy_day(meal_items, weather_info)
+    meal_choice_items, _ = exclude_kadhi_items_on_rainy_day(meal_choice_items, weather_info)
 
     warning_items: set[str] = set()
     meal_item_weight_getter = lambda item: get_ritu_roti_grain_preference_weight(item, ritu_key)
@@ -4480,6 +4505,10 @@ def main() -> int:
         weekly_chaach_sabzi_due = should_force_weekly_chaach_sabzi(history, target_date, ritu_key)
         weekly_chaach_sabzi_item = find_chaach_sabzi_rice_item(meal_choice_items)
         fortnightly_kadhi_chawal_due = should_force_fortnightly_kadhi_chawal(history, target_date, ritu_key)
+        if fortnightly_kadhi_chawal_due and is_rainy_day_for_kadhi(weather_info):
+            fortnightly_kadhi_chawal_due = False
+            if FORTNIGHTLY_KADHI_CHAWAL_RAIN_NOTE not in missing_data_notes:
+                missing_data_notes.append(FORTNIGHTLY_KADHI_CHAWAL_RAIN_NOTE)
         fortnightly_kadhi_chawal_item = find_kadhi_chawal_item(meal_choice_items)
         if is_fermented_rice_breakfast_item(selected_breakfast) and any(
             is_chaach_sabzi_meal(meal) for meal in original_meal_choice_items
@@ -4774,13 +4803,17 @@ def main() -> int:
                 selected_breakfast = forced_light
 
         if meal_item_override:
-            resolved_meal_override = resolve_available_override_item(meal_item_override, meal_override_items)
-            if resolved_meal_override is not None:
-                selected_meal = resolved_meal_override
+            if is_rainy_day_for_kadhi(weather_info) and is_kadhi_item(meal_item_override):
+                if RAINY_DAY_KADHI_OVERRIDE_NOTE not in missing_data_notes:
+                    missing_data_notes.append(RAINY_DAY_KADHI_OVERRIDE_NOTE)
             else:
-                missing_data_notes.append(
-                    f"[अनुपलब्ध] निर्धारित भोजन override सूची में नहीं मिला: {meal_item_override}"
-                )
+                resolved_meal_override = resolve_available_override_item(meal_item_override, meal_override_items)
+                if resolved_meal_override is not None:
+                    selected_meal = resolved_meal_override
+                else:
+                    missing_data_notes.append(
+                        f"[अनुपलब्ध] निर्धारित भोजन override सूची में नहीं मिला: {meal_item_override}"
+                    )
 
         today_repeat_families = extract_breakfast_repeat_families(selected_breakfast) | extract_meal_repeat_families(
             selected_meal
@@ -4802,6 +4835,13 @@ def main() -> int:
                 next_day_requires_rice_prep = False
 
         if is_double_meal_window(target_date):
+            effective_second_meal_override = second_meal_item_override
+            if effective_second_meal_override and is_rainy_day_for_kadhi(weather_info) and is_kadhi_item(
+                effective_second_meal_override
+            ):
+                if RAINY_DAY_KADHI_OVERRIDE_NOTE not in missing_data_notes:
+                    missing_data_notes.append(RAINY_DAY_KADHI_OVERRIDE_NOTE)
+                effective_second_meal_override = None
             selected_second_meal = select_second_meal_for_window(
                 selected_meal=selected_meal,
                 meal_choice_items=meal_choice_items,
@@ -4823,7 +4863,7 @@ def main() -> int:
                 heavy_light_classification=heavy_light_classification,
             )
             selected_second_meal, second_meal_override_note = apply_second_meal_override(
-                second_meal_item_override,
+                effective_second_meal_override,
                 selected_meal,
                 selected_second_meal,
                 meal_override_items,
