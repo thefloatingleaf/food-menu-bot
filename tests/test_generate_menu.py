@@ -504,6 +504,18 @@ class VarietyCycleRuleTests(unittest.TestCase):
         )
         self.assertEqual(filtered, ["मूंग दाल और चावल"])
 
+    def test_exclude_chaach_sabzi_meals_for_overnight_support(self) -> None:
+        meals = ["छाछ की सब्ज़ी चावल के साथ", "छाछ की सब्ज़ी और साठी चावल", "मूंग दाल और चावल"]
+        filtered = generate_menu.exclude_chaach_sabzi_meals_for_overnight_support(meals)
+
+        self.assertEqual(filtered, ["मूंग दाल और चावल"])
+
+    def test_exclude_chaach_sabzi_meals_for_overnight_support_can_empty_pool(self) -> None:
+        meals = ["छाछ की सब्ज़ी चावल के साथ", "छाछ की सब्ज़ी और शालि चावल"]
+        filtered = generate_menu.exclude_chaach_sabzi_meals_for_overnight_support(meals)
+
+        self.assertEqual(filtered, [])
+
     def test_chaach_sabzi_meal_detection_matches_all_rice_variants(self) -> None:
         self.assertTrue(generate_menu.is_chaach_sabzi_meal("छाछ की सब्ज़ी चावल के साथ"))
         self.assertTrue(generate_menu.is_chaach_sabzi_meal("छाछ की सब्ज़ी और शालि चावल"))

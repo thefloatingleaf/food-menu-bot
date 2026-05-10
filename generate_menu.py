@@ -2458,6 +2458,10 @@ def exclude_meals_incompatible_with_breakfast(breakfast_item: str, meals: list[s
     return [meal for meal in meals if not is_chaach_sabzi_meal(meal)]
 
 
+def exclude_chaach_sabzi_meals_for_overnight_support(meals: list[str]) -> list[str]:
+    return [meal for meal in meals if not is_chaach_sabzi_meal(meal)]
+
+
 def is_rice_item(item: str) -> bool:
     return any(token in item for token in RICE_ITEM_TOKENS)
 
@@ -4502,6 +4506,7 @@ def main() -> int:
             selected_breakfast,
             apply_hard_filters([item for item in meal_items if is_rice_item(item)], ekadashi, keywords, disallowed_keywords),
         )
+        rice_support_meal_candidates = exclude_chaach_sabzi_meals_for_overnight_support(rice_support_meal_candidates)
         weekly_chaach_sabzi_due = should_force_weekly_chaach_sabzi(history, target_date, ritu_key)
         weekly_chaach_sabzi_item = find_chaach_sabzi_rice_item(meal_choice_items)
         fortnightly_kadhi_chawal_due = should_force_fortnightly_kadhi_chawal(history, target_date, ritu_key)
@@ -4814,6 +4819,10 @@ def main() -> int:
                     missing_data_notes.append(
                         f"[अनुपलब्ध] निर्धारित भोजन override सूची में नहीं मिला: {meal_item_override}"
                     )
+
+        if next_day_requires_rice_prep and is_chaach_sabzi_meal(selected_meal):
+            next_day_breakfast_lock = None
+            next_day_requires_rice_prep = False
 
         today_repeat_families = extract_breakfast_repeat_families(selected_breakfast) | extract_meal_repeat_families(
             selected_meal
