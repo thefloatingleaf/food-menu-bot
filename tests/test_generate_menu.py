@@ -349,6 +349,52 @@ class VarietyCycleRuleTests(unittest.TestCase):
             {"चीला"},
         )
 
+    def test_is_moong_dal_chilla_item_matches_variant_spellings(self) -> None:
+        self.assertTrue(generate_menu.is_moong_dal_chilla_item("मूंग दाल चिल्ला"))
+        self.assertTrue(generate_menu.is_moong_dal_chilla_item("मूँग की दाल का चीला"))
+        self.assertFalse(generate_menu.is_moong_dal_chilla_item("बेसन का चीला"))
+        self.assertFalse(generate_menu.is_moong_dal_chilla_item("मूंग दाल की खिचड़ी"))
+
+    def test_apply_moong_dal_chilla_repeat_rule_blocks_within_fourteen_day_window(self) -> None:
+        history = [
+            {
+                "date": "2026-03-01",
+                "breakfast": "मूंग दाल चिल्ला",
+                "meal": "दाल और चावल",
+                "ritu_key": "vasant",
+            }
+        ]
+        pool = ["मूंग दाल चिल्ला", "बेसन का चीला", "उपमा"]
+
+        filtered, applied = generate_menu.apply_moong_dal_chilla_repeat_rule(
+            pool,
+            history,
+            date(2026, 3, 14),
+        )
+
+        self.assertEqual(filtered, ["बेसन का चीला", "उपमा"])
+        self.assertTrue(applied)
+
+    def test_apply_moong_dal_chilla_repeat_rule_allows_after_fourteen_days(self) -> None:
+        history = [
+            {
+                "date": "2026-03-01",
+                "breakfast": "मूंग दाल चिल्ला",
+                "meal": "दाल और चावल",
+                "ritu_key": "vasant",
+            }
+        ]
+        pool = ["मूंग दाल चिल्ला", "उपमा"]
+
+        filtered, applied = generate_menu.apply_moong_dal_chilla_repeat_rule(
+            pool,
+            history,
+            date(2026, 3, 15),
+        )
+
+        self.assertEqual(filtered, pool)
+        self.assertFalse(applied)
+
     def test_select_monthly_fruit_prefers_unused_april_fruit(self) -> None:
         history = [
             {

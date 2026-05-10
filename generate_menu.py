@@ -430,6 +430,8 @@ WEEKLY_BREAKFAST_FAMILY_LIMITS = {"चीला"}
 WEEKLY_BREAKFAST_FAMILY_REPEAT_NOTE = (
     "[साप्ताहिक नाश्ता नियम] किसी भी प्रकार का चीला/चिल्ला सप्ताह में एक बार से अधिक नहीं दोहराया गया"
 )
+MOONG_DAL_CHILLA_REPEAT_WINDOW_DAYS = 14
+MOONG_DAL_CHILLA_REPEAT_NOTE = "[14-दिन नाश्ता नियम] मूंग दाल चिल्ला 14 दिनों में दोबारा नहीं रखा गया"
 FERMENTED_RICE_BREAKFAST_INCOMPATIBLE_LABELS = ("पझैया सादम", "पखाला भात")
 CHAACH_SABZI_MEAL_TOKEN = "छाछ की सब्ज़ी"
 FERMENTED_RICE_BREAKFAST_INCOMPATIBLE_MEAL_NOTE = (
@@ -2237,6 +2239,49 @@ def get_recent_breakfast_family_block_families(
         families = extract_breakfast_repeat_families(breakfast_value)
         blocked.update(families & WEEKLY_BREAKFAST_FAMILY_LIMITS)
     return blocked
+
+
+def is_moong_dal_chilla_item(item: str) -> bool:
+    families = extract_breakfast_repeat_families(item)
+    return "मूंग" in families and "चीला" in families
+
+
+def has_recent_moong_dal_chilla(
+    history: list[dict[str, Any]],
+    target_date: date,
+    window_days: int = MOONG_DAL_CHILLA_REPEAT_WINDOW_DAYS,
+) -> bool:
+    earliest = target_date - timedelta(days=window_days - 1)
+    for row in history:
+        try:
+            row_date = datetime.strptime(row["date"], "%Y-%m-%d").date()
+        except (ValueError, KeyError):
+            continue
+        if not (earliest <= row_date < target_date):
+            continue
+        breakfast_value = row.get("breakfast")
+        if isinstance(breakfast_value, str) and is_moong_dal_chilla_item(breakfast_value):
+            return True
+    return False
+
+
+def apply_moong_dal_chilla_repeat_rule(
+    pool: list[str],
+    history: list[dict[str, Any]],
+    target_date: date,
+) -> tuple[list[str], bool]:
+    if not has_recent_moong_dal_chilla(history, target_date):
+        return pool[:], False
+    filtered = [item for item in pool if not is_moong_dal_chilla_item(item)]
+    return filtered, filtered != pool
+
+
+def is_blocked_by_moong_dal_chilla_repeat_rule(
+    item: str,
+    history: list[dict[str, Any]],
+    target_date: date,
+) -> bool:
+    return is_moong_dal_chilla_item(item) and has_recent_moong_dal_chilla(history, target_date)
 
 
 def is_overnight_breakfast(item: str) -> bool:
@@ -4152,6 +4197,13 @@ def main() -> int:
         )
         if yearly_curd_breakfast_rule_applied:
             missing_data_notes.append("[वार्षिक दही नियम] दही/रायता वाला नाश्ता इस वर्ष दोबारा नहीं दोहराया गया")
+        breakfast_choice_items, moong_dal_chilla_repeat_rule_applied = apply_moong_dal_chilla_repeat_rule(
+            breakfast_choice_items,
+            history,
+            target_date,
+        )
+        if moong_dal_chilla_repeat_rule_applied:
+            missing_data_notes.append(MOONG_DAL_CHILLA_REPEAT_NOTE)
         weekly_pazhaya_sadam_item = find_pazhaya_sadam_item(breakfast_items)
         required_window_pazhaya_sadam_due = (
             weekly_pazhaya_sadam_item is not None
@@ -4184,6 +4236,11 @@ def main() -> int:
                     previous_day_breakfast_lock in breakfast_items
                     and not lock_conflicts
                     and not is_blocked_by_yearly_curd_rule(previous_day_breakfast_lock, yearly_used_curd_items, ritu_key)
+                    and not is_blocked_by_moong_dal_chilla_repeat_rule(
+                        previous_day_breakfast_lock,
+                        history,
+                        target_date,
+                    )
                 ):
                     selected_breakfast = previous_day_breakfast_lock
                     breakfast_fixed = True
@@ -4201,6 +4258,12 @@ def main() -> int:
                         missing_data_notes.append(
                             "[वार्षिक दही नियम] पिछली रात से लॉक किया गया दही/रायता वाला नाश्ता इस वर्ष फिर नहीं दोहराया गया"
                         )
+                    elif is_blocked_by_moong_dal_chilla_repeat_rule(
+                        previous_day_breakfast_lock,
+                        history,
+                        target_date,
+                    ):
+                        missing_data_notes.append(MOONG_DAL_CHILLA_REPEAT_NOTE)
                     selected_breakfast = choose_item(
                         items=breakfast_choice_items,
                         ekadashi=ekadashi,
@@ -4288,7 +4351,29 @@ def main() -> int:
                     previous_day_repeat_families,
                     extract_breakfast_repeat_families,
                 )
-                if override_conflicts:
+                if is_blocked_by_moong_dal_chilla_repeat_rule(breakfast_item_override, history, target_date):
+                    missing_data_notes.append(MOONG_DAL_CHILLA_REPEAT_NOTE)
+                    selected_breakfast = choose_item(
+                        items=breakfast_choice_items,
+                        ekadashi=ekadashi,
+                        cycle_block_set=breakfast_cycle_block_set,
+                        recent_block_set=breakfast_recent,
+                        consecutive_day_block_families=previous_day_repeat_families,
+                        recent_family_block_families=breakfast_recent_family_block_families,
+                        family_extractor=extract_breakfast_repeat_families,
+                        keywords=keywords,
+                        disallowed_keywords=disallowed_keywords,
+                        fallback_policy=fallback_policy,
+                        seed_key=f"{target_date_str}:breakfast",
+                        weather_rules=weather_rules,
+                        weather_tags=weather_tags,
+                        warn_bucket=warning_items,
+                        constraint_notes=missing_data_notes,
+                        prefer_lighter=transition_plan.prefer_lighter,
+                        light_fallback_items=light_fallback_items,
+                        heavy_light_classification=heavy_light_classification,
+                    )
+                elif override_conflicts:
                     missing_data_notes.append(
                         "[नियम] निर्धारित नाश्ता override लगातार-दिन नियम से टकराया: "
                         + " / ".join(override_conflicts)
@@ -4529,8 +4614,18 @@ def main() -> int:
                 )
                 if next_day.ritu_key == ritu_key:
                     next_day_breakfast_cycle_block_set.add(selected_breakfast)
+                next_day_breakfast_items = next_day.breakfast_items
+                next_day_breakfast_items, _ = apply_moong_dal_chilla_repeat_rule(
+                    next_day_breakfast_items,
+                    history,
+                    next_day.target_date,
+                )
+                if is_moong_dal_chilla_item(selected_breakfast):
+                    next_day_breakfast_items = [
+                        item for item in next_day_breakfast_items if not is_moong_dal_chilla_item(item)
+                    ]
                 planned_next_day_breakfast = choose_item(
-                    items=next_day.breakfast_items,
+                    items=next_day_breakfast_items,
                     ekadashi=next_day.ekadashi,
                     cycle_block_set=next_day_breakfast_cycle_block_set,
                     recent_block_set=next_day_breakfast_recent,
