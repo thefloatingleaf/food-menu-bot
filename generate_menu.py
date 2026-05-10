@@ -3608,17 +3608,6 @@ def normalize_ritu_key(ritu_hi: str) -> str:
     return "shishir"
 
 
-def should_show_weather_line(weather: WeatherInfo, mode: str) -> bool:
-    return False
-
-
-def build_weather_line(weather: WeatherInfo, city_hi: str) -> str:
-    return (
-        f"*मौसम:* {city_hi} - सुबह {weather.morning_temp_c:.1f}°C, "
-        f"अधिकतम {weather.max_temp_c:.1f}°C, वर्षा संभावना {weather.rain_probability_pct:.0f}%"
-    )
-
-
 def build_output_text(lines: list[str]) -> str:
     if len(lines) >= 4:
         header_block = "\r\n".join(lines[:4])
@@ -3982,8 +3971,6 @@ def main() -> int:
     yearly_used_curd_items = get_yearly_used_curd_items(published_archive_entries, target_date)
 
     weather_enabled = bool(config.get("weather_enabled", True))
-    weather_mode = str(config.get("weather_show_mode", "internal_only"))
-    weather_city_hi = str(config.get("weather_city_hi", "लखनऊ"))
     thresholds = parse_weather_thresholds(config)
     light_fallback_items_raw = config.get("light_fallback_items", DEFAULT_LIGHT_FALLBACK_ITEMS)
     if isinstance(light_fallback_items_raw, list):
@@ -4082,8 +4069,6 @@ def main() -> int:
         lines.append(format_today_fruit_line(fruit_selection, ritu_key))
         if ekadashi.is_ekadashi and ekadashi.name_hi:
             lines.append(f"*एकादशी:* {ekadashi.name_hi}")
-        if weather_info is not None and should_show_weather_line(weather_info, weather_mode):
-            lines.append(build_weather_line(weather_info, weather_city_hi))
         if vasant_day_ten:
             append_vasant_neem_ghee_lines(lines)
         if target_date.month == 1 and target_date.day == 1:
@@ -4957,9 +4942,6 @@ def main() -> int:
 
     if ekadashi.is_ekadashi and ekadashi.name_hi:
         lines.append(f"*एकादशी:* {ekadashi.name_hi}")
-
-    if weather_info is not None and should_show_weather_line(weather_info, weather_mode):
-        lines.append(build_weather_line(weather_info, weather_city_hi))
 
     if vasant_day_ten:
         append_vasant_neem_ghee_lines(lines)

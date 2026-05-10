@@ -557,7 +557,7 @@ class OutputFreshnessTests(unittest.TestCase):
 
 
 class WeatherTagWarningTests(unittest.TestCase):
-    def test_should_show_weather_line_is_disabled_for_final_menu_text(self) -> None:
+    def test_rainy_weather_still_drives_internal_weather_rules(self) -> None:
         weather = generate_menu.WeatherInfo(
             morning_temp_c=24,
             max_temp_c=36,
@@ -567,9 +567,19 @@ class WeatherTagWarningTests(unittest.TestCase):
             is_extreme_hot=True,
             source_hi="test",
         )
+        rules = generate_menu.derive_weather_rules(
+            weather,
+            {
+                "extreme_cold_max_c": 10,
+                "cold_max_c": 18,
+                "hot_min_c": 30,
+                "extreme_hot_min_c": 35,
+                "rain_probability_high_pct": 50,
+            },
+        )
 
-        self.assertFalse(generate_menu.should_show_weather_line(weather, "always"))
-        self.assertFalse(generate_menu.should_show_weather_line(weather, "rain_or_extreme_only"))
+        self.assertIn("rain_friendly", rules.preferred_tags)
+        self.assertIn("cold_served", rules.avoid_tags)
 
     def test_infer_tags_for_common_breakfast_items_avoids_empty_results(self) -> None:
         self.assertEqual(

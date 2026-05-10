@@ -75,7 +75,6 @@
   "weather_lat": 26.8467,
   "weather_lon": 80.9462,
   "weather_timezone": "Asia/Kolkata",
-  "weather_show_mode": "internal_only",
   "weather_thresholds": {
     "cold_max_c": 18,
     "hot_min_c": 30,
