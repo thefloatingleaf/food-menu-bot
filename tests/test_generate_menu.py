@@ -557,6 +557,20 @@ class OutputFreshnessTests(unittest.TestCase):
 
 
 class WeatherTagWarningTests(unittest.TestCase):
+    def test_should_show_weather_line_is_disabled_for_final_menu_text(self) -> None:
+        weather = generate_menu.WeatherInfo(
+            morning_temp_c=24,
+            max_temp_c=36,
+            rain_probability_pct=90,
+            is_rainy=True,
+            is_extreme_cold=False,
+            is_extreme_hot=True,
+            source_hi="test",
+        )
+
+        self.assertFalse(generate_menu.should_show_weather_line(weather, "always"))
+        self.assertFalse(generate_menu.should_show_weather_line(weather, "rain_or_extreme_only"))
+
     def test_infer_tags_for_common_breakfast_items_avoids_empty_results(self) -> None:
         self.assertEqual(
             set(generate_menu.infer_tags_for_item("पोहे")),

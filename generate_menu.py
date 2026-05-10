@@ -3609,11 +3609,7 @@ def normalize_ritu_key(ritu_hi: str) -> str:
 
 
 def should_show_weather_line(weather: WeatherInfo, mode: str) -> bool:
-    if mode == "always":
-        return True
-    if mode == "never":
-        return False
-    return weather.is_rainy or weather.is_extreme_cold or weather.is_extreme_hot
+    return False
 
 
 def build_weather_line(weather: WeatherInfo, city_hi: str) -> str:
@@ -3986,7 +3982,7 @@ def main() -> int:
     yearly_used_curd_items = get_yearly_used_curd_items(published_archive_entries, target_date)
 
     weather_enabled = bool(config.get("weather_enabled", True))
-    weather_mode = str(config.get("weather_show_mode", "rain_or_extreme_only"))
+    weather_mode = str(config.get("weather_show_mode", "internal_only"))
     weather_city_hi = str(config.get("weather_city_hi", "लखनऊ"))
     thresholds = parse_weather_thresholds(config)
     light_fallback_items_raw = config.get("light_fallback_items", DEFAULT_LIGHT_FALLBACK_ITEMS)

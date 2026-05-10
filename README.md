@@ -179,7 +179,6 @@ python3 generate_menu.py --bootstrap-weather-tags
 - `*फॉलोवर महोदय हेतु रात की तैयारी:* <instruction>` (only when the generated next-day menu includes मंगौड़े)
 - `*साथ में:* मोटा चौकोर कटा प्याज` (only when the selected breakfast is `पखाला भात`)
 - `*एकादशी:* <name_hi>` (only on Ekadashi/Gauna dates)
-- `*मौसम:* <details>` (only rainy/extreme days)
 - `*भोजन के साथ अनिवार्य:* ...` (only when ऋतु is वसंत)
 
 ## Data files
@@ -269,6 +268,7 @@ The generator also applies a recurring override for any festival day that is bot
 1. Use manual override if date exists in `manual_weather_override.json`
 2. Else fetch Open-Meteo forecast for configured coordinates
 3. Else continue without weather filter (menu generation never fails)
+4. Weather is used only for internal software rules and is never rendered in the final menu message.
 
 ## Seasonal menu behavior
 
