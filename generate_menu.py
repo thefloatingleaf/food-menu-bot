@@ -426,6 +426,7 @@ WEEKLY_PAZHAYA_SADAM_NOTE = (
 WEEKLY_PAZHAYA_SADAM_SAME_DAY_NOTE = (
     "[समय नियम] साप्ताहिक पझैया सादम नियम आज लागू नहीं किया गया क्योंकि overnight तैयारी का समय निकल चुका है"
 )
+EKADASHI_BLOCKED_ITEM_NOTE = "[एकादशी नियम] चावल/पोहा वाला नाश्ता/भोजन आज नहीं रखा गया"
 WEEKLY_BREAKFAST_FAMILY_LIMITS = {"चीला"}
 WEEKLY_BREAKFAST_FAMILY_REPEAT_NOTE = (
     "[साप्ताहिक नाश्ता नियम] किसी भी प्रकार का चीला/चिल्ला सप्ताह में एक बार से अधिक नहीं दोहराया गया"
@@ -466,6 +467,9 @@ FORTNIGHTLY_KADHI_CHAWAL_RAIN_NOTE = (
     "[मौसम नियम] बरसात/वर्षा वाले दिन कढ़ी नहीं रखी गई, इसलिए 15-दिन वाला कढ़ी-चावल नियम आज लागू नहीं किया गया"
 )
 RAINY_DAY_KADHI_OVERRIDE_NOTE = "[मौसम नियम] बरसात/वर्षा वाले दिन निर्धारित कढ़ी override लागू नहीं किया गया"
+BLOCK_KEYWORD_ALIASES = {
+    "पोहा": ("पोहे",),
+}
 VASANT_RAGI_ROTI_ONLY_WINDOWS = [
     (date(2026, 4, 30), date(2026, 5, 5)),
 ]
@@ -1699,6 +1703,13 @@ def resolve_panchang_info(
             else:
                 maah_hi = convert_lunar_month_to_amanta(maah_hi, panchang_row.get("paksha_hi"))
         tithi_hi = str(panchang_row.get("tithi_hi", "अज्ञात")).strip() or "अज्ञात"
+        if ekadashi.is_ekadashi:
+            tithi_hi = "एकादशी"
+        elif tithi_hi == "एकादशी":
+            # Ekadashi vrat/date handling comes from ekadashi_2026_27.json. If raw
+            # panchang tithi starts later in the civil day, avoid displaying it
+            # as an Ekadashi menu day before the observance date.
+            tithi_hi = "दशमी"
         return PanchangInfo(ritu_hi=ritu_hi, maah_hi=maah_hi, tithi_hi=tithi_hi)
 
     inferred_ritu = infer_ritu_hi_from_date(target_date)
@@ -1883,7 +1894,17 @@ def apply_recurring_festival_menu_overrides(
 
 
 def is_blocked_item(item: str, keywords: list[str]) -> bool:
-    return any(keyword in item for keyword in keywords)
+    item_text = item.lower()
+    for keyword in keywords:
+        normalized_keyword = keyword.lower()
+        aliases = BLOCK_KEYWORD_ALIASES.get(normalized_keyword, ())
+        if any(term in item_text for term in (normalized_keyword, *aliases)):
+            return True
+    return False
+
+
+def is_blocked_by_ekadashi_rule(item: str, ekadashi: EkadashiInfo, keywords: list[str]) -> bool:
+    return ekadashi.is_ekadashi and is_blocked_item(item, keywords)
 
 
 def normalize_history(raw: Any) -> list[dict[str, Any]]:
@@ -3545,10 +3566,13 @@ def choose_item(
 
     base_pool = apply_hard_filters(full_pool, ekadashi, keywords, disallowed_keywords)
 
-    if not base_pool and ekadashi.is_ekadashi and fallback_policy == "fallback_full_menu":
+    if not base_pool and not ekadashi.is_ekadashi and fallback_policy == "fallback_full_menu":
         base_pool = full_pool[:]
 
     if not base_pool:
+        base_pool = apply_hard_filters(light_fallback_items[:], ekadashi, keywords, disallowed_keywords)
+
+    if not base_pool and not ekadashi.is_ekadashi:
         base_pool = light_fallback_items[:]
 
     if not base_pool:
@@ -4217,6 +4241,14 @@ def main() -> int:
             and not previous_day_breakfast_lock
             and not breakfast_item_override
         )
+        pazhaya_sadam_blocked_by_ekadashi = (
+            weekly_pazhaya_sadam_item is not None
+            and is_blocked_by_ekadashi_rule(weekly_pazhaya_sadam_item, ekadashi, keywords)
+        )
+        if (required_window_pazhaya_sadam_due or weekly_pazhaya_sadam_due) and pazhaya_sadam_blocked_by_ekadashi:
+            missing_data_notes.append(EKADASHI_BLOCKED_ITEM_NOTE)
+            required_window_pazhaya_sadam_due = False
+            weekly_pazhaya_sadam_due = False
 
         if previous_day_breakfast_lock:
             if is_overnight_breakfast(previous_day_breakfast_lock) and not can_apply_overnight_breakfast_on_run_date(
@@ -4232,9 +4264,13 @@ def main() -> int:
                     previous_day_repeat_families,
                     extract_breakfast_repeat_families,
                 )
+                lock_blocked_by_ekadashi = is_blocked_by_ekadashi_rule(
+                    previous_day_breakfast_lock, ekadashi, keywords
+                )
                 if (
                     previous_day_breakfast_lock in breakfast_items
                     and not lock_conflicts
+                    and not lock_blocked_by_ekadashi
                     and not is_blocked_by_yearly_curd_rule(previous_day_breakfast_lock, yearly_used_curd_items, ritu_key)
                     and not is_blocked_by_moong_dal_chilla_repeat_rule(
                         previous_day_breakfast_lock,
@@ -4254,6 +4290,8 @@ def main() -> int:
                             "[नियम] पिछली रात से लॉक किया गया नाश्ता लगातार-दिन नियम से टकराया: "
                             + " / ".join(lock_conflicts)
                         )
+                    elif lock_blocked_by_ekadashi:
+                        missing_data_notes.append(EKADASHI_BLOCKED_ITEM_NOTE)
                     elif is_blocked_by_yearly_curd_rule(previous_day_breakfast_lock, yearly_used_curd_items, ritu_key):
                         missing_data_notes.append(
                             "[वार्षिक दही नियम] पिछली रात से लॉक किया गया दही/रायता वाला नाश्ता इस वर्ष फिर नहीं दोहराया गया"
@@ -4287,6 +4325,28 @@ def main() -> int:
         if breakfast_item_override:
             if previous_day_breakfast_lock:
                 pass
+            elif is_blocked_by_ekadashi_rule(breakfast_item_override, ekadashi, keywords):
+                missing_data_notes.append(EKADASHI_BLOCKED_ITEM_NOTE)
+                selected_breakfast = choose_item(
+                    items=breakfast_choice_items,
+                    ekadashi=ekadashi,
+                    cycle_block_set=breakfast_cycle_block_set,
+                    recent_block_set=breakfast_recent,
+                    consecutive_day_block_families=previous_day_repeat_families,
+                    recent_family_block_families=breakfast_recent_family_block_families,
+                    family_extractor=extract_breakfast_repeat_families,
+                    keywords=keywords,
+                    disallowed_keywords=disallowed_keywords,
+                    fallback_policy=fallback_policy,
+                    seed_key=f"{target_date_str}:breakfast",
+                    weather_rules=weather_rules,
+                    weather_tags=weather_tags,
+                    warn_bucket=warning_items,
+                    constraint_notes=missing_data_notes,
+                    prefer_lighter=transition_plan.prefer_lighter,
+                    light_fallback_items=light_fallback_items,
+                    heavy_light_classification=heavy_light_classification,
+                )
             elif is_overnight_breakfast(breakfast_item_override) and not can_apply_overnight_breakfast_on_run_date(
                 target_date, generation_date
             ):
@@ -4575,6 +4635,13 @@ def main() -> int:
         rice_support_meal_candidates = exclude_chaach_sabzi_meals_for_overnight_support(rice_support_meal_candidates)
         weekly_chaach_sabzi_due = should_force_weekly_chaach_sabzi(history, target_date, ritu_key)
         weekly_chaach_sabzi_item = find_chaach_sabzi_rice_item(meal_choice_items)
+        if (
+            weekly_chaach_sabzi_due
+            and weekly_chaach_sabzi_item is not None
+            and is_blocked_by_ekadashi_rule(weekly_chaach_sabzi_item, ekadashi, keywords)
+        ):
+            missing_data_notes.append(EKADASHI_BLOCKED_ITEM_NOTE)
+            weekly_chaach_sabzi_due = False
         fortnightly_kadhi_chawal_due = should_force_fortnightly_kadhi_chawal(history, target_date, ritu_key)
         if fortnightly_kadhi_chawal_due and is_rainy_day_for_kadhi(weather_info):
             fortnightly_kadhi_chawal_due = False
@@ -4593,7 +4660,11 @@ def main() -> int:
                     selected_breakfast_repeat_families,
                     extract_breakfast_repeat_families,
                 )
-                if is_overnight_breakfast(next_day_override) and not override_conflicts:
+                if is_overnight_breakfast(next_day_override) and is_blocked_by_ekadashi_rule(
+                    next_day_override, next_day.ekadashi, keywords
+                ):
+                    missing_data_notes.append(EKADASHI_BLOCKED_ITEM_NOTE)
+                elif is_overnight_breakfast(next_day_override) and not override_conflicts:
                     planned_next_day_overnight = next_day_override
                 elif is_overnight_breakfast(next_day_override) and override_conflicts:
                     missing_data_notes.append(
@@ -4644,7 +4715,11 @@ def main() -> int:
                     light_fallback_items=light_fallback_items,
                     heavy_light_classification=heavy_light_classification,
                 )
-                if is_overnight_breakfast(planned_next_day_breakfast):
+                if is_overnight_breakfast(planned_next_day_breakfast) and is_blocked_by_ekadashi_rule(
+                    planned_next_day_breakfast, next_day.ekadashi, keywords
+                ):
+                    missing_data_notes.append(EKADASHI_BLOCKED_ITEM_NOTE)
+                elif is_overnight_breakfast(planned_next_day_breakfast):
                     planned_next_day_overnight = planned_next_day_breakfast
 
         if planned_next_day_overnight:
@@ -4884,7 +4959,9 @@ def main() -> int:
                 selected_breakfast = forced_light
 
         if meal_item_override:
-            if is_rainy_day_for_kadhi(weather_info) and is_kadhi_item(meal_item_override):
+            if is_blocked_by_ekadashi_rule(meal_item_override, ekadashi, keywords):
+                missing_data_notes.append(EKADASHI_BLOCKED_ITEM_NOTE)
+            elif is_rainy_day_for_kadhi(weather_info) and is_kadhi_item(meal_item_override):
                 if RAINY_DAY_KADHI_OVERRIDE_NOTE not in missing_data_notes:
                     missing_data_notes.append(RAINY_DAY_KADHI_OVERRIDE_NOTE)
             else:
@@ -4921,6 +4998,11 @@ def main() -> int:
 
         if is_double_meal_window(target_date):
             effective_second_meal_override = second_meal_item_override
+            if effective_second_meal_override and is_blocked_by_ekadashi_rule(
+                effective_second_meal_override, ekadashi, keywords
+            ):
+                missing_data_notes.append(EKADASHI_BLOCKED_ITEM_NOTE)
+                effective_second_meal_override = None
             if effective_second_meal_override and is_rainy_day_for_kadhi(weather_info) and is_kadhi_item(
                 effective_second_meal_override
             ):

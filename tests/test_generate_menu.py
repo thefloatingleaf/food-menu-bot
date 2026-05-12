@@ -305,6 +305,50 @@ class VarietyCycleRuleTests(unittest.TestCase):
 
         self.assertEqual(selected, "उपमा")
 
+    def test_choose_item_does_not_reallow_blocked_items_on_ekadashi_fallback(self) -> None:
+        selected = generate_menu.choose_item(
+            items=["चावल", "पोहा"],
+            ekadashi=generate_menu.EkadashiInfo(True, "अपरा एकादशी", "ज्येष्ठ"),
+            cycle_block_set=set(),
+            recent_block_set=set(),
+            consecutive_day_block_families=set(),
+            recent_family_block_families=set(),
+            family_extractor=generate_menu.extract_breakfast_repeat_families,
+            keywords=["चावल", "पोहा"],
+            disallowed_keywords=[],
+            fallback_policy="fallback_full_menu",
+            seed_key="2026-05-13:breakfast",
+            weather_rules=None,
+            weather_tags={},
+            warn_bucket=set(),
+            constraint_notes=[],
+            prefer_lighter=False,
+            light_fallback_items=["उपमा"],
+        )
+
+        self.assertEqual(selected, "उपमा")
+
+    def test_is_blocked_by_ekadashi_rule_only_blocks_on_ekadashi(self) -> None:
+        rice_item = "पझैया सादम: चावल"
+
+        self.assertTrue(
+            generate_menu.is_blocked_by_ekadashi_rule(
+                rice_item,
+                generate_menu.EkadashiInfo(True, "अपरा एकादशी", "ज्येष्ठ"),
+                ["चावल"],
+            )
+        )
+        self.assertFalse(
+            generate_menu.is_blocked_by_ekadashi_rule(
+                rice_item,
+                generate_menu.EkadashiInfo(False, None, None),
+                ["चावल"],
+            )
+        )
+
+    def test_is_blocked_item_matches_common_poha_variant(self) -> None:
+        self.assertTrue(generate_menu.is_blocked_item("पोहे", ["पोहा"]))
+
     def test_choose_item_blocks_chilla_family_with_weekly_family_rule(self) -> None:
         selected = generate_menu.choose_item(
             items=["मूँग दाल चीला", "उपमा"],
@@ -600,6 +644,40 @@ class OutputFreshnessTests(unittest.TestCase):
                 "*21-Apr-2026 तिथि के लिए भोजन:*\r\n*ऋतु:* वसंत",
                 date(2026, 4, 22),
             )
+
+
+class PanchangEkadashiDisplayTests(unittest.TestCase):
+    def test_resolve_panchang_info_does_not_show_ekadashi_before_observance_date(self) -> None:
+        info = generate_menu.resolve_panchang_info(
+            date(2026, 5, 12),
+            generate_menu.EkadashiInfo(False, None, None),
+            {
+                "ritu_hi": "वसंत",
+                "maah_hi": "वैशाख",
+                "tithi_hi": "एकादशी",
+                "paksha_hi": "कृष्ण पक्ष",
+            },
+            "वसंत",
+            "amanta",
+        )
+
+        self.assertEqual(info.tithi_hi, "दशमी")
+
+    def test_resolve_panchang_info_uses_ekadashi_calendar_for_observance_date(self) -> None:
+        info = generate_menu.resolve_panchang_info(
+            date(2026, 5, 13),
+            generate_menu.EkadashiInfo(True, "अपरा एकादशी", "ज्येष्ठ"),
+            {
+                "ritu_hi": "वसंत",
+                "maah_hi": "वैशाख",
+                "tithi_hi": "द्वादशी",
+                "paksha_hi": "कृष्ण पक्ष",
+            },
+            "वसंत",
+            "amanta",
+        )
+
+        self.assertEqual(info.tithi_hi, "एकादशी")
 
 
 class WeatherTagWarningTests(unittest.TestCase):
