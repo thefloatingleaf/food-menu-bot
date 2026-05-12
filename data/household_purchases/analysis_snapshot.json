@@ -1,19 +1,19 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-05-09T18:27:03.170Z",
+  "generated_at": "2026-05-12T23:21:09.892Z",
   "overview": {
-    "purchaseCount": 95,
-    "trackedItemCount": 29,
-    "totalSpend": 26242.75,
-    "currentMonthSpend": 4697.5,
+    "purchaseCount": 101,
+    "trackedItemCount": 33,
+    "totalSpend": 26651.75,
+    "currentMonthSpend": 5106.5,
     "itemsToOrderTodayCount": 1,
-    "itemsToOrderSoonCount": 1,
+    "itemsToOrderSoonCount": 2,
     "stableItemCount": 1,
-    "reviewItemCount": 1,
-    "totalMonthlyHouseholdConsumptionValue": 4697.5,
-    "monthOnMonthSpendingChange": -44.5,
-    "monthOnMonthConsumptionChange": -45.5,
-    "inventoryHealthScore": 99,
+    "reviewItemCount": 8,
+    "totalMonthlyHouseholdConsumptionValue": 5106.5,
+    "monthOnMonthSpendingChange": -39.6,
+    "monthOnMonthConsumptionChange": -27.3,
+    "inventoryHealthScore": 97,
     "householdConsumptionStabilityScore": 43,
     "duplicateEntryCount": 0
   },
@@ -36,21 +36,33 @@
     },
     {
       "month": "2026-05",
-      "amount": 4697.5
+      "amount": 5106.5
     }
   ],
   "category_spend": [
     {
       "category": "Dairy",
-      "amount": 14069
+      "amount": 13947
+    },
+    {
+      "category": "Fruits",
+      "amount": 106
     },
     {
       "category": "Groceries",
-      "amount": 12125.75
+      "amount": 10766.75
+    },
+    {
+      "category": "Needs Review",
+      "amount": 244
     },
     {
       "category": "Unclear",
-      "amount": 48
+      "amount": 1477
+    },
+    {
+      "category": "Vegetables",
+      "amount": 111
     }
   ],
   "item_insights": [
@@ -81,7 +93,7 @@
       "stockBucket": "Items to Order Today",
       "dataConfidenceScore": 100,
       "dataConfidenceLabel": "High",
-      "daysSinceLastPurchase": 9,
+      "daysSinceLastPurchase": 12,
       "monthlyPurchasePattern": [
         {
           "month": "2026-01",
@@ -136,37 +148,90 @@
     },
     {
       "itemName": "THF Multigrain Bread",
-      "category": "Groceries",
-      "purchaseCount": 2,
-      "lastPurchaseDate": "2026-05-09",
+      "category": "Unclear",
+      "purchaseCount": 3,
+      "lastPurchaseDate": "2026-05-11",
       "lastPurchasedQuantity": 300,
       "lastPurchaseSpend": 70,
       "averageQuantityPurchased": 300,
       "quantityUnit": "g",
-      "averageDailyConsumption": 300,
-      "averageWeeklyConsumption": 2100,
-      "averageConsumptionRate": "300.00 g/day",
-      "averageDailyConsumptionLabel": "300.00 g/day",
-      "averageWeeklyConsumptionLabel": "2100.00 g/week",
+      "averageDailyConsumption": 200,
+      "averageWeeklyConsumption": 1400,
+      "averageConsumptionRate": "200.00 g/day",
+      "averageDailyConsumptionLabel": "200.00 g/day",
+      "averageWeeklyConsumptionLabel": "1400.00 g/week",
       "consumptionBasis": "purchase_history",
-      "expectedStockDurationDays": 1,
+      "expectedStockDurationDays": 1.5,
+      "estimatedDaysOfStockRemaining": 0.5,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": 1.5,
+      "normalPurchaseFrequencyDays": 1.5,
+      "recommendedReorderDate": "2026-05-13",
+      "suggestedReorderQuantity": 270,
+      "currentConsumptionTrend": "Lower than usual",
+      "reorderPriorityScore": 74,
+      "stockBucket": "Items to Order Within 3 Days",
+      "dataConfidenceScore": 90,
+      "dataConfidenceLabel": "High",
+      "daysSinceLastPurchase": 1,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 3,
+          "spend": 210
+        }
+      ],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2026-05",
+          "purchases": 3,
+          "quantity": 900,
+          "spend": 210,
+          "unit": "g"
+        }
+      ],
+      "flags": [
+        "possible slow consumption"
+      ],
+      "suggestions": [
+        "Order soon.",
+        "Reduce purchase quantity slightly if this slower pace continues."
+      ],
+      "totalSpend": 210
+    },
+    {
+      "itemName": "Amul Salted Butter",
+      "category": "Needs Review",
+      "purchaseCount": 2,
+      "lastPurchaseDate": "2026-05-11",
+      "lastPurchasedQuantity": 200,
+      "lastPurchaseSpend": 122,
+      "averageQuantityPurchased": 300,
+      "quantityUnit": "g",
+      "averageDailyConsumption": 150,
+      "averageWeeklyConsumption": 1050,
+      "averageConsumptionRate": "150.00 g/day",
+      "averageDailyConsumptionLabel": "150.00 g/day",
+      "averageWeeklyConsumptionLabel": "1050.00 g/week",
+      "consumptionBasis": "purchase_history",
+      "expectedStockDurationDays": 2,
       "estimatedDaysOfStockRemaining": 1,
       "actualConsumptionDurationDays": null,
-      "reorderFrequencyDays": 1,
-      "normalPurchaseFrequencyDays": 1,
-      "recommendedReorderDate": "2026-05-10",
+      "reorderFrequencyDays": 2,
+      "normalPurchaseFrequencyDays": 2,
+      "recommendedReorderDate": "2026-05-13",
       "suggestedReorderQuantity": 300,
       "currentConsumptionTrend": "Insufficient data",
       "reorderPriorityScore": 70,
       "stockBucket": "Items to Order Within 3 Days",
       "dataConfidenceScore": 81,
       "dataConfidenceLabel": "High",
-      "daysSinceLastPurchase": 0,
+      "daysSinceLastPurchase": 1,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
           "purchases": 2,
-          "spend": 140
+          "spend": 366
         }
       ],
       "monthlyQuantityPattern": [
@@ -174,7 +239,7 @@
           "month": "2026-05",
           "purchases": 2,
           "quantity": 600,
-          "spend": 140,
+          "spend": 366,
           "unit": "g"
         }
       ],
@@ -182,7 +247,7 @@
       "suggestions": [
         "Order soon."
       ],
-      "totalSpend": 140
+      "totalSpend": 366
     },
     {
       "itemName": "TWF Channa Sattu Flour",
@@ -200,7 +265,7 @@
       "averageWeeklyConsumptionLabel": "0.42 kg/week",
       "consumptionBasis": "purchase_history",
       "expectedStockDurationDays": 33,
-      "estimatedDaysOfStockRemaining": 33,
+      "estimatedDaysOfStockRemaining": 30,
       "actualConsumptionDurationDays": null,
       "reorderFrequencyDays": 33,
       "normalPurchaseFrequencyDays": 33,
@@ -211,7 +276,7 @@
       "stockBucket": "Items Sufficient for More Than 7 Days",
       "dataConfidenceScore": 81,
       "dataConfidenceLabel": "High",
-      "daysSinceLastPurchase": 0,
+      "daysSinceLastPurchase": 3,
       "monthlyPurchasePattern": [
         {
           "month": "2026-04",
@@ -248,56 +313,6 @@
       "totalSpend": 1196
     },
     {
-      "itemName": "Amul Salted Butter",
-      "category": "Dairy",
-      "purchaseCount": 1,
-      "lastPurchaseDate": "2026-05-09",
-      "lastPurchasedQuantity": 400,
-      "lastPurchaseSpend": 244,
-      "averageQuantityPurchased": 400,
-      "quantityUnit": "g",
-      "averageDailyConsumption": null,
-      "averageWeeklyConsumption": null,
-      "averageConsumptionRate": null,
-      "averageDailyConsumptionLabel": null,
-      "averageWeeklyConsumptionLabel": null,
-      "consumptionBasis": "insufficient_data",
-      "expectedStockDurationDays": null,
-      "estimatedDaysOfStockRemaining": null,
-      "actualConsumptionDurationDays": null,
-      "reorderFrequencyDays": null,
-      "normalPurchaseFrequencyDays": null,
-      "recommendedReorderDate": null,
-      "suggestedReorderQuantity": 400,
-      "currentConsumptionTrend": "Insufficient data",
-      "reorderPriorityScore": null,
-      "stockBucket": "Requires Review",
-      "dataConfidenceScore": 51,
-      "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 0,
-      "monthlyPurchasePattern": [
-        {
-          "month": "2026-05",
-          "purchases": 1,
-          "spend": 244
-        }
-      ],
-      "monthlyQuantityPattern": [
-        {
-          "month": "2026-05",
-          "purchases": 1,
-          "quantity": 400,
-          "spend": 244,
-          "unit": "g"
-        }
-      ],
-      "flags": [],
-      "suggestions": [
-        "Continue collecting purchase entries to strengthen the estimate."
-      ],
-      "totalSpend": 244
-    },
-    {
       "itemName": "Davidoff Espresso 57 Instant Coffee 11/12 Intensity",
       "category": "Groceries",
       "purchaseCount": 1,
@@ -324,7 +339,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 0,
+      "daysSinceLastPurchase": 3,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -374,7 +389,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 0,
+      "daysSinceLastPurchase": 3,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -396,6 +411,56 @@
         "Continue collecting purchase entries to strengthen the estimate."
       ],
       "totalSpend": 739
+    },
+    {
+      "itemName": "Desi Tomato",
+      "category": "Vegetables",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-11",
+      "lastPurchasedQuantity": 500,
+      "lastPurchaseSpend": 19,
+      "averageQuantityPurchased": 500,
+      "quantityUnit": "g",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 500,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 51,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 1,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 19
+        }
+      ],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "quantity": 500,
+          "spend": 19,
+          "unit": "g"
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Continue collecting purchase entries to strengthen the estimate."
+      ],
+      "totalSpend": 19
     },
     {
       "itemName": "Everest Sambhar Masala",
@@ -424,7 +489,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 0,
+      "daysSinceLastPurchase": 3,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -449,7 +514,7 @@
     },
     {
       "itemName": "Kellogg's Corn Flakes Original",
-      "category": "Groceries",
+      "category": "Unclear",
       "purchaseCount": 1,
       "lastPurchaseDate": "2026-05-09",
       "lastPurchasedQuantity": 1.15,
@@ -472,9 +537,9 @@
       "currentConsumptionTrend": "Insufficient data",
       "reorderPriorityScore": null,
       "stockBucket": "Requires Review",
-      "dataConfidenceScore": 51,
+      "dataConfidenceScore": 30,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 0,
+      "daysSinceLastPurchase": 3,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -491,9 +556,13 @@
           "unit": "kg"
         }
       ],
-      "flags": [],
+      "flags": [
+        "requires review",
+        "category unclear"
+      ],
       "suggestions": [
-        "Continue collecting purchase entries to strengthen the estimate."
+        "Requires review before relying on the estimate fully.",
+        "Confirm the category."
       ],
       "totalSpend": 367
     },
@@ -524,7 +593,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 1,
+      "daysSinceLastPurchase": 4,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -549,7 +618,7 @@
     },
     {
       "itemName": "Let's Try Sabudana Falhari Mixture",
-      "category": "Groceries",
+      "category": "Unclear",
       "purchaseCount": 1,
       "lastPurchaseDate": "2026-05-08",
       "lastPurchasedQuantity": 214,
@@ -572,9 +641,9 @@
       "currentConsumptionTrend": "Insufficient data",
       "reorderPriorityScore": null,
       "stockBucket": "Requires Review",
-      "dataConfidenceScore": 51,
+      "dataConfidenceScore": 30,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 1,
+      "daysSinceLastPurchase": 4,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -591,9 +660,13 @@
           "unit": "g"
         }
       ],
-      "flags": [],
+      "flags": [
+        "requires review",
+        "category unclear"
+      ],
       "suggestions": [
-        "Continue collecting purchase entries to strengthen the estimate."
+        "Requires review before relying on the estimate fully.",
+        "Confirm the category."
       ],
       "totalSpend": 95
     },
@@ -624,7 +697,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 0,
+      "daysSinceLastPurchase": 3,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -648,8 +721,160 @@
       "totalSpend": 154
     },
     {
+      "itemName": "Onion",
+      "category": "Vegetables",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-11",
+      "lastPurchasedQuantity": 4,
+      "lastPurchaseSpend": 65,
+      "averageQuantityPurchased": 4,
+      "quantityUnit": "kg",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 4,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 40,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 1,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 65
+        }
+      ],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "quantity": 4,
+          "spend": 65,
+          "unit": "kg"
+        }
+      ],
+      "flags": [
+        "requires review"
+      ],
+      "suggestions": [
+        "Requires review before relying on the estimate fully."
+      ],
+      "totalSpend": 65
+    },
+    {
+      "itemName": "Organically Grown Green Cucumber",
+      "category": "Vegetables",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-11",
+      "lastPurchasedQuantity": 500,
+      "lastPurchaseSpend": 27,
+      "averageQuantityPurchased": 500,
+      "quantityUnit": "g",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 500,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 51,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 1,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 27
+        }
+      ],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "quantity": 500,
+          "spend": 27,
+          "unit": "g"
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Continue collecting purchase entries to strengthen the estimate."
+      ],
+      "totalSpend": 27
+    },
+    {
+      "itemName": "Sindhura Mango",
+      "category": "Fruits",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-11",
+      "lastPurchasedQuantity": 325,
+      "lastPurchaseSpend": 106,
+      "averageQuantityPurchased": 325,
+      "quantityUnit": "g",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 325,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 51,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 1,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 106
+        }
+      ],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "quantity": 325,
+          "spend": 106,
+          "unit": "g"
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Continue collecting purchase entries to strengthen the estimate."
+      ],
+      "totalSpend": 106
+    },
+    {
       "itemName": "Tata Sampann Coriander Seeds (Dhaniya), Whole Spices",
-      "category": "Groceries",
+      "category": "Unclear",
       "purchaseCount": 1,
       "lastPurchaseDate": "2026-05-09",
       "lastPurchasedQuantity": 100,
@@ -672,9 +897,9 @@
       "currentConsumptionTrend": "Insufficient data",
       "reorderPriorityScore": null,
       "stockBucket": "Requires Review",
-      "dataConfidenceScore": 51,
+      "dataConfidenceScore": 30,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 0,
+      "daysSinceLastPurchase": 3,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -691,9 +916,13 @@
           "unit": "g"
         }
       ],
-      "flags": [],
+      "flags": [
+        "requires review",
+        "category unclear"
+      ],
       "suggestions": [
-        "Continue collecting purchase entries to strengthen the estimate."
+        "Requires review before relying on the estimate fully.",
+        "Confirm the category."
       ],
       "totalSpend": 38
     },
@@ -724,7 +953,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 0,
+      "daysSinceLastPurchase": 3,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -774,7 +1003,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 0,
+      "daysSinceLastPurchase": 3,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -824,7 +1053,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 0,
+      "daysSinceLastPurchase": 3,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -874,7 +1103,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 0,
+      "daysSinceLastPurchase": 3,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -924,7 +1153,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 87,
+      "daysSinceLastPurchase": 90,
       "monthlyPurchasePattern": [
         {
           "month": "2026-02",
@@ -941,7 +1170,9 @@
           "unit": "kg"
         }
       ],
-      "flags": [],
+      "flags": [
+        "possible dead stock"
+      ],
       "suggestions": [
         "Continue collecting purchase entries to strengthen the estimate."
       ],
@@ -974,7 +1205,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 153,
+      "daysSinceLastPurchase": 156,
       "monthlyPurchasePattern": [
         {
           "month": "2025-12",
@@ -1001,7 +1232,7 @@
     },
     {
       "itemName": "TWF Dusting Semolina for Pizzas",
-      "category": "Groceries",
+      "category": "Unclear",
       "purchaseCount": 1,
       "lastPurchaseDate": "2025-12-07",
       "lastPurchasedQuantity": 1,
@@ -1024,9 +1255,9 @@
       "currentConsumptionTrend": "Insufficient data",
       "reorderPriorityScore": null,
       "stockBucket": "Requires Review",
-      "dataConfidenceScore": 51,
+      "dataConfidenceScore": 30,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 153,
+      "daysSinceLastPurchase": 156,
       "monthlyPurchasePattern": [
         {
           "month": "2025-12",
@@ -1044,10 +1275,13 @@
         }
       ],
       "flags": [
+        "requires review",
+        "category unclear",
         "possible dead stock"
       ],
       "suggestions": [
-        "Continue collecting purchase entries to strengthen the estimate."
+        "Requires review before relying on the estimate fully.",
+        "Confirm the category."
       ],
       "totalSpend": 149
     },
@@ -1078,7 +1312,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 153,
+      "daysSinceLastPurchase": 156,
       "monthlyPurchasePattern": [
         {
           "month": "2025-12",
@@ -1105,7 +1339,7 @@
     },
     {
       "itemName": "TWF Reliq - Heirloom Rotis",
-      "category": "Groceries",
+      "category": "Unclear",
       "purchaseCount": 1,
       "lastPurchaseDate": "2025-12-07",
       "lastPurchasedQuantity": 2,
@@ -1128,9 +1362,9 @@
       "currentConsumptionTrend": "Insufficient data",
       "reorderPriorityScore": null,
       "stockBucket": "Requires Review",
-      "dataConfidenceScore": 51,
+      "dataConfidenceScore": 30,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 153,
+      "daysSinceLastPurchase": 156,
       "monthlyPurchasePattern": [
         {
           "month": "2025-12",
@@ -1148,10 +1382,13 @@
         }
       ],
       "flags": [
+        "requires review",
+        "category unclear",
         "possible dead stock"
       ],
       "suggestions": [
-        "Continue collecting purchase entries to strengthen the estimate."
+        "Requires review before relying on the estimate fully.",
+        "Confirm the category."
       ],
       "totalSpend": 598
     },
@@ -1182,7 +1419,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 153,
+      "daysSinceLastPurchase": 156,
       "monthlyPurchasePattern": [
         {
           "month": "2025-12",
@@ -1234,7 +1471,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 87,
+      "daysSinceLastPurchase": 90,
       "monthlyPurchasePattern": [
         {
           "month": "2026-02",
@@ -1251,7 +1488,9 @@
           "unit": "kg"
         }
       ],
-      "flags": [],
+      "flags": [
+        "possible dead stock"
+      ],
       "suggestions": [
         "Continue collecting purchase entries to strengthen the estimate."
       ],
@@ -1284,7 +1523,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 153,
+      "daysSinceLastPurchase": 156,
       "monthlyPurchasePattern": [
         {
           "month": "2025-12",
@@ -1336,7 +1575,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 153,
+      "daysSinceLastPurchase": 156,
       "monthlyPurchasePattern": [
         {
           "month": "2025-12",
@@ -1388,7 +1627,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 33,
+      "daysSinceLastPurchase": 36,
       "monthlyPurchasePattern": [
         {
           "month": "2026-04",
@@ -1438,7 +1677,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 33,
+      "daysSinceLastPurchase": 36,
       "monthlyPurchasePattern": [
         {
           "month": "2026-04",
@@ -1463,7 +1702,7 @@
     },
     {
       "itemName": "Whole Farm Premium Fennel Seeds / Moti Saunf",
-      "category": "Groceries",
+      "category": "Unclear",
       "purchaseCount": 1,
       "lastPurchaseDate": "2026-05-09",
       "lastPurchasedQuantity": 100,
@@ -1486,9 +1725,9 @@
       "currentConsumptionTrend": "Insufficient data",
       "reorderPriorityScore": null,
       "stockBucket": "Requires Review",
-      "dataConfidenceScore": 51,
+      "dataConfidenceScore": 30,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 0,
+      "daysSinceLastPurchase": 3,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -1505,9 +1744,13 @@
           "unit": "g"
         }
       ],
-      "flags": [],
+      "flags": [
+        "requires review",
+        "category unclear"
+      ],
       "suggestions": [
-        "Continue collecting purchase entries to strengthen the estimate."
+        "Requires review before relying on the estimate fully.",
+        "Confirm the category."
       ],
       "totalSpend": 42
     },
@@ -1538,7 +1781,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 30,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 0,
+      "daysSinceLastPurchase": 3,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -1603,7 +1846,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 100,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 9,
+        "daysSinceLastPurchase": 12,
         "monthlyPurchasePattern": [
           {
             "month": "2026-01",
@@ -1660,37 +1903,90 @@
     "items_to_order_within_3_days": [
       {
         "itemName": "THF Multigrain Bread",
-        "category": "Groceries",
-        "purchaseCount": 2,
-        "lastPurchaseDate": "2026-05-09",
+        "category": "Unclear",
+        "purchaseCount": 3,
+        "lastPurchaseDate": "2026-05-11",
         "lastPurchasedQuantity": 300,
         "lastPurchaseSpend": 70,
         "averageQuantityPurchased": 300,
         "quantityUnit": "g",
-        "averageDailyConsumption": 300,
-        "averageWeeklyConsumption": 2100,
-        "averageConsumptionRate": "300.00 g/day",
-        "averageDailyConsumptionLabel": "300.00 g/day",
-        "averageWeeklyConsumptionLabel": "2100.00 g/week",
+        "averageDailyConsumption": 200,
+        "averageWeeklyConsumption": 1400,
+        "averageConsumptionRate": "200.00 g/day",
+        "averageDailyConsumptionLabel": "200.00 g/day",
+        "averageWeeklyConsumptionLabel": "1400.00 g/week",
         "consumptionBasis": "purchase_history",
-        "expectedStockDurationDays": 1,
+        "expectedStockDurationDays": 1.5,
+        "estimatedDaysOfStockRemaining": 0.5,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": 1.5,
+        "normalPurchaseFrequencyDays": 1.5,
+        "recommendedReorderDate": "2026-05-13",
+        "suggestedReorderQuantity": 270,
+        "currentConsumptionTrend": "Lower than usual",
+        "reorderPriorityScore": 74,
+        "stockBucket": "Items to Order Within 3 Days",
+        "dataConfidenceScore": 90,
+        "dataConfidenceLabel": "High",
+        "daysSinceLastPurchase": 1,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2026-05",
+            "purchases": 3,
+            "spend": 210
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2026-05",
+            "purchases": 3,
+            "quantity": 900,
+            "spend": 210,
+            "unit": "g"
+          }
+        ],
+        "flags": [
+          "possible slow consumption"
+        ],
+        "suggestions": [
+          "Order soon.",
+          "Reduce purchase quantity slightly if this slower pace continues."
+        ],
+        "totalSpend": 210
+      },
+      {
+        "itemName": "Amul Salted Butter",
+        "category": "Needs Review",
+        "purchaseCount": 2,
+        "lastPurchaseDate": "2026-05-11",
+        "lastPurchasedQuantity": 200,
+        "lastPurchaseSpend": 122,
+        "averageQuantityPurchased": 300,
+        "quantityUnit": "g",
+        "averageDailyConsumption": 150,
+        "averageWeeklyConsumption": 1050,
+        "averageConsumptionRate": "150.00 g/day",
+        "averageDailyConsumptionLabel": "150.00 g/day",
+        "averageWeeklyConsumptionLabel": "1050.00 g/week",
+        "consumptionBasis": "purchase_history",
+        "expectedStockDurationDays": 2,
         "estimatedDaysOfStockRemaining": 1,
         "actualConsumptionDurationDays": null,
-        "reorderFrequencyDays": 1,
-        "normalPurchaseFrequencyDays": 1,
-        "recommendedReorderDate": "2026-05-10",
+        "reorderFrequencyDays": 2,
+        "normalPurchaseFrequencyDays": 2,
+        "recommendedReorderDate": "2026-05-13",
         "suggestedReorderQuantity": 300,
         "currentConsumptionTrend": "Insufficient data",
         "reorderPriorityScore": 70,
         "stockBucket": "Items to Order Within 3 Days",
         "dataConfidenceScore": 81,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 0,
+        "daysSinceLastPurchase": 1,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
             "purchases": 2,
-            "spend": 140
+            "spend": 366
           }
         ],
         "monthlyQuantityPattern": [
@@ -1698,7 +1994,7 @@
             "month": "2026-05",
             "purchases": 2,
             "quantity": 600,
-            "spend": 140,
+            "spend": 366,
             "unit": "g"
           }
         ],
@@ -1706,7 +2002,7 @@
         "suggestions": [
           "Order soon."
         ],
-        "totalSpend": 140
+        "totalSpend": 366
       }
     ],
     "items_sufficient_for_more_than_7_days": [
@@ -1726,7 +2022,7 @@
         "averageWeeklyConsumptionLabel": "0.42 kg/week",
         "consumptionBasis": "purchase_history",
         "expectedStockDurationDays": 33,
-        "estimatedDaysOfStockRemaining": 33,
+        "estimatedDaysOfStockRemaining": 30,
         "actualConsumptionDurationDays": null,
         "reorderFrequencyDays": 33,
         "normalPurchaseFrequencyDays": 33,
@@ -1737,7 +2033,7 @@
         "stockBucket": "Items Sufficient for More Than 7 Days",
         "dataConfidenceScore": 81,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 0,
+        "daysSinceLastPurchase": 3,
         "monthlyPurchasePattern": [
           {
             "month": "2026-04",
@@ -1781,6 +2077,13 @@
         "detail": "Recent replenishment came sooner than the earlier pattern.",
         "severity": "medium",
         "suggestion": "Verify consumption and check for any unusual demand."
+      },
+      {
+        "itemName": "THF Multigrain Bread",
+        "label": "Lower than usual",
+        "detail": "Recent replenishment came later than the earlier pattern.",
+        "severity": "low",
+        "suggestion": "Reduce the next purchase quantity if this pattern continues."
       }
     ],
     "possible_wastage_indicators": [],
@@ -1813,7 +2116,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 100,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 9,
+        "daysSinceLastPurchase": 12,
         "monthlyPurchasePattern": [
           {
             "month": "2026-01",
@@ -1867,7 +2170,61 @@
         "totalSpend": 13825
       }
     ],
-    "items_consumed_slower_than_expected": [],
+    "items_consumed_slower_than_expected": [
+      {
+        "itemName": "THF Multigrain Bread",
+        "category": "Unclear",
+        "purchaseCount": 3,
+        "lastPurchaseDate": "2026-05-11",
+        "lastPurchasedQuantity": 300,
+        "lastPurchaseSpend": 70,
+        "averageQuantityPurchased": 300,
+        "quantityUnit": "g",
+        "averageDailyConsumption": 200,
+        "averageWeeklyConsumption": 1400,
+        "averageConsumptionRate": "200.00 g/day",
+        "averageDailyConsumptionLabel": "200.00 g/day",
+        "averageWeeklyConsumptionLabel": "1400.00 g/week",
+        "consumptionBasis": "purchase_history",
+        "expectedStockDurationDays": 1.5,
+        "estimatedDaysOfStockRemaining": 0.5,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": 1.5,
+        "normalPurchaseFrequencyDays": 1.5,
+        "recommendedReorderDate": "2026-05-13",
+        "suggestedReorderQuantity": 270,
+        "currentConsumptionTrend": "Lower than usual",
+        "reorderPriorityScore": 74,
+        "stockBucket": "Items to Order Within 3 Days",
+        "dataConfidenceScore": 90,
+        "dataConfidenceLabel": "High",
+        "daysSinceLastPurchase": 1,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2026-05",
+            "purchases": 3,
+            "spend": 210
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2026-05",
+            "purchases": 3,
+            "quantity": 900,
+            "spend": 210,
+            "unit": "g"
+          }
+        ],
+        "flags": [
+          "possible slow consumption"
+        ],
+        "suggestions": [
+          "Order soon.",
+          "Reduce purchase quantity slightly if this slower pace continues."
+        ],
+        "totalSpend": 210
+      }
+    ],
     "items_not_purchased_for_a_long_time": [
       {
         "itemName": "Amor Farm Fresh Milk",
@@ -1896,7 +2253,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 100,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 9,
+        "daysSinceLastPurchase": 12,
         "monthlyPurchasePattern": [
           {
             "month": "2026-01",
@@ -1978,7 +2335,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 100,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 9,
+        "daysSinceLastPurchase": 12,
         "monthlyPurchasePattern": [
           {
             "month": "2026-01",
@@ -2035,6 +2392,11 @@
     "items_purchased_in_excess_quantity": [],
     "items_usually_ordered_together": [
       {
+        "pairLabel": "Amul Salted Butter + THF Multigrain Bread",
+        "frequency": 2,
+        "lastSeenDate": "2026-05-11"
+      },
+      {
         "pairLabel": "Amul Salted Butter + Davidoff Espresso 57 Instant Coffee 11/12 Intensity",
         "frequency": 1,
         "lastSeenDate": "2026-05-09"
@@ -2043,6 +2405,11 @@
         "pairLabel": "Amul Salted Butter + Davidoff Fine Aroma Instant Coffee 7/12 Intensity",
         "frequency": 1,
         "lastSeenDate": "2026-05-09"
+      },
+      {
+        "pairLabel": "Amul Salted Butter + Desi Tomato",
+        "frequency": 1,
+        "lastSeenDate": "2026-05-11"
       },
       {
         "pairLabel": "Amul Salted Butter + Everest Sambhar Masala",
@@ -2060,29 +2427,19 @@
         "lastSeenDate": "2026-05-09"
       },
       {
-        "pairLabel": "Amul Salted Butter + Tata Sampann Coriander Seeds (Dhaniya), Whole Spices",
+        "pairLabel": "Amul Salted Butter + Onion",
         "frequency": 1,
-        "lastSeenDate": "2026-05-09"
+        "lastSeenDate": "2026-05-11"
       },
       {
-        "pairLabel": "Amul Salted Butter + Tata Sampann Unpolished Chana Dal",
+        "pairLabel": "Amul Salted Butter + Organically Grown Green Cucumber",
         "frequency": 1,
-        "lastSeenDate": "2026-05-09"
+        "lastSeenDate": "2026-05-11"
       },
       {
-        "pairLabel": "Amul Salted Butter + Tata Sampann Unpolished Green Moong Dal (Chilka)",
+        "pairLabel": "Amul Salted Butter + Sindhura Mango",
         "frequency": 1,
-        "lastSeenDate": "2026-05-09"
-      },
-      {
-        "pairLabel": "Amul Salted Butter + Tata Sampann Unpolished Yellow Moong Dal (Dhuli) Split",
-        "frequency": 1,
-        "lastSeenDate": "2026-05-09"
-      },
-      {
-        "pairLabel": "Amul Salted Butter + THF Multigrain Bread",
-        "frequency": 1,
-        "lastSeenDate": "2026-05-09"
+        "lastSeenDate": "2026-05-11"
       }
     ],
     "monthly_item_consumption_trend": [
@@ -2111,6 +2468,18 @@
         ]
       },
       {
+        "itemName": "THF Multigrain Bread",
+        "unit": "g",
+        "months": [
+          {
+            "month": "2026-05",
+            "purchases": 3,
+            "quantity": 900,
+            "spend": 210
+          }
+        ]
+      },
+      {
         "itemName": "TWF Channa Sattu Flour",
         "unit": "kg",
         "months": [
@@ -2129,14 +2498,14 @@
         ]
       },
       {
-        "itemName": "THF Multigrain Bread",
+        "itemName": "Amul Salted Butter",
         "unit": "g",
         "months": [
           {
             "month": "2026-05",
             "purchases": 2,
             "quantity": 600,
-            "spend": 140
+            "spend": 366
           }
         ]
       },
@@ -2211,18 +2580,6 @@
             "spend": 739
           }
         ]
-      },
-      {
-        "itemName": "TWF Virgin Ragi Flour",
-        "unit": "kg",
-        "months": [
-          {
-            "month": "2026-04",
-            "purchases": 1,
-            "quantity": 5,
-            "spend": 699
-          }
-        ]
       }
     ],
     "monthly_category_consumption_trend": [
@@ -2247,7 +2604,17 @@
           {
             "month": "2026-05",
             "purchases": 1,
-            "spend": 244
+            "spend": 122
+          }
+        ]
+      },
+      {
+        "category": "Fruits",
+        "months": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "spend": 106
           }
         ]
       },
@@ -2256,8 +2623,8 @@
         "months": [
           {
             "month": "2025-12",
-            "purchases": 7,
-            "spend": 3640
+            "purchases": 5,
+            "spend": 2893
           },
           {
             "month": "2026-02",
@@ -2271,8 +2638,18 @@
           },
           {
             "month": "2026-05",
-            "purchases": 16,
-            "spend": 4405.5
+            "purchases": 11,
+            "spend": 3793.5
+          }
+        ]
+      },
+      {
+        "category": "Needs Review",
+        "months": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "spend": 244
           }
         ]
       },
@@ -2280,9 +2657,24 @@
         "category": "Unclear",
         "months": [
           {
+            "month": "2025-12",
+            "purchases": 2,
+            "spend": 747
+          },
+          {
             "month": "2026-05",
-            "purchases": 1,
-            "spend": 48
+            "purchases": 7,
+            "spend": 730
+          }
+        ]
+      },
+      {
+        "category": "Vegetables",
+        "months": [
+          {
+            "month": "2026-05",
+            "purchases": 3,
+            "spend": 111
           }
         ]
       }
@@ -2309,7 +2701,17 @@
           {
             "month": "2026-05",
             "purchases": 1,
-            "spend": 244
+            "spend": 122
+          }
+        ]
+      },
+      {
+        "category": "Fruits",
+        "months": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "spend": 106
           }
         ]
       },
@@ -2318,8 +2720,8 @@
         "months": [
           {
             "month": "2025-12",
-            "purchases": 7,
-            "spend": 3640
+            "purchases": 5,
+            "spend": 2893
           },
           {
             "month": "2026-02",
@@ -2333,8 +2735,18 @@
           },
           {
             "month": "2026-05",
-            "purchases": 16,
-            "spend": 4405.5
+            "purchases": 11,
+            "spend": 3793.5
+          }
+        ]
+      },
+      {
+        "category": "Needs Review",
+        "months": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "spend": 244
           }
         ]
       },
@@ -2342,9 +2754,24 @@
         "category": "Unclear",
         "months": [
           {
+            "month": "2025-12",
+            "purchases": 2,
+            "spend": 747
+          },
+          {
             "month": "2026-05",
-            "purchases": 1,
-            "spend": 48
+            "purchases": 7,
+            "spend": 730
+          }
+        ]
+      },
+      {
+        "category": "Vegetables",
+        "months": [
+          {
+            "month": "2026-05",
+            "purchases": 3,
+            "spend": 111
           }
         ]
       }
@@ -2356,12 +2783,17 @@
         "label": "65 purchases"
       },
       {
+        "itemName": "THF Multigrain Bread",
+        "value": 3,
+        "label": "3 purchases"
+      },
+      {
         "itemName": "TWF Channa Sattu Flour",
         "value": 2,
         "label": "2 purchases"
       },
       {
-        "itemName": "THF Multigrain Bread",
+        "itemName": "Amul Salted Butter",
         "value": 2,
         "label": "2 purchases"
       },
@@ -2392,11 +2824,6 @@
       },
       {
         "itemName": "Davidoff Fine Aroma Instant Coffee 7/12 Intensity",
-        "value": 1,
-        "label": "1 purchases"
-      },
-      {
-        "itemName": "TWF Virgin Ragi Flour",
         "value": 1,
         "label": "1 purchases"
       }
@@ -2481,7 +2908,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 100,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 9,
+        "daysSinceLastPurchase": 12,
         "monthlyPurchasePattern": [
           {
             "month": "2026-01",
@@ -2535,7 +2962,61 @@
         "totalSpend": 13825
       }
     ],
-    "items_with_falling_consumption": [],
+    "items_with_falling_consumption": [
+      {
+        "itemName": "THF Multigrain Bread",
+        "category": "Unclear",
+        "purchaseCount": 3,
+        "lastPurchaseDate": "2026-05-11",
+        "lastPurchasedQuantity": 300,
+        "lastPurchaseSpend": 70,
+        "averageQuantityPurchased": 300,
+        "quantityUnit": "g",
+        "averageDailyConsumption": 200,
+        "averageWeeklyConsumption": 1400,
+        "averageConsumptionRate": "200.00 g/day",
+        "averageDailyConsumptionLabel": "200.00 g/day",
+        "averageWeeklyConsumptionLabel": "1400.00 g/week",
+        "consumptionBasis": "purchase_history",
+        "expectedStockDurationDays": 1.5,
+        "estimatedDaysOfStockRemaining": 0.5,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": 1.5,
+        "normalPurchaseFrequencyDays": 1.5,
+        "recommendedReorderDate": "2026-05-13",
+        "suggestedReorderQuantity": 270,
+        "currentConsumptionTrend": "Lower than usual",
+        "reorderPriorityScore": 74,
+        "stockBucket": "Items to Order Within 3 Days",
+        "dataConfidenceScore": 90,
+        "dataConfidenceLabel": "High",
+        "daysSinceLastPurchase": 1,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2026-05",
+            "purchases": 3,
+            "spend": 210
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2026-05",
+            "purchases": 3,
+            "quantity": 900,
+            "spend": 210,
+            "unit": "g"
+          }
+        ],
+        "flags": [
+          "possible slow consumption"
+        ],
+        "suggestions": [
+          "Order soon.",
+          "Reduce purchase quantity slightly if this slower pace continues."
+        ],
+        "totalSpend": 210
+      }
+    ],
     "seasonal_consumption_pattern": [
       "Insufficient data for seasonal consumption patterns."
     ],
@@ -2571,7 +3052,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 100,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 9,
+        "daysSinceLastPurchase": 12,
         "monthlyPurchasePattern": [
           {
             "month": "2026-01",
@@ -2623,6 +3104,59 @@
           "Verify consumption and check for an unusual usage spike."
         ],
         "totalSpend": 13825
+      },
+      {
+        "itemName": "THF Multigrain Bread",
+        "category": "Unclear",
+        "purchaseCount": 3,
+        "lastPurchaseDate": "2026-05-11",
+        "lastPurchasedQuantity": 300,
+        "lastPurchaseSpend": 70,
+        "averageQuantityPurchased": 300,
+        "quantityUnit": "g",
+        "averageDailyConsumption": 200,
+        "averageWeeklyConsumption": 1400,
+        "averageConsumptionRate": "200.00 g/day",
+        "averageDailyConsumptionLabel": "200.00 g/day",
+        "averageWeeklyConsumptionLabel": "1400.00 g/week",
+        "consumptionBasis": "purchase_history",
+        "expectedStockDurationDays": 1.5,
+        "estimatedDaysOfStockRemaining": 0.5,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": 1.5,
+        "normalPurchaseFrequencyDays": 1.5,
+        "recommendedReorderDate": "2026-05-13",
+        "suggestedReorderQuantity": 270,
+        "currentConsumptionTrend": "Lower than usual",
+        "reorderPriorityScore": 74,
+        "stockBucket": "Items to Order Within 3 Days",
+        "dataConfidenceScore": 90,
+        "dataConfidenceLabel": "High",
+        "daysSinceLastPurchase": 1,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2026-05",
+            "purchases": 3,
+            "spend": 210
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2026-05",
+            "purchases": 3,
+            "quantity": 900,
+            "spend": 210,
+            "unit": "g"
+          }
+        ],
+        "flags": [
+          "possible slow consumption"
+        ],
+        "suggestions": [
+          "Order soon.",
+          "Reduce purchase quantity slightly if this slower pace continues."
+        ],
+        "totalSpend": 210
       }
     ],
     "dead_stock_items": [
@@ -2653,7 +3187,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 51,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 153,
+        "daysSinceLastPurchase": 156,
         "monthlyPurchasePattern": [
           {
             "month": "2025-12",
@@ -2680,7 +3214,7 @@
       },
       {
         "itemName": "TWF Dusting Semolina for Pizzas",
-        "category": "Groceries",
+        "category": "Unclear",
         "purchaseCount": 1,
         "lastPurchaseDate": "2025-12-07",
         "lastPurchasedQuantity": 1,
@@ -2703,9 +3237,9 @@
         "currentConsumptionTrend": "Insufficient data",
         "reorderPriorityScore": null,
         "stockBucket": "Requires Review",
-        "dataConfidenceScore": 51,
+        "dataConfidenceScore": 30,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 153,
+        "daysSinceLastPurchase": 156,
         "monthlyPurchasePattern": [
           {
             "month": "2025-12",
@@ -2723,10 +3257,13 @@
           }
         ],
         "flags": [
+          "requires review",
+          "category unclear",
           "possible dead stock"
         ],
         "suggestions": [
-          "Continue collecting purchase entries to strengthen the estimate."
+          "Requires review before relying on the estimate fully.",
+          "Confirm the category."
         ],
         "totalSpend": 149
       },
@@ -2757,7 +3294,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 51,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 153,
+        "daysSinceLastPurchase": 156,
         "monthlyPurchasePattern": [
           {
             "month": "2025-12",
@@ -2784,7 +3321,7 @@
       },
       {
         "itemName": "TWF Reliq - Heirloom Rotis",
-        "category": "Groceries",
+        "category": "Unclear",
         "purchaseCount": 1,
         "lastPurchaseDate": "2025-12-07",
         "lastPurchasedQuantity": 2,
@@ -2807,9 +3344,9 @@
         "currentConsumptionTrend": "Insufficient data",
         "reorderPriorityScore": null,
         "stockBucket": "Requires Review",
-        "dataConfidenceScore": 51,
+        "dataConfidenceScore": 30,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 153,
+        "daysSinceLastPurchase": 156,
         "monthlyPurchasePattern": [
           {
             "month": "2025-12",
@@ -2827,10 +3364,13 @@
           }
         ],
         "flags": [
+          "requires review",
+          "category unclear",
           "possible dead stock"
         ],
         "suggestions": [
-          "Continue collecting purchase entries to strengthen the estimate."
+          "Requires review before relying on the estimate fully.",
+          "Confirm the category."
         ],
         "totalSpend": 598
       },
@@ -2861,7 +3401,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 51,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 153,
+        "daysSinceLastPurchase": 156,
         "monthlyPurchasePattern": [
           {
             "month": "2025-12",
@@ -2913,7 +3453,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 51,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 153,
+        "daysSinceLastPurchase": 156,
         "monthlyPurchasePattern": [
           {
             "month": "2025-12",
@@ -2965,7 +3505,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 51,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 153,
+        "daysSinceLastPurchase": 156,
         "monthlyPurchasePattern": [
           {
             "month": "2025-12",
@@ -3017,7 +3557,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 100,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 9,
+        "daysSinceLastPurchase": 12,
         "monthlyPurchasePattern": [
           {
             "month": "2026-01",
@@ -3069,6 +3609,110 @@
           "Verify consumption and check for an unusual usage spike."
         ],
         "totalSpend": 13825
+      },
+      {
+        "itemName": "TWF Atta [Non NCR]",
+        "category": "Groceries",
+        "purchaseCount": 1,
+        "lastPurchaseDate": "2026-02-11",
+        "lastPurchasedQuantity": 25,
+        "lastPurchaseSpend": 1286.25,
+        "averageQuantityPurchased": 25,
+        "quantityUnit": "kg",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 25,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 51,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": 90,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2026-02",
+            "purchases": 1,
+            "spend": 1286.25
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2026-02",
+            "purchases": 1,
+            "quantity": 25,
+            "spend": 1286.25,
+            "unit": "kg"
+          }
+        ],
+        "flags": [
+          "possible dead stock"
+        ],
+        "suggestions": [
+          "Continue collecting purchase entries to strengthen the estimate."
+        ],
+        "totalSpend": 1286.25
+      },
+      {
+        "itemName": "TWF Sprouted Ragi Flour",
+        "category": "Groceries",
+        "purchaseCount": 1,
+        "lastPurchaseDate": "2026-02-11",
+        "lastPurchasedQuantity": 2,
+        "lastPurchaseSpend": 598,
+        "averageQuantityPurchased": 2,
+        "quantityUnit": "kg",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 2,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 51,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": 90,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2026-02",
+            "purchases": 1,
+            "spend": 598
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2026-02",
+            "purchases": 1,
+            "quantity": 2,
+            "spend": 598,
+            "unit": "kg"
+          }
+        ],
+        "flags": [
+          "possible dead stock"
+        ],
+        "suggestions": [
+          "Continue collecting purchase entries to strengthen the estimate."
+        ],
+        "totalSpend": 598
       }
     ],
     "stock_out_risk_items": [
@@ -3099,7 +3743,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 100,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 9,
+        "daysSinceLastPurchase": 12,
         "monthlyPurchasePattern": [
           {
             "month": "2026-01",
@@ -3156,6 +3800,332 @@
     "overstock_risk_items": [],
     "items_requiring_manual_review": [
       {
+        "itemName": "Kellogg's Corn Flakes Original",
+        "category": "Unclear",
+        "purchaseCount": 1,
+        "lastPurchaseDate": "2026-05-09",
+        "lastPurchasedQuantity": 1.15,
+        "lastPurchaseSpend": 367,
+        "averageQuantityPurchased": 1.15,
+        "quantityUnit": "kg",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 1.15,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 30,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": 3,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "spend": 367
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "quantity": 1.15,
+            "spend": 367,
+            "unit": "kg"
+          }
+        ],
+        "flags": [
+          "requires review",
+          "category unclear"
+        ],
+        "suggestions": [
+          "Requires review before relying on the estimate fully.",
+          "Confirm the category."
+        ],
+        "totalSpend": 367
+      },
+      {
+        "itemName": "Let's Try Sabudana Falhari Mixture",
+        "category": "Unclear",
+        "purchaseCount": 1,
+        "lastPurchaseDate": "2026-05-08",
+        "lastPurchasedQuantity": 214,
+        "lastPurchaseSpend": 95,
+        "averageQuantityPurchased": 214,
+        "quantityUnit": "g",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 214,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 30,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": 4,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "spend": 95
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "quantity": 214,
+            "spend": 95,
+            "unit": "g"
+          }
+        ],
+        "flags": [
+          "requires review",
+          "category unclear"
+        ],
+        "suggestions": [
+          "Requires review before relying on the estimate fully.",
+          "Confirm the category."
+        ],
+        "totalSpend": 95
+      },
+      {
+        "itemName": "Tata Sampann Coriander Seeds (Dhaniya), Whole Spices",
+        "category": "Unclear",
+        "purchaseCount": 1,
+        "lastPurchaseDate": "2026-05-09",
+        "lastPurchasedQuantity": 100,
+        "lastPurchaseSpend": 38,
+        "averageQuantityPurchased": 100,
+        "quantityUnit": "g",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 100,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 30,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": 3,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "spend": 38
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "quantity": 100,
+            "spend": 38,
+            "unit": "g"
+          }
+        ],
+        "flags": [
+          "requires review",
+          "category unclear"
+        ],
+        "suggestions": [
+          "Requires review before relying on the estimate fully.",
+          "Confirm the category."
+        ],
+        "totalSpend": 38
+      },
+      {
+        "itemName": "TWF Dusting Semolina for Pizzas",
+        "category": "Unclear",
+        "purchaseCount": 1,
+        "lastPurchaseDate": "2025-12-07",
+        "lastPurchasedQuantity": 1,
+        "lastPurchaseSpend": 149,
+        "averageQuantityPurchased": 1,
+        "quantityUnit": "kg",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 1,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 30,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": 156,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2025-12",
+            "purchases": 1,
+            "spend": 149
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2025-12",
+            "purchases": 1,
+            "quantity": 1,
+            "spend": 149,
+            "unit": "kg"
+          }
+        ],
+        "flags": [
+          "requires review",
+          "category unclear",
+          "possible dead stock"
+        ],
+        "suggestions": [
+          "Requires review before relying on the estimate fully.",
+          "Confirm the category."
+        ],
+        "totalSpend": 149
+      },
+      {
+        "itemName": "TWF Reliq - Heirloom Rotis",
+        "category": "Unclear",
+        "purchaseCount": 1,
+        "lastPurchaseDate": "2025-12-07",
+        "lastPurchasedQuantity": 2,
+        "lastPurchaseSpend": 598,
+        "averageQuantityPurchased": 2,
+        "quantityUnit": "kg",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 2,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 30,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": 156,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2025-12",
+            "purchases": 1,
+            "spend": 598
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2025-12",
+            "purchases": 1,
+            "quantity": 2,
+            "spend": 598,
+            "unit": "kg"
+          }
+        ],
+        "flags": [
+          "requires review",
+          "category unclear",
+          "possible dead stock"
+        ],
+        "suggestions": [
+          "Requires review before relying on the estimate fully.",
+          "Confirm the category."
+        ],
+        "totalSpend": 598
+      },
+      {
+        "itemName": "Whole Farm Premium Fennel Seeds / Moti Saunf",
+        "category": "Unclear",
+        "purchaseCount": 1,
+        "lastPurchaseDate": "2026-05-09",
+        "lastPurchasedQuantity": 100,
+        "lastPurchaseSpend": 42,
+        "averageQuantityPurchased": 100,
+        "quantityUnit": "g",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 100,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 30,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": 3,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "spend": 42
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "quantity": 100,
+            "spend": 42,
+            "unit": "g"
+          }
+        ],
+        "flags": [
+          "requires review",
+          "category unclear"
+        ],
+        "suggestions": [
+          "Requires review before relying on the estimate fully.",
+          "Confirm the category."
+        ],
+        "totalSpend": 42
+      },
+      {
         "itemName": "Whole Farm Premium Red Chilli Whole",
         "category": "Unclear",
         "purchaseCount": 1,
@@ -3182,7 +4152,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 30,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 0,
+        "daysSinceLastPurchase": 3,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -3208,9 +4178,129 @@
           "Confirm the category."
         ],
         "totalSpend": 48
+      },
+      {
+        "itemName": "Onion",
+        "category": "Vegetables",
+        "purchaseCount": 1,
+        "lastPurchaseDate": "2026-05-11",
+        "lastPurchasedQuantity": 4,
+        "lastPurchaseSpend": 65,
+        "averageQuantityPurchased": 4,
+        "quantityUnit": "kg",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 4,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 40,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": 1,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "spend": 65
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "quantity": 4,
+            "spend": 65,
+            "unit": "kg"
+          }
+        ],
+        "flags": [
+          "requires review"
+        ],
+        "suggestions": [
+          "Requires review before relying on the estimate fully."
+        ],
+        "totalSpend": 65
       }
     ],
     "recently_added_purchase_data": [
+      {
+        "purchaseId": "ab91995e-9de0-46df-ba11-7cf8080d8ff4",
+        "dateOfPurchase": "2026-05-11",
+        "itemName": "Amul Salted Butter",
+        "category": "Dairy",
+        "quantityLabel": "200 g",
+        "amountLabel": "₹122.00",
+        "reviewStatus": "ok",
+        "reviewNotes": [],
+        "enteredAt": "2026-05-12T21:39:41.473Z"
+      },
+      {
+        "purchaseId": "4e052807-7fcd-401c-a548-ec13df2e207b",
+        "dateOfPurchase": "2026-05-11",
+        "itemName": "Desi Tomato",
+        "category": "Vegetables",
+        "quantityLabel": "500 g",
+        "amountLabel": "₹19.00",
+        "reviewStatus": "ok",
+        "reviewNotes": [],
+        "enteredAt": "2026-05-12T21:39:41.473Z"
+      },
+      {
+        "purchaseId": "cdde23f4-46bb-4149-b8bb-a0dd5f100bae",
+        "dateOfPurchase": "2026-05-11",
+        "itemName": "Onion",
+        "category": "Vegetables",
+        "quantityLabel": "4 kg",
+        "amountLabel": "₹65.00",
+        "reviewStatus": "needs_review",
+        "reviewNotes": [
+          "User note says Onion - 4kg, while itemized line shows 2 x 1 kg x 1 at ₹65."
+        ],
+        "enteredAt": "2026-05-12T21:39:41.473Z"
+      },
+      {
+        "purchaseId": "1c6b3253-d4b3-4d4b-ab79-38b592e6b8cb",
+        "dateOfPurchase": "2026-05-11",
+        "itemName": "Organically Grown Green Cucumber",
+        "category": "Vegetables",
+        "quantityLabel": "500 g",
+        "amountLabel": "₹27.00",
+        "reviewStatus": "ok",
+        "reviewNotes": [],
+        "enteredAt": "2026-05-12T21:39:41.473Z"
+      },
+      {
+        "purchaseId": "c6ca2a15-df45-46e0-b35a-995ef70fbc58",
+        "dateOfPurchase": "2026-05-11",
+        "itemName": "Sindhura Mango",
+        "category": "Fruits",
+        "quantityLabel": "325 g",
+        "amountLabel": "₹106.00",
+        "reviewStatus": "ok",
+        "reviewNotes": [],
+        "enteredAt": "2026-05-12T21:39:41.473Z"
+      },
+      {
+        "purchaseId": "c8fc50be-97e5-46fa-9ca1-0ff083702509",
+        "dateOfPurchase": "2026-05-11",
+        "itemName": "THF Multigrain Bread",
+        "category": "Groceries",
+        "quantityLabel": "300 g",
+        "amountLabel": "₹70.00",
+        "reviewStatus": "ok",
+        "reviewNotes": [],
+        "enteredAt": "2026-05-12T21:39:41.473Z"
+      },
       {
         "purchaseId": "amor-farm-54bc028d8b2b",
         "dateOfPurchase": "2026-04-14",
@@ -3232,82 +4322,107 @@
         "reviewStatus": "ok",
         "reviewNotes": [],
         "enteredAt": "2026-05-09T18:01:15.836Z"
-      },
-      {
-        "purchaseId": "amor-farm-b248902fca8c",
-        "dateOfPurchase": "2026-04-16",
-        "itemName": "Amor Farm Fresh Milk",
-        "category": "Dairy",
-        "quantityLabel": "3 litre",
-        "amountLabel": "₹210.00",
-        "reviewStatus": "ok",
-        "reviewNotes": [],
-        "enteredAt": "2026-05-09T18:01:15.836Z"
-      },
-      {
-        "purchaseId": "amor-farm-fa455cda1920",
-        "dateOfPurchase": "2026-04-17",
-        "itemName": "Amor Farm Fresh Milk",
-        "category": "Dairy",
-        "quantityLabel": "3 litre",
-        "amountLabel": "₹210.00",
-        "reviewStatus": "ok",
-        "reviewNotes": [],
-        "enteredAt": "2026-05-09T18:01:15.836Z"
-      },
-      {
-        "purchaseId": "amor-farm-be3649b780b8",
-        "dateOfPurchase": "2026-04-18",
-        "itemName": "Amor Farm Fresh Milk",
-        "category": "Dairy",
-        "quantityLabel": "3 litre",
-        "amountLabel": "₹210.00",
-        "reviewStatus": "ok",
-        "reviewNotes": [],
-        "enteredAt": "2026-05-09T18:01:15.836Z"
-      },
-      {
-        "purchaseId": "amor-farm-1c9f5432e2a3",
-        "dateOfPurchase": "2026-04-19",
-        "itemName": "Amor Farm Fresh Milk",
-        "category": "Dairy",
-        "quantityLabel": "3 litre",
-        "amountLabel": "₹210.00",
-        "reviewStatus": "ok",
-        "reviewNotes": [],
-        "enteredAt": "2026-05-09T18:01:15.836Z"
-      },
-      {
-        "purchaseId": "amor-farm-28816f1e81e8",
-        "dateOfPurchase": "2026-04-20",
-        "itemName": "Amor Farm Fresh Milk",
-        "category": "Dairy",
-        "quantityLabel": "3 litre",
-        "amountLabel": "₹210.00",
-        "reviewStatus": "ok",
-        "reviewNotes": [],
-        "enteredAt": "2026-05-09T18:01:15.836Z"
-      },
-      {
-        "purchaseId": "amor-farm-e0911469668b",
-        "dateOfPurchase": "2026-04-21",
-        "itemName": "Amor Farm Fresh Milk",
-        "category": "Dairy",
-        "quantityLabel": "3 litre",
-        "amountLabel": "₹210.00",
-        "reviewStatus": "ok",
-        "reviewNotes": [],
-        "enteredAt": "2026-05-09T18:01:15.836Z"
       }
     ],
     "recently_parsed_items_needing_correction": [
       {
-        "purchaseId": "2281decd-4fc4-446e-b80c-d1c07f10ab25",
+        "purchaseId": "cdde23f4-46bb-4149-b8bb-a0dd5f100bae",
+        "dateOfPurchase": "2026-05-11",
+        "itemName": "Onion",
+        "category": "Vegetables",
+        "quantityLabel": "4 kg",
+        "amountLabel": "₹65.00",
+        "reviewStatus": "needs_review",
+        "reviewNotes": [
+          "User note says Onion - 4kg, while itemized line shows 2 x 1 kg x 1 at ₹65."
+        ],
+        "enteredAt": "2026-05-12T21:39:41.473Z"
+      },
+      {
+        "purchaseId": "fd713aa0-6b4b-40be-b40d-a3bd6cfa0053",
+        "dateOfPurchase": "2025-12-07",
+        "itemName": "TWF Dusting Semolina for Pizzas",
+        "category": "Unclear",
+        "quantityLabel": "1 kg",
+        "amountLabel": "₹149.00",
+        "reviewStatus": "needs_review",
+        "reviewNotes": [
+          "Category needs review"
+        ],
+        "enteredAt": "2026-05-09T16:22:06.360Z"
+      },
+      {
+        "purchaseId": "2d6b58f7-9be6-4c1a-bca1-74f18b6840d4",
+        "dateOfPurchase": "2025-12-07",
+        "itemName": "TWF Reliq - Heirloom Rotis",
+        "category": "Unclear",
+        "quantityLabel": "2 kg",
+        "amountLabel": "₹598.00",
+        "reviewStatus": "needs_review",
+        "reviewNotes": [
+          "Category needs review"
+        ],
+        "enteredAt": "2026-05-09T16:22:06.360Z"
+      },
+      {
+        "purchaseId": "e73b9f58-c64d-423c-b0fd-04576c4c544e",
+        "dateOfPurchase": "2026-05-08",
+        "itemName": "Let's Try Sabudana Falhari Mixture",
+        "category": "Unclear",
+        "quantityLabel": "214 g",
+        "amountLabel": "₹95.00",
+        "reviewStatus": "needs_review",
+        "reviewNotes": [
+          "Category needs review"
+        ],
+        "enteredAt": "2026-05-09T16:22:06.359Z"
+      },
+      {
+        "purchaseId": "4ca053e3-5d4b-4fd9-8c02-8f46926ec089",
+        "dateOfPurchase": "2026-05-08",
+        "itemName": "THF Multigrain Bread",
+        "category": "Unclear",
+        "quantityLabel": "300 g",
+        "amountLabel": "₹70.00",
+        "reviewStatus": "needs_review",
+        "reviewNotes": [
+          "Category needs review"
+        ],
+        "enteredAt": "2026-05-09T16:22:06.359Z"
+      },
+      {
+        "purchaseId": "e0d51d4d-790b-414a-9b30-aa8c50ff7111",
         "dateOfPurchase": "2026-05-09",
-        "itemName": "Whole Farm Premium Red Chilli Whole",
+        "itemName": "Amul Salted Butter",
+        "category": "Needs Review",
+        "quantityLabel": "400 g",
+        "amountLabel": "₹244.00",
+        "reviewStatus": "needs_review",
+        "reviewNotes": [
+          "Category needs review"
+        ],
+        "enteredAt": "2026-05-09T16:22:06.359Z"
+      },
+      {
+        "purchaseId": "d266ea5e-1c1c-421b-8924-031a52295e7d",
+        "dateOfPurchase": "2026-05-09",
+        "itemName": "Kellogg's Corn Flakes Original",
+        "category": "Unclear",
+        "quantityLabel": "1.15 kg",
+        "amountLabel": "₹367.00",
+        "reviewStatus": "needs_review",
+        "reviewNotes": [
+          "Category needs review"
+        ],
+        "enteredAt": "2026-05-09T16:22:06.359Z"
+      },
+      {
+        "purchaseId": "c835afbe-1ba5-4c53-81e6-f1fbbb6b0c14",
+        "dateOfPurchase": "2026-05-09",
+        "itemName": "Tata Sampann Coriander Seeds (Dhaniya), Whole Spices",
         "category": "Unclear",
         "quantityLabel": "100 g",
-        "amountLabel": "₹48.00",
+        "amountLabel": "₹38.00",
         "reviewStatus": "needs_review",
         "reviewNotes": [
           "Category needs review"
@@ -3318,6 +4433,332 @@
     "duplicate_or_suspicious_entries": [],
     "items_with_unclear_quantity_or_unit": [],
     "items_with_unclear_category": [
+      {
+        "itemName": "TWF Dusting Semolina for Pizzas",
+        "category": "Unclear",
+        "purchaseCount": 1,
+        "lastPurchaseDate": "2025-12-07",
+        "lastPurchasedQuantity": 1,
+        "lastPurchaseSpend": 149,
+        "averageQuantityPurchased": 1,
+        "quantityUnit": "kg",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 1,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 30,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": 156,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2025-12",
+            "purchases": 1,
+            "spend": 149
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2025-12",
+            "purchases": 1,
+            "quantity": 1,
+            "spend": 149,
+            "unit": "kg"
+          }
+        ],
+        "flags": [
+          "requires review",
+          "category unclear",
+          "possible dead stock"
+        ],
+        "suggestions": [
+          "Requires review before relying on the estimate fully.",
+          "Confirm the category."
+        ],
+        "totalSpend": 149
+      },
+      {
+        "itemName": "TWF Reliq - Heirloom Rotis",
+        "category": "Unclear",
+        "purchaseCount": 1,
+        "lastPurchaseDate": "2025-12-07",
+        "lastPurchasedQuantity": 2,
+        "lastPurchaseSpend": 598,
+        "averageQuantityPurchased": 2,
+        "quantityUnit": "kg",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 2,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 30,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": 156,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2025-12",
+            "purchases": 1,
+            "spend": 598
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2025-12",
+            "purchases": 1,
+            "quantity": 2,
+            "spend": 598,
+            "unit": "kg"
+          }
+        ],
+        "flags": [
+          "requires review",
+          "category unclear",
+          "possible dead stock"
+        ],
+        "suggestions": [
+          "Requires review before relying on the estimate fully.",
+          "Confirm the category."
+        ],
+        "totalSpend": 598
+      },
+      {
+        "itemName": "Let's Try Sabudana Falhari Mixture",
+        "category": "Unclear",
+        "purchaseCount": 1,
+        "lastPurchaseDate": "2026-05-08",
+        "lastPurchasedQuantity": 214,
+        "lastPurchaseSpend": 95,
+        "averageQuantityPurchased": 214,
+        "quantityUnit": "g",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 214,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 30,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": 4,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "spend": 95
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "quantity": 214,
+            "spend": 95,
+            "unit": "g"
+          }
+        ],
+        "flags": [
+          "requires review",
+          "category unclear"
+        ],
+        "suggestions": [
+          "Requires review before relying on the estimate fully.",
+          "Confirm the category."
+        ],
+        "totalSpend": 95
+      },
+      {
+        "itemName": "Kellogg's Corn Flakes Original",
+        "category": "Unclear",
+        "purchaseCount": 1,
+        "lastPurchaseDate": "2026-05-09",
+        "lastPurchasedQuantity": 1.15,
+        "lastPurchaseSpend": 367,
+        "averageQuantityPurchased": 1.15,
+        "quantityUnit": "kg",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 1.15,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 30,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": 3,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "spend": 367
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "quantity": 1.15,
+            "spend": 367,
+            "unit": "kg"
+          }
+        ],
+        "flags": [
+          "requires review",
+          "category unclear"
+        ],
+        "suggestions": [
+          "Requires review before relying on the estimate fully.",
+          "Confirm the category."
+        ],
+        "totalSpend": 367
+      },
+      {
+        "itemName": "Tata Sampann Coriander Seeds (Dhaniya), Whole Spices",
+        "category": "Unclear",
+        "purchaseCount": 1,
+        "lastPurchaseDate": "2026-05-09",
+        "lastPurchasedQuantity": 100,
+        "lastPurchaseSpend": 38,
+        "averageQuantityPurchased": 100,
+        "quantityUnit": "g",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 100,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 30,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": 3,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "spend": 38
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "quantity": 100,
+            "spend": 38,
+            "unit": "g"
+          }
+        ],
+        "flags": [
+          "requires review",
+          "category unclear"
+        ],
+        "suggestions": [
+          "Requires review before relying on the estimate fully.",
+          "Confirm the category."
+        ],
+        "totalSpend": 38
+      },
+      {
+        "itemName": "Whole Farm Premium Fennel Seeds / Moti Saunf",
+        "category": "Unclear",
+        "purchaseCount": 1,
+        "lastPurchaseDate": "2026-05-09",
+        "lastPurchasedQuantity": 100,
+        "lastPurchaseSpend": 42,
+        "averageQuantityPurchased": 100,
+        "quantityUnit": "g",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 100,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 30,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": 3,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "spend": 42
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "quantity": 100,
+            "spend": 42,
+            "unit": "g"
+          }
+        ],
+        "flags": [
+          "requires review",
+          "category unclear"
+        ],
+        "suggestions": [
+          "Requires review before relying on the estimate fully.",
+          "Confirm the category."
+        ],
+        "totalSpend": 42
+      },
       {
         "itemName": "Whole Farm Premium Red Chilli Whole",
         "category": "Unclear",
@@ -3345,7 +4786,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 30,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 0,
+        "daysSinceLastPurchase": 3,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -3374,11 +4815,11 @@
       }
     ],
     "auto_categorisation": {
-      "autoEntryCount": 94,
-      "needsReviewEntryCount": 1,
-      "autoEntryRate": 98.9,
-      "autoItemCount": 28,
-      "needsReviewItemCount": 1
+      "autoEntryCount": 91,
+      "needsReviewEntryCount": 10,
+      "autoEntryRate": 90.1,
+      "autoItemCount": 24,
+      "needsReviewItemCount": 9
     }
   }
 }
