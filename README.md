@@ -64,6 +64,20 @@ Expected result: lint and Vitest checks pass for the household inventory module.
 
 Expected result: the Amor Farm monthly PDF is parsed and its milk entries are added to the shared household ledger while repeated imports skip already saved rows.
 
+### New purchase screenshots or pasted order data
+
+```bash
+./scripts/import-household-purchases.sh --dry-run --stdin
+```
+
+Expected result: pasted purchase text is parsed and previewed without saving. This is the safest first pass after OCR from screenshots.
+
+```bash
+./scripts/import-household-purchases.sh --stdin
+```
+
+Expected result: parsed purchase rows are saved into the shared household ledger, `analysis_snapshot.json` is refreshed, and unclear rows are left in the review queue.
+
 ### Recurring supply context
 
 ```bash
