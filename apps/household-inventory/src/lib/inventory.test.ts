@@ -30,6 +30,18 @@ describe("inventory parsing and analysis", () => {
       category: "Groceries",
       status: "auto",
     });
+    expect(inventory.detectCategory("Heinz Tomato Ketchup")).toEqual({
+      category: "Groceries",
+      status: "auto",
+    });
+    expect(inventory.detectCategory("Rajdhani Maida")).toEqual({
+      category: "Groceries",
+      status: "auto",
+    });
+    expect(inventory.detectCategory("Tata Sampann Meethi Imli Khajur Chutney Dip")).toEqual({
+      category: "Groceries",
+      status: "auto",
+    });
   });
 
   it("parses a free-form raw purchase line and saves uncertain details with review flags", async () => {

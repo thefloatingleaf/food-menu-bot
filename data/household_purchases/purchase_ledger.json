@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "created_at": "2026-05-09T16:05:47Z",
-  "updated_at": "2026-05-12T21:39:41.487Z",
+  "updated_at": "2026-05-16T09:24:08.906Z",
   "purchases": [
     {
       "purchase_id": "3b23ecc1-4dc9-44f4-b2f0-2f5b97a98299",
@@ -26,8 +26,8 @@
       "purchase_id": "fd713aa0-6b4b-40be-b40d-a3bd6cfa0053",
       "date_of_purchase": "2025-12-07",
       "item_name": "TWF Dusting Semolina for Pizzas",
-      "category": "Unclear",
-      "category_status": "needs_review",
+      "category": "Groceries",
+      "category_status": "auto",
       "quantity_purchased": 1,
       "unit_of_measurement": "kg",
       "price": 149,
@@ -36,10 +36,8 @@
       "expected_consumption_period": null,
       "actual_consumption_period": null,
       "raw_source_text": null,
-      "review_status": "needs_review",
-      "review_notes": [
-        "Category needs review"
-      ],
+      "review_status": "ok",
+      "review_notes": [],
       "entered_at": "2026-05-09T16:22:06.360Z",
       "last_updated_at": "2026-05-09T16:22:06.360Z"
     },
@@ -66,8 +64,8 @@
       "purchase_id": "2d6b58f7-9be6-4c1a-bca1-74f18b6840d4",
       "date_of_purchase": "2025-12-07",
       "item_name": "TWF Reliq - Heirloom Rotis",
-      "category": "Unclear",
-      "category_status": "needs_review",
+      "category": "Groceries",
+      "category_status": "auto",
       "quantity_purchased": 2,
       "unit_of_measurement": "kg",
       "price": 598,
@@ -76,10 +74,8 @@
       "expected_consumption_period": null,
       "actual_consumption_period": null,
       "raw_source_text": null,
-      "review_status": "needs_review",
-      "review_notes": [
-        "Category needs review"
-      ],
+      "review_status": "ok",
+      "review_notes": [],
       "entered_at": "2026-05-09T16:22:06.360Z",
       "last_updated_at": "2026-05-09T16:22:06.360Z"
     },
@@ -1493,8 +1489,8 @@
       "purchase_id": "e73b9f58-c64d-423c-b0fd-04576c4c544e",
       "date_of_purchase": "2026-05-08",
       "item_name": "Let's Try Sabudana Falhari Mixture",
-      "category": "Unclear",
-      "category_status": "needs_review",
+      "category": "Groceries",
+      "category_status": "auto",
       "quantity_purchased": 214,
       "unit_of_measurement": "g",
       "price": 95,
@@ -1503,10 +1499,8 @@
       "expected_consumption_period": null,
       "actual_consumption_period": null,
       "raw_source_text": null,
-      "review_status": "needs_review",
-      "review_notes": [
-        "Category needs review"
-      ],
+      "review_status": "ok",
+      "review_notes": [],
       "entered_at": "2026-05-09T16:22:06.359Z",
       "last_updated_at": "2026-05-09T16:22:06.359Z"
     },
@@ -1514,8 +1508,8 @@
       "purchase_id": "4ca053e3-5d4b-4fd9-8c02-8f46926ec089",
       "date_of_purchase": "2026-05-08",
       "item_name": "THF Multigrain Bread",
-      "category": "Unclear",
-      "category_status": "needs_review",
+      "category": "Groceries",
+      "category_status": "auto",
       "quantity_purchased": 300,
       "unit_of_measurement": "g",
       "price": 70,
@@ -1524,10 +1518,8 @@
       "expected_consumption_period": null,
       "actual_consumption_period": null,
       "raw_source_text": null,
-      "review_status": "needs_review",
-      "review_notes": [
-        "Category needs review"
-      ],
+      "review_status": "ok",
+      "review_notes": [],
       "entered_at": "2026-05-09T16:22:06.359Z",
       "last_updated_at": "2026-05-09T16:22:06.359Z"
     },
@@ -1535,8 +1527,8 @@
       "purchase_id": "e0d51d4d-790b-414a-9b30-aa8c50ff7111",
       "date_of_purchase": "2026-05-09",
       "item_name": "Amul Salted Butter",
-      "category": "Needs Review",
-      "category_status": "needs_review",
+      "category": "Dairy",
+      "category_status": "auto",
       "quantity_purchased": 400,
       "unit_of_measurement": "g",
       "price": 244,
@@ -1545,10 +1537,8 @@
       "expected_consumption_period": null,
       "actual_consumption_period": null,
       "raw_source_text": null,
-      "review_status": "needs_review",
-      "review_notes": [
-        "Category needs review"
-      ],
+      "review_status": "ok",
+      "review_notes": [],
       "entered_at": "2026-05-09T16:22:06.359Z",
       "last_updated_at": "2026-05-09T16:22:06.359Z"
     },
@@ -1613,8 +1603,8 @@
       "purchase_id": "d266ea5e-1c1c-421b-8924-031a52295e7d",
       "date_of_purchase": "2026-05-09",
       "item_name": "Kellogg's Corn Flakes Original",
-      "category": "Unclear",
-      "category_status": "needs_review",
+      "category": "Groceries",
+      "category_status": "auto",
       "quantity_purchased": 1.15,
       "unit_of_measurement": "kg",
       "price": 367,
@@ -1623,10 +1613,8 @@
       "expected_consumption_period": null,
       "actual_consumption_period": null,
       "raw_source_text": null,
-      "review_status": "needs_review",
-      "review_notes": [
-        "Category needs review"
-      ],
+      "review_status": "ok",
+      "review_notes": [],
       "entered_at": "2026-05-09T16:22:06.359Z",
       "last_updated_at": "2026-05-09T16:22:06.359Z"
     },
@@ -1653,8 +1641,8 @@
       "purchase_id": "c835afbe-1ba5-4c53-81e6-f1fbbb6b0c14",
       "date_of_purchase": "2026-05-09",
       "item_name": "Tata Sampann Coriander Seeds (Dhaniya), Whole Spices",
-      "category": "Unclear",
-      "category_status": "needs_review",
+      "category": "Groceries",
+      "category_status": "auto",
       "quantity_purchased": 100,
       "unit_of_measurement": "g",
       "price": 38,
@@ -1663,10 +1651,8 @@
       "expected_consumption_period": null,
       "actual_consumption_period": null,
       "raw_source_text": null,
-      "review_status": "needs_review",
-      "review_notes": [
-        "Category needs review"
-      ],
+      "review_status": "ok",
+      "review_notes": [],
       "entered_at": "2026-05-09T16:22:06.359Z",
       "last_updated_at": "2026-05-09T16:22:06.359Z"
     },
@@ -1731,8 +1717,8 @@
       "purchase_id": "13b30493-ea26-417d-b738-18e30ddc1edd",
       "date_of_purchase": "2026-05-09",
       "item_name": "THF Multigrain Bread",
-      "category": "Unclear",
-      "category_status": "needs_review",
+      "category": "Groceries",
+      "category_status": "auto",
       "quantity_purchased": 300,
       "unit_of_measurement": "g",
       "price": 70,
@@ -1741,10 +1727,8 @@
       "expected_consumption_period": null,
       "actual_consumption_period": null,
       "raw_source_text": null,
-      "review_status": "needs_review",
-      "review_notes": [
-        "Category needs review"
-      ],
+      "review_status": "ok",
+      "review_notes": [],
       "entered_at": "2026-05-09T16:22:06.359Z",
       "last_updated_at": "2026-05-09T16:22:06.359Z"
     },
@@ -1790,8 +1774,8 @@
       "purchase_id": "bbd4c32a-60d2-4ed9-abd9-0035ab692b13",
       "date_of_purchase": "2026-05-09",
       "item_name": "Whole Farm Premium Fennel Seeds / Moti Saunf",
-      "category": "Unclear",
-      "category_status": "needs_review",
+      "category": "Groceries",
+      "category_status": "auto",
       "quantity_purchased": 100,
       "unit_of_measurement": "g",
       "price": 42,
@@ -1800,10 +1784,8 @@
       "expected_consumption_period": null,
       "actual_consumption_period": null,
       "raw_source_text": null,
-      "review_status": "needs_review",
-      "review_notes": [
-        "Category needs review"
-      ],
+      "review_status": "ok",
+      "review_notes": [],
       "entered_at": "2026-05-09T16:22:06.359Z",
       "last_updated_at": "2026-05-09T16:22:06.359Z"
     },
@@ -1943,6 +1925,174 @@
       "review_notes": [],
       "entered_at": "2026-05-12T21:39:41.473Z",
       "last_updated_at": "2026-05-12T21:39:41.473Z"
+    },
+    {
+      "purchase_id": "e1eac212-ba29-47d8-ac63-3f0d8a471bee",
+      "date_of_purchase": null,
+      "item_name": "Heinz Tomato Ketchup",
+      "category": "Groceries",
+      "category_status": "auto",
+      "quantity_purchased": 880,
+      "unit_of_measurement": "g",
+      "price": 241,
+      "vendor_source": null,
+      "remarks": "Screenshot order summary. Pack line: 880 g x 1. MRP shown as Rs 267. Order date not visible in screenshot.",
+      "expected_consumption_period": null,
+      "actual_consumption_period": null,
+      "raw_source_text": "Item: Heinz Tomato Ketchup\nQuantity: 880\nUnit: g\nPrice: 241\nRemarks: Screenshot order summary. Pack line: 880 g x 1. MRP shown as Rs 267. Order date not visible in screenshot.",
+      "review_status": "needs_review",
+      "review_notes": [
+        "Date missing or unclear"
+      ],
+      "entered_at": "2026-05-16T09:24:08.893Z",
+      "last_updated_at": "2026-05-16T09:24:08.893Z"
+    },
+    {
+      "purchase_id": "6ebee78c-dc0a-4fff-94f5-42fed8119657",
+      "date_of_purchase": null,
+      "item_name": "Maggi Hot & Sweet Tomato Chilli Ketchup",
+      "category": "Groceries",
+      "category_status": "auto",
+      "quantity_purchased": 200,
+      "unit_of_measurement": "g",
+      "price": 75,
+      "vendor_source": null,
+      "remarks": "Screenshot order summary. Pack line: 200 g x 1. Order date not visible in screenshot.",
+      "expected_consumption_period": null,
+      "actual_consumption_period": null,
+      "raw_source_text": "Item: Maggi Hot & Sweet Tomato Chilli Ketchup\nQuantity: 200\nUnit: g\nPrice: 75\nRemarks: Screenshot order summary. Pack line: 200 g x 1. Order date not visible in screenshot.",
+      "review_status": "needs_review",
+      "review_notes": [
+        "Date missing or unclear"
+      ],
+      "entered_at": "2026-05-16T09:24:08.893Z",
+      "last_updated_at": "2026-05-16T09:24:08.893Z"
+    },
+    {
+      "purchase_id": "19d52e4a-f3ee-4d78-9e9a-acc9c7e2953d",
+      "date_of_purchase": null,
+      "item_name": "Rajdhani Maida",
+      "category": "Groceries",
+      "category_status": "auto",
+      "quantity_purchased": 500,
+      "unit_of_measurement": "g",
+      "price": 37,
+      "vendor_source": null,
+      "remarks": "Screenshot order summary. Pack line: 500 g x 1. MRP shown as Rs 50. Order date not visible in screenshot.",
+      "expected_consumption_period": null,
+      "actual_consumption_period": null,
+      "raw_source_text": "Item: Rajdhani Maida\nQuantity: 500\nUnit: g\nPrice: 37\nRemarks: Screenshot order summary. Pack line: 500 g x 1. MRP shown as Rs 50. Order date not visible in screenshot.",
+      "review_status": "needs_review",
+      "review_notes": [
+        "Date missing or unclear"
+      ],
+      "entered_at": "2026-05-16T09:24:08.893Z",
+      "last_updated_at": "2026-05-16T09:24:08.893Z"
+    },
+    {
+      "purchase_id": "0b759dc7-6fe4-4e56-a7f4-288257365628",
+      "date_of_purchase": null,
+      "item_name": "Rajdhani Puffed Rice",
+      "category": "Groceries",
+      "category_status": "auto",
+      "quantity_purchased": 200,
+      "unit_of_measurement": "g",
+      "price": 34,
+      "vendor_source": null,
+      "remarks": "Screenshot order summary. Pack line: 200 g x 1. MRP shown as Rs 47. Order date not visible in screenshot.",
+      "expected_consumption_period": null,
+      "actual_consumption_period": null,
+      "raw_source_text": "Item: Rajdhani Puffed Rice\nQuantity: 200\nUnit: g\nPrice: 34\nRemarks: Screenshot order summary. Pack line: 200 g x 1. MRP shown as Rs 47. Order date not visible in screenshot.",
+      "review_status": "needs_review",
+      "review_notes": [
+        "Date missing or unclear"
+      ],
+      "entered_at": "2026-05-16T09:24:08.893Z",
+      "last_updated_at": "2026-05-16T09:24:08.893Z"
+    },
+    {
+      "purchase_id": "b8b4d256-5911-4ade-8cf8-9de716381d1e",
+      "date_of_purchase": null,
+      "item_name": "Tata Sampann Meethi Imli Khajur Chutney Dip",
+      "category": "Groceries",
+      "category_status": "auto",
+      "quantity_purchased": 200,
+      "unit_of_measurement": "g",
+      "price": 72,
+      "vendor_source": null,
+      "remarks": "Screenshot order summary. Pack line: 200 g x 1. MRP shown as Rs 75. Order date not visible in screenshot.",
+      "expected_consumption_period": null,
+      "actual_consumption_period": null,
+      "raw_source_text": "Item: Tata Sampann Meethi Imli Khajur Chutney Dip\nQuantity: 200\nUnit: g\nPrice: 72\nRemarks: Screenshot order summary. Pack line: 200 g x 1. MRP shown as Rs 75. Order date not visible in screenshot.",
+      "review_status": "needs_review",
+      "review_notes": [
+        "Date missing or unclear"
+      ],
+      "entered_at": "2026-05-16T09:24:08.892Z",
+      "last_updated_at": "2026-05-16T09:24:08.893Z"
+    },
+    {
+      "purchase_id": "a22d6fb3-39c2-449d-a1f8-4db47cd614e6",
+      "date_of_purchase": null,
+      "item_name": "Tata Sampann Teekhi Imli Saunth Chutney Dip",
+      "category": "Groceries",
+      "category_status": "auto",
+      "quantity_purchased": 200,
+      "unit_of_measurement": "g",
+      "price": 72,
+      "vendor_source": null,
+      "remarks": "Screenshot order summary. Pack line: 200 g x 1. MRP shown as Rs 75. Order date not visible in screenshot.",
+      "expected_consumption_period": null,
+      "actual_consumption_period": null,
+      "raw_source_text": "Item: Tata Sampann Teekhi Imli Saunth Chutney Dip\nQuantity: 200\nUnit: g\nPrice: 72\nRemarks: Screenshot order summary. Pack line: 200 g x 1. MRP shown as Rs 75. Order date not visible in screenshot.",
+      "review_status": "needs_review",
+      "review_notes": [
+        "Date missing or unclear"
+      ],
+      "entered_at": "2026-05-16T09:24:08.893Z",
+      "last_updated_at": "2026-05-16T09:24:08.893Z"
+    },
+    {
+      "purchase_id": "309f388c-42a3-4438-9489-11630449ca5e",
+      "date_of_purchase": null,
+      "item_name": "Tata Sampann Unpolished Masoor Dal",
+      "category": "Groceries",
+      "category_status": "auto",
+      "quantity_purchased": 500,
+      "unit_of_measurement": "g",
+      "price": 72,
+      "vendor_source": null,
+      "remarks": "Screenshot order summary. Pack line: 500 g x 1. MRP shown as Rs 82. Order date not visible in screenshot.",
+      "expected_consumption_period": null,
+      "actual_consumption_period": null,
+      "raw_source_text": "Item: Tata Sampann Unpolished Masoor Dal\nQuantity: 500\nUnit: g\nPrice: 72\nRemarks: Screenshot order summary. Pack line: 500 g x 1. MRP shown as Rs 82. Order date not visible in screenshot.",
+      "review_status": "needs_review",
+      "review_notes": [
+        "Date missing or unclear"
+      ],
+      "entered_at": "2026-05-16T09:24:08.893Z",
+      "last_updated_at": "2026-05-16T09:24:08.893Z"
+    },
+    {
+      "purchase_id": "8af26a82-1a1f-49b5-a89b-76b3ae0b9f16",
+      "date_of_purchase": null,
+      "item_name": "Whole Farm Premium Raw Peanuts",
+      "category": "Groceries",
+      "category_status": "auto",
+      "quantity_purchased": 500,
+      "unit_of_measurement": "g",
+      "price": 104,
+      "vendor_source": null,
+      "remarks": "Screenshot order summary. Pack line: 500 g x 1. MRP shown as Rs 135. Order date not visible in screenshot.",
+      "expected_consumption_period": null,
+      "actual_consumption_period": null,
+      "raw_source_text": "Item: Whole Farm Premium Raw Peanuts\nQuantity: 500\nUnit: g\nPrice: 104\nRemarks: Screenshot order summary. Pack line: 500 g x 1. MRP shown as Rs 135. Order date not visible in screenshot.",
+      "review_status": "needs_review",
+      "review_notes": [
+        "Date missing or unclear"
+      ],
+      "entered_at": "2026-05-16T09:24:08.893Z",
+      "last_updated_at": "2026-05-16T09:24:08.893Z"
     }
   ]
 }

@@ -279,7 +279,7 @@ const CATEGORY_RULES: Array<{ category: InventoryCategory; keywords: string[] }>
   { category: "Baby Items", keywords: ["diaper", "wipes", "formula", "baby", "feeding bottle", "rash cream", "nappy"] },
   { category: "Medicines", keywords: ["tablet", "capsule", "syrup", "ointment", "medicine", "medicines", "paracetamol", "crocin", "dolo", "vitamin"] },
   { category: "Household Consumables", keywords: ["tissue", "foil", "garbage bag", "dustbin bag", "candle", "matchbox", "battery", "toothpaste", "toothbrush", "napkin"] },
-  { category: "Groceries", keywords: ["atta", "rice", "dal", "daliya", "flour", "besan", "oil", "sugar", "salt", "masala", "turmeric", "haldi", "jeera", "tea", "coffee", "poha", "suji", "rava", "grocery", "papad", "sattu", "corn flakes", "peanuts", "sabudana", "bread", "semolina", "roti", "rotis", "coriander", "fennel", "spices"] },
+  { category: "Groceries", keywords: ["atta", "rice", "dal", "masoor", "daliya", "flour", "maida", "besan", "oil", "sugar", "salt", "masala", "turmeric", "haldi", "jeera", "tea", "coffee", "poha", "suji", "rava", "grocery", "papad", "sattu", "corn flakes", "peanut", "peanuts", "sabudana", "bread", "semolina", "roti", "rotis", "coriander", "fennel", "spices", "chutney", "ketchup", "sauce"] },
 ];
 const KNOWN_VENDOR_PATTERNS = [
   "amazon",
