@@ -527,6 +527,7 @@ DATE_SPECIFIC_CHANA_SATTU_EXCLUSION_WINDOWS = [
 RICE_ITEM_TOKENS = ("चावल", "राइस", "भात")
 CURD_ITEM_TOKENS = ("दही", "रायता")
 CURD_RAITA_NOTE_HI = "*दही रूप:* केवल लौकी/खीरे का रायता"
+CURD_RAITA_NOTE_EXCLUDED_ITEMS = ("दही चावल ज्यादा करी पत्ता व सौंफ के साथ",)
 SPECIFIC_RAITA_PATTERN = re.compile(r"[\w\u0900-\u097F/-]+(?:\s+[\w\u0900-\u097F/-]+){0,4}\s+क[ािे]\s+रायता")
 
 VARSHA_COMMON_REQUIRED_SIDES = [
@@ -1243,6 +1244,16 @@ def item_mentions_specific_raita(item: str) -> bool:
     return bool(SPECIFIC_RAITA_PATTERN.search(normalized))
 
 
+def should_item_trigger_curd_raita_note(item: str) -> bool:
+    if not item_contains_curd(item):
+        return False
+    if is_fermented_rice_breakfast_item(item):
+        return False
+    if any(excluded in item for excluded in CURD_RAITA_NOTE_EXCLUDED_ITEMS):
+        return False
+    return not item_mentions_specific_raita(item)
+
+
 def is_curd_repeat_restricted_ritu(ritu_key: str) -> bool:
     return normalize_ritu_key(ritu_key) not in {"hemant", "shishir"}
 
@@ -1297,8 +1308,7 @@ def build_curd_raita_note(
     selected_items = [selected_breakfast, selected_meal]
     if selected_second_meal:
         selected_items.append(selected_second_meal)
-    curd_items = [item for item in selected_items if item_contains_curd(item)]
-    if curd_items and any(not item_mentions_specific_raita(item) for item in curd_items):
+    if any(should_item_trigger_curd_raita_note(item) for item in selected_items):
         return CURD_RAITA_NOTE_HI
     return None
 
@@ -2315,10 +2325,7 @@ def format_overnight_breakfast_label(item: str) -> str:
 
 
 def build_next_day_overnight_prep_line(item: str) -> str:
-    return (
-        f"*रात की तैयारी ({format_overnight_breakfast_label(item)} के लिए):* "
-        + OVERNIGHT_RICE_PREP_NOTE
-    )
+    return "*रात की चावल तैयारी:* " + OVERNIGHT_RICE_PREP_NOTE
 
 
 def build_pakhala_serving_note(selected_breakfast: str) -> str | None:

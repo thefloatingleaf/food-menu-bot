@@ -545,7 +545,9 @@ class VarietyCycleRuleTests(unittest.TestCase):
         line = generate_menu.build_next_day_overnight_prep_line(
             "पखाला भात (Pakhala Bhata): रात में 1 कटोरी कच्चे चावल धोकर सादा चावल पकाएँ।"
         )
-        self.assertTrue(line.startswith("*रात की तैयारी (पखाला भात (Pakhala Bhata) के लिए):*"))
+        self.assertTrue(line.startswith("*रात की चावल तैयारी:*"))
+        self.assertNotIn("पखाला भात", line)
+        self.assertNotIn("Pakhala Bhata", line)
         self.assertNotIn("कल सुबह का नाश्ता", line)
 
     def test_resolve_available_override_item_matches_canonical_vasant_meal_label(self) -> None:
@@ -1133,6 +1135,36 @@ class CurdRuleTests(unittest.TestCase):
                 None,
             ),
             "*दही रूप:* केवल लौकी/खीरे का रायता",
+        )
+
+    def test_build_curd_raita_note_skips_pakhala_breakfast(self) -> None:
+        self.assertIsNone(
+            generate_menu.build_curd_raita_note(
+                "grishm",
+                "पखाला भात (Pakhala Bhata): रात में 1 कटोरी कच्चे चावल धोकर सादा चावल पकाएँ। 2 बड़े चम्मच दही डालें।",
+                "मूंग दाल और चावल",
+                None,
+            )
+        )
+
+    def test_build_curd_raita_note_skips_pazhaya_sadam_breakfast(self) -> None:
+        self.assertIsNone(
+            generate_menu.build_curd_raita_note(
+                "grishm",
+                "पझैया सादम (Pazhaya Sadam): अब 2–3 बड़े चम्मच दही या लगभग ½ कटोरी पतली छाछ मिलाएँ।",
+                "मूंग दाल और चावल",
+                None,
+            )
+        )
+
+    def test_build_curd_raita_note_skips_special_dahi_chawal_meal(self) -> None:
+        self.assertIsNone(
+            generate_menu.build_curd_raita_note(
+                "grishm",
+                "रागी चीला",
+                "दही चावल ज्यादा करी पत्ता व सौंफ के साथ",
+                None,
+            )
         )
 
     def test_build_curd_raita_note_skips_non_vasant_grishm_ritu(self) -> None:
