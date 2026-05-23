@@ -541,6 +541,22 @@ class VarietyCycleRuleTests(unittest.TestCase):
         meal = "ज्वार की रोटी और परवल-मूँगदाल की सूखी सब्ज़ी"
         self.assertEqual(generate_menu.format_meal_display(meal), meal)
 
+    def test_is_navishti_shared_meal_candidate_matches_grishm_food_triggers(self) -> None:
+        self.assertTrue(generate_menu.is_navishti_shared_meal_candidate("शालि चावल, अरहर दाल, टमाटर की सब्ज़ी"))
+        self.assertTrue(generate_menu.is_navishti_shared_meal_candidate("ज्वार की रोटी और लौकी की सब्ज़ी"))
+        self.assertTrue(generate_menu.is_navishti_shared_meal_candidate("पखाला भात (Pakhala Bhata)"))
+        self.assertFalse(generate_menu.is_navishti_shared_meal_candidate("सूजी की इडली, नारियल चटनी"))
+
+    def test_build_navishti_grishm_plan_line_uses_weekday_and_replacements(self) -> None:
+        line = generate_menu.build_navishti_grishm_plan_line(
+            date(2026, 5, 24),
+            {2: "आज का भोजन"},
+        )
+
+        self.assertIn("भोजन 1: दूध + गेहूँ दलिया", line)
+        self.assertIn("भोजन 2: आज का भोजन (अलग कटोरी)", line)
+        self.assertIn("भोजन 5: सूजी का हलवा", line)
+
     def test_build_next_day_overnight_prep_line_does_not_create_second_breakfast_heading(self) -> None:
         line = generate_menu.build_next_day_overnight_prep_line(
             "पखाला भात (Pakhala Bhata): रात में 1 कटोरी कच्चे चावल धोकर सादा चावल पकाएँ।"
