@@ -1,19 +1,19 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-05-16T09:25:02.200Z",
+  "generated_at": "2026-05-23T08:55:17.626Z",
   "overview": {
-    "purchaseCount": 109,
-    "trackedItemCount": 41,
-    "totalSpend": 27358.75,
+    "purchaseCount": 119,
+    "trackedItemCount": 51,
+    "totalSpend": 28281.75,
     "currentMonthSpend": 5106.5,
     "itemsToOrderTodayCount": 3,
     "itemsToOrderSoonCount": 0,
     "stableItemCount": 1,
-    "reviewItemCount": 10,
+    "reviewItemCount": 20,
     "totalMonthlyHouseholdConsumptionValue": 5106.5,
     "monthOnMonthSpendingChange": -39.6,
     "monthOnMonthConsumptionChange": -27.3,
-    "inventoryHealthScore": 97,
+    "inventoryHealthScore": 96,
     "householdConsumptionStabilityScore": 43,
     "duplicateEntryCount": 0
   },
@@ -41,8 +41,16 @@
   ],
   "category_spend": [
     {
+      "category": "Baby Items",
+      "amount": 428
+    },
+    {
+      "category": "Cleaning Items",
+      "amount": 10
+    },
+    {
       "category": "Dairy",
-      "amount": 14191
+      "amount": 14316
     },
     {
       "category": "Fruits",
@@ -50,7 +58,7 @@
     },
     {
       "category": "Groceries",
-      "amount": 12902.75
+      "amount": 13262.75
     },
     {
       "category": "Unclear",
@@ -89,7 +97,7 @@
       "stockBucket": "Items to Order Today",
       "dataConfidenceScore": 100,
       "dataConfidenceLabel": "High",
-      "daysSinceLastPurchase": 16,
+      "daysSinceLastPurchase": 23,
       "monthlyPurchasePattern": [
         {
           "month": "2026-01",
@@ -169,7 +177,7 @@
       "stockBucket": "Items to Order Today",
       "dataConfidenceScore": 81,
       "dataConfidenceLabel": "High",
-      "daysSinceLastPurchase": 5,
+      "daysSinceLastPurchase": 12,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -223,7 +231,7 @@
       "stockBucket": "Items to Order Today",
       "dataConfidenceScore": 90,
       "dataConfidenceLabel": "High",
-      "daysSinceLastPurchase": 5,
+      "daysSinceLastPurchase": 12,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -268,7 +276,7 @@
       "averageWeeklyConsumptionLabel": "0.42 kg/week",
       "consumptionBasis": "purchase_history",
       "expectedStockDurationDays": 33,
-      "estimatedDaysOfStockRemaining": 26,
+      "estimatedDaysOfStockRemaining": 19,
       "actualConsumptionDurationDays": null,
       "reorderFrequencyDays": 33,
       "normalPurchaseFrequencyDays": 33,
@@ -279,7 +287,7 @@
       "stockBucket": "Items Sufficient for More Than 7 Days",
       "dataConfidenceScore": 81,
       "dataConfidenceLabel": "High",
-      "daysSinceLastPurchase": 7,
+      "daysSinceLastPurchase": 14,
       "monthlyPurchasePattern": [
         {
           "month": "2026-04",
@@ -316,6 +324,120 @@
       "totalSpend": 1196
     },
     {
+      "itemName": "Amul Blend Diced Cheese",
+      "category": "Dairy",
+      "purchaseCount": 1,
+      "lastPurchaseDate": null,
+      "lastPurchasedQuantity": 200,
+      "lastPurchaseSpend": 125,
+      "averageQuantityPurchased": 200,
+      "quantityUnit": "g",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 200,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 30,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": null,
+      "monthlyPurchasePattern": [],
+      "monthlyQuantityPattern": [],
+      "flags": [
+        "requires review"
+      ],
+      "suggestions": [
+        "Requires review before relying on the estimate fully."
+      ],
+      "totalSpend": 125
+    },
+    {
+      "itemName": "Coca-Cola Diet Coke Soft Drink",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": null,
+      "lastPurchasedQuantity": 600,
+      "lastPurchaseSpend": 80,
+      "averageQuantityPurchased": 600,
+      "quantityUnit": "ml",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 600,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 30,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": null,
+      "monthlyPurchasePattern": [],
+      "monthlyQuantityPattern": [],
+      "flags": [
+        "requires review"
+      ],
+      "suggestions": [
+        "Requires review before relying on the estimate fully."
+      ],
+      "totalSpend": 80
+    },
+    {
+      "itemName": "Coca-Cola Zero Sugar Soft Drink",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": null,
+      "lastPurchasedQuantity": 300,
+      "lastPurchaseSpend": 40,
+      "averageQuantityPurchased": 300,
+      "quantityUnit": "ml",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 300,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 30,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": null,
+      "monthlyPurchasePattern": [],
+      "monthlyQuantityPattern": [],
+      "flags": [
+        "requires review"
+      ],
+      "suggestions": [
+        "Requires review before relying on the estimate fully."
+      ],
+      "totalSpend": 40
+    },
+    {
       "itemName": "Davidoff Espresso 57 Instant Coffee 11/12 Intensity",
       "category": "Groceries",
       "purchaseCount": 1,
@@ -342,7 +464,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 7,
+      "daysSinceLastPurchase": 14,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -392,7 +514,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 7,
+      "daysSinceLastPurchase": 14,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -442,7 +564,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 5,
+      "daysSinceLastPurchase": 12,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -492,7 +614,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 7,
+      "daysSinceLastPurchase": 14,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -514,6 +636,44 @@
         "Continue collecting purchase entries to strengthen the estimate."
       ],
       "totalSpend": 63
+    },
+    {
+      "itemName": "Haldiram's Bhujia",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": null,
+      "lastPurchasedQuantity": 400,
+      "lastPurchaseSpend": 120,
+      "averageQuantityPurchased": 400,
+      "quantityUnit": "g",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 400,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 30,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": null,
+      "monthlyPurchasePattern": [],
+      "monthlyQuantityPattern": [],
+      "flags": [
+        "requires review"
+      ],
+      "suggestions": [
+        "Requires review before relying on the estimate fully."
+      ],
+      "totalSpend": 120
     },
     {
       "itemName": "Heinz Tomato Ketchup",
@@ -580,7 +740,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 7,
+      "daysSinceLastPurchase": 14,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -630,7 +790,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 8,
+      "daysSinceLastPurchase": 15,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -680,7 +840,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 8,
+      "daysSinceLastPurchase": 15,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -730,7 +890,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 7,
+      "daysSinceLastPurchase": 14,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -792,6 +952,120 @@
       "totalSpend": 75
     },
     {
+      "itemName": "Mee Mee Mild Baby Laundry Detergent Refill",
+      "category": "Baby Items",
+      "purchaseCount": 1,
+      "lastPurchaseDate": null,
+      "lastPurchasedQuantity": 1,
+      "lastPurchaseSpend": 229,
+      "averageQuantityPurchased": 1,
+      "quantityUnit": "litre",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 1,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 30,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": null,
+      "monthlyPurchasePattern": [],
+      "monthlyQuantityPattern": [],
+      "flags": [
+        "requires review"
+      ],
+      "suggestions": [
+        "Requires review before relying on the estimate fully."
+      ],
+      "totalSpend": 229
+    },
+    {
+      "itemName": "Mother Sparsh Natural Baby Liquid Cleanser",
+      "category": "Baby Items",
+      "purchaseCount": 1,
+      "lastPurchaseDate": null,
+      "lastPurchasedQuantity": 500,
+      "lastPurchaseSpend": 199,
+      "averageQuantityPurchased": 500,
+      "quantityUnit": "ml",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 500,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 30,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": null,
+      "monthlyPurchasePattern": [],
+      "monthlyQuantityPattern": [],
+      "flags": [
+        "requires review"
+      ],
+      "suggestions": [
+        "Requires review before relying on the estimate fully."
+      ],
+      "totalSpend": 199
+    },
+    {
+      "itemName": "Mountain Dew Soft Drink",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": null,
+      "lastPurchasedQuantity": 300,
+      "lastPurchaseSpend": 40,
+      "averageQuantityPurchased": 300,
+      "quantityUnit": "ml",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 300,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 30,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": null,
+      "monthlyPurchasePattern": [],
+      "monthlyQuantityPattern": [],
+      "flags": [
+        "requires review"
+      ],
+      "suggestions": [
+        "Requires review before relying on the estimate fully."
+      ],
+      "totalSpend": 40
+    },
+    {
       "itemName": "Onion",
       "category": "Vegetables",
       "purchaseCount": 1,
@@ -818,7 +1092,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 40,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 5,
+      "daysSinceLastPurchase": 12,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -870,7 +1144,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 5,
+      "daysSinceLastPurchase": 12,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -970,6 +1244,44 @@
       "totalSpend": 34
     },
     {
+      "itemName": "Rin Detergent Bar",
+      "category": "Cleaning Items",
+      "purchaseCount": 1,
+      "lastPurchaseDate": null,
+      "lastPurchasedQuantity": 130,
+      "lastPurchaseSpend": 10,
+      "averageQuantityPurchased": 130,
+      "quantityUnit": "g",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 130,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 30,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": null,
+      "monthlyPurchasePattern": [],
+      "monthlyQuantityPattern": [],
+      "flags": [
+        "requires review"
+      ],
+      "suggestions": [
+        "Requires review before relying on the estimate fully."
+      ],
+      "totalSpend": 10
+    },
+    {
       "itemName": "Sindhura Mango",
       "category": "Fruits",
       "purchaseCount": 1,
@@ -996,7 +1308,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 5,
+      "daysSinceLastPurchase": 12,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -1018,6 +1330,44 @@
         "Continue collecting purchase entries to strengthen the estimate."
       ],
       "totalSpend": 106
+    },
+    {
+      "itemName": "Sprite Lime Soft Drink",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": null,
+      "lastPurchasedQuantity": 600,
+      "lastPurchaseSpend": 80,
+      "averageQuantityPurchased": 600,
+      "quantityUnit": "ml",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 600,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 30,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": null,
+      "monthlyPurchasePattern": [],
+      "monthlyQuantityPattern": [],
+      "flags": [
+        "requires review"
+      ],
+      "suggestions": [
+        "Requires review before relying on the estimate fully."
+      ],
+      "totalSpend": 80
     },
     {
       "itemName": "Tata Sampann Coriander Seeds (Dhaniya), Whole Spices",
@@ -1046,7 +1396,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 7,
+      "daysSinceLastPurchase": 14,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -1172,7 +1522,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 7,
+      "daysSinceLastPurchase": 14,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -1222,7 +1572,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 7,
+      "daysSinceLastPurchase": 14,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -1310,7 +1660,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 7,
+      "daysSinceLastPurchase": 14,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -1360,7 +1710,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 7,
+      "daysSinceLastPurchase": 14,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -1410,7 +1760,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 94,
+      "daysSinceLastPurchase": 101,
       "monthlyPurchasePattern": [
         {
           "month": "2026-02",
@@ -1462,7 +1812,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 160,
+      "daysSinceLastPurchase": 167,
       "monthlyPurchasePattern": [
         {
           "month": "2025-12",
@@ -1514,7 +1864,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 160,
+      "daysSinceLastPurchase": 167,
       "monthlyPurchasePattern": [
         {
           "month": "2025-12",
@@ -1566,7 +1916,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 160,
+      "daysSinceLastPurchase": 167,
       "monthlyPurchasePattern": [
         {
           "month": "2025-12",
@@ -1618,7 +1968,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 160,
+      "daysSinceLastPurchase": 167,
       "monthlyPurchasePattern": [
         {
           "month": "2025-12",
@@ -1670,7 +2020,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 160,
+      "daysSinceLastPurchase": 167,
       "monthlyPurchasePattern": [
         {
           "month": "2025-12",
@@ -1722,7 +2072,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 94,
+      "daysSinceLastPurchase": 101,
       "monthlyPurchasePattern": [
         {
           "month": "2026-02",
@@ -1774,7 +2124,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 160,
+      "daysSinceLastPurchase": 167,
       "monthlyPurchasePattern": [
         {
           "month": "2025-12",
@@ -1826,7 +2176,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 160,
+      "daysSinceLastPurchase": 167,
       "monthlyPurchasePattern": [
         {
           "month": "2025-12",
@@ -1878,7 +2228,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 40,
+      "daysSinceLastPurchase": 47,
       "monthlyPurchasePattern": [
         {
           "month": "2026-04",
@@ -1928,7 +2278,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 40,
+      "daysSinceLastPurchase": 47,
       "monthlyPurchasePattern": [
         {
           "month": "2026-04",
@@ -1950,6 +2300,44 @@
         "Continue collecting purchase entries to strengthen the estimate."
       ],
       "totalSpend": 899
+    },
+    {
+      "itemName": "Vestta Vintage Arabic Designed Paper Gift Bag With Tags (Multicolour)",
+      "category": "Household Consumables",
+      "purchaseCount": 1,
+      "lastPurchaseDate": null,
+      "lastPurchasedQuantity": 2,
+      "lastPurchaseSpend": null,
+      "averageQuantityPurchased": 2,
+      "quantityUnit": "pieces",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 2,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 30,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": null,
+      "monthlyPurchasePattern": [],
+      "monthlyQuantityPattern": [],
+      "flags": [
+        "requires review"
+      ],
+      "suggestions": [
+        "Requires review before relying on the estimate fully."
+      ],
+      "totalSpend": 0
     },
     {
       "itemName": "Whole Farm Premium Fennel Seeds / Moti Saunf",
@@ -1978,7 +2366,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 7,
+      "daysSinceLastPurchase": 14,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -2066,7 +2454,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 30,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 7,
+      "daysSinceLastPurchase": 14,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -2131,7 +2519,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 100,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 16,
+        "daysSinceLastPurchase": 23,
         "monthlyPurchasePattern": [
           {
             "month": "2026-01",
@@ -2211,7 +2599,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 90,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 5,
+        "daysSinceLastPurchase": 12,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -2267,7 +2655,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 81,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 5,
+        "daysSinceLastPurchase": 12,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -2313,7 +2701,7 @@
         "averageWeeklyConsumptionLabel": "0.42 kg/week",
         "consumptionBasis": "purchase_history",
         "expectedStockDurationDays": 33,
-        "estimatedDaysOfStockRemaining": 26,
+        "estimatedDaysOfStockRemaining": 19,
         "actualConsumptionDurationDays": null,
         "reorderFrequencyDays": 33,
         "normalPurchaseFrequencyDays": 33,
@@ -2324,7 +2712,7 @@
         "stockBucket": "Items Sufficient for More Than 7 Days",
         "dataConfidenceScore": 81,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 7,
+        "daysSinceLastPurchase": 14,
         "monthlyPurchasePattern": [
           {
             "month": "2026-04",
@@ -2407,7 +2795,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 100,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 16,
+        "daysSinceLastPurchase": 23,
         "monthlyPurchasePattern": [
           {
             "month": "2026-01",
@@ -2489,7 +2877,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 90,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 5,
+        "daysSinceLastPurchase": 12,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -2547,7 +2935,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 100,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 16,
+        "daysSinceLastPurchase": 23,
         "monthlyPurchasePattern": [
           {
             "month": "2026-01",
@@ -2627,7 +3015,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 90,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 5,
+        "daysSinceLastPurchase": 12,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -2683,7 +3071,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 81,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 5,
+        "daysSinceLastPurchase": 12,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -2739,7 +3127,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 100,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 16,
+        "daysSinceLastPurchase": 23,
         "monthlyPurchasePattern": [
           {
             "month": "2026-01",
@@ -3282,7 +3670,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 100,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 16,
+        "daysSinceLastPurchase": 23,
         "monthlyPurchasePattern": [
           {
             "month": "2026-01",
@@ -3364,7 +3752,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 90,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 5,
+        "daysSinceLastPurchase": 12,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -3429,7 +3817,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 100,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 16,
+        "daysSinceLastPurchase": 23,
         "monthlyPurchasePattern": [
           {
             "month": "2026-01",
@@ -3509,7 +3897,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 90,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 5,
+        "daysSinceLastPurchase": 12,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -3565,7 +3953,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 81,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 5,
+        "daysSinceLastPurchase": 12,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -3621,7 +4009,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 51,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 160,
+        "daysSinceLastPurchase": 167,
         "monthlyPurchasePattern": [
           {
             "month": "2025-12",
@@ -3673,7 +4061,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 51,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 160,
+        "daysSinceLastPurchase": 167,
         "monthlyPurchasePattern": [
           {
             "month": "2025-12",
@@ -3725,7 +4113,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 51,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 160,
+        "daysSinceLastPurchase": 167,
         "monthlyPurchasePattern": [
           {
             "month": "2025-12",
@@ -3777,7 +4165,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 51,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 160,
+        "daysSinceLastPurchase": 167,
         "monthlyPurchasePattern": [
           {
             "month": "2025-12",
@@ -3829,7 +4217,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 51,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 160,
+        "daysSinceLastPurchase": 167,
         "monthlyPurchasePattern": [
           {
             "month": "2025-12",
@@ -3881,7 +4269,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 51,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 160,
+        "daysSinceLastPurchase": 167,
         "monthlyPurchasePattern": [
           {
             "month": "2025-12",
@@ -3933,7 +4321,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 51,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 160,
+        "daysSinceLastPurchase": 167,
         "monthlyPurchasePattern": [
           {
             "month": "2025-12",
@@ -3985,7 +4373,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 100,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 16,
+        "daysSinceLastPurchase": 23,
         "monthlyPurchasePattern": [
           {
             "month": "2026-01",
@@ -4065,7 +4453,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 51,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 94,
+        "daysSinceLastPurchase": 101,
         "monthlyPurchasePattern": [
           {
             "month": "2026-02",
@@ -4117,7 +4505,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 51,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 94,
+        "daysSinceLastPurchase": 101,
         "monthlyPurchasePattern": [
           {
             "month": "2026-02",
@@ -4169,7 +4557,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 90,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 5,
+        "daysSinceLastPurchase": 12,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -4225,7 +4613,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 81,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 5,
+        "daysSinceLastPurchase": 12,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -4281,7 +4669,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 100,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 16,
+        "daysSinceLastPurchase": 23,
         "monthlyPurchasePattern": [
           {
             "month": "2026-01",
@@ -4361,7 +4749,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 90,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 5,
+        "daysSinceLastPurchase": 12,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -4417,7 +4805,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 81,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 5,
+        "daysSinceLastPurchase": 12,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -4447,6 +4835,158 @@
     ],
     "overstock_risk_items": [],
     "items_requiring_manual_review": [
+      {
+        "itemName": "Amul Blend Diced Cheese",
+        "category": "Dairy",
+        "purchaseCount": 1,
+        "lastPurchaseDate": null,
+        "lastPurchasedQuantity": 200,
+        "lastPurchaseSpend": 125,
+        "averageQuantityPurchased": 200,
+        "quantityUnit": "g",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 200,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 30,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": null,
+        "monthlyPurchasePattern": [],
+        "monthlyQuantityPattern": [],
+        "flags": [
+          "requires review"
+        ],
+        "suggestions": [
+          "Requires review before relying on the estimate fully."
+        ],
+        "totalSpend": 125
+      },
+      {
+        "itemName": "Coca-Cola Diet Coke Soft Drink",
+        "category": "Groceries",
+        "purchaseCount": 1,
+        "lastPurchaseDate": null,
+        "lastPurchasedQuantity": 600,
+        "lastPurchaseSpend": 80,
+        "averageQuantityPurchased": 600,
+        "quantityUnit": "ml",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 600,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 30,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": null,
+        "monthlyPurchasePattern": [],
+        "monthlyQuantityPattern": [],
+        "flags": [
+          "requires review"
+        ],
+        "suggestions": [
+          "Requires review before relying on the estimate fully."
+        ],
+        "totalSpend": 80
+      },
+      {
+        "itemName": "Coca-Cola Zero Sugar Soft Drink",
+        "category": "Groceries",
+        "purchaseCount": 1,
+        "lastPurchaseDate": null,
+        "lastPurchasedQuantity": 300,
+        "lastPurchaseSpend": 40,
+        "averageQuantityPurchased": 300,
+        "quantityUnit": "ml",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 300,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 30,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": null,
+        "monthlyPurchasePattern": [],
+        "monthlyQuantityPattern": [],
+        "flags": [
+          "requires review"
+        ],
+        "suggestions": [
+          "Requires review before relying on the estimate fully."
+        ],
+        "totalSpend": 40
+      },
+      {
+        "itemName": "Haldiram's Bhujia",
+        "category": "Groceries",
+        "purchaseCount": 1,
+        "lastPurchaseDate": null,
+        "lastPurchasedQuantity": 400,
+        "lastPurchaseSpend": 120,
+        "averageQuantityPurchased": 400,
+        "quantityUnit": "g",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 400,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 30,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": null,
+        "monthlyPurchasePattern": [],
+        "monthlyQuantityPattern": [],
+        "flags": [
+          "requires review"
+        ],
+        "suggestions": [
+          "Requires review before relying on the estimate fully."
+        ],
+        "totalSpend": 120
+      },
       {
         "itemName": "Heinz Tomato Ketchup",
         "category": "Groceries",
@@ -4522,6 +5062,120 @@
           "Requires review before relying on the estimate fully."
         ],
         "totalSpend": 75
+      },
+      {
+        "itemName": "Mee Mee Mild Baby Laundry Detergent Refill",
+        "category": "Baby Items",
+        "purchaseCount": 1,
+        "lastPurchaseDate": null,
+        "lastPurchasedQuantity": 1,
+        "lastPurchaseSpend": 229,
+        "averageQuantityPurchased": 1,
+        "quantityUnit": "litre",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 1,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 30,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": null,
+        "monthlyPurchasePattern": [],
+        "monthlyQuantityPattern": [],
+        "flags": [
+          "requires review"
+        ],
+        "suggestions": [
+          "Requires review before relying on the estimate fully."
+        ],
+        "totalSpend": 229
+      },
+      {
+        "itemName": "Mother Sparsh Natural Baby Liquid Cleanser",
+        "category": "Baby Items",
+        "purchaseCount": 1,
+        "lastPurchaseDate": null,
+        "lastPurchasedQuantity": 500,
+        "lastPurchaseSpend": 199,
+        "averageQuantityPurchased": 500,
+        "quantityUnit": "ml",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 500,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 30,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": null,
+        "monthlyPurchasePattern": [],
+        "monthlyQuantityPattern": [],
+        "flags": [
+          "requires review"
+        ],
+        "suggestions": [
+          "Requires review before relying on the estimate fully."
+        ],
+        "totalSpend": 199
+      },
+      {
+        "itemName": "Mountain Dew Soft Drink",
+        "category": "Groceries",
+        "purchaseCount": 1,
+        "lastPurchaseDate": null,
+        "lastPurchasedQuantity": 300,
+        "lastPurchaseSpend": 40,
+        "averageQuantityPurchased": 300,
+        "quantityUnit": "ml",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 300,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 30,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": null,
+        "monthlyPurchasePattern": [],
+        "monthlyQuantityPattern": [],
+        "flags": [
+          "requires review"
+        ],
+        "suggestions": [
+          "Requires review before relying on the estimate fully."
+        ],
+        "totalSpend": 40
       },
       {
         "itemName": "Rajdhani Maida",
@@ -4600,6 +5254,82 @@
         "totalSpend": 34
       },
       {
+        "itemName": "Rin Detergent Bar",
+        "category": "Cleaning Items",
+        "purchaseCount": 1,
+        "lastPurchaseDate": null,
+        "lastPurchasedQuantity": 130,
+        "lastPurchaseSpend": 10,
+        "averageQuantityPurchased": 130,
+        "quantityUnit": "g",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 130,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 30,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": null,
+        "monthlyPurchasePattern": [],
+        "monthlyQuantityPattern": [],
+        "flags": [
+          "requires review"
+        ],
+        "suggestions": [
+          "Requires review before relying on the estimate fully."
+        ],
+        "totalSpend": 10
+      },
+      {
+        "itemName": "Sprite Lime Soft Drink",
+        "category": "Groceries",
+        "purchaseCount": 1,
+        "lastPurchaseDate": null,
+        "lastPurchasedQuantity": 600,
+        "lastPurchaseSpend": 80,
+        "averageQuantityPurchased": 600,
+        "quantityUnit": "ml",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 600,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 30,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": null,
+        "monthlyPurchasePattern": [],
+        "monthlyQuantityPattern": [],
+        "flags": [
+          "requires review"
+        ],
+        "suggestions": [
+          "Requires review before relying on the estimate fully."
+        ],
+        "totalSpend": 80
+      },
+      {
         "itemName": "Tata Sampann Meethi Imli Khajur Chutney Dip",
         "category": "Groceries",
         "purchaseCount": 1,
@@ -4712,6 +5442,44 @@
           "Requires review before relying on the estimate fully."
         ],
         "totalSpend": 72
+      },
+      {
+        "itemName": "Vestta Vintage Arabic Designed Paper Gift Bag With Tags (Multicolour)",
+        "category": "Household Consumables",
+        "purchaseCount": 1,
+        "lastPurchaseDate": null,
+        "lastPurchasedQuantity": 2,
+        "lastPurchaseSpend": null,
+        "averageQuantityPurchased": 2,
+        "quantityUnit": "pieces",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 2,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 30,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": null,
+        "monthlyPurchasePattern": [],
+        "monthlyQuantityPattern": [],
+        "flags": [
+          "requires review"
+        ],
+        "suggestions": [
+          "Requires review before relying on the estimate fully."
+        ],
+        "totalSpend": 0
       },
       {
         "itemName": "Whole Farm Premium Raw Peanuts",
@@ -4778,7 +5546,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 30,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 7,
+        "daysSinceLastPurchase": 14,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -4832,7 +5600,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 40,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 5,
+        "daysSinceLastPurchase": 12,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -4860,214 +5628,214 @@
     ],
     "recently_added_purchase_data": [
       {
-        "purchaseId": "e1eac212-ba29-47d8-ac63-3f0d8a471bee",
+        "purchaseId": "dde1d63c-267b-4e06-b00d-75fed21da287",
         "dateOfPurchase": null,
-        "itemName": "Heinz Tomato Ketchup",
-        "category": "Groceries",
-        "quantityLabel": "880 g",
-        "amountLabel": "₹241.00",
-        "reviewStatus": "needs_review",
-        "reviewNotes": [
-          "Date missing or unclear"
-        ],
-        "enteredAt": "2026-05-16T09:24:08.893Z"
-      },
-      {
-        "purchaseId": "6ebee78c-dc0a-4fff-94f5-42fed8119657",
-        "dateOfPurchase": null,
-        "itemName": "Maggi Hot & Sweet Tomato Chilli Ketchup",
-        "category": "Groceries",
+        "itemName": "Amul Blend Diced Cheese",
+        "category": "Dairy",
         "quantityLabel": "200 g",
-        "amountLabel": "₹75.00",
+        "amountLabel": "₹125.00",
         "reviewStatus": "needs_review",
         "reviewNotes": [
           "Date missing or unclear"
         ],
-        "enteredAt": "2026-05-16T09:24:08.893Z"
+        "enteredAt": "2026-05-23T08:54:31.219Z"
       },
       {
-        "purchaseId": "19d52e4a-f3ee-4d78-9e9a-acc9c7e2953d",
+        "purchaseId": "db29a6b5-f7f3-49cf-a114-8fec4f6cf6f6",
         "dateOfPurchase": null,
-        "itemName": "Rajdhani Maida",
+        "itemName": "Coca-Cola Diet Coke Soft Drink",
         "category": "Groceries",
-        "quantityLabel": "500 g",
-        "amountLabel": "₹37.00",
+        "quantityLabel": "600 ml",
+        "amountLabel": "₹80.00",
         "reviewStatus": "needs_review",
         "reviewNotes": [
           "Date missing or unclear"
         ],
-        "enteredAt": "2026-05-16T09:24:08.893Z"
+        "enteredAt": "2026-05-23T08:54:31.219Z"
       },
       {
-        "purchaseId": "0b759dc7-6fe4-4e56-a7f4-288257365628",
+        "purchaseId": "8408ddc4-844c-4e53-9908-631b58a739d6",
         "dateOfPurchase": null,
-        "itemName": "Rajdhani Puffed Rice",
+        "itemName": "Coca-Cola Zero Sugar Soft Drink",
         "category": "Groceries",
-        "quantityLabel": "200 g",
-        "amountLabel": "₹34.00",
+        "quantityLabel": "300 ml",
+        "amountLabel": "₹40.00",
         "reviewStatus": "needs_review",
         "reviewNotes": [
           "Date missing or unclear"
         ],
-        "enteredAt": "2026-05-16T09:24:08.893Z"
+        "enteredAt": "2026-05-23T08:54:31.219Z"
       },
       {
-        "purchaseId": "a22d6fb3-39c2-449d-a1f8-4db47cd614e6",
+        "purchaseId": "10c6eb61-85c9-4344-88b4-45351273c2e7",
         "dateOfPurchase": null,
-        "itemName": "Tata Sampann Teekhi Imli Saunth Chutney Dip",
+        "itemName": "Haldiram's Bhujia",
         "category": "Groceries",
-        "quantityLabel": "200 g",
-        "amountLabel": "₹72.00",
+        "quantityLabel": "400 g",
+        "amountLabel": "₹120.00",
         "reviewStatus": "needs_review",
         "reviewNotes": [
           "Date missing or unclear"
         ],
-        "enteredAt": "2026-05-16T09:24:08.893Z"
+        "enteredAt": "2026-05-23T08:54:31.219Z"
       },
       {
-        "purchaseId": "309f388c-42a3-4438-9489-11630449ca5e",
+        "purchaseId": "fd9816fe-4391-42f8-99df-079b85dd4202",
         "dateOfPurchase": null,
-        "itemName": "Tata Sampann Unpolished Masoor Dal",
-        "category": "Groceries",
-        "quantityLabel": "500 g",
-        "amountLabel": "₹72.00",
+        "itemName": "Mee Mee Mild Baby Laundry Detergent Refill",
+        "category": "Baby Items",
+        "quantityLabel": "1 litre",
+        "amountLabel": "₹229.00",
         "reviewStatus": "needs_review",
         "reviewNotes": [
           "Date missing or unclear"
         ],
-        "enteredAt": "2026-05-16T09:24:08.893Z"
+        "enteredAt": "2026-05-23T08:54:31.219Z"
       },
       {
-        "purchaseId": "8af26a82-1a1f-49b5-a89b-76b3ae0b9f16",
+        "purchaseId": "c135e71c-0c0d-40a4-8d1c-6474b4e94c8e",
         "dateOfPurchase": null,
-        "itemName": "Whole Farm Premium Raw Peanuts",
-        "category": "Groceries",
-        "quantityLabel": "500 g",
-        "amountLabel": "₹104.00",
+        "itemName": "Mother Sparsh Natural Baby Liquid Cleanser",
+        "category": "Baby Items",
+        "quantityLabel": "500 ml",
+        "amountLabel": "₹199.00",
         "reviewStatus": "needs_review",
         "reviewNotes": [
           "Date missing or unclear"
         ],
-        "enteredAt": "2026-05-16T09:24:08.893Z"
+        "enteredAt": "2026-05-23T08:54:31.219Z"
       },
       {
-        "purchaseId": "b8b4d256-5911-4ade-8cf8-9de716381d1e",
+        "purchaseId": "da5b2434-a5e9-40db-aafa-af1a9dd6dcd6",
         "dateOfPurchase": null,
-        "itemName": "Tata Sampann Meethi Imli Khajur Chutney Dip",
+        "itemName": "Mountain Dew Soft Drink",
         "category": "Groceries",
-        "quantityLabel": "200 g",
-        "amountLabel": "₹72.00",
+        "quantityLabel": "300 ml",
+        "amountLabel": "₹40.00",
         "reviewStatus": "needs_review",
         "reviewNotes": [
           "Date missing or unclear"
         ],
-        "enteredAt": "2026-05-16T09:24:08.892Z"
+        "enteredAt": "2026-05-23T08:54:31.219Z"
+      },
+      {
+        "purchaseId": "41869b08-5640-4601-a175-5a133dfed954",
+        "dateOfPurchase": null,
+        "itemName": "Rin Detergent Bar",
+        "category": "Cleaning Items",
+        "quantityLabel": "130 g",
+        "amountLabel": "₹10.00",
+        "reviewStatus": "needs_review",
+        "reviewNotes": [
+          "Date missing or unclear"
+        ],
+        "enteredAt": "2026-05-23T08:54:31.219Z"
       }
     ],
     "recently_parsed_items_needing_correction": [
       {
-        "purchaseId": "e1eac212-ba29-47d8-ac63-3f0d8a471bee",
+        "purchaseId": "dde1d63c-267b-4e06-b00d-75fed21da287",
         "dateOfPurchase": null,
-        "itemName": "Heinz Tomato Ketchup",
-        "category": "Groceries",
-        "quantityLabel": "880 g",
-        "amountLabel": "₹241.00",
-        "reviewStatus": "needs_review",
-        "reviewNotes": [
-          "Date missing or unclear"
-        ],
-        "enteredAt": "2026-05-16T09:24:08.893Z"
-      },
-      {
-        "purchaseId": "6ebee78c-dc0a-4fff-94f5-42fed8119657",
-        "dateOfPurchase": null,
-        "itemName": "Maggi Hot & Sweet Tomato Chilli Ketchup",
-        "category": "Groceries",
+        "itemName": "Amul Blend Diced Cheese",
+        "category": "Dairy",
         "quantityLabel": "200 g",
-        "amountLabel": "₹75.00",
+        "amountLabel": "₹125.00",
         "reviewStatus": "needs_review",
         "reviewNotes": [
           "Date missing or unclear"
         ],
-        "enteredAt": "2026-05-16T09:24:08.893Z"
+        "enteredAt": "2026-05-23T08:54:31.219Z"
       },
       {
-        "purchaseId": "19d52e4a-f3ee-4d78-9e9a-acc9c7e2953d",
+        "purchaseId": "db29a6b5-f7f3-49cf-a114-8fec4f6cf6f6",
         "dateOfPurchase": null,
-        "itemName": "Rajdhani Maida",
+        "itemName": "Coca-Cola Diet Coke Soft Drink",
         "category": "Groceries",
-        "quantityLabel": "500 g",
-        "amountLabel": "₹37.00",
+        "quantityLabel": "600 ml",
+        "amountLabel": "₹80.00",
         "reviewStatus": "needs_review",
         "reviewNotes": [
           "Date missing or unclear"
         ],
-        "enteredAt": "2026-05-16T09:24:08.893Z"
+        "enteredAt": "2026-05-23T08:54:31.219Z"
       },
       {
-        "purchaseId": "0b759dc7-6fe4-4e56-a7f4-288257365628",
+        "purchaseId": "8408ddc4-844c-4e53-9908-631b58a739d6",
         "dateOfPurchase": null,
-        "itemName": "Rajdhani Puffed Rice",
+        "itemName": "Coca-Cola Zero Sugar Soft Drink",
         "category": "Groceries",
-        "quantityLabel": "200 g",
-        "amountLabel": "₹34.00",
+        "quantityLabel": "300 ml",
+        "amountLabel": "₹40.00",
         "reviewStatus": "needs_review",
         "reviewNotes": [
           "Date missing or unclear"
         ],
-        "enteredAt": "2026-05-16T09:24:08.893Z"
+        "enteredAt": "2026-05-23T08:54:31.219Z"
       },
       {
-        "purchaseId": "a22d6fb3-39c2-449d-a1f8-4db47cd614e6",
+        "purchaseId": "10c6eb61-85c9-4344-88b4-45351273c2e7",
         "dateOfPurchase": null,
-        "itemName": "Tata Sampann Teekhi Imli Saunth Chutney Dip",
+        "itemName": "Haldiram's Bhujia",
         "category": "Groceries",
-        "quantityLabel": "200 g",
-        "amountLabel": "₹72.00",
+        "quantityLabel": "400 g",
+        "amountLabel": "₹120.00",
         "reviewStatus": "needs_review",
         "reviewNotes": [
           "Date missing or unclear"
         ],
-        "enteredAt": "2026-05-16T09:24:08.893Z"
+        "enteredAt": "2026-05-23T08:54:31.219Z"
       },
       {
-        "purchaseId": "309f388c-42a3-4438-9489-11630449ca5e",
+        "purchaseId": "fd9816fe-4391-42f8-99df-079b85dd4202",
         "dateOfPurchase": null,
-        "itemName": "Tata Sampann Unpolished Masoor Dal",
-        "category": "Groceries",
-        "quantityLabel": "500 g",
-        "amountLabel": "₹72.00",
+        "itemName": "Mee Mee Mild Baby Laundry Detergent Refill",
+        "category": "Baby Items",
+        "quantityLabel": "1 litre",
+        "amountLabel": "₹229.00",
         "reviewStatus": "needs_review",
         "reviewNotes": [
           "Date missing or unclear"
         ],
-        "enteredAt": "2026-05-16T09:24:08.893Z"
+        "enteredAt": "2026-05-23T08:54:31.219Z"
       },
       {
-        "purchaseId": "8af26a82-1a1f-49b5-a89b-76b3ae0b9f16",
+        "purchaseId": "c135e71c-0c0d-40a4-8d1c-6474b4e94c8e",
         "dateOfPurchase": null,
-        "itemName": "Whole Farm Premium Raw Peanuts",
-        "category": "Groceries",
-        "quantityLabel": "500 g",
-        "amountLabel": "₹104.00",
+        "itemName": "Mother Sparsh Natural Baby Liquid Cleanser",
+        "category": "Baby Items",
+        "quantityLabel": "500 ml",
+        "amountLabel": "₹199.00",
         "reviewStatus": "needs_review",
         "reviewNotes": [
           "Date missing or unclear"
         ],
-        "enteredAt": "2026-05-16T09:24:08.893Z"
+        "enteredAt": "2026-05-23T08:54:31.219Z"
       },
       {
-        "purchaseId": "b8b4d256-5911-4ade-8cf8-9de716381d1e",
+        "purchaseId": "da5b2434-a5e9-40db-aafa-af1a9dd6dcd6",
         "dateOfPurchase": null,
-        "itemName": "Tata Sampann Meethi Imli Khajur Chutney Dip",
+        "itemName": "Mountain Dew Soft Drink",
         "category": "Groceries",
-        "quantityLabel": "200 g",
-        "amountLabel": "₹72.00",
+        "quantityLabel": "300 ml",
+        "amountLabel": "₹40.00",
         "reviewStatus": "needs_review",
         "reviewNotes": [
           "Date missing or unclear"
         ],
-        "enteredAt": "2026-05-16T09:24:08.892Z"
+        "enteredAt": "2026-05-23T08:54:31.219Z"
+      },
+      {
+        "purchaseId": "41869b08-5640-4601-a175-5a133dfed954",
+        "dateOfPurchase": null,
+        "itemName": "Rin Detergent Bar",
+        "category": "Cleaning Items",
+        "quantityLabel": "130 g",
+        "amountLabel": "₹10.00",
+        "reviewStatus": "needs_review",
+        "reviewNotes": [
+          "Date missing or unclear"
+        ],
+        "enteredAt": "2026-05-23T08:54:31.219Z"
       }
     ],
     "duplicate_or_suspicious_entries": [],
@@ -5100,7 +5868,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 30,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 7,
+        "daysSinceLastPurchase": 14,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -5129,10 +5897,10 @@
       }
     ],
     "auto_categorisation": {
-      "autoEntryCount": 108,
+      "autoEntryCount": 118,
       "needsReviewEntryCount": 1,
-      "autoEntryRate": 99.1,
-      "autoItemCount": 40,
+      "autoEntryRate": 99.2,
+      "autoItemCount": 50,
       "needsReviewItemCount": 1
     }
   }

@@ -276,10 +276,10 @@ const CATEGORY_RULES: Array<{ category: InventoryCategory; keywords: string[] }>
   { category: "Dairy", keywords: ["milk", "curd", "paneer", "butter", "ghee", "cheese", "yogurt", "dahi", "lassi", "cream"] },
   { category: "Dry Fruits", keywords: ["almond", "badam", "cashew", "kaju", "pista", "walnut", "akhrot", "raisin", "kishmish", "fig", "anjeer", "makhana"] },
   { category: "Cleaning Items", keywords: ["detergent", "surf", "soap", "phenyl", "toilet cleaner", "floor cleaner", "harpic", "bleach", "dishwash", "rin", "vim", "scrubber", "cleaner"] },
-  { category: "Baby Items", keywords: ["diaper", "wipes", "formula", "baby", "feeding bottle", "rash cream", "nappy"] },
+  { category: "Baby Items", keywords: ["diaper", "wipes", "formula", "baby laundry", "baby", "feeding bottle", "rash cream", "nappy"] },
   { category: "Medicines", keywords: ["tablet", "capsule", "syrup", "ointment", "medicine", "medicines", "paracetamol", "crocin", "dolo", "vitamin"] },
-  { category: "Household Consumables", keywords: ["tissue", "foil", "garbage bag", "dustbin bag", "candle", "matchbox", "battery", "toothpaste", "toothbrush", "napkin"] },
-  { category: "Groceries", keywords: ["atta", "rice", "dal", "masoor", "daliya", "flour", "maida", "besan", "oil", "sugar", "salt", "masala", "turmeric", "haldi", "jeera", "tea", "coffee", "poha", "suji", "rava", "grocery", "papad", "sattu", "corn flakes", "peanut", "peanuts", "sabudana", "bread", "semolina", "roti", "rotis", "coriander", "fennel", "spices", "chutney", "ketchup", "sauce"] },
+  { category: "Household Consumables", keywords: ["tissue", "foil", "garbage bag", "dustbin bag", "gift bag", "paper bag", "candle", "matchbox", "battery", "toothpaste", "toothbrush", "napkin"] },
+  { category: "Groceries", keywords: ["atta", "rice", "dal", "masoor", "daliya", "flour", "maida", "besan", "oil", "sugar", "salt", "masala", "turmeric", "haldi", "jeera", "tea", "coffee", "poha", "suji", "rava", "grocery", "papad", "sattu", "corn flakes", "peanut", "peanuts", "sabudana", "bread", "semolina", "roti", "rotis", "coriander", "fennel", "spices", "chutney", "ketchup", "sauce", "bhujia", "namkeen", "snack", "soft drink", "coke", "cola", "sprite", "mountain dew"] },
 ];
 const KNOWN_VENDOR_PATTERNS = [
   "amazon",

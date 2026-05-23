@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "created_at": "2026-05-09T16:05:47Z",
-  "updated_at": "2026-05-16T09:24:08.906Z",
+  "updated_at": "2026-05-23T08:54:31.234Z",
   "purchases": [
     {
       "purchase_id": "3b23ecc1-4dc9-44f4-b2f0-2f5b97a98299",
@@ -1927,6 +1927,90 @@
       "last_updated_at": "2026-05-12T21:39:41.473Z"
     },
     {
+      "purchase_id": "dde1d63c-267b-4e06-b00d-75fed21da287",
+      "date_of_purchase": null,
+      "item_name": "Amul Blend Diced Cheese",
+      "category": "Dairy",
+      "category_status": "auto",
+      "quantity_purchased": 200,
+      "unit_of_measurement": "g",
+      "price": 125,
+      "vendor_source": "Blinkit",
+      "remarks": "Screenshot order summary. Arrived at 9:42 pm. Pack line: 200 g x 1. User reported on 2026-05-23 that this order was done in the last 10 days.",
+      "expected_consumption_period": null,
+      "actual_consumption_period": null,
+      "raw_source_text": "Item: Amul Blend Diced Cheese\nQuantity: 200\nUnit: g\nPrice: 125\nVendor: Blinkit\nRemarks: Screenshot order summary. Arrived at 9:42 pm. Pack line: 200 g x 1. User reported on 2026-05-23 that this order was done in the last 10 days.",
+      "review_status": "needs_review",
+      "review_notes": [
+        "Date missing or unclear"
+      ],
+      "entered_at": "2026-05-23T08:54:31.219Z",
+      "last_updated_at": "2026-05-23T08:54:31.219Z"
+    },
+    {
+      "purchase_id": "db29a6b5-f7f3-49cf-a114-8fec4f6cf6f6",
+      "date_of_purchase": null,
+      "item_name": "Coca-Cola Diet Coke Soft Drink",
+      "category": "Groceries",
+      "category_status": "auto",
+      "quantity_purchased": 600,
+      "unit_of_measurement": "ml",
+      "price": 80,
+      "vendor_source": "Blinkit",
+      "remarks": "Screenshot order summary. Arrived at 12:19 am. Pack line: 300 ml x 2; total quantity stored as 600 ml. User reported on 2026-05-23 that this order was done in the last 10 days.",
+      "expected_consumption_period": null,
+      "actual_consumption_period": null,
+      "raw_source_text": "Item: Coca-Cola Diet Coke Soft Drink\nQuantity: 600\nUnit: ml\nPrice: 80\nVendor: Blinkit\nRemarks: Screenshot order summary. Arrived at 12:19 am. Pack line: 300 ml x 2; total quantity stored as 600 ml. User reported on 2026-05-23 that this order was done in the last 10 days.",
+      "review_status": "needs_review",
+      "review_notes": [
+        "Date missing or unclear"
+      ],
+      "entered_at": "2026-05-23T08:54:31.219Z",
+      "last_updated_at": "2026-05-23T08:54:31.219Z"
+    },
+    {
+      "purchase_id": "8408ddc4-844c-4e53-9908-631b58a739d6",
+      "date_of_purchase": null,
+      "item_name": "Coca-Cola Zero Sugar Soft Drink",
+      "category": "Groceries",
+      "category_status": "auto",
+      "quantity_purchased": 300,
+      "unit_of_measurement": "ml",
+      "price": 40,
+      "vendor_source": "Blinkit",
+      "remarks": "Screenshot order summary. Arrived at 12:19 am. Pack line: 300 ml x 1. User reported on 2026-05-23 that this order was done in the last 10 days.",
+      "expected_consumption_period": null,
+      "actual_consumption_period": null,
+      "raw_source_text": "Item: Coca-Cola Zero Sugar Soft Drink\nQuantity: 300\nUnit: ml\nPrice: 40\nVendor: Blinkit\nRemarks: Screenshot order summary. Arrived at 12:19 am. Pack line: 300 ml x 1. User reported on 2026-05-23 that this order was done in the last 10 days.",
+      "review_status": "needs_review",
+      "review_notes": [
+        "Date missing or unclear"
+      ],
+      "entered_at": "2026-05-23T08:54:31.219Z",
+      "last_updated_at": "2026-05-23T08:54:31.219Z"
+    },
+    {
+      "purchase_id": "10c6eb61-85c9-4344-88b4-45351273c2e7",
+      "date_of_purchase": null,
+      "item_name": "Haldiram's Bhujia",
+      "category": "Groceries",
+      "category_status": "auto",
+      "quantity_purchased": 400,
+      "unit_of_measurement": "g",
+      "price": 120,
+      "vendor_source": "Blinkit",
+      "remarks": "Screenshot order summary. Arrived at 9:42 pm. Pack line: 400 g x 1. User reported on 2026-05-23 that this order was done in the last 10 days.",
+      "expected_consumption_period": null,
+      "actual_consumption_period": null,
+      "raw_source_text": "Item: Haldiram's Bhujia\nQuantity: 400\nUnit: g\nPrice: 120\nVendor: Blinkit\nRemarks: Screenshot order summary. Arrived at 9:42 pm. Pack line: 400 g x 1. User reported on 2026-05-23 that this order was done in the last 10 days.",
+      "review_status": "needs_review",
+      "review_notes": [
+        "Date missing or unclear"
+      ],
+      "entered_at": "2026-05-23T08:54:31.219Z",
+      "last_updated_at": "2026-05-23T08:54:31.219Z"
+    },
+    {
       "purchase_id": "e1eac212-ba29-47d8-ac63-3f0d8a471bee",
       "date_of_purchase": null,
       "item_name": "Heinz Tomato Ketchup",
@@ -1969,6 +2053,69 @@
       "last_updated_at": "2026-05-16T09:24:08.893Z"
     },
     {
+      "purchase_id": "fd9816fe-4391-42f8-99df-079b85dd4202",
+      "date_of_purchase": null,
+      "item_name": "Mee Mee Mild Baby Laundry Detergent Refill",
+      "category": "Baby Items",
+      "category_status": "auto",
+      "quantity_purchased": 1,
+      "unit_of_measurement": "litre",
+      "price": 229,
+      "vendor_source": "Blinkit",
+      "remarks": "Screenshot order summary. Arrived at 9:42 pm. Pack line: 1 ltr x 1. MRP shown as Rs 449. User reported on 2026-05-23 that this order was done in the last 10 days.",
+      "expected_consumption_period": null,
+      "actual_consumption_period": null,
+      "raw_source_text": "Item: Mee Mee Mild Baby Laundry Detergent Refill\nQuantity: 1\nUnit: litre\nPrice: 229\nVendor: Blinkit\nRemarks: Screenshot order summary. Arrived at 9:42 pm. Pack line: 1 ltr x 1. MRP shown as Rs 449. User reported on 2026-05-23 that this order was done in the last 10 days.",
+      "review_status": "needs_review",
+      "review_notes": [
+        "Date missing or unclear"
+      ],
+      "entered_at": "2026-05-23T08:54:31.219Z",
+      "last_updated_at": "2026-05-23T08:54:31.219Z"
+    },
+    {
+      "purchase_id": "c135e71c-0c0d-40a4-8d1c-6474b4e94c8e",
+      "date_of_purchase": null,
+      "item_name": "Mother Sparsh Natural Baby Liquid Cleanser",
+      "category": "Baby Items",
+      "category_status": "auto",
+      "quantity_purchased": 500,
+      "unit_of_measurement": "ml",
+      "price": 199,
+      "vendor_source": "Blinkit",
+      "remarks": "Screenshot order summary. Arrived at 9:42 pm. Pack line: 500 ml x 1. MRP shown as Rs 399. User reported on 2026-05-23 that this order was done in the last 10 days.",
+      "expected_consumption_period": null,
+      "actual_consumption_period": null,
+      "raw_source_text": "Item: Mother Sparsh Natural Baby Liquid Cleanser\nQuantity: 500\nUnit: ml\nPrice: 199\nVendor: Blinkit\nRemarks: Screenshot order summary. Arrived at 9:42 pm. Pack line: 500 ml x 1. MRP shown as Rs 399. User reported on 2026-05-23 that this order was done in the last 10 days.",
+      "review_status": "needs_review",
+      "review_notes": [
+        "Date missing or unclear"
+      ],
+      "entered_at": "2026-05-23T08:54:31.219Z",
+      "last_updated_at": "2026-05-23T08:54:31.219Z"
+    },
+    {
+      "purchase_id": "da5b2434-a5e9-40db-aafa-af1a9dd6dcd6",
+      "date_of_purchase": null,
+      "item_name": "Mountain Dew Soft Drink",
+      "category": "Groceries",
+      "category_status": "auto",
+      "quantity_purchased": 300,
+      "unit_of_measurement": "ml",
+      "price": 40,
+      "vendor_source": "Blinkit",
+      "remarks": "Screenshot order summary. Arrived at 12:19 am. Pack line: 300 ml x 1. User reported on 2026-05-23 that this order was done in the last 10 days.",
+      "expected_consumption_period": null,
+      "actual_consumption_period": null,
+      "raw_source_text": "Item: Mountain Dew Soft Drink\nQuantity: 300\nUnit: ml\nPrice: 40\nVendor: Blinkit\nRemarks: Screenshot order summary. Arrived at 12:19 am. Pack line: 300 ml x 1. User reported on 2026-05-23 that this order was done in the last 10 days.",
+      "review_status": "needs_review",
+      "review_notes": [
+        "Date missing or unclear"
+      ],
+      "entered_at": "2026-05-23T08:54:31.219Z",
+      "last_updated_at": "2026-05-23T08:54:31.219Z"
+    },
+    {
       "purchase_id": "19d52e4a-f3ee-4d78-9e9a-acc9c7e2953d",
       "date_of_purchase": null,
       "item_name": "Rajdhani Maida",
@@ -2009,6 +2156,48 @@
       ],
       "entered_at": "2026-05-16T09:24:08.893Z",
       "last_updated_at": "2026-05-16T09:24:08.893Z"
+    },
+    {
+      "purchase_id": "41869b08-5640-4601-a175-5a133dfed954",
+      "date_of_purchase": null,
+      "item_name": "Rin Detergent Bar",
+      "category": "Cleaning Items",
+      "category_status": "auto",
+      "quantity_purchased": 130,
+      "unit_of_measurement": "g",
+      "price": 10,
+      "vendor_source": "Blinkit",
+      "remarks": "Screenshot order summary. Arrived at 9:42 pm. Pack line: 130 g x 1. User reported on 2026-05-23 that this order was done in the last 10 days.",
+      "expected_consumption_period": null,
+      "actual_consumption_period": null,
+      "raw_source_text": "Item: Rin Detergent Bar\nQuantity: 130\nUnit: g\nPrice: 10\nVendor: Blinkit\nRemarks: Screenshot order summary. Arrived at 9:42 pm. Pack line: 130 g x 1. User reported on 2026-05-23 that this order was done in the last 10 days.",
+      "review_status": "needs_review",
+      "review_notes": [
+        "Date missing or unclear"
+      ],
+      "entered_at": "2026-05-23T08:54:31.219Z",
+      "last_updated_at": "2026-05-23T08:54:31.219Z"
+    },
+    {
+      "purchase_id": "b3850242-0a57-427e-9e12-73525a8be6e5",
+      "date_of_purchase": null,
+      "item_name": "Sprite Lime Soft Drink",
+      "category": "Groceries",
+      "category_status": "auto",
+      "quantity_purchased": 600,
+      "unit_of_measurement": "ml",
+      "price": 80,
+      "vendor_source": "Blinkit",
+      "remarks": "Screenshot order summary. Arrived at 12:19 am. Pack line: 300 ml x 2; total quantity stored as 600 ml. User reported on 2026-05-23 that this order was done in the last 10 days.",
+      "expected_consumption_period": null,
+      "actual_consumption_period": null,
+      "raw_source_text": "Item: Sprite Lime Soft Drink\nQuantity: 600\nUnit: ml\nPrice: 80\nVendor: Blinkit\nRemarks: Screenshot order summary. Arrived at 12:19 am. Pack line: 300 ml x 2; total quantity stored as 600 ml. User reported on 2026-05-23 that this order was done in the last 10 days.",
+      "review_status": "needs_review",
+      "review_notes": [
+        "Date missing or unclear"
+      ],
+      "entered_at": "2026-05-23T08:54:31.219Z",
+      "last_updated_at": "2026-05-23T08:54:31.219Z"
     },
     {
       "purchase_id": "b8b4d256-5911-4ade-8cf8-9de716381d1e",
@@ -2072,6 +2261,27 @@
       ],
       "entered_at": "2026-05-16T09:24:08.893Z",
       "last_updated_at": "2026-05-16T09:24:08.893Z"
+    },
+    {
+      "purchase_id": "3f3d1b8b-f693-4891-bc25-2353ed1da723",
+      "date_of_purchase": null,
+      "item_name": "Vestta Vintage Arabic Designed Paper Gift Bag With Tags (Multicolour)",
+      "category": "Household Consumables",
+      "category_status": "auto",
+      "quantity_purchased": 2,
+      "unit_of_measurement": "pieces",
+      "price": null,
+      "vendor_source": "Blinkit",
+      "remarks": "Screenshot order summary. Pack line: 2 pcs x 1. Price not visible in screenshot. User reported on 2026-05-23 that this order was done in the last 10 days.",
+      "expected_consumption_period": null,
+      "actual_consumption_period": null,
+      "raw_source_text": "Item: Vestta Vintage Arabic Designed Paper Gift Bag With Tags (Multicolour)\nQuantity: 2\nUnit: pieces\nVendor: Blinkit\nRemarks: Screenshot order summary. Pack line: 2 pcs x 1. Price not visible in screenshot. User reported on 2026-05-23 that this order was done in the last 10 days.",
+      "review_status": "needs_review",
+      "review_notes": [
+        "Date missing or unclear"
+      ],
+      "entered_at": "2026-05-23T08:54:31.218Z",
+      "last_updated_at": "2026-05-23T08:54:31.219Z"
     },
     {
       "purchase_id": "8af26a82-1a1f-49b5-a89b-76b3ae0b9f16",

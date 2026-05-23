@@ -42,6 +42,22 @@ describe("inventory parsing and analysis", () => {
       category: "Groceries",
       status: "auto",
     });
+    expect(inventory.detectCategory("Vestta Vintage Arabic Designed Paper Gift Bag With Tags")).toEqual({
+      category: "Household Consumables",
+      status: "auto",
+    });
+    expect(inventory.detectCategory("Mee Mee Mild Baby Laundry Detergent Refill")).toEqual({
+      category: "Baby Items",
+      status: "auto",
+    });
+    expect(inventory.detectCategory("Mountain Dew Soft Drink")).toEqual({
+      category: "Groceries",
+      status: "auto",
+    });
+    expect(inventory.detectCategory("Haldiram's Bhujia")).toEqual({
+      category: "Groceries",
+      status: "auto",
+    });
   });
 
   it("parses a free-form raw purchase line and saves uncertain details with review flags", async () => {
