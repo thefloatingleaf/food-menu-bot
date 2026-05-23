@@ -456,15 +456,8 @@ NAVISHTI_GRISHM_WEEKLY_PLAN = {
 }
 NAVISHTI_SHARED_MEAL_KEYWORDS = (
     "दाल",
-    "मूंग",
-    "मूँग",
-    "मसूर",
-    "अरहर",
     "खिचड़ी",
     "खिचड़ी",
-    "सांभर",
-    "साम्भर",
-    "सांबर",
     "कढ़ी",
     "कढ़ी",
     "पखाला",
@@ -477,7 +470,8 @@ NAVISHTI_SHARED_MEAL_KEYWORDS = (
     "लौकी",
     "कद्दू",
 )
-NAVISHTI_SEPARATE_BOWL_LINE = "*नविष्टि हेतु:* इस भोजन में से बिना छुआ हुआ 1 कटोरी अलग निकाल दें।"
+NAVISHTI_SHARED_MEAL_SLOT_TEXT = "ऊपर लिखित अलग कटोरी"
+NAVISHTI_SEPARATE_BOWL_LINE = "*नविष्टि हेतु:* इस भोजन में से बिना छूका हुआ 1 कटोरी अलग निकाल दें।"
 
 OVERNIGHT_BREAKFAST_ITEMS = {
     "पझैया सादम (Pazhaya Sadam): बचे हुए चावल लें या फिर 1 कटोरी कच्चे चावल अच्छी तरह धोकर सादा चावल पकाएँ। चावल पक जाने के बाद उन्हें मिट्टी या स्टील के बर्तन में निकालकर पूरी तरह ठंडा होने दें। ठंडा होने पर उसमें छाछ डालें ताकि चावल पूरी तरह पानी में डूब जाएँ। बर्तन ढककर इसे कमरे के तापमान पर पूरी रात (लगभग 10–12 घंटे) रहने दें। सुबह चावल और उसका पानी हल्का खट्टा हो जाएगा। उसी पानी सहित चावल को हाथ से हल्का मसल दें। इसमें ½ छोटी चम्मच नमक मिलाएँ। 4–5 छोटी कच्ची प्याज छीलकर डालें, 1–2 हरी मिर्च हल्की कुचलकर डालें। अब 2–3 बड़े चम्मच दही या लगभग ½ कटोरी पतली छाछ मिलाकर अच्छी तरह मिला दें। इसे ठंडा ही खाएँ। साथ में साधारण अचार रखें।",
@@ -2189,11 +2183,13 @@ def is_navishti_shared_meal_candidate(item: str) -> bool:
 
 def build_navishti_grishm_plan_line(target_date: date, replacements: dict[int, str]) -> str:
     plan = list(NAVISHTI_GRISHM_WEEKLY_PLAN[target_date.weekday()])
-    for slot_number, replacement_label in replacements.items():
+    for slot_number in replacements:
         if 1 <= slot_number <= len(plan):
-            plan[slot_number - 1] = f"{replacement_label} (अलग कटोरी)"
-    slot_text = "; ".join(f"भोजन {index}: {item}" for index, item in enumerate(plan, start=1))
-    return f"*नविष्टि भोजन (ग्रीष्म):* {slot_text}"
+            plan[slot_number - 1] = NAVISHTI_SHARED_MEAL_SLOT_TEXT
+    return "\r\n".join(
+        ["*नविष्टि भोजन (ग्रीष्म):*"]
+        + [f"भोजन {index}: {item}" for index, item in enumerate(plan, start=1)]
+    )
 
 
 def collect_vasant_prohibited_warnings(lines: list[str]) -> list[str]:

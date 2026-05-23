@@ -546,6 +546,8 @@ class VarietyCycleRuleTests(unittest.TestCase):
         self.assertTrue(generate_menu.is_navishti_shared_meal_candidate("ज्वार की रोटी और लौकी की सब्ज़ी"))
         self.assertTrue(generate_menu.is_navishti_shared_meal_candidate("पखाला भात (Pakhala Bhata)"))
         self.assertFalse(generate_menu.is_navishti_shared_meal_candidate("सूजी की इडली, नारियल चटनी"))
+        self.assertFalse(generate_menu.is_navishti_shared_meal_candidate("पेसरट्टु (मूँग आधारित dosa)"))
+        self.assertFalse(generate_menu.is_navishti_shared_meal_candidate("सूजी की इडली, सांबर"))
 
     def test_build_navishti_grishm_plan_line_uses_weekday_and_replacements(self) -> None:
         line = generate_menu.build_navishti_grishm_plan_line(
@@ -553,9 +555,17 @@ class VarietyCycleRuleTests(unittest.TestCase):
             {2: "आज का भोजन"},
         )
 
-        self.assertIn("भोजन 1: दूध + गेहूँ दलिया", line)
-        self.assertIn("भोजन 2: आज का भोजन (अलग कटोरी)", line)
-        self.assertIn("भोजन 5: सूजी का हलवा", line)
+        self.assertEqual(
+            line.splitlines(),
+            [
+                "*नविष्टि भोजन (ग्रीष्म):*",
+                "भोजन 1: दूध + गेहूँ दलिया",
+                "भोजन 2: ऊपर लिखित अलग कटोरी",
+                "भोजन 3: पपीता",
+                "भोजन 4: मक्खन + मुलायम चावल",
+                "भोजन 5: सूजी का हलवा",
+            ],
+        )
 
     def test_build_next_day_overnight_prep_line_does_not_create_second_breakfast_heading(self) -> None:
         line = generate_menu.build_next_day_overnight_prep_line(
