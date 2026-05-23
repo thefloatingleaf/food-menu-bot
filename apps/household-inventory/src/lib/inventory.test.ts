@@ -58,6 +58,18 @@ describe("inventory parsing and analysis", () => {
       category: "Groceries",
       status: "auto",
     });
+    expect(inventory.detectCategory("Nua Comfort Disposable Period Panties XXL-XXXL")).toEqual({
+      category: "Household Consumables",
+      status: "auto",
+    });
+    expect(inventory.detectCategory("Aashirvaad Mustard /Sarso Whole Spice, Rai")).toEqual({
+      category: "Groceries",
+      status: "auto",
+    });
+    expect(inventory.detectCategory("Catch Amchur Powder")).toEqual({
+      category: "Groceries",
+      status: "auto",
+    });
   });
 
   it("parses a free-form raw purchase line and saves uncertain details with review flags", async () => {
@@ -82,6 +94,26 @@ describe("inventory parsing and analysis", () => {
     expect(parsed.entries).toHaveLength(1);
     expect(parsed.entries[0].review_status).toBe("needs_review");
     expect(parsed.entries[0].category_status).toBe("needs_review");
+  });
+
+  it("preserves explicit review notes from key-value imports", async () => {
+    const inventory = await loadInventoryModule(fs.mkdtempSync(path.join(os.tmpdir(), "inventory-")));
+    const parsed = inventory.parseRawInventoryText(
+      [
+        "Date: 12-05-2026",
+        "Item: Chukde Saunf Barik",
+        "Quantity: 1",
+        "Unit: pieces",
+        "Price: 82",
+        "Vendor: Swiggy",
+        "Review notes: Invoice UQC is NOS; pack size not visible in invoice",
+      ].join("\n"),
+    );
+
+    expect(parsed.entries).toHaveLength(1);
+    expect(parsed.entries[0].review_status).toBe("needs_review");
+    expect(parsed.entries[0].review_notes).toContain("Invoice UQC is NOS");
+    expect(parsed.entries[0].review_notes).toContain("pack size not visible in invoice");
   });
 
   it("builds only possible-anomaly wording in analysis output", async () => {

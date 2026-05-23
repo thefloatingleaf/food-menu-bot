@@ -1,20 +1,20 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-05-23T08:55:17.626Z",
+  "generated_at": "2026-05-23T09:00:56.520Z",
   "overview": {
-    "purchaseCount": 119,
-    "trackedItemCount": 51,
-    "totalSpend": 28281.75,
-    "currentMonthSpend": 5106.5,
+    "purchaseCount": 135,
+    "trackedItemCount": 67,
+    "totalSpend": 29652.75,
+    "currentMonthSpend": 6477.5,
     "itemsToOrderTodayCount": 3,
     "itemsToOrderSoonCount": 0,
     "stableItemCount": 1,
-    "reviewItemCount": 20,
-    "totalMonthlyHouseholdConsumptionValue": 5106.5,
-    "monthOnMonthSpendingChange": -39.6,
-    "monthOnMonthConsumptionChange": -27.3,
+    "reviewItemCount": 32,
+    "totalMonthlyHouseholdConsumptionValue": 6477.5,
+    "monthOnMonthSpendingChange": -23.4,
+    "monthOnMonthConsumptionChange": 21.2,
     "inventoryHealthScore": 96,
-    "householdConsumptionStabilityScore": 43,
+    "householdConsumptionStabilityScore": 42,
     "duplicateEntryCount": 0
   },
   "monthly_spend": [
@@ -36,7 +36,7 @@
     },
     {
       "month": "2026-05",
-      "amount": 5106.5
+      "amount": 6477.5
     }
   ],
   "category_spend": [
@@ -46,19 +46,23 @@
     },
     {
       "category": "Cleaning Items",
-      "amount": 10
+      "amount": 48
     },
     {
       "category": "Dairy",
-      "amount": 14316
+      "amount": 14438
     },
     {
       "category": "Fruits",
-      "amount": 106
+      "amount": 115
     },
     {
       "category": "Groceries",
-      "amount": 13262.75
+      "amount": 14147.75
+    },
+    {
+      "category": "Household Consumables",
+      "amount": 308
     },
     {
       "category": "Unclear",
@@ -66,7 +70,7 @@
     },
     {
       "category": "Vegetables",
-      "amount": 111
+      "amount": 120
     }
   ],
   "item_insights": [
@@ -324,6 +328,56 @@
       "totalSpend": 1196
     },
     {
+      "itemName": "Aashirvaad Mustard /Sarso Whole Spice, Rai",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-12",
+      "lastPurchasedQuantity": 200,
+      "lastPurchaseSpend": 58,
+      "averageQuantityPurchased": 200,
+      "quantityUnit": "g",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 200,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 51,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 11,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 58
+        }
+      ],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "quantity": 200,
+          "spend": 58,
+          "unit": "g"
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Continue collecting purchase entries to strengthen the estimate."
+      ],
+      "totalSpend": 58
+    },
+    {
       "itemName": "Amul Blend Diced Cheese",
       "category": "Dairy",
       "purchaseCount": 1,
@@ -360,6 +414,314 @@
         "Requires review before relying on the estimate fully."
       ],
       "totalSpend": 125
+    },
+    {
+      "itemName": "Amul Pasteurised Butter",
+      "category": "Dairy",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-19",
+      "lastPurchasedQuantity": 1,
+      "lastPurchaseSpend": 122,
+      "averageQuantityPurchased": 1,
+      "quantityUnit": "pieces",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 1,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 40,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 4,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 122
+        }
+      ],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "quantity": 1,
+          "spend": 122,
+          "unit": "pieces"
+        }
+      ],
+      "flags": [
+        "requires review"
+      ],
+      "suggestions": [
+        "Requires review before relying on the estimate fully."
+      ],
+      "totalSpend": 122
+    },
+    {
+      "itemName": "Britannia 100% Whole Wheat Bread (No Maida)",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-19",
+      "lastPurchasedQuantity": 1,
+      "lastPurchaseSpend": 50,
+      "averageQuantityPurchased": 1,
+      "quantityUnit": "pieces",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 1,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 40,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 4,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 50
+        }
+      ],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "quantity": 1,
+          "spend": 50,
+          "unit": "pieces"
+        }
+      ],
+      "flags": [
+        "requires review"
+      ],
+      "suggestions": [
+        "Requires review before relying on the estimate fully."
+      ],
+      "totalSpend": 50
+    },
+    {
+      "itemName": "Catch Amchur Powder",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-12",
+      "lastPurchasedQuantity": 1,
+      "lastPurchaseSpend": 72,
+      "averageQuantityPurchased": 1,
+      "quantityUnit": "pieces",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 1,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 40,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 11,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 72
+        }
+      ],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "quantity": 1,
+          "spend": 72,
+          "unit": "pieces"
+        }
+      ],
+      "flags": [
+        "requires review"
+      ],
+      "suggestions": [
+        "Requires review before relying on the estimate fully."
+      ],
+      "totalSpend": 72
+    },
+    {
+      "itemName": "Chukde Saunf Barik",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-12",
+      "lastPurchasedQuantity": 1,
+      "lastPurchaseSpend": 82,
+      "averageQuantityPurchased": 1,
+      "quantityUnit": "pieces",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 1,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 40,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 11,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 82
+        }
+      ],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "quantity": 1,
+          "spend": 82,
+          "unit": "pieces"
+        }
+      ],
+      "flags": [
+        "requires review"
+      ],
+      "suggestions": [
+        "Requires review before relying on the estimate fully."
+      ],
+      "totalSpend": 82
+    },
+    {
+      "itemName": "Cinthol Cool Bath Soap",
+      "category": "Cleaning Items",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-19",
+      "lastPurchasedQuantity": 1,
+      "lastPurchaseSpend": 38,
+      "averageQuantityPurchased": 1,
+      "quantityUnit": "pieces",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 1,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 51,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 4,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 38
+        }
+      ],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "quantity": 1,
+          "spend": 38,
+          "unit": "pieces"
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Continue collecting purchase entries to strengthen the estimate."
+      ],
+      "totalSpend": 38
+    },
+    {
+      "itemName": "Coca-Cola Diet Coke Can",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-19",
+      "lastPurchasedQuantity": 4,
+      "lastPurchaseSpend": 156,
+      "averageQuantityPurchased": 4,
+      "quantityUnit": "pieces",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 4,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 51,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 4,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 156
+        }
+      ],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "quantity": 4,
+          "spend": 156,
+          "unit": "pieces"
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Continue collecting purchase entries to strengthen the estimate."
+      ],
+      "totalSpend": 156
     },
     {
       "itemName": "Coca-Cola Diet Coke Soft Drink",
@@ -436,6 +798,58 @@
         "Requires review before relying on the estimate fully."
       ],
       "totalSpend": 40
+    },
+    {
+      "itemName": "Crax Ragi Nut Cracker Peanuts Namkeen - High Protein Snacks with No Palm Oil",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-19",
+      "lastPurchasedQuantity": 1,
+      "lastPurchaseSpend": 36,
+      "averageQuantityPurchased": 1,
+      "quantityUnit": "pieces",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 1,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 40,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 4,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 36
+        }
+      ],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "quantity": 1,
+          "spend": 36,
+          "unit": "pieces"
+        }
+      ],
+      "flags": [
+        "requires review"
+      ],
+      "suggestions": [
+        "Requires review before relying on the estimate fully."
+      ],
+      "totalSpend": 36
     },
     {
       "itemName": "Davidoff Espresso 57 Instant Coffee 11/12 Intensity",
@@ -636,6 +1050,58 @@
         "Continue collecting purchase entries to strengthen the estimate."
       ],
       "totalSpend": 63
+    },
+    {
+      "itemName": "Fortune Sugar",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-19",
+      "lastPurchasedQuantity": 2,
+      "lastPurchaseSpend": 114,
+      "averageQuantityPurchased": 2,
+      "quantityUnit": "pieces",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 2,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 40,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 4,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 114
+        }
+      ],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "quantity": 2,
+          "spend": 114,
+          "unit": "pieces"
+        }
+      ],
+      "flags": [
+        "requires review"
+      ],
+      "suggestions": [
+        "Requires review before relying on the estimate fully."
+      ],
+      "totalSpend": 114
     },
     {
       "itemName": "Haldiram's Bhujia",
@@ -1066,6 +1532,56 @@
       "totalSpend": 40
     },
     {
+      "itemName": "Nua Comfort Disposable Period Panties XXL-XXXL",
+      "category": "Household Consumables",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-12",
+      "lastPurchasedQuantity": 2,
+      "lastPurchaseSpend": 308,
+      "averageQuantityPurchased": 2,
+      "quantityUnit": "pieces",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 2,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 51,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 11,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 308
+        }
+      ],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "quantity": 2,
+          "spend": 308,
+          "unit": "pieces"
+        }
+      ],
+      "flags": [],
+      "suggestions": [
+        "Continue collecting purchase entries to strengthen the estimate."
+      ],
+      "totalSpend": 308
+    },
+    {
       "itemName": "Onion",
       "category": "Vegetables",
       "purchaseCount": 1,
@@ -1116,6 +1632,58 @@
         "Requires review before relying on the estimate fully."
       ],
       "totalSpend": 65
+    },
+    {
+      "itemName": "Onion (Pyaaz)",
+      "category": "Vegetables",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-12",
+      "lastPurchasedQuantity": 1,
+      "lastPurchaseSpend": 9,
+      "averageQuantityPurchased": 1,
+      "quantityUnit": "pieces",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 1,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 40,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 11,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 9
+        }
+      ],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "quantity": 1,
+          "spend": 9,
+          "unit": "pieces"
+        }
+      ],
+      "flags": [
+        "requires review"
+      ],
+      "suggestions": [
+        "Requires review before relying on the estimate fully."
+      ],
+      "totalSpend": 9
     },
     {
       "itemName": "Organically Grown Green Cucumber",
@@ -1282,6 +1850,58 @@
       "totalSpend": 10
     },
     {
+      "itemName": "Robusta Banana (Kela)",
+      "category": "Fruits",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-19",
+      "lastPurchasedQuantity": 1,
+      "lastPurchaseSpend": 9,
+      "averageQuantityPurchased": 1,
+      "quantityUnit": "pieces",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 1,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 40,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 4,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 9
+        }
+      ],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "quantity": 1,
+          "spend": 9,
+          "unit": "pieces"
+        }
+      ],
+      "flags": [
+        "requires review"
+      ],
+      "suggestions": [
+        "Requires review before relying on the estimate fully."
+      ],
+      "totalSpend": 9
+    },
+    {
       "itemName": "Sindhura Mango",
       "category": "Fruits",
       "purchaseCount": 1,
@@ -1368,6 +1988,110 @@
         "Requires review before relying on the estimate fully."
       ],
       "totalSpend": 80
+    },
+    {
+      "itemName": "Tata Rock Salt",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-19",
+      "lastPurchasedQuantity": 1,
+      "lastPurchaseSpend": 108,
+      "averageQuantityPurchased": 1,
+      "quantityUnit": "pieces",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 1,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 40,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 4,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 108
+        }
+      ],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "quantity": 1,
+          "spend": 108,
+          "unit": "pieces"
+        }
+      ],
+      "flags": [
+        "requires review"
+      ],
+      "suggestions": [
+        "Requires review before relying on the estimate fully."
+      ],
+      "totalSpend": 108
+    },
+    {
+      "itemName": "Tata Sampann 100% Chana Dal Fine Besan (Gram Flour)",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-19",
+      "lastPurchasedQuantity": 1,
+      "lastPurchaseSpend": 69,
+      "averageQuantityPurchased": 1,
+      "quantityUnit": "pieces",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 1,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 40,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 4,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 69
+        }
+      ],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "quantity": 1,
+          "spend": 69,
+          "unit": "pieces"
+        }
+      ],
+      "flags": [
+        "requires review"
+      ],
+      "suggestions": [
+        "Requires review before relying on the estimate fully."
+      ],
+      "totalSpend": 69
     },
     {
       "itemName": "Tata Sampann Coriander Seeds (Dhaniya), Whole Spices",
@@ -1682,6 +2406,110 @@
         "Continue collecting purchase entries to strengthen the estimate."
       ],
       "totalSpend": 208
+    },
+    {
+      "itemName": "Tata Sampann Whole Spices Coriander Seed",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-19",
+      "lastPurchasedQuantity": 1,
+      "lastPurchaseSpend": 37,
+      "averageQuantityPurchased": 1,
+      "quantityUnit": "pieces",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 1,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 40,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 4,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 37
+        }
+      ],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "quantity": 1,
+          "spend": 37,
+          "unit": "pieces"
+        }
+      ],
+      "flags": [
+        "requires review"
+      ],
+      "suggestions": [
+        "Requires review before relying on the estimate fully."
+      ],
+      "totalSpend": 37
+    },
+    {
+      "itemName": "TMI COLMAN Peanuts",
+      "category": "Groceries",
+      "purchaseCount": 1,
+      "lastPurchaseDate": "2026-05-19",
+      "lastPurchasedQuantity": 1,
+      "lastPurchaseSpend": 103,
+      "averageQuantityPurchased": 1,
+      "quantityUnit": "pieces",
+      "averageDailyConsumption": null,
+      "averageWeeklyConsumption": null,
+      "averageConsumptionRate": null,
+      "averageDailyConsumptionLabel": null,
+      "averageWeeklyConsumptionLabel": null,
+      "consumptionBasis": "insufficient_data",
+      "expectedStockDurationDays": null,
+      "estimatedDaysOfStockRemaining": null,
+      "actualConsumptionDurationDays": null,
+      "reorderFrequencyDays": null,
+      "normalPurchaseFrequencyDays": null,
+      "recommendedReorderDate": null,
+      "suggestedReorderQuantity": 1,
+      "currentConsumptionTrend": "Insufficient data",
+      "reorderPriorityScore": null,
+      "stockBucket": "Requires Review",
+      "dataConfidenceScore": 40,
+      "dataConfidenceLabel": "Low",
+      "daysSinceLastPurchase": 4,
+      "monthlyPurchasePattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "spend": 103
+        }
+      ],
+      "monthlyQuantityPattern": [
+        {
+          "month": "2026-05",
+          "purchases": 1,
+          "quantity": 1,
+          "spend": 103,
+          "unit": "pieces"
+        }
+      ],
+      "flags": [
+        "requires review"
+      ],
+      "suggestions": [
+        "Requires review before relying on the estimate fully."
+      ],
+      "totalSpend": 103
     },
     {
       "itemName": "TWF Atta",
@@ -3189,49 +4017,49 @@
         "lastSeenDate": "2026-05-11"
       },
       {
-        "pairLabel": "Amul Salted Butter + Davidoff Espresso 57 Instant Coffee 11/12 Intensity",
+        "pairLabel": "Aashirvaad Mustard /Sarso Whole Spice, Rai + Catch Amchur Powder",
         "frequency": 1,
-        "lastSeenDate": "2026-05-09"
+        "lastSeenDate": "2026-05-12"
       },
       {
-        "pairLabel": "Amul Salted Butter + Davidoff Fine Aroma Instant Coffee 7/12 Intensity",
+        "pairLabel": "Aashirvaad Mustard /Sarso Whole Spice, Rai + Chukde Saunf Barik",
         "frequency": 1,
-        "lastSeenDate": "2026-05-09"
+        "lastSeenDate": "2026-05-12"
       },
       {
-        "pairLabel": "Amul Salted Butter + Desi Tomato",
+        "pairLabel": "Aashirvaad Mustard /Sarso Whole Spice, Rai + Nua Comfort Disposable Period Panties XXL-XXXL",
         "frequency": 1,
-        "lastSeenDate": "2026-05-11"
+        "lastSeenDate": "2026-05-12"
       },
       {
-        "pairLabel": "Amul Salted Butter + Everest Sambhar Masala",
+        "pairLabel": "Aashirvaad Mustard /Sarso Whole Spice, Rai + Onion (Pyaaz)",
         "frequency": 1,
-        "lastSeenDate": "2026-05-09"
+        "lastSeenDate": "2026-05-12"
       },
       {
-        "pairLabel": "Amul Salted Butter + Kellogg's Corn Flakes Original",
+        "pairLabel": "Amul Pasteurised Butter + Britannia 100% Whole Wheat Bread (No Maida)",
         "frequency": 1,
-        "lastSeenDate": "2026-05-09"
+        "lastSeenDate": "2026-05-19"
       },
       {
-        "pairLabel": "Amul Salted Butter + Lijjat Moong Dal Papad",
+        "pairLabel": "Amul Pasteurised Butter + Cinthol Cool Bath Soap",
         "frequency": 1,
-        "lastSeenDate": "2026-05-09"
+        "lastSeenDate": "2026-05-19"
       },
       {
-        "pairLabel": "Amul Salted Butter + Onion",
+        "pairLabel": "Amul Pasteurised Butter + Coca-Cola Diet Coke Can",
         "frequency": 1,
-        "lastSeenDate": "2026-05-11"
+        "lastSeenDate": "2026-05-19"
       },
       {
-        "pairLabel": "Amul Salted Butter + Organically Grown Green Cucumber",
+        "pairLabel": "Amul Pasteurised Butter + Crax Ragi Nut Cracker Peanuts Namkeen - High Protein Snacks with No Palm Oil",
         "frequency": 1,
-        "lastSeenDate": "2026-05-11"
+        "lastSeenDate": "2026-05-19"
       },
       {
-        "pairLabel": "Amul Salted Butter + Sindhura Mango",
+        "pairLabel": "Amul Pasteurised Butter + Fortune Sugar",
         "frequency": 1,
-        "lastSeenDate": "2026-05-11"
+        "lastSeenDate": "2026-05-19"
       }
     ],
     "monthly_item_consumption_trend": [
@@ -3376,6 +4204,16 @@
     ],
     "monthly_category_consumption_trend": [
       {
+        "category": "Cleaning Items",
+        "months": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "spend": 38
+          }
+        ]
+      },
+      {
         "category": "Dairy",
         "months": [
           {
@@ -3395,8 +4233,8 @@
           },
           {
             "month": "2026-05",
-            "purchases": 2,
-            "spend": 366
+            "purchases": 3,
+            "spend": 488
           }
         ]
       },
@@ -3405,8 +4243,8 @@
         "months": [
           {
             "month": "2026-05",
-            "purchases": 1,
-            "spend": 106
+            "purchases": 2,
+            "spend": 115
           }
         ]
       },
@@ -3430,8 +4268,18 @@
           },
           {
             "month": "2026-05",
-            "purchases": 17,
-            "spend": 4475.5
+            "purchases": 28,
+            "spend": 5360.5
+          }
+        ]
+      },
+      {
+        "category": "Household Consumables",
+        "months": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "spend": 308
           }
         ]
       },
@@ -3450,14 +4298,24 @@
         "months": [
           {
             "month": "2026-05",
-            "purchases": 3,
-            "spend": 111
+            "purchases": 4,
+            "spend": 120
           }
         ]
       }
     ],
     "monthly_category_spending_trend": [
       {
+        "category": "Cleaning Items",
+        "months": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "spend": 38
+          }
+        ]
+      },
+      {
         "category": "Dairy",
         "months": [
           {
@@ -3477,8 +4335,8 @@
           },
           {
             "month": "2026-05",
-            "purchases": 2,
-            "spend": 366
+            "purchases": 3,
+            "spend": 488
           }
         ]
       },
@@ -3487,8 +4345,8 @@
         "months": [
           {
             "month": "2026-05",
-            "purchases": 1,
-            "spend": 106
+            "purchases": 2,
+            "spend": 115
           }
         ]
       },
@@ -3512,8 +4370,18 @@
           },
           {
             "month": "2026-05",
-            "purchases": 17,
-            "spend": 4475.5
+            "purchases": 28,
+            "spend": 5360.5
+          }
+        ]
+      },
+      {
+        "category": "Household Consumables",
+        "months": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "spend": 308
           }
         ]
       },
@@ -3532,8 +4400,8 @@
         "months": [
           {
             "month": "2026-05",
-            "purchases": 3,
-            "spend": 111
+            "purchases": 4,
+            "spend": 120
           }
         ]
       }
@@ -5574,6 +6442,318 @@
         "totalSpend": 48
       },
       {
+        "itemName": "Amul Pasteurised Butter",
+        "category": "Dairy",
+        "purchaseCount": 1,
+        "lastPurchaseDate": "2026-05-19",
+        "lastPurchasedQuantity": 1,
+        "lastPurchaseSpend": 122,
+        "averageQuantityPurchased": 1,
+        "quantityUnit": "pieces",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 1,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 40,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": 4,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "spend": 122
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "quantity": 1,
+            "spend": 122,
+            "unit": "pieces"
+          }
+        ],
+        "flags": [
+          "requires review"
+        ],
+        "suggestions": [
+          "Requires review before relying on the estimate fully."
+        ],
+        "totalSpend": 122
+      },
+      {
+        "itemName": "Britannia 100% Whole Wheat Bread (No Maida)",
+        "category": "Groceries",
+        "purchaseCount": 1,
+        "lastPurchaseDate": "2026-05-19",
+        "lastPurchasedQuantity": 1,
+        "lastPurchaseSpend": 50,
+        "averageQuantityPurchased": 1,
+        "quantityUnit": "pieces",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 1,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 40,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": 4,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "spend": 50
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "quantity": 1,
+            "spend": 50,
+            "unit": "pieces"
+          }
+        ],
+        "flags": [
+          "requires review"
+        ],
+        "suggestions": [
+          "Requires review before relying on the estimate fully."
+        ],
+        "totalSpend": 50
+      },
+      {
+        "itemName": "Catch Amchur Powder",
+        "category": "Groceries",
+        "purchaseCount": 1,
+        "lastPurchaseDate": "2026-05-12",
+        "lastPurchasedQuantity": 1,
+        "lastPurchaseSpend": 72,
+        "averageQuantityPurchased": 1,
+        "quantityUnit": "pieces",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 1,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 40,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": 11,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "spend": 72
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "quantity": 1,
+            "spend": 72,
+            "unit": "pieces"
+          }
+        ],
+        "flags": [
+          "requires review"
+        ],
+        "suggestions": [
+          "Requires review before relying on the estimate fully."
+        ],
+        "totalSpend": 72
+      },
+      {
+        "itemName": "Chukde Saunf Barik",
+        "category": "Groceries",
+        "purchaseCount": 1,
+        "lastPurchaseDate": "2026-05-12",
+        "lastPurchasedQuantity": 1,
+        "lastPurchaseSpend": 82,
+        "averageQuantityPurchased": 1,
+        "quantityUnit": "pieces",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 1,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 40,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": 11,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "spend": 82
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "quantity": 1,
+            "spend": 82,
+            "unit": "pieces"
+          }
+        ],
+        "flags": [
+          "requires review"
+        ],
+        "suggestions": [
+          "Requires review before relying on the estimate fully."
+        ],
+        "totalSpend": 82
+      },
+      {
+        "itemName": "Crax Ragi Nut Cracker Peanuts Namkeen - High Protein Snacks with No Palm Oil",
+        "category": "Groceries",
+        "purchaseCount": 1,
+        "lastPurchaseDate": "2026-05-19",
+        "lastPurchasedQuantity": 1,
+        "lastPurchaseSpend": 36,
+        "averageQuantityPurchased": 1,
+        "quantityUnit": "pieces",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 1,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 40,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": 4,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "spend": 36
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "quantity": 1,
+            "spend": 36,
+            "unit": "pieces"
+          }
+        ],
+        "flags": [
+          "requires review"
+        ],
+        "suggestions": [
+          "Requires review before relying on the estimate fully."
+        ],
+        "totalSpend": 36
+      },
+      {
+        "itemName": "Fortune Sugar",
+        "category": "Groceries",
+        "purchaseCount": 1,
+        "lastPurchaseDate": "2026-05-19",
+        "lastPurchasedQuantity": 2,
+        "lastPurchaseSpend": 114,
+        "averageQuantityPurchased": 2,
+        "quantityUnit": "pieces",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 2,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 40,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": 4,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "spend": 114
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "quantity": 2,
+            "spend": 114,
+            "unit": "pieces"
+          }
+        ],
+        "flags": [
+          "requires review"
+        ],
+        "suggestions": [
+          "Requires review before relying on the estimate fully."
+        ],
+        "totalSpend": 114
+      },
+      {
         "itemName": "Onion",
         "category": "Vegetables",
         "purchaseCount": 1,
@@ -5624,218 +6804,540 @@
           "Requires review before relying on the estimate fully."
         ],
         "totalSpend": 65
+      },
+      {
+        "itemName": "Onion (Pyaaz)",
+        "category": "Vegetables",
+        "purchaseCount": 1,
+        "lastPurchaseDate": "2026-05-12",
+        "lastPurchasedQuantity": 1,
+        "lastPurchaseSpend": 9,
+        "averageQuantityPurchased": 1,
+        "quantityUnit": "pieces",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 1,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 40,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": 11,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "spend": 9
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "quantity": 1,
+            "spend": 9,
+            "unit": "pieces"
+          }
+        ],
+        "flags": [
+          "requires review"
+        ],
+        "suggestions": [
+          "Requires review before relying on the estimate fully."
+        ],
+        "totalSpend": 9
+      },
+      {
+        "itemName": "Robusta Banana (Kela)",
+        "category": "Fruits",
+        "purchaseCount": 1,
+        "lastPurchaseDate": "2026-05-19",
+        "lastPurchasedQuantity": 1,
+        "lastPurchaseSpend": 9,
+        "averageQuantityPurchased": 1,
+        "quantityUnit": "pieces",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 1,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 40,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": 4,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "spend": 9
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "quantity": 1,
+            "spend": 9,
+            "unit": "pieces"
+          }
+        ],
+        "flags": [
+          "requires review"
+        ],
+        "suggestions": [
+          "Requires review before relying on the estimate fully."
+        ],
+        "totalSpend": 9
+      },
+      {
+        "itemName": "Tata Rock Salt",
+        "category": "Groceries",
+        "purchaseCount": 1,
+        "lastPurchaseDate": "2026-05-19",
+        "lastPurchasedQuantity": 1,
+        "lastPurchaseSpend": 108,
+        "averageQuantityPurchased": 1,
+        "quantityUnit": "pieces",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 1,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 40,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": 4,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "spend": 108
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "quantity": 1,
+            "spend": 108,
+            "unit": "pieces"
+          }
+        ],
+        "flags": [
+          "requires review"
+        ],
+        "suggestions": [
+          "Requires review before relying on the estimate fully."
+        ],
+        "totalSpend": 108
+      },
+      {
+        "itemName": "Tata Sampann 100% Chana Dal Fine Besan (Gram Flour)",
+        "category": "Groceries",
+        "purchaseCount": 1,
+        "lastPurchaseDate": "2026-05-19",
+        "lastPurchasedQuantity": 1,
+        "lastPurchaseSpend": 69,
+        "averageQuantityPurchased": 1,
+        "quantityUnit": "pieces",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 1,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 40,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": 4,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "spend": 69
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "quantity": 1,
+            "spend": 69,
+            "unit": "pieces"
+          }
+        ],
+        "flags": [
+          "requires review"
+        ],
+        "suggestions": [
+          "Requires review before relying on the estimate fully."
+        ],
+        "totalSpend": 69
+      },
+      {
+        "itemName": "Tata Sampann Whole Spices Coriander Seed",
+        "category": "Groceries",
+        "purchaseCount": 1,
+        "lastPurchaseDate": "2026-05-19",
+        "lastPurchasedQuantity": 1,
+        "lastPurchaseSpend": 37,
+        "averageQuantityPurchased": 1,
+        "quantityUnit": "pieces",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 1,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 40,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": 4,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "spend": 37
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "quantity": 1,
+            "spend": 37,
+            "unit": "pieces"
+          }
+        ],
+        "flags": [
+          "requires review"
+        ],
+        "suggestions": [
+          "Requires review before relying on the estimate fully."
+        ],
+        "totalSpend": 37
+      },
+      {
+        "itemName": "TMI COLMAN Peanuts",
+        "category": "Groceries",
+        "purchaseCount": 1,
+        "lastPurchaseDate": "2026-05-19",
+        "lastPurchasedQuantity": 1,
+        "lastPurchaseSpend": 103,
+        "averageQuantityPurchased": 1,
+        "quantityUnit": "pieces",
+        "averageDailyConsumption": null,
+        "averageWeeklyConsumption": null,
+        "averageConsumptionRate": null,
+        "averageDailyConsumptionLabel": null,
+        "averageWeeklyConsumptionLabel": null,
+        "consumptionBasis": "insufficient_data",
+        "expectedStockDurationDays": null,
+        "estimatedDaysOfStockRemaining": null,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": null,
+        "normalPurchaseFrequencyDays": null,
+        "recommendedReorderDate": null,
+        "suggestedReorderQuantity": 1,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": null,
+        "stockBucket": "Requires Review",
+        "dataConfidenceScore": 40,
+        "dataConfidenceLabel": "Low",
+        "daysSinceLastPurchase": 4,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "spend": 103
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "quantity": 1,
+            "spend": 103,
+            "unit": "pieces"
+          }
+        ],
+        "flags": [
+          "requires review"
+        ],
+        "suggestions": [
+          "Requires review before relying on the estimate fully."
+        ],
+        "totalSpend": 103
       }
     ],
     "recently_added_purchase_data": [
       {
-        "purchaseId": "dde1d63c-267b-4e06-b00d-75fed21da287",
-        "dateOfPurchase": null,
-        "itemName": "Amul Blend Diced Cheese",
+        "purchaseId": "8a674d37-2704-49ef-8239-d3e0e0dc17a5",
+        "dateOfPurchase": "2026-05-12",
+        "itemName": "Catch Amchur Powder",
+        "category": "Groceries",
+        "quantityLabel": "1 pieces",
+        "amountLabel": "₹72.00",
+        "reviewStatus": "needs_review",
+        "reviewNotes": [
+          "Invoice UQC is NOS",
+          "pack size not visible in invoice"
+        ],
+        "enteredAt": "2026-05-23T09:00:11.499Z"
+      },
+      {
+        "purchaseId": "b12de795-b33c-43ee-b830-389ae2af2dd8",
+        "dateOfPurchase": "2026-05-12",
+        "itemName": "Chukde Saunf Barik",
+        "category": "Groceries",
+        "quantityLabel": "1 pieces",
+        "amountLabel": "₹82.00",
+        "reviewStatus": "needs_review",
+        "reviewNotes": [
+          "Invoice UQC is NOS",
+          "pack size not visible in invoice"
+        ],
+        "enteredAt": "2026-05-23T09:00:11.499Z"
+      },
+      {
+        "purchaseId": "9b607ee5-3eee-46fe-8db9-f287885b5bd4",
+        "dateOfPurchase": "2026-05-12",
+        "itemName": "Onion (Pyaaz)",
+        "category": "Vegetables",
+        "quantityLabel": "1 pieces",
+        "amountLabel": "₹9.00",
+        "reviewStatus": "needs_review",
+        "reviewNotes": [
+          "Invoice UQC is NOS",
+          "actual onion weight not visible in invoice"
+        ],
+        "enteredAt": "2026-05-23T09:00:11.499Z"
+      },
+      {
+        "purchaseId": "7807e862-403f-44a3-a59c-da1f725cb4f1",
+        "dateOfPurchase": "2026-05-19",
+        "itemName": "Amul Pasteurised Butter",
         "category": "Dairy",
-        "quantityLabel": "200 g",
-        "amountLabel": "₹125.00",
+        "quantityLabel": "1 pieces",
+        "amountLabel": "₹122.00",
         "reviewStatus": "needs_review",
         "reviewNotes": [
-          "Date missing or unclear"
+          "Invoice UQC is NOS",
+          "pack size not visible in invoice"
         ],
-        "enteredAt": "2026-05-23T08:54:31.219Z"
+        "enteredAt": "2026-05-23T09:00:11.499Z"
       },
       {
-        "purchaseId": "db29a6b5-f7f3-49cf-a114-8fec4f6cf6f6",
-        "dateOfPurchase": null,
-        "itemName": "Coca-Cola Diet Coke Soft Drink",
+        "purchaseId": "5ef4865c-3fd7-450c-a0b8-aaef66937a10",
+        "dateOfPurchase": "2026-05-19",
+        "itemName": "Britannia 100% Whole Wheat Bread (No Maida)",
         "category": "Groceries",
-        "quantityLabel": "600 ml",
-        "amountLabel": "₹80.00",
+        "quantityLabel": "1 pieces",
+        "amountLabel": "₹50.00",
         "reviewStatus": "needs_review",
         "reviewNotes": [
-          "Date missing or unclear"
+          "Invoice UQC is NOS",
+          "pack size not visible in invoice"
         ],
-        "enteredAt": "2026-05-23T08:54:31.219Z"
+        "enteredAt": "2026-05-23T09:00:11.499Z"
       },
       {
-        "purchaseId": "8408ddc4-844c-4e53-9908-631b58a739d6",
-        "dateOfPurchase": null,
-        "itemName": "Coca-Cola Zero Sugar Soft Drink",
-        "category": "Groceries",
-        "quantityLabel": "300 ml",
-        "amountLabel": "₹40.00",
-        "reviewStatus": "needs_review",
-        "reviewNotes": [
-          "Date missing or unclear"
-        ],
-        "enteredAt": "2026-05-23T08:54:31.219Z"
-      },
-      {
-        "purchaseId": "10c6eb61-85c9-4344-88b4-45351273c2e7",
-        "dateOfPurchase": null,
-        "itemName": "Haldiram's Bhujia",
-        "category": "Groceries",
-        "quantityLabel": "400 g",
-        "amountLabel": "₹120.00",
-        "reviewStatus": "needs_review",
-        "reviewNotes": [
-          "Date missing or unclear"
-        ],
-        "enteredAt": "2026-05-23T08:54:31.219Z"
-      },
-      {
-        "purchaseId": "fd9816fe-4391-42f8-99df-079b85dd4202",
-        "dateOfPurchase": null,
-        "itemName": "Mee Mee Mild Baby Laundry Detergent Refill",
-        "category": "Baby Items",
-        "quantityLabel": "1 litre",
-        "amountLabel": "₹229.00",
-        "reviewStatus": "needs_review",
-        "reviewNotes": [
-          "Date missing or unclear"
-        ],
-        "enteredAt": "2026-05-23T08:54:31.219Z"
-      },
-      {
-        "purchaseId": "c135e71c-0c0d-40a4-8d1c-6474b4e94c8e",
-        "dateOfPurchase": null,
-        "itemName": "Mother Sparsh Natural Baby Liquid Cleanser",
-        "category": "Baby Items",
-        "quantityLabel": "500 ml",
-        "amountLabel": "₹199.00",
-        "reviewStatus": "needs_review",
-        "reviewNotes": [
-          "Date missing or unclear"
-        ],
-        "enteredAt": "2026-05-23T08:54:31.219Z"
-      },
-      {
-        "purchaseId": "da5b2434-a5e9-40db-aafa-af1a9dd6dcd6",
-        "dateOfPurchase": null,
-        "itemName": "Mountain Dew Soft Drink",
-        "category": "Groceries",
-        "quantityLabel": "300 ml",
-        "amountLabel": "₹40.00",
-        "reviewStatus": "needs_review",
-        "reviewNotes": [
-          "Date missing or unclear"
-        ],
-        "enteredAt": "2026-05-23T08:54:31.219Z"
-      },
-      {
-        "purchaseId": "41869b08-5640-4601-a175-5a133dfed954",
-        "dateOfPurchase": null,
-        "itemName": "Rin Detergent Bar",
+        "purchaseId": "06665a8b-3724-4952-94b7-3bff50a1c931",
+        "dateOfPurchase": "2026-05-19",
+        "itemName": "Cinthol Cool Bath Soap",
         "category": "Cleaning Items",
-        "quantityLabel": "130 g",
-        "amountLabel": "₹10.00",
+        "quantityLabel": "1 pieces",
+        "amountLabel": "₹38.00",
+        "reviewStatus": "ok",
+        "reviewNotes": [],
+        "enteredAt": "2026-05-23T09:00:11.499Z"
+      },
+      {
+        "purchaseId": "db2bcfbc-69e6-43f4-8483-82fbb99e4273",
+        "dateOfPurchase": "2026-05-19",
+        "itemName": "Coca-Cola Diet Coke Can",
+        "category": "Groceries",
+        "quantityLabel": "4 pieces",
+        "amountLabel": "₹156.00",
+        "reviewStatus": "ok",
+        "reviewNotes": [],
+        "enteredAt": "2026-05-23T09:00:11.499Z"
+      },
+      {
+        "purchaseId": "c620e9f5-31d2-4f43-91bf-6cef635778cc",
+        "dateOfPurchase": "2026-05-19",
+        "itemName": "Crax Ragi Nut Cracker Peanuts Namkeen - High Protein Snacks with No Palm Oil",
+        "category": "Groceries",
+        "quantityLabel": "1 pieces",
+        "amountLabel": "₹36.00",
         "reviewStatus": "needs_review",
         "reviewNotes": [
-          "Date missing or unclear"
+          "Invoice UQC is NOS",
+          "pack size not visible in invoice"
         ],
-        "enteredAt": "2026-05-23T08:54:31.219Z"
+        "enteredAt": "2026-05-23T09:00:11.499Z"
       }
     ],
     "recently_parsed_items_needing_correction": [
       {
-        "purchaseId": "dde1d63c-267b-4e06-b00d-75fed21da287",
-        "dateOfPurchase": null,
-        "itemName": "Amul Blend Diced Cheese",
+        "purchaseId": "8a674d37-2704-49ef-8239-d3e0e0dc17a5",
+        "dateOfPurchase": "2026-05-12",
+        "itemName": "Catch Amchur Powder",
+        "category": "Groceries",
+        "quantityLabel": "1 pieces",
+        "amountLabel": "₹72.00",
+        "reviewStatus": "needs_review",
+        "reviewNotes": [
+          "Invoice UQC is NOS",
+          "pack size not visible in invoice"
+        ],
+        "enteredAt": "2026-05-23T09:00:11.499Z"
+      },
+      {
+        "purchaseId": "b12de795-b33c-43ee-b830-389ae2af2dd8",
+        "dateOfPurchase": "2026-05-12",
+        "itemName": "Chukde Saunf Barik",
+        "category": "Groceries",
+        "quantityLabel": "1 pieces",
+        "amountLabel": "₹82.00",
+        "reviewStatus": "needs_review",
+        "reviewNotes": [
+          "Invoice UQC is NOS",
+          "pack size not visible in invoice"
+        ],
+        "enteredAt": "2026-05-23T09:00:11.499Z"
+      },
+      {
+        "purchaseId": "9b607ee5-3eee-46fe-8db9-f287885b5bd4",
+        "dateOfPurchase": "2026-05-12",
+        "itemName": "Onion (Pyaaz)",
+        "category": "Vegetables",
+        "quantityLabel": "1 pieces",
+        "amountLabel": "₹9.00",
+        "reviewStatus": "needs_review",
+        "reviewNotes": [
+          "Invoice UQC is NOS",
+          "actual onion weight not visible in invoice"
+        ],
+        "enteredAt": "2026-05-23T09:00:11.499Z"
+      },
+      {
+        "purchaseId": "7807e862-403f-44a3-a59c-da1f725cb4f1",
+        "dateOfPurchase": "2026-05-19",
+        "itemName": "Amul Pasteurised Butter",
         "category": "Dairy",
-        "quantityLabel": "200 g",
-        "amountLabel": "₹125.00",
+        "quantityLabel": "1 pieces",
+        "amountLabel": "₹122.00",
         "reviewStatus": "needs_review",
         "reviewNotes": [
-          "Date missing or unclear"
+          "Invoice UQC is NOS",
+          "pack size not visible in invoice"
         ],
-        "enteredAt": "2026-05-23T08:54:31.219Z"
+        "enteredAt": "2026-05-23T09:00:11.499Z"
       },
       {
-        "purchaseId": "db29a6b5-f7f3-49cf-a114-8fec4f6cf6f6",
-        "dateOfPurchase": null,
-        "itemName": "Coca-Cola Diet Coke Soft Drink",
+        "purchaseId": "5ef4865c-3fd7-450c-a0b8-aaef66937a10",
+        "dateOfPurchase": "2026-05-19",
+        "itemName": "Britannia 100% Whole Wheat Bread (No Maida)",
         "category": "Groceries",
-        "quantityLabel": "600 ml",
-        "amountLabel": "₹80.00",
+        "quantityLabel": "1 pieces",
+        "amountLabel": "₹50.00",
         "reviewStatus": "needs_review",
         "reviewNotes": [
-          "Date missing or unclear"
+          "Invoice UQC is NOS",
+          "pack size not visible in invoice"
         ],
-        "enteredAt": "2026-05-23T08:54:31.219Z"
+        "enteredAt": "2026-05-23T09:00:11.499Z"
       },
       {
-        "purchaseId": "8408ddc4-844c-4e53-9908-631b58a739d6",
-        "dateOfPurchase": null,
-        "itemName": "Coca-Cola Zero Sugar Soft Drink",
+        "purchaseId": "c620e9f5-31d2-4f43-91bf-6cef635778cc",
+        "dateOfPurchase": "2026-05-19",
+        "itemName": "Crax Ragi Nut Cracker Peanuts Namkeen - High Protein Snacks with No Palm Oil",
         "category": "Groceries",
-        "quantityLabel": "300 ml",
-        "amountLabel": "₹40.00",
+        "quantityLabel": "1 pieces",
+        "amountLabel": "₹36.00",
         "reviewStatus": "needs_review",
         "reviewNotes": [
-          "Date missing or unclear"
+          "Invoice UQC is NOS",
+          "pack size not visible in invoice"
         ],
-        "enteredAt": "2026-05-23T08:54:31.219Z"
+        "enteredAt": "2026-05-23T09:00:11.499Z"
       },
       {
-        "purchaseId": "10c6eb61-85c9-4344-88b4-45351273c2e7",
-        "dateOfPurchase": null,
-        "itemName": "Haldiram's Bhujia",
+        "purchaseId": "a6fe883c-332a-4be4-bdac-76b416d8796b",
+        "dateOfPurchase": "2026-05-19",
+        "itemName": "Fortune Sugar",
         "category": "Groceries",
-        "quantityLabel": "400 g",
-        "amountLabel": "₹120.00",
+        "quantityLabel": "2 pieces",
+        "amountLabel": "₹114.00",
         "reviewStatus": "needs_review",
         "reviewNotes": [
-          "Date missing or unclear"
+          "Invoice UQC is NOS",
+          "pack size not visible in invoice"
         ],
-        "enteredAt": "2026-05-23T08:54:31.219Z"
+        "enteredAt": "2026-05-23T09:00:11.499Z"
       },
       {
-        "purchaseId": "fd9816fe-4391-42f8-99df-079b85dd4202",
-        "dateOfPurchase": null,
-        "itemName": "Mee Mee Mild Baby Laundry Detergent Refill",
-        "category": "Baby Items",
-        "quantityLabel": "1 litre",
-        "amountLabel": "₹229.00",
+        "purchaseId": "261ecfbd-a9ed-485c-a280-7c68954d4ead",
+        "dateOfPurchase": "2026-05-19",
+        "itemName": "Robusta Banana (Kela)",
+        "category": "Fruits",
+        "quantityLabel": "1 pieces",
+        "amountLabel": "₹9.00",
         "reviewStatus": "needs_review",
         "reviewNotes": [
-          "Date missing or unclear"
+          "Invoice UQC is NOS",
+          "actual banana weight/count not visible in invoice"
         ],
-        "enteredAt": "2026-05-23T08:54:31.219Z"
-      },
-      {
-        "purchaseId": "c135e71c-0c0d-40a4-8d1c-6474b4e94c8e",
-        "dateOfPurchase": null,
-        "itemName": "Mother Sparsh Natural Baby Liquid Cleanser",
-        "category": "Baby Items",
-        "quantityLabel": "500 ml",
-        "amountLabel": "₹199.00",
-        "reviewStatus": "needs_review",
-        "reviewNotes": [
-          "Date missing or unclear"
-        ],
-        "enteredAt": "2026-05-23T08:54:31.219Z"
-      },
-      {
-        "purchaseId": "da5b2434-a5e9-40db-aafa-af1a9dd6dcd6",
-        "dateOfPurchase": null,
-        "itemName": "Mountain Dew Soft Drink",
-        "category": "Groceries",
-        "quantityLabel": "300 ml",
-        "amountLabel": "₹40.00",
-        "reviewStatus": "needs_review",
-        "reviewNotes": [
-          "Date missing or unclear"
-        ],
-        "enteredAt": "2026-05-23T08:54:31.219Z"
-      },
-      {
-        "purchaseId": "41869b08-5640-4601-a175-5a133dfed954",
-        "dateOfPurchase": null,
-        "itemName": "Rin Detergent Bar",
-        "category": "Cleaning Items",
-        "quantityLabel": "130 g",
-        "amountLabel": "₹10.00",
-        "reviewStatus": "needs_review",
-        "reviewNotes": [
-          "Date missing or unclear"
-        ],
-        "enteredAt": "2026-05-23T08:54:31.219Z"
+        "enteredAt": "2026-05-23T09:00:11.499Z"
       }
     ],
     "duplicate_or_suspicious_entries": [],
@@ -5897,10 +7399,10 @@
       }
     ],
     "auto_categorisation": {
-      "autoEntryCount": 118,
+      "autoEntryCount": 134,
       "needsReviewEntryCount": 1,
-      "autoEntryRate": 99.2,
-      "autoItemCount": 50,
+      "autoEntryRate": 99.3,
+      "autoItemCount": 66,
       "needsReviewItemCount": 1
     }
   }

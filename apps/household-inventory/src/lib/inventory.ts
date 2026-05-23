@@ -278,8 +278,8 @@ const CATEGORY_RULES: Array<{ category: InventoryCategory; keywords: string[] }>
   { category: "Cleaning Items", keywords: ["detergent", "surf", "soap", "phenyl", "toilet cleaner", "floor cleaner", "harpic", "bleach", "dishwash", "rin", "vim", "scrubber", "cleaner"] },
   { category: "Baby Items", keywords: ["diaper", "wipes", "formula", "baby laundry", "baby", "feeding bottle", "rash cream", "nappy"] },
   { category: "Medicines", keywords: ["tablet", "capsule", "syrup", "ointment", "medicine", "medicines", "paracetamol", "crocin", "dolo", "vitamin"] },
-  { category: "Household Consumables", keywords: ["tissue", "foil", "garbage bag", "dustbin bag", "gift bag", "paper bag", "candle", "matchbox", "battery", "toothpaste", "toothbrush", "napkin"] },
-  { category: "Groceries", keywords: ["atta", "rice", "dal", "masoor", "daliya", "flour", "maida", "besan", "oil", "sugar", "salt", "masala", "turmeric", "haldi", "jeera", "tea", "coffee", "poha", "suji", "rava", "grocery", "papad", "sattu", "corn flakes", "peanut", "peanuts", "sabudana", "bread", "semolina", "roti", "rotis", "coriander", "fennel", "spices", "chutney", "ketchup", "sauce", "bhujia", "namkeen", "snack", "soft drink", "coke", "cola", "sprite", "mountain dew"] },
+  { category: "Household Consumables", keywords: ["tissue", "foil", "garbage bag", "dustbin bag", "gift bag", "paper bag", "period panties", "sanitary", "candle", "matchbox", "battery", "toothpaste", "toothbrush", "napkin"] },
+  { category: "Groceries", keywords: ["atta", "rice", "dal", "masoor", "daliya", "flour", "maida", "besan", "oil", "sugar", "salt", "masala", "turmeric", "haldi", "jeera", "tea", "coffee", "poha", "suji", "rava", "grocery", "papad", "sattu", "corn flakes", "peanut", "peanuts", "sabudana", "bread", "semolina", "roti", "rotis", "coriander", "fennel", "saunf", "spice", "spices", "mustard", "sarso", "rai", "amchur", "chutney", "ketchup", "sauce", "bhujia", "namkeen", "snack", "soft drink", "coke", "cola", "sprite", "mountain dew"] },
 ];
 const KNOWN_VENDOR_PATTERNS = [
   "amazon",
@@ -1703,6 +1703,10 @@ function parseKeyValueBlock(block: string): (Partial<InventoryEntry> & { item_na
   if (!values.size) {
     return null;
   }
+  const reviewNotes = (values.get("review notes") ?? values.get("review note") ?? values.get("review"))
+    ?.split(/[;|]+/)
+    .map((note) => note.trim())
+    .filter(Boolean);
 
   return {
     date_of_purchase: values.get("date") ?? values.get("date of purchase") ?? null,
@@ -1718,6 +1722,7 @@ function parseKeyValueBlock(block: string): (Partial<InventoryEntry> & { item_na
     actual_consumption_period: normalizePeriod(
       values.get("actual consumption period") ?? values.get("actual period") ?? null,
     ),
+    review_notes: reviewNotes,
     raw_source_text: block,
   };
 }
