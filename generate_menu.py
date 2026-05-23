@@ -599,6 +599,24 @@ CURD_ITEM_TOKENS = ("दही", "रायता")
 CURD_RAITA_NOTE_HI = "*दही रूप:* केवल लौकी/खीरे का रायता"
 CURD_RAITA_NOTE_EXCLUDED_ITEMS = ("दही चावल ज्यादा करी पत्ता व सौंफ के साथ",)
 SPECIFIC_RAITA_PATTERN = re.compile(r"[\w\u0900-\u097F/-]+(?:\s+[\w\u0900-\u097F/-]+){0,4}\s+क[ािे]\s+रायता")
+DRINK_OF_THE_DAY_ITEMS = [
+    (
+        "ठंडाई",
+        "15 बादाम, 10 काजू, 10 पिस्ता, 1 बड़ा चम्मच मगज, 1 बड़ा चम्मच सौंफ, 1 बड़ा चम्मच खसखस, अच्छी तरह धोया हुआ एक चुटकी खस, 1 छोटा चम्मच काली मिर्च और 5-6 छोटी इलायची को 2 घंटे गुनगुने पानी में भिगो दें। फिर थोड़ा दूध डालकर मिक्सी में बारीक पीस लें। 3-4 गिलास ठंडे दूध में स्वादानुसार मिश्री मिलाएँ, फिर इसमें पिसा हुआ ठंडाई मसाला, 1 चम्मच गुलकंद, थोड़ा केसर और भीगा हुआ गोंद कतीरा डालकर अच्छी तरह मिला दें।",
+    ),
+    ("सत्तू का शर्बत", "मिश्री, घी और मटके का पानी डालकर तैयार करें।"),
+    (
+        "खर्जुरादी मंथ",
+        "इमली, कोकम, काला मुनक्का, खजूर और आमला (कैंडी, सूखा या चूर्ण — सभी 20-20 ग्राम) को 200 मिली पानी में 3–4 घंटे तक भिगो दें। फिर इन्हें मिक्सी में पीसकर गाढ़ा पेस्ट बना लें। अब उसी मात्रा (200 मिली) का पानी पुनः मिलाएं, अच्छी तरह मथे और छान लें। अंत में ऊपर से अनार का रस डालें। यदि खट्टास अधिक लगे तो स्वादानुसार मिश्री या गुड़ मिलाएं। ठंडा परोसें।",
+    ),
+    ("बेल शर्बत", None),
+    (
+        "रागी कांजी",
+        "2 टेबलस्पून रागी आटे को आधा कप पानी में घोलें और गांठें न बनने दें। फिर एक कढ़ाई में 1.5 कप पानी गरम करें और उसमें यह घोल डालें। धीमी आँच पर लगातार चलाते हुए 3–5 मिनट तक पकाएँ जब तक मिश्रण हल्का गाढ़ा और पारदर्शी न हो जाए। आंच से उतारकर ठंडा करें। ठंडा होने पर 1 कप छाछ मिलाएँ, स्वादानुसार सेंधा नमक, भुना जीरा और पिसी सौंफ डालें। सब कुछ मिलाकर ठंडा या सामान्य ताप पर पियें।",
+    ),
+    ("पेठे का जूस", None),
+]
+DRINK_OF_THE_DAY_FALLBACK_NOTE = "यदि आज का पेय उपलब्ध न हो, तो सत्तू का शर्बत दिया जा सकता है।"
 
 VARSHA_COMMON_REQUIRED_SIDES = [
     "आचार",
@@ -2165,6 +2183,19 @@ def format_today_fruit_line(fruit_selection: FruitSelection, ritu_key: str) -> s
             line += f" {VASANT_FRUIT_TIMING_NOTE}"
         return line
     return "*आज का फल:* फल उपलब्ध नहीं है"
+
+
+def select_drink_of_the_day(target_date: date) -> tuple[str, str | None]:
+    index = int(hashlib.sha256(target_date.isoformat().encode("utf-8")).hexdigest(), 16) % len(DRINK_OF_THE_DAY_ITEMS)
+    return DRINK_OF_THE_DAY_ITEMS[index]
+
+
+def format_drink_of_the_day_line(target_date: date) -> str:
+    drink_name, recipe = select_drink_of_the_day(target_date)
+    line = f"*आज का पेय:* {drink_name}"
+    if recipe:
+        line += f" — {recipe}"
+    return f"{line}\r\n*पेय विकल्प:* {DRINK_OF_THE_DAY_FALLBACK_NOTE}"
 
 
 PARWAL_BHUJIYA_DAL_SUGGESTION = "साथ में सादी मूंग दाल"
@@ -4229,6 +4260,7 @@ def main() -> int:
             if special_menu_note_line:
                 lines.append(special_menu_note_line)
         lines.append(format_today_fruit_line(fruit_selection, ritu_key))
+        lines.append(format_drink_of_the_day_line(target_date))
         if ekadashi.is_ekadashi and ekadashi.name_hi:
             lines.append(f"*एकादशी:* {ekadashi.name_hi}")
         if vasant_day_ten:
@@ -5170,6 +5202,7 @@ def main() -> int:
         lines.append(f"*अवधि विवरण:* {shringdhara_info.reason_hi}")
         lines.append(f"*आज का हल्का सेवन:* {selected_observance_item}")
         lines.append(format_today_fruit_line(fruit_selection, ritu_key))
+        lines.append(format_drink_of_the_day_line(target_date))
         lines.append("*शृंगधारा स्मरण:* " + SHRINGDHARA_DAILY_REMINDER)
         lines.append("*परंपरागत हल्का विकल्प:* " + SHRINGDHARA_LIGHT_NOTE)
     else:
@@ -5226,6 +5259,7 @@ def main() -> int:
         if curd_raita_note:
             lines.append(curd_raita_note)
         lines.append(format_today_fruit_line(fruit_selection, ritu_key))
+        lines.append(format_drink_of_the_day_line(target_date))
         if requires_mangore_prep(selected_breakfast, selected_meal, selected_second_meal or ""):
             lines.append("*फॉलोवर महोदय हेतु रात की तैयारी:* " + MANGORE_PREP_NOTE)
         if next_day_requires_rice_prep and next_day_breakfast_lock:

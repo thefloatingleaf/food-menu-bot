@@ -526,6 +526,28 @@ class VarietyCycleRuleTests(unittest.TestCase):
         line = generate_menu.format_today_fruit_line(generate_menu.FruitSelection(None, False), "vasant")
         self.assertEqual(line, "*आज का फल:* फल उपलब्ध नहीं है")
 
+    def test_select_drink_of_the_day_is_deterministic_for_date(self) -> None:
+        first = generate_menu.select_drink_of_the_day(date(2026, 5, 24))
+        second = generate_menu.select_drink_of_the_day(date(2026, 5, 24))
+        self.assertEqual(first, second)
+
+    def test_format_drink_of_the_day_line_includes_hindi_heading_and_fallback(self) -> None:
+        line = generate_menu.format_drink_of_the_day_line(date(2026, 5, 24))
+        self.assertTrue(line.startswith("*आज का पेय:* "))
+        self.assertIn("*पेय विकल्प:* यदि आज का पेय उपलब्ध न हो, तो सत्तू का शर्बत दिया जा सकता है।", line)
+
+    def test_format_drink_of_the_day_line_includes_recipe_when_available(self) -> None:
+        target_date = next(
+            date(2026, 5, day)
+            for day in range(1, 32)
+            if generate_menu.select_drink_of_the_day(date(2026, 5, day))[1] is not None
+        )
+        drink_name, recipe = generate_menu.select_drink_of_the_day(target_date)
+        line = generate_menu.format_drink_of_the_day_line(target_date)
+
+        self.assertIn(f"*आज का पेय:* {drink_name} — ", line)
+        self.assertIn(recipe, line)
+
     def test_format_meal_display_adds_dal_with_parwal_bhujiya(self) -> None:
         meal = "ज्वार (Sorghum) (केवल पुराना) की रोटी और परवल की भुजिया"
         self.assertEqual(

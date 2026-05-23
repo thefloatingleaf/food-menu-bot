@@ -190,6 +190,7 @@ python3 generate_menu.py --bootstrap-weather-tags
 - `*आज का भोजन:* <item>`
 - `*आज का भोजन 1:* <item>` and `*आज का भोजन 2:* <item>` (only for the temporary 08-Apr-2026 through 14-Apr-2026 dual-meal window)
 - `*आज का फल:* <item>` or `*आज का फल:* फल उपलब्ध नहीं है`
+- `*आज का पेय:* <drink>` plus `*पेय विकल्प:* यदि आज का पेय उपलब्ध न हो, तो सत्तू का शर्बत दिया जा सकता है।`
 - `*फॉलोवर महोदय हेतु रात की तैयारी:* <instruction>` (only when the generated next-day menu includes मंगौड़े)
 - `*साथ में:* मोटा चौकोर कटा प्याज` (only when the selected breakfast is `पखाला भात`)
 - `*एकादशी:* <name_hi>` (only on Ekadashi/Gauna dates)
@@ -368,6 +369,13 @@ The generator also applies a recurring override for any festival day that is bot
 5. If the monthly fruit list is exhausted, the fruit cycle resets automatically for that same month and selection starts again.
 6. In May and June, `आम` gets higher weight and may reappear before all other fruits are exhausted, but the selector still avoids unnecessary monotony such as immediate back-to-back repetition when other options are available.
 7. If a month has no configured fruit list, or no valid fruit can be selected, the menu prints `*आज का फल:* फल उपलब्ध नहीं है`.
+
+## Daily drink behavior
+
+1. Every generated menu includes a `*आज का पेय:*` line in Hindi.
+2. The drink is selected deterministically by date from `ठंडाई`, `सत्तू का शर्बत`, `खर्जुरादी मंथ`, `बेल शर्बत`, `रागी कांजी`, and `पेठे का जूस`.
+3. Drinks with supplied recipes render the full preparation text in the same line.
+4. Every drink line is followed by `*पेय विकल्प:* यदि आज का पेय उपलब्ध न हो, तो सत्तू का शर्बत दिया जा सकता है।`
 
 ## Consecutive-day repeat rule
 
