@@ -574,7 +574,7 @@ class VarietyCycleRuleTests(unittest.TestCase):
     def test_build_navishti_grishm_plan_line_uses_weekday_and_replacements(self) -> None:
         line = generate_menu.build_navishti_grishm_plan_line(
             date(2026, 5, 24),
-            {2: "आज का भोजन"},
+            {2: "छाछ की सब्ज़ी और शालि चावल"},
         )
 
         self.assertEqual(
@@ -582,12 +582,13 @@ class VarietyCycleRuleTests(unittest.TestCase):
             [
                 "*नविष्टि भोजन (ग्रीष्म):*",
                 "भोजन 1: दूध + गेहूँ दलिया",
-                "भोजन 2: ऊपर लिखित अलग कटोरी",
+                "भोजन 2: छाछ की सब्ज़ी और शालि चावल (सभी के लिए बन रहे इसी भोजन से तड़का लगाने से पहले निकालें)",
                 "भोजन 3: पपीता",
                 "भोजन 4: मक्खन + मुलायम चावल",
                 "भोजन 5: सूजी का हलवा",
             ],
         )
+        self.assertNotIn("ऊपर लिखित अलग कटोरी", line)
 
     def test_build_next_day_overnight_prep_line_does_not_create_second_breakfast_heading(self) -> None:
         line = generate_menu.build_next_day_overnight_prep_line(

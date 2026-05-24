@@ -475,7 +475,7 @@ NAVISHTI_SHARED_MEAL_KEYWORDS = (
     "लौकी",
     "कद्दू",
 )
-NAVISHTI_SHARED_MEAL_SLOT_TEXT = "ऊपर लिखित अलग कटोरी"
+NAVISHTI_SHARED_MEAL_SLOT_NOTE = "सभी के लिए बन रहे इसी भोजन से तड़का लगाने से पहले निकालें"
 NAVISHTI_SEPARATE_BOWL_LINE = "*नविष्टि हेतु:* इस भोजन में से बिना छूका हुआ 1 कटोरी अलग निकाल दें।"
 
 OVERNIGHT_BREAKFAST_ITEMS = {
@@ -2217,11 +2217,15 @@ def is_navishti_shared_meal_candidate(item: str) -> bool:
     return any(keyword.casefold() in normalized for keyword in NAVISHTI_SHARED_MEAL_KEYWORDS)
 
 
+def format_navishti_shared_meal_slot(item: str) -> str:
+    return f"{item} ({NAVISHTI_SHARED_MEAL_SLOT_NOTE})"
+
+
 def build_navishti_grishm_plan_line(target_date: date, replacements: dict[int, str]) -> str:
     plan = list(NAVISHTI_GRISHM_WEEKLY_PLAN[target_date.weekday()])
-    for slot_number in replacements:
+    for slot_number, replacement_item in replacements.items():
         if 1 <= slot_number <= len(plan):
-            plan[slot_number - 1] = NAVISHTI_SHARED_MEAL_SLOT_TEXT
+            plan[slot_number - 1] = format_navishti_shared_meal_slot(replacement_item)
     return "\r\n".join(
         ["*नविष्टि भोजन (ग्रीष्म):*"]
         + [f"भोजन {index}: {item}" for index, item in enumerate(plan, start=1)]
@@ -5314,14 +5318,14 @@ def main() -> int:
             if pakhala_serving_note:
                 lines.append(pakhala_serving_note)
         if ritu_key == "grishm" and is_navishti_shared_meal_candidate(breakfast_display):
-            navishti_grishm_replacements[1] = "सुबह का नाश्ता"
+            navishti_grishm_replacements[1] = breakfast_display
             lines.append(NAVISHTI_SEPARATE_BOWL_LINE)
         selected_meal_display = format_meal_display(selected_meal)
         selected_second_meal_display = format_meal_display(selected_second_meal) if selected_second_meal is not None else None
         if selected_second_meal is not None:
             lines.append(f"*आज का भोजन 1:* {selected_meal_display}")
             if ritu_key == "grishm" and is_navishti_shared_meal_candidate(selected_meal_display):
-                navishti_grishm_replacements[2] = "आज का भोजन 1"
+                navishti_grishm_replacements[2] = selected_meal_display
                 lines.append(NAVISHTI_SEPARATE_BOWL_LINE)
             lines.append(f"*आज का भोजन 2:* {selected_second_meal_display}")
             if (
@@ -5329,12 +5333,12 @@ def main() -> int:
                 and selected_second_meal_display is not None
                 and is_navishti_shared_meal_candidate(selected_second_meal_display)
             ):
-                navishti_grishm_replacements[4] = "आज का भोजन 2"
+                navishti_grishm_replacements[4] = selected_second_meal_display
                 lines.append(NAVISHTI_SEPARATE_BOWL_LINE)
         else:
             lines.append(f"*आज का भोजन:* {selected_meal_display}")
             if ritu_key == "grishm" and is_navishti_shared_meal_candidate(selected_meal_display):
-                navishti_grishm_replacements[2] = "आज का भोजन"
+                navishti_grishm_replacements[2] = selected_meal_display
                 lines.append(NAVISHTI_SEPARATE_BOWL_LINE)
         if ritu_key == "grishm":
             lines.append(build_navishti_grishm_plan_line(target_date, navishti_grishm_replacements))
