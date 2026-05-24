@@ -357,15 +357,20 @@ VASANT_ROTI_GRAIN_PREFERENCE_WEIGHTS = {
 GRISHM_ROTI_GRAIN_PREFIXES = [
     ("ज्वार", "ज्वार की रोटी"),
     ("जौ", "जौ की रोटी"),
+    ("स्प्राउटेड रागी", "स्प्राउटेड रागी की रोटी"),
+    ("रागी", "रागी की रोटी"),
     ("झंगोरा", "झंगोरा आटा की रोटी"),
-    ("पुराना गेहूं", "पुराना गेहूं की रोटी"),
 ]
 GRISHM_ROTI_GRAIN_PREFERENCE_WEIGHTS = {
     "ज्वार": 35,
     "जौ": 30,
+    "स्प्राउटेड रागी": 28,
+    "रागी": 28,
     "झंगोरा": 25,
-    "पुराना गेहूं": 10,
 }
+GRISHM_FORBIDDEN_ROTI_ATTA_KEYS = {"गेहूँ"}
+GRISHM_FORBIDDEN_ROTI_TERMS = ("गेहूँ", "गेहूं", "गेहू", "कनक", "wheat", "kanak")
+GRISHM_DEFAULT_ROTI_ATTA_DISPLAY = "ज्वार"
 VASANT_DAL_OPTION_ALIASES = {
     "मूँग": (
         "मूंग दाल और चावल",
@@ -2682,13 +2687,87 @@ def extract_roti_atta_key(item: str) -> str | None:
         return "जौ"
     if normalized.startswith("ज्वार (Sorghum) (केवल पुराना) की रोटी") or normalized.startswith("ज्वार की रोटी"):
         return "ज्वार"
-    if normalized.startswith("रागी (Finger Millet) (केवल पुराना) की रोटी") or normalized.startswith("रागी की रोटी"):
+    if (
+        normalized.startswith("रागी (Finger Millet) (केवल पुराना) की रोटी")
+        or normalized.startswith("रागी की रोटी")
+        or normalized.startswith("स्प्राउटेड रागी की रोटी")
+    ):
         return "रागी"
     if normalized.startswith("झंगोरा आटा की रोटी"):
         return "झंगोरा"
-    if normalized.startswith("पुराना गेहूं की रोटी") or normalized.startswith("गेहूँ (Wheat) (केवल पुराना) की रोटी"):
+    if (
+        normalized.startswith("पुराना गेहूं की रोटी")
+        or normalized.startswith("गेहूँ (Wheat) (केवल पुराना) की रोटी")
+        or "गेहूँ रोटी" in normalized
+        or "गेहूं रोटी" in normalized
+        or "गेहू रोटी" in normalized
+        or "कनक" in normalized
+    ):
         return "गेहूँ"
     return None
+
+
+def get_grishm_roti_atta_display(target_date: date) -> str:
+    rule = get_date_specific_roti_atta_rule(target_date)
+    if rule is None:
+        return GRISHM_DEFAULT_ROTI_ATTA_DISPLAY
+
+    preferred_attas, display_label = rule
+    for index, atta_key in enumerate(preferred_attas):
+        if atta_key not in GRISHM_FORBIDDEN_ROTI_ATTA_KEYS:
+            return display_label if index == 0 else atta_key
+    return GRISHM_DEFAULT_ROTI_ATTA_DISPLAY
+
+
+def is_grishm_forbidden_wheat_roti(item: str) -> bool:
+    if not is_roti_item(item):
+        return False
+    normalized = re.sub(r"\s+", " ", item).strip()
+    canonical = normalize_vasant_roti_meal_text(normalized)
+    normalized_casefold = normalized.casefold()
+    canonical_casefold = canonical.casefold()
+    if extract_roti_atta_key(item) in GRISHM_FORBIDDEN_ROTI_ATTA_KEYS:
+        return True
+    return any(
+        term.casefold() in normalized_casefold or term.casefold() in canonical_casefold
+        for term in GRISHM_FORBIDDEN_ROTI_TERMS
+    )
+
+
+def normalize_grishm_generic_roti_item(item: str, target_date: date) -> tuple[str, bool]:
+    if not is_roti_item(item) or extract_roti_atta_key(item) is not None:
+        return item, False
+
+    normalized = re.sub(r"\s+", " ", item).strip()
+    atta_display = get_grishm_roti_atta_display(target_date)
+    if "दाल" in normalized and ("मूंग" in normalized or "मूँग" in normalized):
+        return f"{atta_display} की रोटी (मूंग दाल भरवां)", True
+    if "दाल" in normalized:
+        return f"{atta_display} की रोटी (दाल भरवां)", True
+    if "आलू" in normalized and ("प्याज़" in normalized or "प्याज" in normalized):
+        return f"{atta_display} की रोटी (आलू-प्याज़ भरी)", True
+    if "नमक" in normalized and "अजवाइन" in normalized:
+        return f"{atta_display} की रोटी (नमक-अजवाइन)", True
+    return f"{atta_display} की रोटी ({normalized})", True
+
+
+def apply_grishm_roti_atta_rule(pool: list[str], target_date: date, ritu_key: str) -> tuple[list[str], bool]:
+    if normalize_ritu_key(ritu_key) != "grishm":
+        return pool[:], False
+
+    filtered: list[str] = []
+    applied = False
+    for item in pool:
+        if is_grishm_forbidden_wheat_roti(item):
+            applied = True
+            continue
+        normalized_item, changed = normalize_grishm_generic_roti_item(item, target_date)
+        if is_grishm_forbidden_wheat_roti(normalized_item):
+            applied = True
+            continue
+        filtered.append(normalized_item)
+        applied = applied or changed
+    return filtered, applied
 
 
 def apply_date_specific_roti_atta_rule(pool: list[str], target_date: date) -> tuple[list[str], bool]:
@@ -4029,6 +4108,8 @@ def build_day_context(
         light_fallback_items=light_fallback_items,
         missing_data_notes=missing_data_notes,
     )
+    breakfast_items, _ = apply_grishm_roti_atta_rule(breakfast_items, target_date, ritu_key)
+    meal_items, _ = apply_grishm_roti_atta_rule(meal_items, target_date, ritu_key)
 
     return DayContext(
         target_date=target_date,
@@ -4297,9 +4378,14 @@ def main() -> int:
     )
     if vasant_ragi_roti_only_applied:
         missing_data_notes.append(VASANT_RAGI_ROTI_ONLY_NOTE)
+    breakfast_items, _ = apply_grishm_roti_atta_rule(breakfast_items, target_date, ritu_key)
+    meal_items, _ = apply_grishm_roti_atta_rule(meal_items, target_date, ritu_key)
+    meal_choice_items, _ = apply_grishm_roti_atta_rule(meal_choice_items, target_date, ritu_key)
+    light_fallback_items, _ = apply_grishm_roti_atta_rule(light_fallback_items, target_date, ritu_key)
     breakfast_items, _ = apply_date_specific_roti_atta_rule(breakfast_items, target_date)
     meal_items, _ = apply_date_specific_roti_atta_rule(meal_items, target_date)
     meal_choice_items, _ = apply_date_specific_roti_atta_rule(meal_choice_items, target_date)
+    light_fallback_items, _ = apply_date_specific_roti_atta_rule(light_fallback_items, target_date)
     meal_items, _ = exclude_kadhi_items_on_rainy_day(meal_items, weather_info)
     meal_choice_items, _ = exclude_kadhi_items_on_rainy_day(meal_choice_items, weather_info)
 

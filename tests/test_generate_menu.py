@@ -863,13 +863,26 @@ class VasantRotiRotationTests(unittest.TestCase):
     def test_extract_grishm_roti_grain_option_identifies_allowed_option(self) -> None:
         self.assertEqual(
             generate_menu.extract_grishm_roti_grain_option(
-                "पुराना गेहूं की रोटी, लौकी और चना दाल",
+                "ज्वार की रोटी, लौकी की सब्ज़ी, मसूर दाल",
                 "grishm",
             ),
-            "पुराना गेहूं",
+            "ज्वार",
+        )
+        self.assertEqual(
+            generate_menu.extract_grishm_roti_grain_option(
+                "रागी की रोटी (मूंग दाल भरवां)",
+                "grishm",
+            ),
+            "रागी",
+        )
+        self.assertIsNone(
+            generate_menu.extract_grishm_roti_grain_option(
+                "पुराना गेहूं की रोटी, लौकी और चना दाल",
+                "grishm",
+            )
         )
 
-    def test_get_ritu_roti_grain_preference_weight_keeps_wheat_lowest(self) -> None:
+    def test_get_ritu_roti_grain_preference_weight_blocks_grishm_wheat(self) -> None:
         self.assertEqual(
             generate_menu.get_ritu_roti_grain_preference_weight(
                 "गेहूँ (Wheat) (केवल पुराना) की रोटी और लौकी की सब्ज़ी",
@@ -889,8 +902,9 @@ class VasantRotiRotationTests(unittest.TestCase):
                 "पुराना गेहूं की रोटी, लौकी और चना दाल",
                 "grishm",
             ),
-            10,
+            1,
         )
+        self.assertTrue(generate_menu.is_grishm_forbidden_wheat_roti("पुराना गेहूं की रोटी, लौकी और चना दाल"))
         self.assertEqual(
             generate_menu.get_ritu_roti_grain_preference_weight(
                 "ज्वार की रोटी, लौकी की सब्ज़ी, मसूर दाल",
@@ -902,13 +916,13 @@ class VasantRotiRotationTests(unittest.TestCase):
     def test_choose_weighted_meal_item_prefers_higher_weight_grain_over_many_seeds(self) -> None:
         pool = [
             "ज्वार की रोटी, लौकी की सब्ज़ी, मसूर दाल",
-            "पुराना गेहूं की रोटी, लौकी और चना दाल",
+            "झंगोरा आटा की रोटी, लौकी और चना दाल",
         ]
         counts = {item: 0 for item in pool}
         for index in range(200):
             selected = generate_menu.choose_weighted_meal_item(pool, f"seed-{index}", "grishm")
             counts[selected] += 1
-        self.assertGreater(counts["ज्वार की रोटी, लौकी की सब्ज़ी, मसूर दाल"], counts["पुराना गेहूं की रोटी, लौकी और चना दाल"])
+        self.assertGreater(counts["ज्वार की रोटी, लौकी की सब्ज़ी, मसूर दाल"], counts["झंगोरा आटा की रोटी, लौकी और चना दाल"])
 
     def test_apply_vasant_roti_grain_rotation_rule_filters_used_grain_options(self) -> None:
         filtered, reset = generate_menu.apply_vasant_roti_grain_rotation_rule(
@@ -1273,6 +1287,59 @@ class CurdRuleTests(unittest.TestCase):
 
 
 class DateSpecificRotiAttaRuleTests(unittest.TestCase):
+    def test_apply_grishm_roti_atta_rule_removes_wheat_roti(self) -> None:
+        filtered, applied = generate_menu.apply_grishm_roti_atta_rule(
+            [
+                "पुराना गेहूं की रोटी, लौकी और चना दाल",
+                "कनक की रोटी, तोरई",
+                "ज्वार की रोटी, लौकी की सब्ज़ी, मसूर दाल",
+            ],
+            date(2026, 5, 25),
+            "grishm",
+        )
+        self.assertEqual(filtered, ["ज्वार की रोटी, लौकी की सब्ज़ी, मसूर दाल"])
+        self.assertTrue(applied)
+
+    def test_apply_grishm_roti_atta_rule_rewrites_generic_stuffed_roti(self) -> None:
+        filtered, applied = generate_menu.apply_grishm_roti_atta_rule(
+            [
+                "दाल की रोटी (मूंग दाल)",
+                "आलू प्याज़ की रोटी",
+                "पोहा",
+            ],
+            date(2026, 5, 24),
+            "grishm",
+        )
+        self.assertEqual(
+            filtered,
+            [
+                "रागी की रोटी (मूंग दाल भरवां)",
+                "रागी की रोटी (आलू-प्याज़ भरी)",
+                "पोहा",
+            ],
+        )
+        self.assertTrue(applied)
+        self.assertEqual(generate_menu.extract_roti_atta_key(filtered[0]), "रागी")
+
+    def test_apply_grishm_roti_atta_rule_uses_sprouted_ragi_display_when_scheduled(self) -> None:
+        filtered, applied = generate_menu.apply_grishm_roti_atta_rule(
+            ["दाल की रोटी (मूंग दाल)"],
+            date(2026, 5, 12),
+            "grishm",
+        )
+        self.assertEqual(filtered, ["स्प्राउटेड रागी की रोटी (मूंग दाल भरवां)"])
+        self.assertTrue(applied)
+        self.assertEqual(generate_menu.extract_roti_atta_key(filtered[0]), "रागी")
+
+    def test_apply_grishm_roti_atta_rule_ignores_other_ritus(self) -> None:
+        filtered, applied = generate_menu.apply_grishm_roti_atta_rule(
+            ["गेहूँ (Wheat) (केवल पुराना) की रोटी और लौकी की सब्ज़ी"],
+            date(2026, 5, 24),
+            "vasant",
+        )
+        self.assertEqual(filtered, ["गेहूँ (Wheat) (केवल पुराना) की रोटी और लौकी की सब्ज़ी"])
+        self.assertFalse(applied)
+
     def test_apply_date_specific_roti_atta_rule_removes_chana_sattu_in_exclusion_window(self) -> None:
         filtered, applied = generate_menu.apply_date_specific_roti_atta_rule(
             [
