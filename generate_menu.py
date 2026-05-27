@@ -2029,6 +2029,7 @@ def normalize_history(raw: Any) -> list[dict[str, Any]]:
         ritu_key_val = row.get("ritu_key")
         next_day_breakfast_lock = row.get("next_day_breakfast_lock")
         next_day_requires_rice_prep = row.get("next_day_requires_rice_prep")
+        navishti_grishm_plan = row.get("navishti_grishm_plan")
 
         if isinstance(breakfast_val, str) and isinstance(meal_val, str):
             normalized_row: dict[str, Any] = {"date": date_val, "breakfast": breakfast_val, "meal": meal_val}
@@ -2043,6 +2044,14 @@ def normalize_history(raw: Any) -> list[dict[str, Any]]:
                 normalized_row["next_day_requires_rice_prep"] = True
             elif isinstance(next_day_requires_rice_prep, bool):
                 normalized_row["next_day_requires_rice_prep"] = next_day_requires_rice_prep
+            if isinstance(navishti_grishm_plan, list):
+                cleaned_plan = [
+                    str(item).strip()
+                    for item in navishti_grishm_plan
+                    if isinstance(item, str) and str(item).strip()
+                ]
+                if cleaned_plan:
+                    normalized_row["navishti_grishm_plan"] = cleaned_plan
             cleaned.append(normalized_row)
             continue
 
@@ -2058,6 +2067,14 @@ def normalize_history(raw: Any) -> list[dict[str, Any]]:
                 normalized_row["next_day_requires_rice_prep"] = True
             elif isinstance(next_day_requires_rice_prep, bool):
                 normalized_row["next_day_requires_rice_prep"] = next_day_requires_rice_prep
+            if isinstance(navishti_grishm_plan, list):
+                cleaned_plan = [
+                    str(item).strip()
+                    for item in navishti_grishm_plan
+                    if isinstance(item, str) and str(item).strip()
+                ]
+                if cleaned_plan:
+                    normalized_row["navishti_grishm_plan"] = cleaned_plan
             cleaned.append(normalized_row)
 
     return cleaned
@@ -2221,15 +2238,155 @@ def format_navishti_shared_meal_slot(item: str) -> str:
     return f"{item} ({NAVISHTI_SHARED_MEAL_SLOT_NOTE})"
 
 
-def build_navishti_grishm_plan_line(target_date: date, replacements: dict[int, str]) -> str:
+def normalize_navishti_food_key(item: str) -> str:
+    normalized = re.sub(r"\s+", " ", item).strip()
+    shared_note_suffix = f" ({NAVISHTI_SHARED_MEAL_SLOT_NOTE})"
+    if normalized.endswith(shared_note_suffix):
+        normalized = normalized[: -len(shared_note_suffix)].strip()
+    return normalized.casefold()
+
+
+def get_navishti_grishm_slot_alternatives(slot_number: int) -> list[str]:
+    if not 1 <= slot_number <= 5:
+        return []
+    return dedupe_preserve_order(plan[slot_number - 1] for plan in NAVISHTI_GRISHM_WEEKLY_PLAN.values())
+
+
+def get_navishti_grishm_all_alternatives() -> list[str]:
+    return dedupe_preserve_order(
+        item for plan in NAVISHTI_GRISHM_WEEKLY_PLAN.values() for item in plan
+    )
+
+
+def choose_navishti_non_repeating_alternative(
+    slot_number: int,
+    previous_day_keys: set[str],
+    current_day_keys: set[str],
+    original_key: str,
+) -> str | None:
+    candidates = get_navishti_grishm_slot_alternatives(slot_number) + get_navishti_grishm_all_alternatives()
+    for candidate in candidates:
+        candidate_key = normalize_navishti_food_key(candidate)
+        if candidate_key == original_key:
+            continue
+        if candidate_key in previous_day_keys or candidate_key in current_day_keys:
+            continue
+        return candidate
+    return None
+
+
+def resolve_navishti_grishm_plan_items(
+    target_date: date,
+    replacements: dict[int, str],
+    previous_day_items: list[str] | None = None,
+) -> list[str]:
     plan = list(NAVISHTI_GRISHM_WEEKLY_PLAN[target_date.weekday()])
     for slot_number, replacement_item in replacements.items():
         if 1 <= slot_number <= len(plan):
             plan[slot_number - 1] = format_navishti_shared_meal_slot(replacement_item)
+
+    previous_day_keys = {
+        normalize_navishti_food_key(item)
+        for item in (previous_day_items or [])
+        if isinstance(item, str) and item.strip()
+    }
+    if not previous_day_keys:
+        return plan
+
+    resolved: list[str] = []
+    current_day_keys: set[str] = set()
+    for slot_number, item in enumerate(plan, start=1):
+        item_key = normalize_navishti_food_key(item)
+        if item_key in previous_day_keys:
+            replacement = choose_navishti_non_repeating_alternative(
+                slot_number,
+                previous_day_keys,
+                current_day_keys,
+                item_key,
+            )
+            if replacement is not None:
+                item = replacement
+                item_key = normalize_navishti_food_key(item)
+        resolved.append(item)
+        current_day_keys.add(item_key)
+    return resolved
+
+
+def get_used_navishti_shared_replacement_slots(plan_items: list[str], replacements: dict[int, str]) -> set[int]:
+    used_slots: set[int] = set()
+    for slot_number, replacement_item in replacements.items():
+        if not 1 <= slot_number <= len(plan_items):
+            continue
+        expected_key = normalize_navishti_food_key(format_navishti_shared_meal_slot(replacement_item))
+        if normalize_navishti_food_key(plan_items[slot_number - 1]) == expected_key:
+            used_slots.add(slot_number)
+    return used_slots
+
+
+def format_navishti_grishm_plan_line(plan_items: list[str]) -> str:
     return "\r\n".join(
         ["*नविष्टि भोजन (ग्रीष्म):*"]
-        + [f"भोजन {index}: {item}" for index, item in enumerate(plan, start=1)]
+        + [f"भोजन {index}: {item}" for index, item in enumerate(plan_items, start=1)]
     )
+
+
+def build_navishti_grishm_plan_line(
+    target_date: date,
+    replacements: dict[int, str],
+    previous_day_items: list[str] | None = None,
+) -> str:
+    plan_items = resolve_navishti_grishm_plan_items(target_date, replacements, previous_day_items)
+    return format_navishti_grishm_plan_line(plan_items)
+
+
+def build_navishti_grishm_replacements_from_menu_items(
+    breakfast_item: str,
+    meal_item: str,
+    second_meal_item: str | None,
+) -> dict[int, str]:
+    breakfast_display = (
+        format_overnight_breakfast_label(breakfast_item)
+        if breakfast_item in OVERNIGHT_BREAKFAST_ITEMS
+        else breakfast_item
+    )
+    replacements: dict[int, str] = {}
+    if is_navishti_shared_meal_candidate(breakfast_display):
+        replacements[1] = breakfast_display
+
+    meal_display = format_meal_display(meal_item)
+    if is_navishti_shared_meal_candidate(meal_display):
+        replacements[2] = meal_display
+
+    if second_meal_item is not None:
+        second_meal_display = format_meal_display(second_meal_item)
+        if is_navishti_shared_meal_candidate(second_meal_display):
+            replacements[4] = second_meal_display
+    return replacements
+
+
+def get_previous_navishti_grishm_plan_items(history: list[dict[str, Any]], target_date: date) -> list[str]:
+    previous_date = target_date - timedelta(days=1)
+    previous_row = get_history_row(history, previous_date.isoformat())
+    if previous_row is None:
+        return []
+
+    stored_plan = previous_row.get("navishti_grishm_plan")
+    if isinstance(stored_plan, list):
+        cleaned_plan = [str(item).strip() for item in stored_plan if isinstance(item, str) and str(item).strip()]
+        if cleaned_plan:
+            return cleaned_plan
+
+    breakfast_item = previous_row.get("breakfast")
+    meal_item = previous_row.get("meal")
+    if not isinstance(breakfast_item, str) or not isinstance(meal_item, str):
+        return []
+    second_meal_item = previous_row.get("second_meal")
+    replacements = build_navishti_grishm_replacements_from_menu_items(
+        breakfast_item,
+        meal_item,
+        second_meal_item if isinstance(second_meal_item, str) and second_meal_item.strip() else None,
+    )
+    return resolve_navishti_grishm_plan_items(previous_date, replacements)
 
 
 def collect_vasant_prohibited_warnings(lines: list[str]) -> list[str]:
@@ -3817,6 +3974,7 @@ def update_history(
     ritu_key: str,
     next_day_breakfast_lock: str | None = None,
     next_day_requires_rice_prep: bool = False,
+    navishti_grishm_plan: list[str] | None = None,
 ) -> list[dict[str, Any]]:
     updated = [row for row in history if row.get("date") != target_date]
     new_row: dict[str, Any] = {
@@ -3834,6 +3992,14 @@ def update_history(
         new_row["next_day_requires_rice_prep"] = True
     elif next_day_requires_rice_prep:
         new_row["next_day_requires_rice_prep"] = True
+    if navishti_grishm_plan:
+        cleaned_plan = [
+            str(item).strip()
+            for item in navishti_grishm_plan
+            if isinstance(item, str) and str(item).strip()
+        ]
+        if cleaned_plan:
+            new_row["navishti_grishm_plan"] = cleaned_plan
     updated.append(new_row)
 
     cutoff = datetime.strptime(target_date, "%Y-%m-%d").date() - timedelta(days=max(keep_days, MIN_VARIETY_HISTORY_DAYS))
@@ -5264,6 +5430,26 @@ def main() -> int:
     if warning_items:
         print(format_weather_tag_warning(warning_items), file=sys.stderr)
 
+    navishti_grishm_replacements: dict[int, str] = {}
+    navishti_grishm_plan_items: list[str] = []
+    navishti_grishm_shared_slots: set[int] = set()
+    if ritu_key == "grishm" and not shringdhara_info.active:
+        navishti_grishm_replacements = build_navishti_grishm_replacements_from_menu_items(
+            selected_breakfast,
+            selected_meal,
+            selected_second_meal,
+        )
+        previous_navishti_items = get_previous_navishti_grishm_plan_items(history, target_date)
+        navishti_grishm_plan_items = resolve_navishti_grishm_plan_items(
+            target_date,
+            navishti_grishm_replacements,
+            previous_navishti_items,
+        )
+        navishti_grishm_shared_slots = get_used_navishti_shared_replacement_slots(
+            navishti_grishm_plan_items,
+            navishti_grishm_replacements,
+        )
+
     new_history = update_history(
         history,
         target_date_str,
@@ -5275,6 +5461,7 @@ def main() -> int:
         ritu_key,
         next_day_breakfast_lock=next_day_breakfast_lock,
         next_day_requires_rice_prep=next_day_requires_rice_prep,
+        navishti_grishm_plan=navishti_grishm_plan_items,
     )
     write_json(HISTORY_FILE, new_history)
 
@@ -5301,7 +5488,6 @@ def main() -> int:
             if selected_breakfast in OVERNIGHT_BREAKFAST_ITEMS
             else selected_breakfast
         )
-        navishti_grishm_replacements: dict[int, str] = {}
         lines.append(f"*सुबह का नाश्ता:* {breakfast_display}")
         if selected_breakfast in OVERNIGHT_BREAKFAST_ITEMS:
             prep_date_display_str = (target_date - timedelta(days=1)).strftime("%d-%b-%Y")
@@ -5317,31 +5503,23 @@ def main() -> int:
             pakhala_serving_note = build_pakhala_serving_note(selected_breakfast)
             if pakhala_serving_note:
                 lines.append(pakhala_serving_note)
-        if ritu_key == "grishm" and is_navishti_shared_meal_candidate(breakfast_display):
-            navishti_grishm_replacements[1] = breakfast_display
+        if 1 in navishti_grishm_shared_slots:
             lines.append(NAVISHTI_SEPARATE_BOWL_LINE)
         selected_meal_display = format_meal_display(selected_meal)
         selected_second_meal_display = format_meal_display(selected_second_meal) if selected_second_meal is not None else None
         if selected_second_meal is not None:
             lines.append(f"*आज का भोजन 1:* {selected_meal_display}")
-            if ritu_key == "grishm" and is_navishti_shared_meal_candidate(selected_meal_display):
-                navishti_grishm_replacements[2] = selected_meal_display
+            if 2 in navishti_grishm_shared_slots:
                 lines.append(NAVISHTI_SEPARATE_BOWL_LINE)
             lines.append(f"*आज का भोजन 2:* {selected_second_meal_display}")
-            if (
-                ritu_key == "grishm"
-                and selected_second_meal_display is not None
-                and is_navishti_shared_meal_candidate(selected_second_meal_display)
-            ):
-                navishti_grishm_replacements[4] = selected_second_meal_display
+            if 4 in navishti_grishm_shared_slots:
                 lines.append(NAVISHTI_SEPARATE_BOWL_LINE)
         else:
             lines.append(f"*आज का भोजन:* {selected_meal_display}")
-            if ritu_key == "grishm" and is_navishti_shared_meal_candidate(selected_meal_display):
-                navishti_grishm_replacements[2] = selected_meal_display
+            if 2 in navishti_grishm_shared_slots:
                 lines.append(NAVISHTI_SEPARATE_BOWL_LINE)
         if ritu_key == "grishm":
-            lines.append(build_navishti_grishm_plan_line(target_date, navishti_grishm_replacements))
+            lines.append(format_navishti_grishm_plan_line(navishti_grishm_plan_items))
         roti_atta_note = build_roti_atta_note(target_date, selected_breakfast, selected_meal, selected_second_meal)
         if roti_atta_note:
             lines.append(roti_atta_note)

@@ -590,6 +590,50 @@ class VarietyCycleRuleTests(unittest.TestCase):
         )
         self.assertNotIn("ऊपर लिखित अलग कटोरी", line)
 
+    def test_resolve_navishti_grishm_plan_items_avoids_previous_day_duplicate(self) -> None:
+        previous_items = list(generate_menu.NAVISHTI_GRISHM_WEEKLY_PLAN[6])
+        items = generate_menu.resolve_navishti_grishm_plan_items(
+            date(2026, 5, 25),
+            {},
+            previous_items,
+        )
+
+        previous_keys = {generate_menu.normalize_navishti_food_key(item) for item in previous_items}
+        repeated_key = generate_menu.normalize_navishti_food_key("मक्खन + मुलायम चावल")
+        self.assertIn(repeated_key, previous_keys)
+        self.assertEqual(items[3], "मक्खन + रोटी")
+        self.assertTrue(
+            all(generate_menu.normalize_navishti_food_key(item) not in previous_keys for item in items)
+        )
+
+    def test_resolve_navishti_grishm_plan_items_drops_repeated_shared_replacement(self) -> None:
+        shared_item = "छाछ की सब्ज़ी और शालि चावल"
+        repeated_shared_slot = generate_menu.format_navishti_shared_meal_slot(shared_item)
+        items = generate_menu.resolve_navishti_grishm_plan_items(
+            date(2026, 5, 25),
+            {2: shared_item},
+            [repeated_shared_slot],
+        )
+        used_slots = generate_menu.get_used_navishti_shared_replacement_slots(items, {2: shared_item})
+
+        self.assertNotEqual(items[1], repeated_shared_slot)
+        self.assertNotIn(2, used_slots)
+
+    def test_update_history_persists_navishti_grishm_plan(self) -> None:
+        updated = generate_menu.update_history(
+            history=[],
+            target_date="2026-05-25",
+            breakfast_item="ज्वार की रोटी (आलू-प्याज़ भरी)",
+            meal_item="छाछ की सब्ज़ी और शालि चावल",
+            second_meal_item=None,
+            fruit_item="लीची",
+            keep_days=7,
+            ritu_key="grishm",
+            navishti_grishm_plan=["दूध + जौ दलिया", "मक्खन + रोटी"],
+        )
+
+        self.assertEqual(updated[0]["navishti_grishm_plan"], ["दूध + जौ दलिया", "मक्खन + रोटी"])
+
     def test_build_next_day_overnight_prep_line_does_not_create_second_breakfast_heading(self) -> None:
         line = generate_menu.build_next_day_overnight_prep_line(
             "पखाला भात (Pakhala Bhata): रात में 1 कटोरी कच्चे चावल धोकर सादा चावल पकाएँ।"
