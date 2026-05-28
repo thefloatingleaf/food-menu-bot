@@ -216,6 +216,7 @@ python3 generate_menu.py --bootstrap-weather-tags
 - `menu_weather_tags.json`
 - `manual_weather_override.json`
 - `fruit_months.json`
+- `guest_menu.json` (dormant Guest Menu entries: dish, home-follower responsibilities, and specific instructions)
 - `lunar_calendar_2026_2027.json` (reference calendar: lunar months, sankranti, amavasya, purnima, ekadashi, partial daily tables)
 - `config.json`
 
@@ -376,6 +377,12 @@ The generator also applies a recurring override for any festival day that is bot
 2. The drink is selected deterministically by date from `ठंडाई`, `सत्तू का शर्बत`, `खर्जुरादी मंथ`, `बेल शर्बत`, `रागी कांजी`, and `पेठे का जूस`.
 3. Drinks with supplied recipes render the full preparation text in the same line.
 4. Every drink line is followed by `*पेय विकल्प:* यदि आज का पेय उपलब्ध न हो, तो सत्तू का शर्बत दिया जा सकता है।`
+
+## Guest Menu behavior
+
+1. Guest Menu is a dormant data list in `guest_menu.json`; it is not rendered in the daily menu until explicitly activated.
+2. Each entry stores a stable `id`, Hindi dish name, optional English dish name, Hindi responsibility lines, and optional Hindi specific instructions.
+3. Current first entry: `दाल बाटी`; अनिल जी बाटी और सत्तू मसाला बनाते हैं, ऊषा इसे बेक करती हैं, और शोभ्रन आटा गूंथते हैं।
 
 ## Consecutive-day repeat rule
 

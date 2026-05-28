@@ -46,6 +46,7 @@ WEATHER_TAGS_FILE = BASE_DIR / "menu_weather_tags.json"
 MANUAL_WEATHER_FILE = BASE_DIR / "manual_weather_override.json"
 HEAVY_LIGHT_CLASSIFICATION_FILE = BASE_DIR / "heavy_light_classification_food_items_revised_paratha_rule.csv"
 FRUIT_MONTHS_FILE = BASE_DIR / "fruit_months.json"
+GUEST_MENU_FILE = BASE_DIR / "guest_menu.json"
 MENU_GENERATOR_NOW_DATE_ENV = "MENU_GENERATOR_NOW_DATE"
 OUTPUT_DATE_HEADER_RE = re.compile(r"^\*(\d{2})-([A-Za-z]{3})-(\d{4}) तिथि के लिए भोजन:\*$")
 GREGORIAN_MONTH_ABBR_TO_NUMBER = {
@@ -4021,6 +4022,45 @@ def validate_menu_list(menu: Any, file_label: str) -> list[str]:
     if not isinstance(menu, list) or not all(isinstance(i, str) and i.strip() for i in menu):
         raise ValueError(f"{file_label} must be a non-empty array of strings")
     return menu
+
+
+def validate_guest_menu_entries(menu: Any, file_label: str = "guest_menu.json") -> list[dict[str, Any]]:
+    if not isinstance(menu, list):
+        raise ValueError(f"{file_label} must be a JSON array")
+    entries: list[dict[str, Any]] = []
+    seen_ids: set[str] = set()
+    for index, value in enumerate(menu):
+        if not isinstance(value, dict):
+            raise ValueError(f"{file_label}[{index}] must be an object")
+        entry_id = str(value.get("id", "")).strip()
+        dish_hi = str(value.get("dish_hi", "")).strip()
+        responsibilities = value.get("responsibilities_hi")
+        instructions = value.get("specific_instructions_hi", [])
+        if not entry_id:
+            raise ValueError(f"{file_label}[{index}].id is required")
+        if entry_id in seen_ids:
+            raise ValueError(f"{file_label} contains duplicate id: {entry_id}")
+        if not dish_hi:
+            raise ValueError(f"{file_label}[{index}].dish_hi is required")
+        if not isinstance(responsibilities, list) or not responsibilities:
+            raise ValueError(f"{file_label}[{index}].responsibilities_hi must be a non-empty array")
+        normalized_responsibilities = [str(item).strip() for item in responsibilities if str(item).strip()]
+        if len(normalized_responsibilities) != len(responsibilities):
+            raise ValueError(f"{file_label}[{index}].responsibilities_hi cannot contain blank items")
+        if not isinstance(instructions, list):
+            raise ValueError(f"{file_label}[{index}].specific_instructions_hi must be an array")
+        normalized_instructions = [str(item).strip() for item in instructions if str(item).strip()]
+        if len(normalized_instructions) != len(instructions):
+            raise ValueError(f"{file_label}[{index}].specific_instructions_hi cannot contain blank items")
+
+        normalized_entry = dict(value)
+        normalized_entry["id"] = entry_id
+        normalized_entry["dish_hi"] = dish_hi
+        normalized_entry["responsibilities_hi"] = normalized_responsibilities
+        normalized_entry["specific_instructions_hi"] = normalized_instructions
+        entries.append(normalized_entry)
+        seen_ids.add(entry_id)
+    return entries
 
 
 def dedupe_preserve_order(items: list[str]) -> list[str]:

@@ -80,6 +80,37 @@ class ConsecutiveDayRepeatRuleTests(unittest.TestCase):
 
 
 class VarietyCycleRuleTests(unittest.TestCase):
+    def test_guest_menu_file_validates_and_contains_daal_baati(self) -> None:
+        guest_menu = generate_menu.validate_guest_menu_entries(
+            generate_menu.load_json(generate_menu.GUEST_MENU_FILE),
+            "guest_menu.json",
+        )
+        daal_baati = next(entry for entry in guest_menu if entry["id"] == "daal_baati")
+
+        self.assertEqual(daal_baati["dish_hi"], "दाल बाटी")
+        self.assertIn("अनिल जी बाटी और सत्तू मसाला अच्छा बनाते हैं।", daal_baati["responsibilities_hi"])
+        self.assertIn("ऊषा इसे बेक करती हैं।", daal_baati["responsibilities_hi"])
+        self.assertIn("शोभ्रन आटा गूंथते हैं।", daal_baati["responsibilities_hi"])
+
+    def test_validate_guest_menu_entries_rejects_duplicate_ids(self) -> None:
+        with self.assertRaisesRegex(ValueError, "duplicate id"):
+            generate_menu.validate_guest_menu_entries(
+                [
+                    {
+                        "id": "daal_baati",
+                        "dish_hi": "दाल बाटी",
+                        "responsibilities_hi": ["अनिल जी बाटी बनाते हैं।"],
+                        "specific_instructions_hi": [],
+                    },
+                    {
+                        "id": "daal_baati",
+                        "dish_hi": "दाल बाटी",
+                        "responsibilities_hi": ["ऊषा इसे बेक करती हैं।"],
+                        "specific_instructions_hi": [],
+                    },
+                ]
+            )
+
     def test_normalize_history_preserves_fruit(self) -> None:
         normalized = generate_menu.normalize_history(
             [
