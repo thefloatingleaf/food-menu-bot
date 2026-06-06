@@ -594,15 +594,7 @@ class VarietyCycleRuleTests(unittest.TestCase):
         meal = "ज्वार की रोटी और परवल-मूँगदाल की सूखी सब्ज़ी"
         self.assertEqual(generate_menu.format_meal_display(meal), meal)
 
-    def test_is_navishti_shared_meal_candidate_matches_grishm_food_triggers(self) -> None:
-        self.assertTrue(generate_menu.is_navishti_shared_meal_candidate("शालि चावल, अरहर दाल, टमाटर की सब्ज़ी"))
-        self.assertTrue(generate_menu.is_navishti_shared_meal_candidate("ज्वार की रोटी और लौकी की सब्ज़ी"))
-        self.assertTrue(generate_menu.is_navishti_shared_meal_candidate("पखाला भात (Pakhala Bhata)"))
-        self.assertFalse(generate_menu.is_navishti_shared_meal_candidate("सूजी की इडली, नारियल चटनी"))
-        self.assertFalse(generate_menu.is_navishti_shared_meal_candidate("पेसरट्टु (मूँग आधारित dosa)"))
-        self.assertFalse(generate_menu.is_navishti_shared_meal_candidate("सूजी की इडली, सांबर"))
-
-    def test_build_navishti_grishm_plan_line_uses_weekday_and_replacements(self) -> None:
+    def test_build_navishti_grishm_plan_line_ignores_household_replacements(self) -> None:
         line = generate_menu.build_navishti_grishm_plan_line(
             date(2026, 5, 24),
             {2: "छाछ की सब्ज़ी और शालि चावल"},
@@ -613,13 +605,15 @@ class VarietyCycleRuleTests(unittest.TestCase):
             [
                 "*नविष्टि भोजन (ग्रीष्म):*",
                 "भोजन 1: दूध + गेहूँ दलिया",
-                "भोजन 2: छाछ की सब्ज़ी और शालि चावल (सभी के लिए बन रहे इसी भोजन से तड़का लगाने से पहले निकालें)",
+                "भोजन 2: लौकी राइस मैश (थोड़े घी के साथ)",
                 "भोजन 3: पपीता",
                 "भोजन 4: मक्खन + मुलायम चावल",
                 "भोजन 5: सूजी का हलवा",
             ],
         )
         self.assertNotIn("ऊपर लिखित अलग कटोरी", line)
+        self.assertNotIn("तड़का", line)
+        self.assertNotIn("सभी के लिए बन रहे", line)
 
     def test_resolve_navishti_grishm_plan_items_avoids_previous_day_duplicate(self) -> None:
         previous_items = list(generate_menu.NAVISHTI_GRISHM_WEEKLY_PLAN[6])
@@ -637,18 +631,30 @@ class VarietyCycleRuleTests(unittest.TestCase):
             all(generate_menu.normalize_navishti_food_key(item) not in previous_keys for item in items)
         )
 
-    def test_resolve_navishti_grishm_plan_items_drops_repeated_shared_replacement(self) -> None:
-        shared_item = "छाछ की सब्ज़ी और शालि चावल"
-        repeated_shared_slot = generate_menu.format_navishti_shared_meal_slot(shared_item)
+    def test_normalize_navishti_food_key_strips_old_shared_note(self) -> None:
+        old_shared_slot = (
+            "छाछ की सब्ज़ी और शालि चावल "
+            "(सभी के लिए बन रहे इसी भोजन से तड़का लगाने से पहले निकालें)"
+        )
+
+        self.assertEqual(
+            generate_menu.normalize_navishti_food_key(old_shared_slot),
+            generate_menu.normalize_navishti_food_key("छाछ की सब्ज़ी और शालि चावल"),
+        )
+
+    def test_resolve_navishti_grishm_plan_items_ignores_repeated_shared_replacement(self) -> None:
+        old_shared_slot = (
+            "छाछ की सब्ज़ी और शालि चावल "
+            "(सभी के लिए बन रहे इसी भोजन से तड़का लगाने से पहले निकालें)"
+        )
         items = generate_menu.resolve_navishti_grishm_plan_items(
             date(2026, 5, 25),
-            {2: shared_item},
-            [repeated_shared_slot],
+            {2: "छाछ की सब्ज़ी और शालि चावल"},
+            [old_shared_slot],
         )
-        used_slots = generate_menu.get_used_navishti_shared_replacement_slots(items, {2: shared_item})
 
-        self.assertNotEqual(items[1], repeated_shared_slot)
-        self.assertNotIn(2, used_slots)
+        self.assertEqual(items[1], "मूंग दाल खिचड़ी + लौकी")
+        self.assertTrue(all("सभी के लिए बन रहे" not in item for item in items))
 
     def test_update_history_persists_navishti_grishm_plan(self) -> None:
         updated = generate_menu.update_history(
@@ -1726,6 +1732,53 @@ class FortnightlyKadhiChawalRuleTests(unittest.TestCase):
 
     def test_should_not_force_fortnightly_kadhi_chawal_in_varsha(self) -> None:
         self.assertFalse(generate_menu.should_force_fortnightly_kadhi_chawal([], date(2026, 7, 20), "varsha"))
+
+
+class WeeklyMainMealRiceLimitTests(unittest.TestCase):
+    def test_count_current_week_main_meal_rice_counts_meal_and_second_meal_only(self) -> None:
+        history = [
+            {"date": "2026-05-31", "breakfast": "उपमा", "meal": "दाल और चावल", "ritu_key": "grishm"},
+            {"date": "2026-06-01", "breakfast": "पखाला भात", "meal": "ज्वार की रोटी", "ritu_key": "grishm"},
+            {"date": "2026-06-02", "breakfast": "उपमा", "meal": "दाल और चावल", "ritu_key": "grishm"},
+            {
+                "date": "2026-06-03",
+                "breakfast": "इडली",
+                "meal": "जौ की रोटी",
+                "second_meal": "कढ़ी और शालि चावल",
+                "ritu_key": "grishm",
+            },
+        ]
+
+        self.assertEqual(generate_menu.count_current_week_main_meal_rice(history, date(2026, 6, 5)), 2)
+
+    def test_apply_weekly_main_meal_rice_limit_filters_rice_after_two_this_week(self) -> None:
+        history = [
+            {"date": "2026-06-01", "breakfast": "उपमा", "meal": "दाल और चावल", "ritu_key": "grishm"},
+            {"date": "2026-06-03", "breakfast": "इडली", "meal": "कढ़ी और शालि चावल", "ritu_key": "grishm"},
+        ]
+
+        filtered, applied = generate_menu.apply_weekly_main_meal_rice_limit(
+            ["शालि चावल, मसूर दाल, लौकी की सब्ज़ी", "ज्वार की रोटी, लौकी की सब्ज़ी"],
+            history,
+            date(2026, 6, 5),
+        )
+
+        self.assertEqual(filtered, ["ज्वार की रोटी, लौकी की सब्ज़ी"])
+        self.assertTrue(applied)
+
+    def test_apply_weekly_main_meal_rice_limit_allows_second_rice_this_week(self) -> None:
+        history = [
+            {"date": "2026-06-01", "breakfast": "उपमा", "meal": "दाल और चावल", "ritu_key": "grishm"},
+        ]
+
+        filtered, applied = generate_menu.apply_weekly_main_meal_rice_limit(
+            ["शालि चावल, मसूर दाल, लौकी की सब्ज़ी", "ज्वार की रोटी, लौकी की सब्ज़ी"],
+            history,
+            date(2026, 6, 5),
+        )
+
+        self.assertEqual(filtered, ["शालि चावल, मसूर दाल, लौकी की सब्ज़ी", "ज्वार की रोटी, लौकी की सब्ज़ी"])
+        self.assertFalse(applied)
 
 
 class MangorePrepInstructionTests(unittest.TestCase):

@@ -460,24 +460,7 @@ NAVISHTI_GRISHM_WEEKLY_PLAN = {
         "सूजी का हलवा",
     ),
 }
-NAVISHTI_SHARED_MEAL_KEYWORDS = (
-    "दाल",
-    "खिचड़ी",
-    "खिचड़ी",
-    "कढ़ी",
-    "कढ़ी",
-    "पखाला",
-    "pakhala",
-    "पझैया",
-    "pazhaya",
-    "चावल",
-    "rice",
-    "राइस",
-    "लौकी",
-    "कद्दू",
-)
-NAVISHTI_SHARED_MEAL_SLOT_NOTE = "सभी के लिए बन रहे इसी भोजन से तड़का लगाने से पहले निकालें"
-NAVISHTI_SEPARATE_BOWL_LINE = "*नविष्टि हेतु:* इस भोजन में से बिना छूका हुआ 1 कटोरी अलग निकाल दें।"
+NAVISHTI_OLD_SHARED_MEAL_SLOT_NOTE = "सभी के लिए बन रहे इसी भोजन से तड़का लगाने से पहले निकालें"
 
 OVERNIGHT_BREAKFAST_ITEMS = {
     "पझैया सादम (Pazhaya Sadam): बचे हुए चावल लें या फिर 1 कटोरी कच्चे चावल अच्छी तरह धोकर सादा चावल पकाएँ। चावल पक जाने के बाद उन्हें मिट्टी या स्टील के बर्तन में निकालकर पूरी तरह ठंडा होने दें। ठंडा होने पर उसमें छाछ डालें ताकि चावल पूरी तरह पानी में डूब जाएँ। बर्तन ढककर इसे कमरे के तापमान पर पूरी रात (लगभग 10–12 घंटे) रहने दें। सुबह चावल और उसका पानी हल्का खट्टा हो जाएगा। उसी पानी सहित चावल को हाथ से हल्का मसल दें। इसमें ½ छोटी चम्मच नमक मिलाएँ। 4–5 छोटी कच्ची प्याज छीलकर डालें, 1–2 हरी मिर्च हल्की कुचलकर डालें। अब 2–3 बड़े चम्मच दही या लगभग ½ कटोरी पतली छाछ मिलाकर अच्छी तरह मिला दें। इसे ठंडा ही खाएँ। साथ में साधारण अचार रखें।",
@@ -543,6 +526,7 @@ FORTNIGHTLY_KADHI_CHAWAL_RAIN_NOTE = (
     "[मौसम नियम] बरसात/वर्षा वाले दिन कढ़ी नहीं रखी गई, इसलिए 15-दिन वाला कढ़ी-चावल नियम आज लागू नहीं किया गया"
 )
 RAINY_DAY_KADHI_OVERRIDE_NOTE = "[मौसम नियम] बरसात/वर्षा वाले दिन निर्धारित कढ़ी override लागू नहीं किया गया"
+MAIN_MEAL_RICE_WEEKLY_LIMIT = 2
 BLOCK_KEYWORD_ALIASES = {
     "पोहा": ("पोहे",),
 }
@@ -2230,18 +2214,9 @@ def format_meal_display(item: str) -> str:
     return item
 
 
-def is_navishti_shared_meal_candidate(item: str) -> bool:
-    normalized = item.casefold()
-    return any(keyword.casefold() in normalized for keyword in NAVISHTI_SHARED_MEAL_KEYWORDS)
-
-
-def format_navishti_shared_meal_slot(item: str) -> str:
-    return f"{item} ({NAVISHTI_SHARED_MEAL_SLOT_NOTE})"
-
-
 def normalize_navishti_food_key(item: str) -> str:
     normalized = re.sub(r"\s+", " ", item).strip()
-    shared_note_suffix = f" ({NAVISHTI_SHARED_MEAL_SLOT_NOTE})"
+    shared_note_suffix = f" ({NAVISHTI_OLD_SHARED_MEAL_SLOT_NOTE})"
     if normalized.endswith(shared_note_suffix):
         normalized = normalized[: -len(shared_note_suffix)].strip()
     return normalized.casefold()
@@ -2278,13 +2253,10 @@ def choose_navishti_non_repeating_alternative(
 
 def resolve_navishti_grishm_plan_items(
     target_date: date,
-    replacements: dict[int, str],
+    replacements: dict[int, str] | None = None,
     previous_day_items: list[str] | None = None,
 ) -> list[str]:
     plan = list(NAVISHTI_GRISHM_WEEKLY_PLAN[target_date.weekday()])
-    for slot_number, replacement_item in replacements.items():
-        if 1 <= slot_number <= len(plan):
-            plan[slot_number - 1] = format_navishti_shared_meal_slot(replacement_item)
 
     previous_day_keys = {
         normalize_navishti_food_key(item)
@@ -2313,17 +2285,6 @@ def resolve_navishti_grishm_plan_items(
     return resolved
 
 
-def get_used_navishti_shared_replacement_slots(plan_items: list[str], replacements: dict[int, str]) -> set[int]:
-    used_slots: set[int] = set()
-    for slot_number, replacement_item in replacements.items():
-        if not 1 <= slot_number <= len(plan_items):
-            continue
-        expected_key = normalize_navishti_food_key(format_navishti_shared_meal_slot(replacement_item))
-        if normalize_navishti_food_key(plan_items[slot_number - 1]) == expected_key:
-            used_slots.add(slot_number)
-    return used_slots
-
-
 def format_navishti_grishm_plan_line(plan_items: list[str]) -> str:
     return "\r\n".join(
         ["*नविष्टि भोजन (ग्रीष्म):*"]
@@ -2338,31 +2299,6 @@ def build_navishti_grishm_plan_line(
 ) -> str:
     plan_items = resolve_navishti_grishm_plan_items(target_date, replacements, previous_day_items)
     return format_navishti_grishm_plan_line(plan_items)
-
-
-def build_navishti_grishm_replacements_from_menu_items(
-    breakfast_item: str,
-    meal_item: str,
-    second_meal_item: str | None,
-) -> dict[int, str]:
-    breakfast_display = (
-        format_overnight_breakfast_label(breakfast_item)
-        if breakfast_item in OVERNIGHT_BREAKFAST_ITEMS
-        else breakfast_item
-    )
-    replacements: dict[int, str] = {}
-    if is_navishti_shared_meal_candidate(breakfast_display):
-        replacements[1] = breakfast_display
-
-    meal_display = format_meal_display(meal_item)
-    if is_navishti_shared_meal_candidate(meal_display):
-        replacements[2] = meal_display
-
-    if second_meal_item is not None:
-        second_meal_display = format_meal_display(second_meal_item)
-        if is_navishti_shared_meal_candidate(second_meal_display):
-            replacements[4] = second_meal_display
-    return replacements
 
 
 def get_previous_navishti_grishm_plan_items(history: list[dict[str, Any]], target_date: date) -> list[str]:
@@ -2382,12 +2318,7 @@ def get_previous_navishti_grishm_plan_items(history: list[dict[str, Any]], targe
     if not isinstance(breakfast_item, str) or not isinstance(meal_item, str):
         return []
     second_meal_item = previous_row.get("second_meal")
-    replacements = build_navishti_grishm_replacements_from_menu_items(
-        breakfast_item,
-        meal_item,
-        second_meal_item if isinstance(second_meal_item, str) and second_meal_item.strip() else None,
-    )
-    return resolve_navishti_grishm_plan_items(previous_date, replacements)
+    return resolve_navishti_grishm_plan_items(previous_date)
 
 
 def collect_vasant_prohibited_warnings(lines: list[str]) -> list[str]:
@@ -2710,6 +2641,41 @@ def find_chaach_sabzi_rice_item(items: list[str]) -> str | None:
         if is_chaach_sabzi_rice_item(item):
             return item
     return None
+
+
+def get_week_start(target_date: date) -> date:
+    return target_date - timedelta(days=target_date.weekday())
+
+
+def count_current_week_main_meal_rice(history: list[dict[str, Any]], target_date: date) -> int:
+    week_start = get_week_start(target_date)
+    count = 0
+    for row in history:
+        try:
+            row_date = datetime.strptime(str(row.get("date", "")).strip(), "%Y-%m-%d").date()
+        except ValueError:
+            continue
+        if not (week_start <= row_date < target_date):
+            continue
+        for meal_value in get_history_values_for_field(row, "meal"):
+            if is_rice_item(meal_value):
+                count += 1
+    return count
+
+
+def is_main_meal_rice_weekly_limit_reached(history: list[dict[str, Any]], target_date: date) -> bool:
+    return count_current_week_main_meal_rice(history, target_date) >= MAIN_MEAL_RICE_WEEKLY_LIMIT
+
+
+def apply_weekly_main_meal_rice_limit(
+    pool: list[str],
+    history: list[dict[str, Any]],
+    target_date: date,
+) -> tuple[list[str], bool]:
+    if not is_main_meal_rice_weekly_limit_reached(history, target_date):
+        return pool[:], False
+    filtered = [item for item in pool if not is_rice_item(item)]
+    return filtered, filtered != pool
 
 
 def should_force_weekly_chaach_sabzi(
@@ -4598,6 +4564,8 @@ def main() -> int:
     light_fallback_items, _ = apply_date_specific_roti_atta_rule(light_fallback_items, target_date)
     meal_items, _ = exclude_kadhi_items_on_rainy_day(meal_items, weather_info)
     meal_choice_items, _ = exclude_kadhi_items_on_rainy_day(meal_choice_items, weather_info)
+    meal_items, _ = apply_weekly_main_meal_rice_limit(meal_items, history, target_date)
+    meal_choice_items, _ = apply_weekly_main_meal_rice_limit(meal_choice_items, history, target_date)
 
     warning_items: set[str] = set()
     meal_item_weight_getter = lambda item: get_ritu_roti_grain_preference_weight(item, ritu_key)
@@ -5041,6 +5009,8 @@ def main() -> int:
         original_meal_choice_items = meal_choice_items[:]
         meal_choice_items = exclude_meals_incompatible_with_breakfast(selected_breakfast, meal_choice_items)
         meal_override_items = exclude_meals_incompatible_with_breakfast(selected_breakfast, meal_items)
+        meal_choice_items, _ = apply_weekly_main_meal_rice_limit(meal_choice_items, history, target_date)
+        meal_override_items, _ = apply_weekly_main_meal_rice_limit(meal_override_items, history, target_date)
         meal_choice_items, yearly_curd_meal_rule_applied = apply_yearly_curd_repeat_rule(
             meal_choice_items,
             yearly_used_curd_items,
@@ -5470,24 +5440,13 @@ def main() -> int:
     if warning_items:
         print(format_weather_tag_warning(warning_items), file=sys.stderr)
 
-    navishti_grishm_replacements: dict[int, str] = {}
     navishti_grishm_plan_items: list[str] = []
-    navishti_grishm_shared_slots: set[int] = set()
     if ritu_key == "grishm" and not shringdhara_info.active:
-        navishti_grishm_replacements = build_navishti_grishm_replacements_from_menu_items(
-            selected_breakfast,
-            selected_meal,
-            selected_second_meal,
-        )
         previous_navishti_items = get_previous_navishti_grishm_plan_items(history, target_date)
         navishti_grishm_plan_items = resolve_navishti_grishm_plan_items(
             target_date,
-            navishti_grishm_replacements,
+            None,
             previous_navishti_items,
-        )
-        navishti_grishm_shared_slots = get_used_navishti_shared_replacement_slots(
-            navishti_grishm_plan_items,
-            navishti_grishm_replacements,
         )
 
     new_history = update_history(
@@ -5543,21 +5502,13 @@ def main() -> int:
             pakhala_serving_note = build_pakhala_serving_note(selected_breakfast)
             if pakhala_serving_note:
                 lines.append(pakhala_serving_note)
-        if 1 in navishti_grishm_shared_slots:
-            lines.append(NAVISHTI_SEPARATE_BOWL_LINE)
         selected_meal_display = format_meal_display(selected_meal)
         selected_second_meal_display = format_meal_display(selected_second_meal) if selected_second_meal is not None else None
         if selected_second_meal is not None:
             lines.append(f"*आज का भोजन 1:* {selected_meal_display}")
-            if 2 in navishti_grishm_shared_slots:
-                lines.append(NAVISHTI_SEPARATE_BOWL_LINE)
             lines.append(f"*आज का भोजन 2:* {selected_second_meal_display}")
-            if 4 in navishti_grishm_shared_slots:
-                lines.append(NAVISHTI_SEPARATE_BOWL_LINE)
         else:
             lines.append(f"*आज का भोजन:* {selected_meal_display}")
-            if 2 in navishti_grishm_shared_slots:
-                lines.append(NAVISHTI_SEPARATE_BOWL_LINE)
         if ritu_key == "grishm":
             lines.append(format_navishti_grishm_plan_line(navishti_grishm_plan_items))
         roti_atta_note = build_roti_atta_note(target_date, selected_breakfast, selected_meal, selected_second_meal)
