@@ -510,6 +510,74 @@ class VarietyCycleRuleTests(unittest.TestCase):
         self.assertTrue(selection.available)
         self.assertIn(selection.fruit, {"आम", "तरबूज", "खरबूजा"})
 
+    def test_select_monthly_fruit_blocks_kharbuja_on_rainy_day(self) -> None:
+        rainy_weather = generate_menu.WeatherInfo(
+            morning_temp_c=26,
+            max_temp_c=33,
+            rain_probability_pct=80,
+            is_rainy=True,
+            is_extreme_cold=False,
+            is_extreme_hot=False,
+            source_hi="test",
+        )
+        selection = generate_menu.select_monthly_fruit(
+            [],
+            date(2026, 6, 10),
+            {6: ["खरबूजा", "केला"]},
+            {},
+            weather_info=rainy_weather,
+        )
+
+        self.assertTrue(selection.available)
+        self.assertEqual(selection.fruit, "केला")
+
+    def test_select_monthly_fruit_never_falls_back_to_kharbuja_when_rainy(self) -> None:
+        rainy_weather = generate_menu.WeatherInfo(
+            morning_temp_c=26,
+            max_temp_c=33,
+            rain_probability_pct=80,
+            is_rainy=True,
+            is_extreme_cold=False,
+            is_extreme_hot=False,
+            source_hi="test",
+        )
+        selection = generate_menu.select_monthly_fruit(
+            [],
+            date(2026, 6, 10),
+            {6: ["खरबूजा"]},
+            {},
+            weather_info=rainy_weather,
+        )
+
+        self.assertFalse(selection.available)
+        self.assertIsNone(selection.fruit)
+
+    def test_select_monthly_fruit_deprioritizes_kharbuja_when_alternatives_exist(self) -> None:
+        selection = generate_menu.select_monthly_fruit(
+            [],
+            date(2026, 6, 10),
+            {6: ["खरबूजा", "तरबूज", "केला"]},
+            {},
+        )
+
+        self.assertTrue(selection.available)
+        self.assertNotEqual(selection.fruit, "खरबूजा")
+
+    def test_select_monthly_fruit_blocks_recent_kharbuja_repeat_when_possible(self) -> None:
+        history = [
+            {"date": "2026-06-01", "fruit": "खरबूजा"},
+            {"date": "2026-06-02", "fruit": "तरबूज"},
+        ]
+        selection = generate_menu.select_monthly_fruit(
+            history,
+            date(2026, 6, 10),
+            {6: ["खरबूजा", "तरबूज"]},
+            {},
+        )
+
+        self.assertTrue(selection.available)
+        self.assertEqual(selection.fruit, "तरबूज")
+
     def test_select_monthly_fruit_returns_unavailable_when_month_missing(self) -> None:
         selection = generate_menu.select_monthly_fruit([], date(2026, 4, 10), {}, {})
         self.assertFalse(selection.available)

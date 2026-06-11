@@ -315,6 +315,8 @@ VASANT_DAL_ROTATION_NOTE = (
     "[वसंत दाल चक्र] मसूर, अरहर और चने-लौकी की दाल का चक्र पूरा होने पर ही इनमें से किसी दाल को फिर दोहराया गया"
 )
 VASANT_FRUIT_TIMING_NOTE = "(फल सुबह 6–10 में न लें)"
+KHARBUJA_RECENT_REPEAT_BLOCK_DAYS = 14
+KHARBUJA_FRUIT_TOKENS = ("खरबूजा", "खरबूज़ा", "kharbuja", "muskmelon")
 VASANT_PROHIBITED_SECTION_TITLE = "❌ वर्जित (वसंत ऋतु में विशेष रूप से निषिद्ध):"
 VASANT_PROHIBITED_RULES: list[tuple[str, tuple[str, ...]]] = [
     ("तला हुआ", ("तला हुआ", "तली हुई", "तले हुए", "तला-भुना", "तला भुना")),
@@ -2128,6 +2130,51 @@ def get_previous_day_fruit(history: list[dict[str, Any]], target_date: date) -> 
     return None
 
 
+def is_kharbuja_fruit(fruit: str | None) -> bool:
+    if not isinstance(fruit, str):
+        return False
+    normalized = fruit.strip().casefold()
+    return any(token in normalized for token in KHARBUJA_FRUIT_TOKENS)
+
+
+def has_recent_kharbuja_fruit(
+    history: list[dict[str, Any]],
+    target_date: date,
+    window_days: int = KHARBUJA_RECENT_REPEAT_BLOCK_DAYS,
+) -> bool:
+    window_start = target_date - timedelta(days=window_days)
+    for row in history:
+        try:
+            row_date = datetime.strptime(row["date"], "%Y-%m-%d").date()
+        except (ValueError, KeyError):
+            continue
+        if not (window_start <= row_date < target_date):
+            continue
+        if is_kharbuja_fruit(row.get("fruit")):
+            return True
+    return False
+
+
+def apply_kharbuja_weather_and_repeat_rules(
+    fruits: list[str],
+    history: list[dict[str, Any]],
+    target_date: date,
+    weather_info: WeatherInfo | None,
+) -> list[str]:
+    if weather_info is not None and weather_info.is_rainy:
+        return [fruit for fruit in fruits if not is_kharbuja_fruit(fruit)]
+
+    non_kharbuja = [fruit for fruit in fruits if not is_kharbuja_fruit(fruit)]
+    if has_recent_kharbuja_fruit(history, target_date) and non_kharbuja:
+        return non_kharbuja
+
+    # Keep खरबूजा as a rare fallback when the candidate pool still has ample alternatives.
+    if len(non_kharbuja) >= 2:
+        return non_kharbuja
+
+    return fruits[:]
+
+
 def get_fruit_priority_weight(
     fruit: str,
     target_date: date,
@@ -2150,6 +2197,7 @@ def select_monthly_fruit(
     target_date: date,
     monthly_fruit_map: dict[int, list[str]],
     priority_rules: dict[str, dict[str, Any]],
+    weather_info: WeatherInfo | None = None,
 ) -> FruitSelection:
     approved_fruits = get_monthly_fruit_list(monthly_fruit_map, target_date)
     if not approved_fruits:
@@ -2168,6 +2216,15 @@ def select_monthly_fruit(
             candidate_fruits.append("आम")
     else:
         candidate_fruits = approved_fruits[:]
+
+    candidate_fruits = apply_kharbuja_weather_and_repeat_rules(
+        candidate_fruits,
+        history,
+        target_date,
+        weather_info,
+    )
+    if not candidate_fruits and weather_info is not None and weather_info.is_rainy:
+        candidate_fruits = [fruit for fruit in approved_fruits if not is_kharbuja_fruit(fruit)]
 
     if previous_day_fruit and previous_day_fruit in candidate_fruits and len(candidate_fruits) > 1:
         if not (has_priority_mango and previous_day_fruit == "आम" and unused_fruits == ["आम"]):
@@ -4494,9 +4551,17 @@ def main() -> int:
     meal_item_override = current_day.meal_item_override
     second_meal_item_override = current_day.second_meal_item_override
     vasant_day_ten = is_vasant_day_ten(target_date, ritu_key)
-    fruit_selection = select_monthly_fruit(history, target_date, monthly_fruit_map, fruit_priority_rules)
+    fruit_selection = select_monthly_fruit(
+        history,
+        target_date,
+        monthly_fruit_map,
+        fruit_priority_rules,
+        weather_info=weather_info,
+    )
     fruit_item_override = resolve_item_date_override(target_date, config, "fruit_item_date_overrides")
-    if fruit_item_override:
+    if fruit_item_override and not (
+        weather_info is not None and weather_info.is_rainy and is_kharbuja_fruit(fruit_item_override)
+    ):
         fruit_selection = FruitSelection(fruit=fruit_item_override, available=True)
 
     if festival_info.suppress_regular_menu:
