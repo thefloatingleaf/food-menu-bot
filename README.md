@@ -447,8 +447,11 @@ If a date is missing in `panchang_2026_27.json`, script now auto-detects ऋत�
 - The last backup run is intentionally before the `15:10 IST` iPhone Shortcut send time
 - Pushes to the generator, workflow, or menu data files also trigger an immediate refresh, so a workflow edit cannot leave the published file stale
 - Each run updates `daily_menu.txt` and `history.json`, then verifies that both match tomorrow's date before any commit is allowed
+- Navishti has a separate workflow file: `.github/workflows/navishti-menu.yml`
+- The Navishti-only workflow runs at `10:30 UTC` (4:00 PM IST) and updates `navishti_daily_menu.txt`
 
 ## iPhone Shortcuts
 
-Use `Get Contents of URL` with raw GitHub URL of `daily_menu.txt`, then send the fetched text through WhatsApp action.
+Use `Get Contents of URL` with raw GitHub URL of `daily_menu.txt`, then send the fetched text through WhatsApp action for the standard food message.
+Use a separate 4:00 PM IST Shortcut with raw GitHub URL of `navishti_daily_menu.txt` for the Navishti-only message.
 If WhatsApp sends the same date twice, first check whether the Shortcut ran before the latest `chore: update daily menu` commit was pushed.

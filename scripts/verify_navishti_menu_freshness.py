@@ -16,29 +16,29 @@ def main() -> int:
     runtime_today = generate_menu.resolve_runtime_today(timezone_name)
     expected_target_date = runtime_today + timedelta(days=1)
 
-    if not generate_menu.OUTPUT_FILE.exists():
-        raise SystemExit(f"missing output file: {generate_menu.OUTPUT_FILE}")
+    if not generate_menu.NAVISHTI_OUTPUT_FILE.exists():
+        raise SystemExit(f"missing output file: {generate_menu.NAVISHTI_OUTPUT_FILE}")
 
-    output_text = generate_menu.OUTPUT_FILE.read_text(encoding="utf-8")
-    generate_menu.verify_output_target_date(output_text, expected_target_date)
-    if "नविष्टि" in output_text:
-        raise SystemExit(
-            f"{generate_menu.OUTPUT_FILE.name} must remain the standard food message; "
-            "Navishti belongs only in navishti_daily_menu.txt"
-        )
+    output_text = generate_menu.NAVISHTI_OUTPUT_FILE.read_text(encoding="utf-8")
+    generate_menu.verify_navishti_output_target_date(output_text, expected_target_date)
+
+    forbidden_fragments = ["सभी के लिए बन रहे", "तड़का लगाने से पहले", "ऊपर लिखित अलग कटोरी"]
+    found = [fragment for fragment in forbidden_fragments if fragment in output_text]
+    if found:
+        raise SystemExit("Navishti menu contains old shared-food wording: " + " / ".join(found))
 
     history = generate_menu.normalize_history(generate_menu.load_json(generate_menu.HISTORY_FILE))
     history_row = generate_menu.get_history_row(history, expected_target_date.isoformat())
     if history_row is None:
         raise SystemExit(
-            "history.json is missing the generated target date entry: "
+            "history.json is missing the standard menu row required for Navishti generation: "
             f"{expected_target_date.isoformat()}"
         )
 
     print(
-        "Verified daily menu freshness for "
+        "Verified Navishti menu freshness for "
         f"{expected_target_date.isoformat()} in {timezone_name}: "
-        f"{generate_menu.OUTPUT_FILE.name} and {generate_menu.HISTORY_FILE.name}"
+        f"{generate_menu.NAVISHTI_OUTPUT_FILE.name}"
     )
     return 0
 

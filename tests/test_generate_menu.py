@@ -845,6 +845,41 @@ class OutputFreshnessTests(unittest.TestCase):
                 date(2026, 4, 22),
             )
 
+    def test_parse_navishti_output_target_date_reads_header_date(self) -> None:
+        output_text = "*22-Apr-2026 तिथि के लिए नविष्टि भोजन:*\r\n*ऋतु:* ग्रीष्म"
+        self.assertEqual(generate_menu.parse_navishti_output_target_date(output_text), date(2026, 4, 22))
+
+    def test_format_navishti_daily_menu_text_renders_standalone_grishm_message(self) -> None:
+        text = generate_menu.format_navishti_daily_menu_text(
+            date(2026, 6, 20),
+            "grishm",
+            ["दूध + जौ दलिया", "मूंग दाल खिचड़ी + लौकी"],
+        )
+
+        self.assertEqual(
+            text.splitlines(),
+            [
+                "*20-Jun-2026 तिथि के लिए नविष्टि भोजन:*",
+                "*ऋतु:* ग्रीष्म",
+                "*भोजन 1:* दूध + जौ दलिया",
+                "*भोजन 2:* मूंग दाल खिचड़ी + लौकी",
+            ],
+        )
+        self.assertNotIn("आज का भोजन", text)
+        self.assertNotIn("सभी के लिए बन रहे", text)
+        self.assertNotIn("तड़का", text)
+
+    def test_format_navishti_daily_menu_text_handles_non_grishm(self) -> None:
+        text = generate_menu.format_navishti_daily_menu_text(date(2026, 8, 1), "varsha", [])
+
+        self.assertEqual(
+            text.splitlines(),
+            [
+                "*01-Aug-2026 तिथि के लिए नविष्टि भोजन:*",
+                "*आज का निर्देश:* नविष्टि के लिए अलग ग्रीष्म भोजन आज लागू नहीं है।",
+            ],
+        )
+
 
 class PanchangEkadashiDisplayTests(unittest.TestCase):
     def test_resolve_panchang_info_does_not_show_ekadashi_before_observance_date(self) -> None:

@@ -42,6 +42,7 @@ CONFIG_FILE = BASE_DIR / "config.json"
 HISTORY_FILE = BASE_DIR / "history.json"
 PUBLISHED_ARCHIVE_FILE = BASE_DIR / "published_menu_archive.json"
 OUTPUT_FILE = BASE_DIR / "daily_menu.txt"
+NAVISHTI_OUTPUT_FILE = BASE_DIR / "navishti_daily_menu.txt"
 WEATHER_TAGS_FILE = BASE_DIR / "menu_weather_tags.json"
 MANUAL_WEATHER_FILE = BASE_DIR / "manual_weather_override.json"
 HEAVY_LIGHT_CLASSIFICATION_FILE = BASE_DIR / "heavy_light_classification_food_items_revised_paratha_rule.csv"
@@ -49,6 +50,9 @@ FRUIT_MONTHS_FILE = BASE_DIR / "fruit_months.json"
 GUEST_MENU_FILE = BASE_DIR / "guest_menu.json"
 MENU_GENERATOR_NOW_DATE_ENV = "MENU_GENERATOR_NOW_DATE"
 OUTPUT_DATE_HEADER_RE = re.compile(r"^\*(\d{2})-([A-Za-z]{3})-(\d{4}) तिथि के लिए भोजन:\*$")
+NAVISHTI_OUTPUT_DATE_HEADER_RE = re.compile(
+    r"^\*(\d{2})-([A-Za-z]{3})-(\d{4}) तिथि के लिए नविष्टि भोजन:\*$"
+)
 GREGORIAN_MONTH_ABBR_TO_NUMBER = {
     "Jan": 1,
     "Feb": 2,
@@ -1596,6 +1600,31 @@ def verify_output_target_date(output_text: str, expected_target_date: date) -> N
         )
 
 
+def parse_navishti_output_target_date(output_text: str) -> date:
+    first_line = next((line.strip() for line in output_text.splitlines() if line.strip()), "")
+    if not first_line:
+        raise ValueError("Navishti menu output is empty")
+
+    match = NAVISHTI_OUTPUT_DATE_HEADER_RE.match(first_line)
+    if not match:
+        raise ValueError("Navishti menu header is missing or malformed")
+
+    day_str, month_abbr, year_str = match.groups()
+    month_number = GREGORIAN_MONTH_ABBR_TO_NUMBER.get(month_abbr.title())
+    if month_number is None:
+        raise ValueError(f"unsupported month abbreviation in Navishti menu header: {month_abbr}")
+    return date(int(year_str), month_number, int(day_str))
+
+
+def verify_navishti_output_target_date(output_text: str, expected_target_date: date) -> None:
+    actual_target_date = parse_navishti_output_target_date(output_text)
+    if actual_target_date != expected_target_date:
+        raise ValueError(
+            "Navishti menu header date mismatch: "
+            f"expected {expected_target_date.isoformat()}, found {actual_target_date.isoformat()}"
+        )
+
+
 def get_ekadashi_info(target_date: str, ekadashi_data: dict[str, Any]) -> EkadashiInfo:
     matches = [e for e in ekadashi_data.get("ekadashi_list", []) if e.get("date") == target_date]
     if not matches:
@@ -2347,6 +2376,18 @@ def format_navishti_grishm_plan_line(plan_items: list[str]) -> str:
         ["*नविष्टि भोजन (ग्रीष्म):*"]
         + [f"भोजन {index}: {item}" for index, item in enumerate(plan_items, start=1)]
     )
+
+
+def format_navishti_daily_menu_text(target_date: date, ritu_key: str, plan_items: list[str]) -> str:
+    target_date_display_str = target_date.strftime("%d-%b-%Y")
+    lines = [f"*{target_date_display_str} तिथि के लिए नविष्टि भोजन:*"]
+    if normalize_ritu_key(ritu_key) != "grishm" or not plan_items:
+        lines.append("*आज का निर्देश:* नविष्टि के लिए अलग ग्रीष्म भोजन आज लागू नहीं है।")
+        return "\r\n".join(lines)
+
+    lines.append("*ऋतु:* ग्रीष्म")
+    lines.extend(f"*भोजन {index}:* {item}" for index, item in enumerate(plan_items, start=1))
+    return "\r\n".join(lines)
 
 
 def build_navishti_grishm_plan_line(
@@ -4121,6 +4162,10 @@ def build_output_text(lines: list[str]) -> str:
     return "\r\n\r\n".join(lines)
 
 
+def write_output_text(path: Path, output_text: str) -> None:
+    path.write_text(output_text.replace("\r\n", "\n") + "\n", encoding="utf-8")
+
+
 def get_disallowed_keywords(ritu_key: str) -> list[str]:
     if ritu_key == "varsha":
         return VARSHA_BANNED_KEYWORDS
@@ -4592,8 +4637,7 @@ def main() -> int:
 
         output_text = build_output_text(lines)
         persist_published_archive(history, target_date_str, output_text, None)
-        with OUTPUT_FILE.open("w", encoding="utf-8") as f:
-            f.write(output_text + "\n")
+        write_output_text(OUTPUT_FILE, output_text)
 
         print(output_text)
         return 0
@@ -5574,8 +5618,6 @@ def main() -> int:
             lines.append(f"*आज का भोजन 2:* {selected_second_meal_display}")
         else:
             lines.append(f"*आज का भोजन:* {selected_meal_display}")
-        if ritu_key == "grishm":
-            lines.append(format_navishti_grishm_plan_line(navishti_grishm_plan_items))
         roti_atta_note = build_roti_atta_note(target_date, selected_breakfast, selected_meal, selected_second_meal)
         if roti_atta_note:
             lines.append(roti_atta_note)
@@ -5632,8 +5674,7 @@ def main() -> int:
     current_history_row = get_history_row(new_history, target_date_str)
     persist_published_archive(new_history, target_date_str, output_text, current_history_row)
 
-    with OUTPUT_FILE.open("w", encoding="utf-8") as f:
-        f.write(output_text + "\n")
+    write_output_text(OUTPUT_FILE, output_text)
 
     print(output_text)
     return 0

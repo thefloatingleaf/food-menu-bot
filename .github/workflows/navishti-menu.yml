@@ -1,0 +1,42 @@
+name: Daily Navishti Food Menu
+
+on:
+  schedule:
+    # 16:00 Asia/Kolkata
+    - cron: "30 10 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-navishti-menu-publish
+  cancel-in-progress: false
+
+jobs:
+  generate-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Generate and verify next-day Navishti menu (IST)
+        run: |
+          ./scripts/generate-navishti-menu.sh
+
+      - name: Commit Navishti output
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add navishti_daily_menu.txt
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "chore: update Navishti menu"
+          git push
