@@ -448,7 +448,8 @@ If a date is missing in `panchang_2026_27.json`, script now auto-detects ऋत�
 - Pushes to the generator, workflow, or menu data files also trigger an immediate refresh, so a workflow edit cannot leave the published file stale
 - Each run updates `daily_menu.txt` and `history.json`, then verifies that both match tomorrow's date before any commit is allowed
 - Navishti has a separate workflow file: `.github/workflows/navishti-menu.yml`
-- The Navishti-only workflow runs at `10:30 UTC` (4:00 PM IST) and updates `navishti_daily_menu.txt`
+- The Navishti-only workflow has backup windows at `09:00`, `09:30`, `10:00`, and `10:30 UTC` (2:30 PM through 4:00 PM IST) so GitHub schedule delays are less likely to leave the 4:00 PM Shortcut stale
+- If the standard menu row is missing, the Navishti workflow first regenerates `daily_menu.txt`, `history.json`, and `published_menu_archive.json`, then writes `navishti_daily_menu.txt`
 
 ## iPhone Shortcuts
 

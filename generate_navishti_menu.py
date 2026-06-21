@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
+import sys
 from datetime import timedelta
 
 import generate_menu
+
+MISSING_STANDARD_ROW_EXIT = 42
 
 
 def get_stored_navishti_plan(row: dict[str, object]) -> list[str]:
@@ -20,10 +23,12 @@ def main() -> int:
     history = generate_menu.normalize_history(generate_menu.load_json(generate_menu.HISTORY_FILE))
     history_row = generate_menu.get_history_row(history, target_date_str)
     if history_row is None:
-        raise SystemExit(
+        print(
             "history.json is missing the standard menu row required for Navishti generation: "
-            f"{target_date_str}. Run the daily menu generator first."
+            f"{target_date_str}. Run the daily menu generator first.",
+            file=sys.stderr,
         )
+        return MISSING_STANDARD_ROW_EXIT
 
     ritu_key = generate_menu.normalize_ritu_key(str(history_row.get("ritu_key", "")))
     plan_items = get_stored_navishti_plan(history_row)
