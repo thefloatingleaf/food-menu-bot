@@ -2,9 +2,8 @@ name: Daily Navishti Food Menu
 
 on:
   schedule:
-    # Safety windows before the 16:00 Asia/Kolkata Shortcut send.
-    # 14:30, 15:00, 15:30, and 16:00 Asia/Kolkata.
-    - cron: "0,30 9,10 * * *"
+    # 15:30 Asia/Kolkata.
+    - cron: "0 10 * * *"
   workflow_dispatch:
 
 permissions:
@@ -28,7 +27,15 @@ jobs:
 
       - name: Generate and verify next-day Navishti menu (IST)
         run: |
-          ./scripts/generate-navishti-menu.sh
+          for attempt in 1 2; do
+            if ./scripts/generate-navishti-menu.sh; then
+              exit 0
+            fi
+            if [ "${attempt}" -eq 1 ]; then
+              echo "First Navishti menu generation attempt failed; retrying immediately."
+            fi
+          done
+          exit 1
 
       - name: Commit Navishti output
         run: |
@@ -40,4 +47,8 @@ jobs:
             exit 0
           fi
           git commit -m "chore: update Navishti menu"
-          git push
+          git push || {
+            echo "Initial push failed; rebasing and retrying immediately."
+            git pull --rebase origin main
+            git push
+          }

@@ -2,32 +2,9 @@ name: Daily Food Menu
 
 on:
   schedule:
-    # Publish from morning through mid-afternoon IST so the repo self-heals
-    # if GitHub skips or delays any one scheduled window.
-    # 07:30, 09:30, 11:30, 13:30, 14:30 Asia/Kolkata
-    # The iPhone Shortcut sends at 15:10 Asia/Kolkata, so every safety window
-    # must still land before that send time.
-    - cron: "0 2,4,6,8,9 * * *"
+    # 13:30 Asia/Kolkata.
+    - cron: "0 8 * * *"
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - ".github/workflows/daily-menu.yml"
-      - "generate_menu.py"
-      - "config.json"
-      - "breakfast_*.json"
-      - "menu_*.json"
-      - "ekadashi_*.json"
-      - "panchang_*.json"
-      - "festivals_*.json"
-      - "fruit_months.json"
-      - "manual_weather_override.json"
-      - "menu_weather_tags.json"
-      - "lunar_calendar_*.json"
-      - "heavy_light_classification_food_items_revised_paratha_rule.csv"
-      - "scripts/generate-daily-menu.sh"
-      - "scripts/verify_daily_menu_freshness.py"
 
 permissions:
   contents: write
@@ -50,7 +27,15 @@ jobs:
 
       - name: Generate and verify next-day menu (IST)
         run: |
-          ./scripts/generate-daily-menu.sh
+          for attempt in 1 2; do
+            if ./scripts/generate-daily-menu.sh; then
+              exit 0
+            fi
+            if [ "${attempt}" -eq 1 ]; then
+              echo "First normal menu generation attempt failed; retrying immediately."
+            fi
+          done
+          exit 1
 
       - name: Commit daily output
         run: |
@@ -62,4 +47,8 @@ jobs:
             exit 0
           fi
           git commit -m "chore: update daily menu"
-          git push
+          git push || {
+            echo "Initial push failed; rebasing and retrying immediately."
+            git pull --rebase origin main
+            git push
+          }
