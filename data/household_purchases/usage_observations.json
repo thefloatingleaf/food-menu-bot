@@ -1,0 +1,25 @@
+{
+  "schema_version": 2,
+  "created_at": "2026-06-25T14:57:28.369Z",
+  "updated_at": "2026-06-25T14:57:28.372Z",
+  "observations": [
+    {
+      "observation_id": "usage-2026-06-23-blinkit-rice-idli-batter",
+      "date": "2026-06-23",
+      "item_name": "Ready-made rice idli batter",
+      "category": "Groceries",
+      "source_name": "Blinkit",
+      "input_quantity": 1,
+      "input_unit": "kg",
+      "output_quantity": 24,
+      "output_unit": "idlis",
+      "base_ingredient": "rice",
+      "taste_feedback": "nice",
+      "remarks": "User reported that 1 kg ready-made rice-based idli batter from Blinkit made 24 idlis and tasted nice.",
+      "review_status": "ok",
+      "review_notes": [],
+      "entered_at": "2026-06-25T14:57:28.372Z",
+      "last_updated_at": "2026-06-25T14:57:28.372Z"
+    }
+  ]
+}

@@ -9,7 +9,6 @@ export default async function Home() {
       initialEntries={snapshot.ledger.purchases}
       initialAnalysis={snapshot.analysis}
       initialContextNotes={snapshot.contextNotes}
-      initialSupplyContext={snapshot.supplyContext}
     />
   );
 }

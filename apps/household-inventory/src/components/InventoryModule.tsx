@@ -12,14 +12,12 @@ import type {
   PairedPurchaseInsight,
   RankedItem,
   RecentEntryDigest,
-  SupplyContextEntry,
 } from "@/lib/inventory";
 
 type InventoryModuleProps = {
   initialEntries: InventoryEntry[];
   initialAnalysis: InventoryAnalysis;
   initialContextNotes: ContextNote[];
-  initialSupplyContext: SupplyContextEntry[];
 };
 
 function formatDate(value: string | null) {
@@ -343,13 +341,7 @@ function TrendPanel({
   );
 }
 
-function ContextNotes({
-  notes,
-  supplyContextCount,
-}: {
-  notes: ContextNote[];
-  supplyContextCount: number;
-}) {
+function ContextNotes({ notes }: { notes: ContextNote[] }) {
   if (!notes.length) {
     return null;
   }
@@ -358,10 +350,10 @@ function ContextNotes({
     <section className="panel stack">
       <div className="inventory-section-heading">
         <div>
-          <h2 className="section-heading">Known Supply Context</h2>
-          <p className="muted">These notes keep the decision screen from over-reading normal purchase gaps.</p>
+          <h2 className="section-heading">Known Supply & Usage Context</h2>
+          <p className="muted">These notes keep the decision screen from over-reading purchase gaps or missing practical yield facts.</p>
         </div>
-        <span className="pill">{supplyContextCount}</span>
+        <span className="pill">{notes.length}</span>
       </div>
       <ul className="signal-list">
         {notes.map((note) => (
@@ -382,7 +374,6 @@ export function InventoryModule({
   initialEntries,
   initialAnalysis,
   initialContextNotes,
-  initialSupplyContext,
 }: InventoryModuleProps) {
   const [entries, setEntries] = useState(initialEntries);
   const [analysis, setAnalysis] = useState(initialAnalysis);
@@ -542,7 +533,7 @@ export function InventoryModule({
           />
         </section>
 
-        <ContextNotes notes={contextNotes} supplyContextCount={initialSupplyContext.length} />
+        <ContextNotes notes={contextNotes} />
 
         <section className="panel stack" id="item-decision-matrix">
           <div className="inventory-section-heading">

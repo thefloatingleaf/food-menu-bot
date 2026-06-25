@@ -86,6 +86,14 @@ Expected result: parsed purchase rows are saved into the shared household ledger
 
 Expected result: daily or standing household supply facts can be recorded separately from purchase entries, so analysis remains honest when some stock comes from a non-invoice source.
 
+### Usage and yield observations
+
+```bash
+./scripts/add-household-usage-observation.sh --stdin
+```
+
+Expected result: cooking yield, taste, or consumption facts are saved separately from purchase rows and shown as decision context on the Household Inventory landing page.
+
 ## Run locally
 
 ```bash
@@ -110,6 +118,8 @@ This repo maintains a shared household purchase ledger used by the standalone Ho
 
 - `data/household_purchases/purchase_ledger.json`
 - `data/household_purchases/analysis_snapshot.json`
+- `data/household_purchases/usage_observations.json`
+- `data/household_purchases/supply_context.json`
 
 ### Internal interface
 

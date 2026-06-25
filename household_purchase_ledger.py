@@ -18,6 +18,7 @@ LEDGER_FILE = LEDGER_DIR / "purchase_ledger.json"
 ANALYSIS_FILE = LEDGER_DIR / "analysis_snapshot.json"
 DEFAULT_CURRENCY = "INR"
 SCHEMA_VERSION = 1
+SUPPORTED_LEDGER_SCHEMA_VERSIONS = {1, 2}
 
 
 @dataclass(frozen=True)
@@ -199,15 +200,7 @@ def normalize_purchase_entry(entry: dict[str, Any]) -> dict[str, Any]:
     if normalized["purchase_id"] is None:
         normalized["purchase_id"] = generate_purchase_id(normalized)
 
-    required_fields = (
-        "date_of_purchase",
-        "item_name",
-        "quantity_purchased",
-        "unit_of_measurement",
-        "price",
-        "vendor_source",
-        "mode_of_payment",
-    )
+    required_fields = ("item_name",)
     missing = [field for field in required_fields if normalized.get(field) in (None, "")]
     if missing:
         raise ValueError(f"purchase entry missing required fields: {', '.join(missing)}")
@@ -419,7 +412,7 @@ def build_analysis_snapshot(entries: list[dict[str, Any]]) -> dict[str, Any]:
 
 
 def validate_ledger_payload(ledger: dict[str, Any]) -> None:
-    if ledger.get("schema_version") != SCHEMA_VERSION:
+    if ledger.get("schema_version") not in SUPPORTED_LEDGER_SCHEMA_VERSIONS:
         raise ValueError(f"unsupported schema_version: {ledger.get('schema_version')}")
     purchases = ledger.get("purchases")
     if not isinstance(purchases, list):

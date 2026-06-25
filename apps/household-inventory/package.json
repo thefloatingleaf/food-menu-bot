@@ -11,7 +11,8 @@
     "test": "vitest run --coverage",
     "import:raw-purchases": "tsx scripts/import-raw-purchases.ts",
     "import:amor-farm": "tsx scripts/import-amor-farm-pdf.ts",
-    "add:supply-context": "tsx scripts/add-supply-context.ts"
+    "add:supply-context": "tsx scripts/add-supply-context.ts",
+    "add:usage-observation": "tsx scripts/add-usage-observation.ts"
   },
   "dependencies": {
     "next": "16.1.6",

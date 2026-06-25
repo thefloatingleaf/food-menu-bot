@@ -1,19 +1,19 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-05-23T09:00:56.520Z",
+  "generated_at": "2026-06-25T14:58:37.250Z",
   "overview": {
     "purchaseCount": 135,
     "trackedItemCount": 67,
     "totalSpend": 29652.75,
-    "currentMonthSpend": 6477.5,
-    "itemsToOrderTodayCount": 3,
+    "currentMonthSpend": 0,
+    "itemsToOrderTodayCount": 4,
     "itemsToOrderSoonCount": 0,
-    "stableItemCount": 1,
+    "stableItemCount": 0,
     "reviewItemCount": 32,
-    "totalMonthlyHouseholdConsumptionValue": 6477.5,
-    "monthOnMonthSpendingChange": -23.4,
+    "totalMonthlyHouseholdConsumptionValue": 0,
+    "monthOnMonthSpendingChange": -100,
     "monthOnMonthConsumptionChange": 21.2,
-    "inventoryHealthScore": 96,
+    "inventoryHealthScore": 95,
     "householdConsumptionStabilityScore": 42,
     "duplicateEntryCount": 0
   },
@@ -101,7 +101,7 @@
       "stockBucket": "Items to Order Today",
       "dataConfidenceScore": 100,
       "dataConfidenceLabel": "High",
-      "daysSinceLastPurchase": 23,
+      "daysSinceLastPurchase": 56,
       "monthlyPurchasePattern": [
         {
           "month": "2026-01",
@@ -181,7 +181,7 @@
       "stockBucket": "Items to Order Today",
       "dataConfidenceScore": 81,
       "dataConfidenceLabel": "High",
-      "daysSinceLastPurchase": 12,
+      "daysSinceLastPurchase": 45,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -235,7 +235,7 @@
       "stockBucket": "Items to Order Today",
       "dataConfidenceScore": 90,
       "dataConfidenceLabel": "High",
-      "daysSinceLastPurchase": 12,
+      "daysSinceLastPurchase": 45,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -280,18 +280,18 @@
       "averageWeeklyConsumptionLabel": "0.42 kg/week",
       "consumptionBasis": "purchase_history",
       "expectedStockDurationDays": 33,
-      "estimatedDaysOfStockRemaining": 19,
+      "estimatedDaysOfStockRemaining": 0,
       "actualConsumptionDurationDays": null,
       "reorderFrequencyDays": 33,
       "normalPurchaseFrequencyDays": 33,
       "recommendedReorderDate": "2026-06-11",
       "suggestedReorderQuantity": 2,
       "currentConsumptionTrend": "Insufficient data",
-      "reorderPriorityScore": 18,
-      "stockBucket": "Items Sufficient for More Than 7 Days",
+      "reorderPriorityScore": 95,
+      "stockBucket": "Items to Order Today",
       "dataConfidenceScore": 81,
       "dataConfidenceLabel": "High",
-      "daysSinceLastPurchase": 14,
+      "daysSinceLastPurchase": 47,
       "monthlyPurchasePattern": [
         {
           "month": "2026-04",
@@ -320,10 +320,11 @@
           "unit": "kg"
         }
       ],
-      "flags": [],
+      "flags": [
+        "stock-out risk"
+      ],
       "suggestions": [
-        "Order later.",
-        "A reminder roughly every 33 days would match current history."
+        "Order now."
       ],
       "totalSpend": 1196
     },
@@ -354,7 +355,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 11,
+      "daysSinceLastPurchase": 44,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -442,7 +443,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 40,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 4,
+      "daysSinceLastPurchase": 37,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -494,7 +495,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 40,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 4,
+      "daysSinceLastPurchase": 37,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -546,7 +547,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 40,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 11,
+      "daysSinceLastPurchase": 44,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -598,7 +599,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 40,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 11,
+      "daysSinceLastPurchase": 44,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -650,7 +651,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 4,
+      "daysSinceLastPurchase": 37,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -700,7 +701,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 4,
+      "daysSinceLastPurchase": 37,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -826,7 +827,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 40,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 4,
+      "daysSinceLastPurchase": 37,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -878,7 +879,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 14,
+      "daysSinceLastPurchase": 47,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -928,7 +929,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 14,
+      "daysSinceLastPurchase": 47,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -978,7 +979,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 12,
+      "daysSinceLastPurchase": 45,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -1028,7 +1029,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 14,
+      "daysSinceLastPurchase": 47,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -1078,7 +1079,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 40,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 4,
+      "daysSinceLastPurchase": 37,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -1206,7 +1207,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 14,
+      "daysSinceLastPurchase": 47,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -1256,7 +1257,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 15,
+      "daysSinceLastPurchase": 48,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -1306,7 +1307,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 15,
+      "daysSinceLastPurchase": 48,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -1356,7 +1357,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 14,
+      "daysSinceLastPurchase": 47,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -1558,7 +1559,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 11,
+      "daysSinceLastPurchase": 44,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -1608,7 +1609,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 40,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 12,
+      "daysSinceLastPurchase": 45,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -1660,7 +1661,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 40,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 11,
+      "daysSinceLastPurchase": 44,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -1712,7 +1713,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 12,
+      "daysSinceLastPurchase": 45,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -1876,7 +1877,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 40,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 4,
+      "daysSinceLastPurchase": 37,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -1928,7 +1929,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 12,
+      "daysSinceLastPurchase": 45,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -2016,7 +2017,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 40,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 4,
+      "daysSinceLastPurchase": 37,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -2068,7 +2069,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 40,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 4,
+      "daysSinceLastPurchase": 37,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -2120,7 +2121,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 14,
+      "daysSinceLastPurchase": 47,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -2246,7 +2247,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 14,
+      "daysSinceLastPurchase": 47,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -2296,7 +2297,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 14,
+      "daysSinceLastPurchase": 47,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -2384,7 +2385,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 14,
+      "daysSinceLastPurchase": 47,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -2434,7 +2435,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 40,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 4,
+      "daysSinceLastPurchase": 37,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -2486,7 +2487,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 40,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 4,
+      "daysSinceLastPurchase": 37,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -2538,7 +2539,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 14,
+      "daysSinceLastPurchase": 47,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -2588,7 +2589,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 101,
+      "daysSinceLastPurchase": 134,
       "monthlyPurchasePattern": [
         {
           "month": "2026-02",
@@ -2640,7 +2641,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 167,
+      "daysSinceLastPurchase": 200,
       "monthlyPurchasePattern": [
         {
           "month": "2025-12",
@@ -2692,7 +2693,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 167,
+      "daysSinceLastPurchase": 200,
       "monthlyPurchasePattern": [
         {
           "month": "2025-12",
@@ -2744,7 +2745,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 167,
+      "daysSinceLastPurchase": 200,
       "monthlyPurchasePattern": [
         {
           "month": "2025-12",
@@ -2796,7 +2797,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 167,
+      "daysSinceLastPurchase": 200,
       "monthlyPurchasePattern": [
         {
           "month": "2025-12",
@@ -2848,7 +2849,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 167,
+      "daysSinceLastPurchase": 200,
       "monthlyPurchasePattern": [
         {
           "month": "2025-12",
@@ -2900,7 +2901,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 101,
+      "daysSinceLastPurchase": 134,
       "monthlyPurchasePattern": [
         {
           "month": "2026-02",
@@ -2952,7 +2953,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 167,
+      "daysSinceLastPurchase": 200,
       "monthlyPurchasePattern": [
         {
           "month": "2025-12",
@@ -3004,7 +3005,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 167,
+      "daysSinceLastPurchase": 200,
       "monthlyPurchasePattern": [
         {
           "month": "2025-12",
@@ -3056,7 +3057,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 47,
+      "daysSinceLastPurchase": 80,
       "monthlyPurchasePattern": [
         {
           "month": "2026-04",
@@ -3106,7 +3107,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 47,
+      "daysSinceLastPurchase": 80,
       "monthlyPurchasePattern": [
         {
           "month": "2026-04",
@@ -3194,7 +3195,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 51,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 14,
+      "daysSinceLastPurchase": 47,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -3282,7 +3283,7 @@
       "stockBucket": "Requires Review",
       "dataConfidenceScore": 30,
       "dataConfidenceLabel": "Low",
-      "daysSinceLastPurchase": 14,
+      "daysSinceLastPurchase": 47,
       "monthlyPurchasePattern": [
         {
           "month": "2026-05",
@@ -3347,7 +3348,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 100,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 23,
+        "daysSinceLastPurchase": 56,
         "monthlyPurchasePattern": [
           {
             "month": "2026-01",
@@ -3401,6 +3402,70 @@
         "totalSpend": 13825
       },
       {
+        "itemName": "TWF Channa Sattu Flour",
+        "category": "Groceries",
+        "purchaseCount": 2,
+        "lastPurchaseDate": "2026-05-09",
+        "lastPurchasedQuantity": 2,
+        "lastPurchaseSpend": 598,
+        "averageQuantityPurchased": 2,
+        "quantityUnit": "kg",
+        "averageDailyConsumption": 0.06,
+        "averageWeeklyConsumption": 0.42,
+        "averageConsumptionRate": "0.06 kg/day",
+        "averageDailyConsumptionLabel": "0.06 kg/day",
+        "averageWeeklyConsumptionLabel": "0.42 kg/week",
+        "consumptionBasis": "purchase_history",
+        "expectedStockDurationDays": 33,
+        "estimatedDaysOfStockRemaining": 0,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": 33,
+        "normalPurchaseFrequencyDays": 33,
+        "recommendedReorderDate": "2026-06-11",
+        "suggestedReorderQuantity": 2,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": 95,
+        "stockBucket": "Items to Order Today",
+        "dataConfidenceScore": 81,
+        "dataConfidenceLabel": "High",
+        "daysSinceLastPurchase": 47,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2026-04",
+            "purchases": 1,
+            "spend": 598
+          },
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "spend": 598
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2026-04",
+            "purchases": 1,
+            "quantity": 2,
+            "spend": 598,
+            "unit": "kg"
+          },
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "quantity": 2,
+            "spend": 598,
+            "unit": "kg"
+          }
+        ],
+        "flags": [
+          "stock-out risk"
+        ],
+        "suggestions": [
+          "Order now."
+        ],
+        "totalSpend": 1196
+      },
+      {
         "itemName": "THF Multigrain Bread",
         "category": "Groceries",
         "purchaseCount": 3,
@@ -3427,7 +3492,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 90,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 12,
+        "daysSinceLastPurchase": 45,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -3483,7 +3548,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 81,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 12,
+        "daysSinceLastPurchase": 45,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -3512,71 +3577,7 @@
       }
     ],
     "items_to_order_within_3_days": [],
-    "items_sufficient_for_more_than_7_days": [
-      {
-        "itemName": "TWF Channa Sattu Flour",
-        "category": "Groceries",
-        "purchaseCount": 2,
-        "lastPurchaseDate": "2026-05-09",
-        "lastPurchasedQuantity": 2,
-        "lastPurchaseSpend": 598,
-        "averageQuantityPurchased": 2,
-        "quantityUnit": "kg",
-        "averageDailyConsumption": 0.06,
-        "averageWeeklyConsumption": 0.42,
-        "averageConsumptionRate": "0.06 kg/day",
-        "averageDailyConsumptionLabel": "0.06 kg/day",
-        "averageWeeklyConsumptionLabel": "0.42 kg/week",
-        "consumptionBasis": "purchase_history",
-        "expectedStockDurationDays": 33,
-        "estimatedDaysOfStockRemaining": 19,
-        "actualConsumptionDurationDays": null,
-        "reorderFrequencyDays": 33,
-        "normalPurchaseFrequencyDays": 33,
-        "recommendedReorderDate": "2026-06-11",
-        "suggestedReorderQuantity": 2,
-        "currentConsumptionTrend": "Insufficient data",
-        "reorderPriorityScore": 18,
-        "stockBucket": "Items Sufficient for More Than 7 Days",
-        "dataConfidenceScore": 81,
-        "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 14,
-        "monthlyPurchasePattern": [
-          {
-            "month": "2026-04",
-            "purchases": 1,
-            "spend": 598
-          },
-          {
-            "month": "2026-05",
-            "purchases": 1,
-            "spend": 598
-          }
-        ],
-        "monthlyQuantityPattern": [
-          {
-            "month": "2026-04",
-            "purchases": 1,
-            "quantity": 2,
-            "spend": 598,
-            "unit": "kg"
-          },
-          {
-            "month": "2026-05",
-            "purchases": 1,
-            "quantity": 2,
-            "spend": 598,
-            "unit": "kg"
-          }
-        ],
-        "flags": [],
-        "suggestions": [
-          "Order later.",
-          "A reminder roughly every 33 days would match current history."
-        ],
-        "totalSpend": 1196
-      }
-    ],
+    "items_sufficient_for_more_than_7_days": [],
     "unusual_consumption_alerts": [
       {
         "itemName": "Amor Farm Fresh Milk",
@@ -3623,7 +3624,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 100,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 23,
+        "daysSinceLastPurchase": 56,
         "monthlyPurchasePattern": [
           {
             "month": "2026-01",
@@ -3705,7 +3706,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 90,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 12,
+        "daysSinceLastPurchase": 45,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -3763,7 +3764,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 100,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 23,
+        "daysSinceLastPurchase": 56,
         "monthlyPurchasePattern": [
           {
             "month": "2026-01",
@@ -3843,7 +3844,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 90,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 12,
+        "daysSinceLastPurchase": 45,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -3899,7 +3900,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 81,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 12,
+        "daysSinceLastPurchase": 45,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -3955,7 +3956,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 100,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 23,
+        "daysSinceLastPurchase": 56,
         "monthlyPurchasePattern": [
           {
             "month": "2026-01",
@@ -4538,7 +4539,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 100,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 23,
+        "daysSinceLastPurchase": 56,
         "monthlyPurchasePattern": [
           {
             "month": "2026-01",
@@ -4620,7 +4621,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 90,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 12,
+        "daysSinceLastPurchase": 45,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -4685,7 +4686,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 100,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 23,
+        "daysSinceLastPurchase": 56,
         "monthlyPurchasePattern": [
           {
             "month": "2026-01",
@@ -4765,7 +4766,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 90,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 12,
+        "daysSinceLastPurchase": 45,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -4821,7 +4822,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 81,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 12,
+        "daysSinceLastPurchase": 45,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -4877,7 +4878,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 51,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 167,
+        "daysSinceLastPurchase": 200,
         "monthlyPurchasePattern": [
           {
             "month": "2025-12",
@@ -4929,7 +4930,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 51,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 167,
+        "daysSinceLastPurchase": 200,
         "monthlyPurchasePattern": [
           {
             "month": "2025-12",
@@ -4981,7 +4982,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 51,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 167,
+        "daysSinceLastPurchase": 200,
         "monthlyPurchasePattern": [
           {
             "month": "2025-12",
@@ -5033,7 +5034,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 51,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 167,
+        "daysSinceLastPurchase": 200,
         "monthlyPurchasePattern": [
           {
             "month": "2025-12",
@@ -5085,7 +5086,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 51,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 167,
+        "daysSinceLastPurchase": 200,
         "monthlyPurchasePattern": [
           {
             "month": "2025-12",
@@ -5137,7 +5138,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 51,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 167,
+        "daysSinceLastPurchase": 200,
         "monthlyPurchasePattern": [
           {
             "month": "2025-12",
@@ -5189,7 +5190,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 51,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 167,
+        "daysSinceLastPurchase": 200,
         "monthlyPurchasePattern": [
           {
             "month": "2025-12",
@@ -5241,7 +5242,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 100,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 23,
+        "daysSinceLastPurchase": 56,
         "monthlyPurchasePattern": [
           {
             "month": "2026-01",
@@ -5321,7 +5322,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 51,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 101,
+        "daysSinceLastPurchase": 134,
         "monthlyPurchasePattern": [
           {
             "month": "2026-02",
@@ -5373,7 +5374,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 51,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 101,
+        "daysSinceLastPurchase": 134,
         "monthlyPurchasePattern": [
           {
             "month": "2026-02",
@@ -5425,7 +5426,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 90,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 12,
+        "daysSinceLastPurchase": 45,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -5481,7 +5482,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 81,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 12,
+        "daysSinceLastPurchase": 45,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -5537,7 +5538,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 100,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 23,
+        "daysSinceLastPurchase": 56,
         "monthlyPurchasePattern": [
           {
             "month": "2026-01",
@@ -5591,6 +5592,70 @@
         "totalSpend": 13825
       },
       {
+        "itemName": "TWF Channa Sattu Flour",
+        "category": "Groceries",
+        "purchaseCount": 2,
+        "lastPurchaseDate": "2026-05-09",
+        "lastPurchasedQuantity": 2,
+        "lastPurchaseSpend": 598,
+        "averageQuantityPurchased": 2,
+        "quantityUnit": "kg",
+        "averageDailyConsumption": 0.06,
+        "averageWeeklyConsumption": 0.42,
+        "averageConsumptionRate": "0.06 kg/day",
+        "averageDailyConsumptionLabel": "0.06 kg/day",
+        "averageWeeklyConsumptionLabel": "0.42 kg/week",
+        "consumptionBasis": "purchase_history",
+        "expectedStockDurationDays": 33,
+        "estimatedDaysOfStockRemaining": 0,
+        "actualConsumptionDurationDays": null,
+        "reorderFrequencyDays": 33,
+        "normalPurchaseFrequencyDays": 33,
+        "recommendedReorderDate": "2026-06-11",
+        "suggestedReorderQuantity": 2,
+        "currentConsumptionTrend": "Insufficient data",
+        "reorderPriorityScore": 95,
+        "stockBucket": "Items to Order Today",
+        "dataConfidenceScore": 81,
+        "dataConfidenceLabel": "High",
+        "daysSinceLastPurchase": 47,
+        "monthlyPurchasePattern": [
+          {
+            "month": "2026-04",
+            "purchases": 1,
+            "spend": 598
+          },
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "spend": 598
+          }
+        ],
+        "monthlyQuantityPattern": [
+          {
+            "month": "2026-04",
+            "purchases": 1,
+            "quantity": 2,
+            "spend": 598,
+            "unit": "kg"
+          },
+          {
+            "month": "2026-05",
+            "purchases": 1,
+            "quantity": 2,
+            "spend": 598,
+            "unit": "kg"
+          }
+        ],
+        "flags": [
+          "stock-out risk"
+        ],
+        "suggestions": [
+          "Order now."
+        ],
+        "totalSpend": 1196
+      },
+      {
         "itemName": "THF Multigrain Bread",
         "category": "Groceries",
         "purchaseCount": 3,
@@ -5617,7 +5682,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 90,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 12,
+        "daysSinceLastPurchase": 45,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -5673,7 +5738,7 @@
         "stockBucket": "Items to Order Today",
         "dataConfidenceScore": 81,
         "dataConfidenceLabel": "High",
-        "daysSinceLastPurchase": 12,
+        "daysSinceLastPurchase": 45,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -6414,7 +6479,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 30,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 14,
+        "daysSinceLastPurchase": 47,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -6468,7 +6533,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 40,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 4,
+        "daysSinceLastPurchase": 37,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -6520,7 +6585,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 40,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 4,
+        "daysSinceLastPurchase": 37,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -6572,7 +6637,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 40,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 11,
+        "daysSinceLastPurchase": 44,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -6624,7 +6689,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 40,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 11,
+        "daysSinceLastPurchase": 44,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -6676,7 +6741,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 40,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 4,
+        "daysSinceLastPurchase": 37,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -6728,7 +6793,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 40,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 4,
+        "daysSinceLastPurchase": 37,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -6780,7 +6845,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 40,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 12,
+        "daysSinceLastPurchase": 45,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -6832,7 +6897,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 40,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 11,
+        "daysSinceLastPurchase": 44,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -6884,7 +6949,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 40,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 4,
+        "daysSinceLastPurchase": 37,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -6936,7 +7001,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 40,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 4,
+        "daysSinceLastPurchase": 37,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -6988,7 +7053,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 40,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 4,
+        "daysSinceLastPurchase": 37,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -7040,7 +7105,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 40,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 4,
+        "daysSinceLastPurchase": 37,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -7092,7 +7157,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 40,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 4,
+        "daysSinceLastPurchase": 37,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",
@@ -7370,7 +7435,7 @@
         "stockBucket": "Requires Review",
         "dataConfidenceScore": 30,
         "dataConfidenceLabel": "Low",
-        "daysSinceLastPurchase": 14,
+        "daysSinceLastPurchase": 47,
         "monthlyPurchasePattern": [
           {
             "month": "2026-05",

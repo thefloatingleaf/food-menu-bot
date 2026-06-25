@@ -27,9 +27,27 @@ class PurchaseLedgerNormalizationTests(unittest.TestCase):
         self.assertEqual(entry["mode_of_payment"], "credit card")
         self.assertEqual(entry["expected_consumption_period"], {"value": 5.0, "unit": "days"})
 
-    def test_normalize_purchase_entry_requires_core_fields(self) -> None:
-        with self.assertRaisesRegex(ValueError, "missing required fields"):
-            ledger.normalize_purchase_entry({"item": "Apple"})
+    def test_normalize_purchase_entry_allows_optional_commercial_fields(self) -> None:
+        entry = ledger.normalize_purchase_entry({"item": "Apple"})
+
+        self.assertEqual(entry["item_name"], "Apple")
+        self.assertIsNone(entry["date_of_purchase"])
+        self.assertIsNone(entry["price"])
+        self.assertIsNone(entry["vendor_source"])
+        self.assertIsNone(entry["mode_of_payment"])
+
+    def test_validate_accepts_current_schema_without_payment_fields(self) -> None:
+        ledger.validate_ledger_payload(
+            {
+                "schema_version": 2,
+                "purchases": [
+                    {
+                        "purchase_id": "purchase-test-apple",
+                        "item_name": "Apple",
+                    }
+                ],
+            }
+        )
 
 
 class PurchaseLedgerSummaryTests(unittest.TestCase):

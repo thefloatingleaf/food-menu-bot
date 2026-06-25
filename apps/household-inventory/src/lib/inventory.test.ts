@@ -187,4 +187,33 @@ describe("inventory parsing and analysis", () => {
     expect(snapshot.contextNotes[0].message).toContain("Navishti");
     expect(snapshot.contextNotes[0].message).toContain("purchase");
   });
+
+  it("stores cooking yield observations separately from purchase rows and exposes context", async () => {
+    const inventory = await loadInventoryModule(fs.mkdtempSync(path.join(os.tmpdir(), "inventory-")));
+    inventory.upsertUsageObservationEntries([
+      {
+        observation_id: "usage-2026-06-23-blinkit-rice-idli-batter",
+        date: "2026-06-23",
+        item_name: "Ready-made rice idli batter",
+        source_name: "Blinkit",
+        input_quantity: 1,
+        input_unit: "kg",
+        output_quantity: 24,
+        output_unit: "idlis",
+        base_ingredient: "rice",
+        taste_feedback: "nice",
+      },
+    ]);
+
+    const snapshot = inventory.getInventorySnapshot();
+
+    expect(snapshot.ledger.purchases).toHaveLength(0);
+    expect(snapshot.usageObservations).toHaveLength(1);
+    expect(snapshot.usageObservations[0].review_status).toBe("ok");
+    expect(snapshot.contextNotes).toHaveLength(1);
+    expect(snapshot.contextNotes[0].title).toContain("usage observation");
+    expect(snapshot.contextNotes[0].message).toContain("1 kg");
+    expect(snapshot.contextNotes[0].message).toContain("24 idlis");
+    expect(snapshot.contextNotes[0].message).toContain("Blinkit");
+  });
 });

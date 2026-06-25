@@ -243,6 +243,32 @@ export type SupplyContextEntry = {
   last_updated_at: string;
 };
 
+export type UsageObservationEntry = {
+  observation_id: string;
+  date: string | null;
+  item_name: string;
+  category: InventoryCategory;
+  source_name: string | null;
+  input_quantity: number | null;
+  input_unit: string | null;
+  output_quantity: number | null;
+  output_unit: string | null;
+  base_ingredient: string | null;
+  taste_feedback: string | null;
+  remarks: string | null;
+  review_status: "ok" | "needs_review";
+  review_notes: string[];
+  entered_at: string;
+  last_updated_at: string;
+};
+
+export type UsageObservationLedger = {
+  schema_version: number;
+  created_at: string;
+  updated_at: string;
+  observations: UsageObservationEntry[];
+};
+
 export type ContextNote = {
   context_id: string;
   severity: "info" | "needs_review";
@@ -255,6 +281,7 @@ export type InventorySnapshot = {
   contextNotes: ContextNote[];
   ledger: InventoryLedger;
   supplyContext: SupplyContextEntry[];
+  usageObservations: UsageObservationEntry[];
 };
 
 export type ParsedInventoryPayload = {
@@ -264,12 +291,14 @@ export type ParsedInventoryPayload = {
   analysis: InventoryAnalysis;
   contextNotes: ContextNote[];
   supplyContext: SupplyContextEntry[];
+  usageObservations: UsageObservationEntry[];
 };
 
 const SCHEMA_VERSION = 2;
 const DEFAULT_LEDGER_FILE = "purchase_ledger.json";
 const DEFAULT_ANALYSIS_FILE = "analysis_snapshot.json";
 const DEFAULT_SUPPLY_CONTEXT_FILE = "supply_context.json";
+const DEFAULT_USAGE_OBSERVATIONS_FILE = "usage_observations.json";
 const CATEGORY_RULES: Array<{ category: InventoryCategory; keywords: string[] }> = [
   { category: "Fruits", keywords: ["apple", "banana", "mango", "papaya", "orange", "grape", "kiwi", "pear", "guava", "melon", "watermelon", "muskmelon", "litchi", "lichi", "anar", "amrood", "seb", "kela", "aam", "chikoo", "sapota", "pomegranate", "coconut", "phal", "fruit"] },
   { category: "Vegetables", keywords: ["potato", "onion", "tomato", "lauki", "bhindi", "parwal", "parval", "tori", "torai", "cabbage", "cauliflower", "palak", "spinach", "carrot", "beetroot", "cucumber", "karela", "ginger", "garlic", "methi", "sabzi", "vegetable", "veg"] },
@@ -279,7 +308,7 @@ const CATEGORY_RULES: Array<{ category: InventoryCategory; keywords: string[] }>
   { category: "Baby Items", keywords: ["diaper", "wipes", "formula", "baby laundry", "baby", "feeding bottle", "rash cream", "nappy"] },
   { category: "Medicines", keywords: ["tablet", "capsule", "syrup", "ointment", "medicine", "medicines", "paracetamol", "crocin", "dolo", "vitamin"] },
   { category: "Household Consumables", keywords: ["tissue", "foil", "garbage bag", "dustbin bag", "gift bag", "paper bag", "period panties", "sanitary", "candle", "matchbox", "battery", "toothpaste", "toothbrush", "napkin"] },
-  { category: "Groceries", keywords: ["atta", "rice", "dal", "masoor", "daliya", "flour", "maida", "besan", "oil", "sugar", "salt", "masala", "turmeric", "haldi", "jeera", "tea", "coffee", "poha", "suji", "rava", "grocery", "papad", "sattu", "corn flakes", "peanut", "peanuts", "sabudana", "bread", "semolina", "roti", "rotis", "coriander", "fennel", "saunf", "spice", "spices", "mustard", "sarso", "rai", "amchur", "chutney", "ketchup", "sauce", "bhujia", "namkeen", "snack", "soft drink", "coke", "cola", "sprite", "mountain dew"] },
+  { category: "Groceries", keywords: ["atta", "rice", "dal", "masoor", "daliya", "flour", "maida", "besan", "oil", "sugar", "salt", "masala", "turmeric", "haldi", "jeera", "tea", "coffee", "poha", "suji", "rava", "grocery", "papad", "sattu", "corn flakes", "peanut", "peanuts", "sabudana", "bread", "semolina", "roti", "rotis", "coriander", "fennel", "saunf", "spice", "spices", "mustard", "sarso", "rai", "amchur", "chutney", "ketchup", "sauce", "bhujia", "namkeen", "snack", "soft drink", "coke", "cola", "sprite", "mountain dew", "batter", "idli", "dosa"] },
 ];
 const KNOWN_VENDOR_PATTERNS = [
   "amazon",
@@ -308,6 +337,14 @@ const GENERATED_SUPPLY_REVIEW_NOTES = new Set([
   "Price not yet provided",
   "Category needs review",
 ]);
+const GENERATED_USAGE_OBSERVATION_REVIEW_NOTES = new Set([
+  "Date missing or unclear",
+  "Category needs review",
+  "Input quantity missing or unclear",
+  "Input unit missing or unclear",
+  "Output quantity missing or unclear",
+  "Output unit missing or unclear",
+]);
 
 function repoRoot() {
   if (process.env.HOUSEHOLD_PURCHASE_LEDGER_DIR) {
@@ -326,6 +363,10 @@ function analysisFilePath() {
 
 function supplyContextFilePath() {
   return path.join(repoRoot(), DEFAULT_SUPPLY_CONTEXT_FILE);
+}
+
+function usageObservationsFilePath() {
+  return path.join(repoRoot(), DEFAULT_USAGE_OBSERVATIONS_FILE);
 }
 
 function nowIso() {
@@ -362,6 +403,22 @@ function ensureInventoryStorage() {
           created_at: nowIso(),
           updated_at: nowIso(),
           entries: [],
+        },
+        null,
+        2,
+      ) + "\n",
+      "utf-8",
+    );
+  }
+  if (!fs.existsSync(usageObservationsFilePath())) {
+    fs.writeFileSync(
+      usageObservationsFilePath(),
+      JSON.stringify(
+        {
+          schema_version: SCHEMA_VERSION,
+          created_at: nowIso(),
+          updated_at: nowIso(),
+          observations: [],
         },
         null,
         2,
@@ -574,6 +631,60 @@ function normalizeSupplyContextEntry(input: Partial<SupplyContextEntry> & { item
   };
 }
 
+function normalizeUsageObservationEntry(
+  input: Partial<UsageObservationEntry> & { item_name?: string | null },
+): UsageObservationEntry {
+  const itemName = normalizeText(input.item_name) ?? "Unclear item";
+  const categoryResolution = input.category
+    ? { category: input.category, status: "auto" as const }
+    : detectCategory(itemName);
+  const inputQuantity = normalizeNumber(input.input_quantity ?? null);
+  const outputQuantity = normalizeNumber(input.output_quantity ?? null);
+  const inputUnit = normalizeUnit(normalizeText(input.input_unit ?? null));
+  const outputUnit = normalizeUnit(normalizeText(input.output_unit ?? null));
+  const reviewNotes: string[] = Array.isArray(input.review_notes)
+    ? input.review_notes.filter((note) => note && !GENERATED_USAGE_OBSERVATION_REVIEW_NOTES.has(note))
+    : [];
+
+  if (!normalizeDate(input.date ?? null)) {
+    reviewNotes.push("Date missing or unclear");
+  }
+  if (categoryResolution.status === "needs_review") {
+    reviewNotes.push("Category needs review");
+  }
+  if (inputQuantity === null) {
+    reviewNotes.push("Input quantity missing or unclear");
+  }
+  if (inputQuantity !== null && !inputUnit) {
+    reviewNotes.push("Input unit missing or unclear");
+  }
+  if (outputQuantity === null) {
+    reviewNotes.push("Output quantity missing or unclear");
+  }
+  if (outputQuantity !== null && !outputUnit) {
+    reviewNotes.push("Output unit missing or unclear");
+  }
+
+  return {
+    observation_id: input.observation_id ?? crypto.randomUUID(),
+    date: normalizeDate(input.date ?? null),
+    item_name: itemName,
+    category: categoryResolution.category,
+    source_name: normalizeText(input.source_name ?? null),
+    input_quantity: inputQuantity,
+    input_unit: inputUnit,
+    output_quantity: outputQuantity,
+    output_unit: outputUnit,
+    base_ingredient: normalizeText(input.base_ingredient ?? null),
+    taste_feedback: normalizeText(input.taste_feedback ?? null),
+    remarks: normalizeText(input.remarks ?? null),
+    review_status: reviewNotes.length > 0 ? "needs_review" : "ok",
+    review_notes: Array.from(new Set(reviewNotes)),
+    entered_at: normalizeText(input.entered_at) ?? nowIso(),
+    last_updated_at: normalizeText(input.last_updated_at) ?? nowIso(),
+  };
+}
+
 export function normalizeInventoryEntry(
   input: Partial<InventoryEntry> & { item_name?: string | null; raw_source_text?: string | null },
 ): InventoryEntry {
@@ -685,6 +796,39 @@ export function saveSupplyContext(context: { created_at: string; entries: Supply
   });
 }
 
+function normalizeStoredUsageObservations(rawLedger: unknown): UsageObservationLedger {
+  const ledger =
+    typeof rawLedger === "object" && rawLedger !== null
+      ? (rawLedger as { created_at?: unknown; observations?: unknown[]; updated_at?: unknown })
+      : {};
+  const observations = Array.isArray(ledger.observations)
+    ? ledger.observations.map((entry) => normalizeUsageObservationEntry(entry as Partial<UsageObservationEntry>))
+    : [];
+  return {
+    schema_version: SCHEMA_VERSION,
+    created_at: normalizeText(ledger.created_at) ?? nowIso(),
+    updated_at: normalizeText(ledger.updated_at) ?? nowIso(),
+    observations: observations.sort((left, right) => {
+      const leftDate = left.date ?? "9999-99-99";
+      const rightDate = right.date ?? "9999-99-99";
+      return leftDate.localeCompare(rightDate) || left.item_name.localeCompare(right.item_name);
+    }),
+  };
+}
+
+export function loadUsageObservations() {
+  ensureInventoryStorage();
+  return normalizeStoredUsageObservations(readJsonFile(usageObservationsFilePath()));
+}
+
+export function saveUsageObservations(ledger: UsageObservationLedger) {
+  writeJsonFile(usageObservationsFilePath(), {
+    ...ledger,
+    schema_version: SCHEMA_VERSION,
+    updated_at: nowIso(),
+  });
+}
+
 export function upsertSupplyContextEntries(
   rawEntries: Array<Partial<SupplyContextEntry> & { item_name?: string | null }>,
 ) {
@@ -710,6 +854,37 @@ export function upsertSupplyContextEntries(
   };
   saveSupplyContext(merged);
   return merged;
+}
+
+export function upsertUsageObservationEntries(
+  rawEntries: Array<Partial<UsageObservationEntry> & { item_name?: string | null }>,
+) {
+  const ledger = loadUsageObservations();
+  const entryMap = new Map(ledger.observations.map((entry) => [entry.observation_id, entry]));
+  const savedEntries: UsageObservationEntry[] = [];
+
+  for (const rawEntry of rawEntries) {
+    const observationId = rawEntry.observation_id ?? crypto.randomUUID();
+    const normalized = normalizeUsageObservationEntry({
+      ...entryMap.get(observationId),
+      ...rawEntry,
+      observation_id: observationId,
+      entered_at: entryMap.get(observationId)?.entered_at ?? rawEntry.entered_at,
+    });
+    entryMap.set(observationId, normalized);
+    savedEntries.push(normalized);
+  }
+
+  const merged = {
+    ...ledger,
+    observations: Array.from(entryMap.values()).sort((left, right) => {
+      const leftDate = left.date ?? "9999-99-99";
+      const rightDate = right.date ?? "9999-99-99";
+      return leftDate.localeCompare(rightDate) || left.item_name.localeCompare(right.item_name);
+    }),
+  };
+  saveUsageObservations(merged);
+  return { ledger: merged, savedEntries };
 }
 
 function emptyAnalysis(): InventoryAnalysis {
@@ -1596,8 +1771,18 @@ export function saveInventoryAnalysis(analysis: InventoryAnalysis) {
   writeJsonFile(analysisFilePath(), analysis);
 }
 
-export function buildContextNotes(supplyContext: SupplyContextEntry[]): ContextNote[] {
-  return supplyContext
+function formatObservationQuantity(quantity: number | null, unit: string | null) {
+  if (quantity === null) {
+    return "quantity not fully recorded";
+  }
+  return `${quantity} ${unit ?? ""}`.trim();
+}
+
+export function buildContextNotes(
+  supplyContext: SupplyContextEntry[],
+  usageObservations: UsageObservationEntry[] = [],
+): ContextNote[] {
+  const supplyNotes: ContextNote[] = supplyContext
     .filter((entry) => entry.active)
     .map((entry) => {
       const sourceLabel = entry.source_name ?? entry.source_description ?? "another source";
@@ -1621,6 +1806,28 @@ export function buildContextNotes(supplyContext: SupplyContextEntry[]): ContextN
         message: `Additional recurring supply recorded: ${quantityLabel} of ${entry.item_name} from ${sourceLabel}${beneficiaryLabel}. ${historyQualifier} ${spendQualifier}`,
       };
     });
+
+  const usageNotes: ContextNote[] = [...usageObservations]
+    .sort((left, right) => (right.date ?? "").localeCompare(left.date ?? ""))
+    .slice(0, 8)
+    .map((entry) => {
+      const sourceLabel = entry.source_name ? ` from ${entry.source_name}` : "";
+      const baseLabel = entry.base_ingredient ? ` Base: ${entry.base_ingredient}.` : "";
+      const tasteLabel = entry.taste_feedback ? ` Taste noted as ${entry.taste_feedback}.` : "";
+      const inputLabel = formatObservationQuantity(entry.input_quantity, entry.input_unit);
+      const outputLabel = formatObservationQuantity(entry.output_quantity, entry.output_unit);
+
+      return {
+        context_id: entry.observation_id,
+        severity: entry.review_status === "needs_review" ? "needs_review" : "info",
+        title: `${entry.item_name}: usage observation`,
+        message: `Usage observation recorded: ${inputLabel} of ${entry.item_name}${sourceLabel} yielded ${outputLabel}${
+          entry.date ? ` on ${entry.date}` : ""
+        }.${baseLabel}${tasteLabel}`,
+      };
+    });
+
+  return [...supplyNotes, ...usageNotes];
 }
 
 function removeMatchedSegment(source: string, matchedText: string | null) {
@@ -1820,7 +2027,8 @@ export function appendParsedInventoryEntries(rawText: string): ParsedInventoryPa
   };
   const analysis = buildInventoryAnalysis(mergedLedger.purchases);
   const supplyContext = loadSupplyContext().entries;
-  const contextNotes = buildContextNotes(supplyContext);
+  const usageObservations = loadUsageObservations().observations;
+  const contextNotes = buildContextNotes(supplyContext, usageObservations);
   saveInventoryLedger(mergedLedger);
   saveInventoryAnalysis(analysis);
 
@@ -1830,6 +2038,7 @@ export function appendParsedInventoryEntries(rawText: string): ParsedInventoryPa
     ledger: mergedLedger,
     analysis,
     supplyContext,
+    usageObservations,
     contextNotes,
   };
 }
@@ -1838,12 +2047,14 @@ export function getInventorySnapshot(): InventorySnapshot {
   const ledger = loadInventoryLedger();
   const analysis = buildInventoryAnalysis(ledger.purchases);
   const supplyContext = loadSupplyContext().entries;
-  const contextNotes = buildContextNotes(supplyContext);
+  const usageObservations = loadUsageObservations().observations;
+  const contextNotes = buildContextNotes(supplyContext, usageObservations);
   saveInventoryAnalysis(analysis);
   return {
     ledger,
     analysis,
     supplyContext,
+    usageObservations,
     contextNotes,
   };
 }
