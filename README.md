@@ -392,7 +392,8 @@ The generator also applies a recurring override for any festival day that is bot
 
 1. Guest Menu is a dormant data list in `guest_menu.json`; it is not rendered in the daily menu until explicitly activated.
 2. Each entry stores a stable `id`, Hindi dish name, optional English dish name, Hindi responsibility lines, and optional Hindi specific instructions.
-3. Current first entry: `दाल बाटी`; अनिल जी बाटी और सत्तू मसाला बनाते हैं, ऊषा इसे बेक करती हैं, और शोभ्रन आटा गूंथते हैं।
+3. Current entries include `दाल बाटी` and `कटहल बिरयानी`.
+4. For `कटहल बिरयानी`, सोबरन is recorded as the cook, and Ruby's praise is preserved as a guest-menu note.
 
 ## Consecutive-day repeat rule
 

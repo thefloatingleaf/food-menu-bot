@@ -9,5 +9,16 @@
       "शोभ्रन आटा गूंथते हैं।"
     ],
     "specific_instructions_hi": []
+  },
+  {
+    "id": "kathal_biryani",
+    "dish_hi": "कटहल बिरयानी",
+    "dish_en": "Kathal Biryani",
+    "responsibilities_hi": [
+      "सोबरन कटहल बिरयानी बहुत अच्छी बनाते हैं।"
+    ],
+    "specific_instructions_hi": [
+      "रूबी के अनुसार, उन्होंने इतनी अच्छी बिरयानी कभी नहीं खाई, चाहे वेज हो या नॉन-वेज।"
+    ]
   }
 ]

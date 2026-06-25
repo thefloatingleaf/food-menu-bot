@@ -80,17 +80,24 @@ class ConsecutiveDayRepeatRuleTests(unittest.TestCase):
 
 
 class VarietyCycleRuleTests(unittest.TestCase):
-    def test_guest_menu_file_validates_and_contains_daal_baati(self) -> None:
+    def test_guest_menu_file_validates_and_contains_known_guest_dishes(self) -> None:
         guest_menu = generate_menu.validate_guest_menu_entries(
             generate_menu.load_json(generate_menu.GUEST_MENU_FILE),
             "guest_menu.json",
         )
         daal_baati = next(entry for entry in guest_menu if entry["id"] == "daal_baati")
+        kathal_biryani = next(entry for entry in guest_menu if entry["id"] == "kathal_biryani")
 
         self.assertEqual(daal_baati["dish_hi"], "दाल बाटी")
         self.assertIn("अनिल जी बाटी और सत्तू मसाला अच्छा बनाते हैं।", daal_baati["responsibilities_hi"])
         self.assertIn("ऊषा इसे बेक करती हैं।", daal_baati["responsibilities_hi"])
         self.assertIn("शोभ्रन आटा गूंथते हैं।", daal_baati["responsibilities_hi"])
+        self.assertEqual(kathal_biryani["dish_hi"], "कटहल बिरयानी")
+        self.assertIn("सोबरन कटहल बिरयानी बहुत अच्छी बनाते हैं।", kathal_biryani["responsibilities_hi"])
+        self.assertIn(
+            "रूबी के अनुसार, उन्होंने इतनी अच्छी बिरयानी कभी नहीं खाई, चाहे वेज हो या नॉन-वेज।",
+            kathal_biryani["specific_instructions_hi"],
+        )
 
     def test_validate_guest_menu_entries_rejects_duplicate_ids(self) -> None:
         with self.assertRaisesRegex(ValueError, "duplicate id"):
