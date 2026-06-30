@@ -3,6 +3,7 @@ from unittest.mock import patch
 from datetime import date
 
 import generate_menu
+import generate_navishti_menu
 
 
 class ConsecutiveDayRepeatRuleTests(unittest.TestCase):
@@ -865,6 +866,23 @@ class OutputFreshnessTests(unittest.TestCase):
     def test_parse_navishti_output_target_date_reads_header_date(self) -> None:
         output_text = "*22-Apr-2026 तिथि के लिए नविष्टि भोजन:*\r\n*ऋतु:* ग्रीष्म"
         self.assertEqual(generate_menu.parse_navishti_output_target_date(output_text), date(2026, 4, 22))
+
+    def test_resolve_navishti_target_date_uses_standard_menu_date(self) -> None:
+        target_date = generate_navishti_menu.resolve_navishti_target_date_from_standard_menu(
+            "*20-Mar-2026 तिथि के लिए भोजन:*\r\n*ऋतु:* वसंत",
+            "Asia/Kolkata",
+            now_date=date(2026, 3, 19),
+        )
+
+        self.assertEqual(target_date, date(2026, 3, 20))
+
+    def test_resolve_navishti_target_date_rejects_stale_standard_menu(self) -> None:
+        with self.assertRaisesRegex(ValueError, "expected 2026-03-20, found 2026-03-19"):
+            generate_navishti_menu.resolve_navishti_target_date_from_standard_menu(
+                "*19-Mar-2026 तिथि के लिए भोजन:*\r\n*ऋतु:* वसंत",
+                "Asia/Kolkata",
+                now_date=date(2026, 3, 19),
+            )
 
     def test_format_navishti_daily_menu_text_renders_standalone_grishm_message(self) -> None:
         text = generate_menu.format_navishti_daily_menu_text(

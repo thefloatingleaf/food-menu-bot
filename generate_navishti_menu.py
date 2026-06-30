@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import sys
-from datetime import timedelta
+from datetime import date
 
 import generate_menu
 
@@ -14,10 +14,44 @@ def get_stored_navishti_plan(row: dict[str, object]) -> list[str]:
     return [str(item).strip() for item in stored_plan if isinstance(item, str) and str(item).strip()]
 
 
+def resolve_navishti_target_date_from_standard_menu(
+    output_text: str,
+    timezone_name: str,
+    now_date: date | None = None,
+) -> date:
+    standard_target_date = generate_menu.parse_output_target_date(output_text)
+    expected_target_date = generate_menu.resolve_date(None, timezone_name, now_date=now_date)
+    if standard_target_date != expected_target_date:
+        raise ValueError(
+            "standard menu date mismatch: "
+            f"expected {expected_target_date.isoformat()}, found {standard_target_date.isoformat()}"
+        )
+    return standard_target_date
+
+
 def main() -> int:
     config = generate_menu.load_json(generate_menu.CONFIG_FILE) if generate_menu.CONFIG_FILE.exists() else {}
     timezone_name = str(config.get("timezone", "Asia/Kolkata"))
-    target_date = generate_menu.resolve_runtime_today(timezone_name) + timedelta(days=1)
+
+    if not generate_menu.OUTPUT_FILE.exists():
+        print(
+            f"{generate_menu.OUTPUT_FILE.name} is missing; generate the standard daily menu before Navishti.",
+            file=sys.stderr,
+        )
+        return MISSING_STANDARD_ROW_EXIT
+
+    try:
+        target_date = resolve_navishti_target_date_from_standard_menu(
+            generate_menu.OUTPUT_FILE.read_text(encoding="utf-8"),
+            timezone_name,
+        )
+    except ValueError as exc:
+        print(
+            "standard daily menu is not ready for Navishti generation: " + str(exc),
+            file=sys.stderr,
+        )
+        return MISSING_STANDARD_ROW_EXIT
+
     target_date_str = target_date.isoformat()
 
     history = generate_menu.normalize_history(generate_menu.load_json(generate_menu.HISTORY_FILE))

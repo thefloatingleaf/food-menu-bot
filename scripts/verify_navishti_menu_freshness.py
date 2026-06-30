@@ -18,9 +18,20 @@ def main() -> int:
 
     if not generate_menu.NAVISHTI_OUTPUT_FILE.exists():
         raise SystemExit(f"missing output file: {generate_menu.NAVISHTI_OUTPUT_FILE}")
+    if not generate_menu.OUTPUT_FILE.exists():
+        raise SystemExit(f"missing standard output file: {generate_menu.OUTPUT_FILE}")
 
+    standard_output_text = generate_menu.OUTPUT_FILE.read_text(encoding="utf-8")
+    generate_menu.verify_output_target_date(standard_output_text, expected_target_date)
     output_text = generate_menu.NAVISHTI_OUTPUT_FILE.read_text(encoding="utf-8")
     generate_menu.verify_navishti_output_target_date(output_text, expected_target_date)
+    standard_target_date = generate_menu.parse_output_target_date(standard_output_text)
+    navishti_target_date = generate_menu.parse_navishti_output_target_date(output_text)
+    if navishti_target_date != standard_target_date:
+        raise SystemExit(
+            "Navishti menu header date must match standard menu header date: "
+            f"standard={standard_target_date.isoformat()}, navishti={navishti_target_date.isoformat()}"
+        )
 
     forbidden_fragments = ["सभी के लिए बन रहे", "तड़का लगाने से पहले", "ऊपर लिखित अलग कटोरी"]
     found = [fragment for fragment in forbidden_fragments if fragment in output_text]
