@@ -118,6 +118,16 @@ class VarietyCycleRuleTests(unittest.TestCase):
                 ]
             )
 
+    def test_grishm_jhangora_upma_includes_recipe_link(self) -> None:
+        breakfast_items = generate_menu.validate_menu_list(
+            generate_menu.load_json(generate_menu.BREAKFAST_GRISHM_FILE),
+            "breakfast_grishm.json",
+        )
+        matches = [item for item in breakfast_items if "झंगोरा (Barnyard Millet) उपमा" in item]
+
+        self.assertEqual(len(matches), 1)
+        self.assertIn("https://www.youtube.com/watch?v=nVPcf8hjks4", matches[0])
+
     def test_normalize_history_preserves_fruit(self) -> None:
         normalized = generate_menu.normalize_history(
             [
