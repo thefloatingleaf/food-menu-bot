@@ -1336,8 +1336,15 @@
     "date": "2026-07-23",
     "breakfast": "सूजी की इडली, सांबर, नारियल और मूंगफली की चटनी की साथ",
     "meal": "रोटी और आम अदा दिया भाजा मूँग दाल (Aam Ada Diya Bhaaja Moong Dal)",
+    "fruit": "खुबानी",
+    "ritu_key": "varsha"
+  },
+  {
+    "date": "2026-07-24",
+    "breakfast": "Salty Dalia (नमकीन दलिया)",
+    "meal": "मोरू कली (मोर कूझ) (https://www.youtube.com/watch?v=xWue2xhKIuY)",
     "ritu_key": "varsha",
-    "fruit": "खुबानी"
+    "fruit": "कच्चा नारियल"
   },
   {
     "date": "2026-11-10",
