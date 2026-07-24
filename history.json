@@ -1343,8 +1343,15 @@
     "date": "2026-07-24",
     "breakfast": "Salty Dalia (नमकीन दलिया)",
     "meal": "मोरू कली (मोर कूझ) (https://www.youtube.com/watch?v=xWue2xhKIuY)",
+    "fruit": "कच्चा नारियल",
+    "ritu_key": "varsha"
+  },
+  {
+    "date": "2026-07-25",
+    "breakfast": "नमक अजवाइन रोटी",
+    "meal": "बीसी बेले भात (https://www.youtube.com/watch?v=v2A7o8xz85Q)",
     "ritu_key": "varsha",
-    "fruit": "कच्चा नारियल"
+    "fruit": "जामुन"
   },
   {
     "date": "2026-11-10",
