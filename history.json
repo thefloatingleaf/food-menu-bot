@@ -1350,8 +1350,15 @@
     "date": "2026-07-25",
     "breakfast": "नमक अजवाइन रोटी",
     "meal": "बीसी बेले भात (https://www.youtube.com/watch?v=v2A7o8xz85Q)",
+    "fruit": "जामुन",
+    "ritu_key": "varsha"
+  },
+  {
+    "date": "2026-07-26",
+    "breakfast": "पोहा",
+    "meal": "परवल, गेहूँ की रोटी",
     "ritu_key": "varsha",
-    "fruit": "जामुन"
+    "fruit": "पपीता"
   },
   {
     "date": "2026-11-10",
