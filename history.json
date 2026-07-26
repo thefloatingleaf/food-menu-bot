@@ -1357,8 +1357,15 @@
     "date": "2026-07-26",
     "breakfast": "पोहा",
     "meal": "परवल, गेहूँ की रोटी",
+    "fruit": "पपीता",
+    "ritu_key": "varsha"
+  },
+  {
+    "date": "2026-07-27",
+    "breakfast": "उपमा, नारियल की चटनी, मूंगफली की चटनी, सांभर",
+    "meal": "रागी मुद्दे (https://www.youtube.com/watch?v=epIQqNQvP2I) और साथ में धुली मूंग की दाल",
     "ritu_key": "varsha",
-    "fruit": "पपीता"
+    "fruit": "फालसा"
   },
   {
     "date": "2026-11-10",
