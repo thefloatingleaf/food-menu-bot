@@ -200,7 +200,7 @@ python3 generate_menu.py --bootstrap-weather-tags
 - `*आज का भोजन:* <item>`
 - `*आज का भोजन 1:* <item>` and `*आज का भोजन 2:* <item>` (only for the temporary 08-Apr-2026 through 14-Apr-2026 dual-meal window)
 - `*आज का फल:* <item>` or `*आज का फल:* फल उपलब्ध नहीं है`
-- `*आज का पेय:* <drink>` plus `*पेय विकल्प:* यदि आज का पेय उपलब्ध न हो, तो सत्तू का शर्बत दिया जा सकता है।`
+- `*आज का पेय:* <drink>` plus `*पेय विकल्प:* यदि आज का पेय उपलब्ध न हो, तो सत्तू का शर्बत दिया जा सकता है।` (केवल ग्रीष्म ऋतु)
 - `*फॉलोवर महोदय हेतु रात की तैयारी:* <instruction>` (only when the generated next-day menu includes मंगौड़े)
 - `*साथ में:* मोटा चौकोर कटा प्याज` (only when the selected breakfast is `पखाला भात`)
 - `*एकादशी:* <name_hi>` (only on Ekadashi/Gauna dates)
@@ -346,11 +346,39 @@ The generator also applies a recurring override for any festival day that is bot
 19. If पंचांग ऋतु is `वर्षा` or `वर्षा ऋतु`, the script uses:
    - `breakfast_varsha.json`
    - `menu_varsha.json`
-8. For वर्षा days, output also includes:
-   - `*वर्षा नाश्ता अनिवार्य साथ:* आचार / मिश्री-सौंफ़ / छाछ त्रिकटु के साथ`
-   - `*वर्षा भोजन अनिवार्य साथ:* आचार / मिश्री-सौंफ़ / छाछ त्रिकटु के साथ`
-   - `*वर्षा वर्जित:* प्याज और दही पूर्णतः मना है`
-9. वर्षा days enforce hard filtering for `प्याज`, `प्याज़`, `दही` in breakfast and भोजन selection.
+20. वर्षा ऋतु is सावन/श्रावण and भादों/भाद्रपद. Its food rules are:
+   - `पुराना गेहूँ` is preferred; no पराठा or पूरी.
+   - `पुराना जौ/जौं` may be used.
+   - use `पुराना चावल`; if unavailable, roast the rice first. Do not pressure-cook it; cook in an open vessel and drain the मांड.
+   - avoid coarse-grain roti; if it must be eaten, the item must explicitly include घी.
+   - permitted fats are घी, तिल का तेल, and सरसों का तेल.
+   - useful spices are हींग, जीरा, and कड़ीपत्ता.
+21. Varsha taste and intake groups are:
+   - ऋतु रस: खट्टा and नमकीन.
+   - use more: खांड, सेंधा नमक, सौंठ, काली मिर्च, हल्दी, हींग, अजवाइन, जीरा, सौंफ, and अचार.
+   - use less: लहसुन, गन्ना, काजू-पिस्ता, छेना, पुदीना, लौंग, पपीता, आम, लौकी, करेला, and छाछ. Low-use meal items receive a lower selection weight rather than a hard ban.
+   - avoid: chocolate, sugar-made sweets, maida, rajma, white chana, onion, and stale water. Sweet dishes must use खांड rather than sugar.
+   - water: भस्म जल, boiled water, or water cleaned with फिटकरी.
+22. दही, छाछ, and milk follow month-specific rules:
+   - सावन: no milk. Curd and thin छाछ are morning-only, not daily, and never at night; छाछ uses सौंठ / काली मिर्च / पिप्पली / त्रिकटु.
+   - भादों: no curd. Limited thin छाछ is allowed only in the morning, not daily, with त्रिकटु.
+   - the generator prevents both curd and छाछ breakfasts on consecutive days and blocks them from the main meal.
+23. वर्षा hard filtering blocks प्याज/प्याज़, साबूदाना, छोले, बासी food, पराठा, पूरी, explicitly fried items, chocolate, maida, rajma, white chana, and `चावल और मजीदा कढ़ी`. It also blocks coarse-grain roti unless the item explicitly includes घी.
+24. भादों-specific behavior is:
+   - early morning: गुनगुना पानी and च्यवनप्राश.
+   - must-have list: हरड़ मुरब्बा, त्रिफला चूर्ण, हरड़ चूर्ण, गिलोय काढ़ा, दशमूल काढ़ा, आंवला juice, and त्रिकटु in छाछ.
+   - fruit selection uses only जामुन, नाशपाती, आलूबुखारा, आड़ू, अनार, and मौसमी.
+   - post-dinner: milk with 1/2 tsp turmeric, 1/2 tsp ghee, and one pinch black pepper.
+25. वर्षा output also records:
+   - eat only after the previous food is digested and genuine hunger appears;
+   - retain स्निग्धता without fried food;
+   - ऋतु रस is खट्टा / नमकीन;
+   - roasted chana, sour pickle, black salt, Panchkol churna, roasted मूंग papad, sesame chutney, and lemon/amla pickles as useful accompaniments;
+   - fennel, ajwain, clove, and paan are limited post-meal options because clove is also in the low-use group;
+   - milk, curd, and छाछ follow the सावन/भादों rules above; there is no general year-round milk permission in this section;
+   - सावन completely excludes leafy साग; outside सावन during वर्षा, leafy vegetables should be avoided where possible and otherwise boiled, squeezed, then sauteed in oil or ghee;
+   - no street food, ordered food, fried/stale/cold food, sabudana, chhole, chocolate, sugar-made sweets, maida, rajma, white chana, or onion.
+26. Public menu output is food-only. Lifestyle, body-care, travel, fasting, and treatment instructions—including अभ्यंगम, उबटन, इत्र, बस्ती चिकित्सा, cold-air/day-sleep advice, and the ज्येष्ठ travel rule—are never rendered in a shared menu.
 10. If पंचांग ऋतु is `शरद` or `शरद ऋतु`, the script uses:
    - `breakfast_sharad.json`
    - `menu_sharad.json`
@@ -371,19 +399,37 @@ The generator also applies a recurring override for any festival day that is bot
    - `*हेमंत जल नियम:* हमेशा गुनगुना, पीतल या तांबे में`
 15. हेमंत days enforce hard filtering for the same prohibited keywords listed above.
 
+## Lunar-month avoidance behavior
+
+Every regular or festival output includes the applicable month-specific avoidance reminder. Explicit matching food items are removed from breakfast, meal, and fruit selection where the rule can be enforced from the item text.
+
+- चैत्र: गुड़
+- वैशाख: तेल
+- आषाढ़: बेल
+- श्रावण/सावन: दूध and leafy साग
+- भाद्रपद/भादों: दही
+- आश्विन/क्वार: ripe करेला
+- कार्तिक: छाछ
+- मार्गशीर्ष/अगहन: जीरा
+- पौष: धनिया
+- माघ: मिश्री
+- फाल्गुन: चना
+
+The ज्येष्ठ travel restriction is intentionally excluded because it is not a food rule.
+
 ## Monthly fruit behavior
 
 1. Every generated menu includes a `*आज का फल:*` line in the main message, including regular days, festival-only days, and शृंगधारा days.
-2. Fruit choices come only from `fruit_months.json`, keyed by calendar month.
+2. Fruit choices normally come from `fruit_months.json`, keyed by calendar month. भादों overrides this with its dedicated six-fruit pool, and lunar-month prohibitions such as no बेल in आषाढ़ are applied before selection.
 3. Fruit rotation is tracked persistently in `history.json` using the generated date and selected fruit.
 4. Within the same calendar month, a fruit does not repeat until the other approved fruits for that month have been used at least once.
 5. If the monthly fruit list is exhausted, the fruit cycle resets automatically for that same month and selection starts again.
 6. In May and June, `आम` gets higher weight and may reappear before all other fruits are exhausted, but the selector still avoids unnecessary monotony such as immediate back-to-back repetition when other options are available.
 7. If a month has no configured fruit list, or no valid fruit can be selected, the menu prints `*आज का फल:* फल उपलब्ध नहीं है`.
 
-## Daily drink behavior
+## Grishma-only drink behavior
 
-1. Every generated menu includes a `*आज का पेय:*` line in Hindi.
+1. Only a generated `ग्रीष्म` menu includes a `*आज का पेय:*` line. Other seasons, including वर्षा, do not use this rotation.
 2. The drink is selected deterministically by date from `ठंडाई`, `सत्तू का शर्बत`, `खर्जुरादी मंथ`, `बेल शर्बत`, `रागी कांजी`, and `पेठे का जूस`.
 3. Drinks with supplied recipes render the full preparation text in the same line.
 4. Every drink line is followed by `*पेय विकल्प:* यदि आज का पेय उपलब्ध न हो, तो सत्तू का शर्बत दिया जा सकता है।`
@@ -454,7 +500,8 @@ If a date is missing in `panchang_2026_27.json`, script now auto-detects ऋत�
 ## GitHub Action schedule
 
 - Workflow file: `.github/workflows/daily-menu.yml`
-- The normal food menu workflow runs at `08:00 UTC` (1:30 PM IST)
+- The normal food menu workflow has a primary run at `00:17 UTC` (5:47 AM IST) and fallback runs at `03:47 UTC` (9:17 AM IST) and `06:17 UTC` (11:47 AM IST).
+- The early primary/fallback schedule leaves several hours before the 3:10 PM IST WhatsApp Shortcut because GitHub scheduled workflows can start substantially later than their requested time.
 - If the normal menu generation command fails, the workflow retries it once immediately in the same run
 - Each run updates `daily_menu.txt` and `history.json`, then verifies that both match tomorrow's date before any commit is allowed
 - Navishti has a separate workflow file: `.github/workflows/navishti-menu.yml`
@@ -464,6 +511,7 @@ If a date is missing in `panchang_2026_27.json`, script now auto-detects ऋत�
 
 ## iPhone Shortcuts
 
-Use `Get Contents of URL` with raw GitHub URL of `daily_menu.txt`, then send the fetched text through WhatsApp action for the standard food message.
+Use `Get Contents of URL` with the raw GitHub URL of `daily_menu.txt`. Before the WhatsApp action, the Shortcut must calculate tomorrow's date, format it as `dd-MMM-yyyy` using the English locale, and verify that the fetched text begins with `*<tomorrow> तिथि के लिए भोजन:*`. If it does not match, show a stale-menu warning and stop the Shortcut without sending anything.
+The standard food Shortcut runs at 3:10 PM IST. The date check is mandatory even with the earlier GitHub schedule: a stale menu must fail closed rather than be sent as today's next-day menu.
 Use a separate 4:00 PM IST Shortcut with raw GitHub URL of `navishti_daily_menu.txt` for the Navishti-only message.
 If WhatsApp sends the same date twice, first check whether the Shortcut ran before the latest `chore: update daily menu` commit was pushed.

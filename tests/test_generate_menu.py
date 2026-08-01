@@ -665,6 +665,15 @@ class VarietyCycleRuleTests(unittest.TestCase):
         self.assertIn(f"*आज का पेय:* {drink_name} — ", line)
         self.assertIn(recipe, line)
 
+    def test_drink_rotation_is_grishm_only(self) -> None:
+        target_date = date(2026, 8, 1)
+
+        self.assertIsNone(generate_menu.format_ritu_drink_of_the_day_line(target_date, "varsha"))
+        self.assertIsNone(generate_menu.format_ritu_drink_of_the_day_line(target_date, "sharad"))
+        self.assertTrue(
+            generate_menu.format_ritu_drink_of_the_day_line(target_date, "grishm").startswith("*आज का पेय:*")
+        )
+
     def test_format_meal_display_adds_dal_with_parwal_bhujiya(self) -> None:
         meal = "ज्वार (Sorghum) (केवल पुराना) की रोटी और परवल की भुजिया"
         self.assertEqual(
@@ -679,6 +688,47 @@ class VarietyCycleRuleTests(unittest.TestCase):
     def test_format_meal_display_leaves_other_parwal_meals_unchanged(self) -> None:
         meal = "ज्वार की रोटी और परवल-मूँगदाल की सूखी सब्ज़ी"
         self.assertEqual(generate_menu.format_meal_display(meal), meal)
+
+    def test_varsha_moru_kali_recipe_is_retained_but_blocked_from_main_meal(self) -> None:
+        meal_items = generate_menu.validate_menu_list(
+            generate_menu.load_json(generate_menu.MENU_VARSHA_FILE),
+            "menu_varsha.json",
+        )
+
+        self.assertIn(generate_menu.MORU_KALI_UPMA_ITEM, meal_items)
+        self.assertNotIn(
+            generate_menu.MORU_KALI_UPMA_ITEM,
+            generate_menu.apply_varsha_static_menu_rules(meal_items, "meal", "श्रावण"),
+        )
+
+        recipe_lines = generate_menu.build_meal_recipe_lines(generate_menu.MORU_KALI_UPMA_ITEM)
+        self.assertIn("• 4 कप छाछ (मोर)", recipe_lines)
+        self.assertIn("• 1 कप चावल का आटा", recipe_lines)
+        self.assertIn("• 3 छोटे चम्मच धुली उड़द दाल", recipe_lines)
+        self.assertTrue(any(line.startswith("5. *परोसें:*") for line in recipe_lines))
+
+        output_lines = [f"*आज का भोजन:* {generate_menu.MORU_KALI_UPMA_ITEM}"]
+        generate_menu.append_meal_recipe_lines(output_lines, generate_menu.MORU_KALI_UPMA_ITEM)
+        self.assertEqual(output_lines[1:], recipe_lines)
+
+    def test_varsha_completely_excludes_majjida_kadhi_rice(self) -> None:
+        meal_items = generate_menu.validate_menu_list(
+            generate_menu.load_json(generate_menu.MENU_VARSHA_FILE),
+            "menu_varsha.json",
+        )
+
+        self.assertFalse(any("मजीदा कढ़ी" in item or "Majjida Karhi" in item for item in meal_items))
+        self.assertEqual(
+            generate_menu.apply_varsha_static_menu_rules(
+                ["चावल और मजीदा कढ़ी (Majjida Karhi)", "भिंडी की सब्ज़ी, गेहूँ की रोटी"],
+                "meal",
+                "भाद्रपद",
+            ),
+            ["भिंडी की सब्ज़ी, गेहूँ की रोटी"],
+        )
+
+    def test_non_recipe_meal_does_not_add_recipe_lines(self) -> None:
+        self.assertEqual(generate_menu.build_meal_recipe_lines("मूँग दाल खिचड़ी"), [])
 
     def test_build_navishti_grishm_plan_line_ignores_household_replacements(self) -> None:
         line = generate_menu.build_navishti_grishm_plan_line(
@@ -829,6 +879,131 @@ class VarietyCycleRuleTests(unittest.TestCase):
         self.assertTrue(generate_menu.is_chaach_sabzi_meal("छाछ की सब्ज़ी और शालि चावल"))
         self.assertTrue(generate_menu.is_chaach_sabzi_meal("छाछ की सब्ज़ी और साठी चावल"))
         self.assertFalse(generate_menu.is_chaach_sabzi_meal("मसाला छाछ"))
+
+
+class VarshaRituRuleTests(unittest.TestCase):
+    def test_static_breakfast_rules_keep_morning_curd_but_block_prohibited_items(self) -> None:
+        items = [
+            "दही के साथ नमक अजवाइन रोटी",
+            "आलू प्याज़ की रोटी",
+            "साबूदाना खिचड़ी",
+            "छोले और पूरी",
+            "रागी की रोटी",
+            "रागी की रोटी घी के साथ",
+        ]
+
+        self.assertEqual(
+            generate_menu.apply_varsha_static_menu_rules(items, "breakfast", "श्रावण"),
+            ["दही के साथ नमक अजवाइन रोटी", "रागी की रोटी घी के साथ"],
+        )
+
+    def test_static_meal_rules_block_curd_and_chaach_outside_morning(self) -> None:
+        items = [
+            "दही चावल",
+            "छाछ की सब्ज़ी और चावल",
+            "भिंडी और पुराना गेहूँ की रोटी",
+        ]
+
+        self.assertEqual(
+            generate_menu.apply_varsha_static_menu_rules(items, "meal", "श्रावण"),
+            ["भिंडी और पुराना गेहूँ की रोटी"],
+        )
+
+    def test_bhaadon_blocks_curd_but_allows_limited_morning_chaach(self) -> None:
+        items = ["पतली छाछ और रोटी", "दही और रोटी", "पोहा"]
+
+        self.assertEqual(
+            generate_menu.apply_varsha_static_menu_rules(items, "breakfast", "भाद्रपद"),
+            ["पतली छाछ और रोटी", "पोहा"],
+        )
+
+    def test_varsha_curd_or_chaach_does_not_repeat_on_consecutive_mornings(self) -> None:
+        history = [
+            {
+                "date": "2026-08-01",
+                "breakfast": "दही और रोटी",
+                "meal": "भिंडी और रोटी",
+                "ritu_key": "varsha",
+            }
+        ]
+
+        filtered, applied = generate_menu.apply_varsha_morning_dairy_frequency_rule(
+            ["दही और रोटी", "पतली छाछ और रोटी", "पोहा"],
+            history,
+            date(2026, 8, 2),
+            "varsha",
+        )
+
+        self.assertEqual(filtered, ["पोहा"])
+        self.assertTrue(applied)
+
+    def test_varsha_guidance_distinguishes_sawan_and_bhaadon(self) -> None:
+        sawan_lines = generate_menu.build_varsha_guidance_lines(
+            "श्रावण",
+            ["पुराना गेहूँ की रोटी", "मूँग की दाल और चावल"],
+        )
+        bhaadon_lines = generate_menu.build_varsha_guidance_lines("भाद्रपद", ["पोहा", "मूँग दाल खिचड़ी"])
+
+        self.assertTrue(any("सावन छाछ नियम" in line and "त्रिकटु" in line for line in sawan_lines))
+        self.assertTrue(any("भादों दही नियम" in line and "बिल्कुल नहीं" in line for line in bhaadon_lines))
+        self.assertTrue(any("भादों छाछ नियम" in line and "त्रिकटु" in line for line in bhaadon_lines))
+        self.assertTrue(any("गुनगुना पानी" in line and "च्यवनप्राश" in line for line in bhaadon_lines))
+        self.assertTrue(any("हरड़ का मुरब्बा" in line and "दशमूल काढ़ा" in line for line in bhaadon_lines))
+        self.assertTrue(any("आधा चम्मच हल्दी" in line and "काली मिर्च" in line for line in bhaadon_lines))
+        self.assertTrue(any("कुकर में नहीं" in line and "मांड निकालें" in line for line in sawan_lines))
+        self.assertTrue(any("पुराना गेहूँ" in line and "पराठा या पूरी नहीं" in line for line in sawan_lines))
+        rendered_guidance = "\n".join(sawan_lines + bhaadon_lines)
+        for non_food_term in ("अभ्यंगम", "उबटन", "इत्र", "बस्ती", "ठंडी हवा", "दिन में न सो", "उपवास", "चिकित्सक"):
+            with self.subTest(non_food_term=non_food_term):
+                self.assertNotIn(non_food_term, rendered_guidance)
+
+    def test_bhaadon_uses_its_own_fruit_pool(self) -> None:
+        selection = generate_menu.select_fruit_for_day_context(
+            [],
+            date(2026, 8, 15),
+            {8: ["पपीता", "केला"]},
+            {},
+            "varsha",
+            "भाद्रपद",
+        )
+
+        self.assertTrue(selection.available)
+        self.assertIn(selection.fruit, generate_menu.BHAADON_FRUITS)
+
+    def test_monthly_rules_block_sawan_milk_and_leafy_greens(self) -> None:
+        items = ["दूध और दलिया", "पालक और रोटी", "मेथी दाने की सब्ज़ी", "पोहा"]
+
+        self.assertEqual(
+            generate_menu.apply_lunar_month_menu_rules(items, "श्रावण"),
+            ["मेथी दाने की सब्ज़ी", "पोहा"],
+        )
+
+    def test_monthly_avoidance_lines_render_only_food_related_month_rules(self) -> None:
+        expected = {
+            "चैत्र": "गुड़",
+            "वैशाख": "तेल",
+            "आषाढ़": "बेल",
+            "श्रावण": "दूध",
+            "भाद्रपद": "दही",
+            "आश्विन": "करेला",
+            "कार्तिक": "छाछ",
+            "मार्गशीर्ष": "जीरा",
+            "पौष": "धनिया",
+            "माघ": "मिश्री",
+            "फाल्गुन": "चना",
+        }
+
+        for month, token in expected.items():
+            with self.subTest(month=month):
+                self.assertIn(token, generate_menu.build_lunar_month_avoidance_line(month))
+
+        self.assertIsNone(generate_menu.build_lunar_month_avoidance_line("ज्येष्ठ"))
+
+    def test_varsha_low_use_foods_receive_lower_selection_weight(self) -> None:
+        self.assertLess(
+            generate_menu.get_ritu_roti_grain_preference_weight("करेला और गेहूँ की रोटी", "varsha"),
+            generate_menu.get_ritu_roti_grain_preference_weight("भिंडी और गेहूँ की रोटी", "varsha"),
+        )
 
 
 class DateResolutionTests(unittest.TestCase):

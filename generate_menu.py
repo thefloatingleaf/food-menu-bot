@@ -595,7 +595,7 @@ CURD_ITEM_TOKENS = ("दही", "रायता")
 CURD_RAITA_NOTE_HI = "*दही रूप:* केवल लौकी/खीरे का रायता"
 CURD_RAITA_NOTE_EXCLUDED_ITEMS = ("दही चावल ज्यादा करी पत्ता व सौंफ के साथ",)
 SPECIFIC_RAITA_PATTERN = re.compile(r"[\w\u0900-\u097F/-]+(?:\s+[\w\u0900-\u097F/-]+){0,4}\s+क[ािे]\s+रायता")
-DRINK_OF_THE_DAY_ITEMS = [
+GRISHM_DRINK_OF_THE_DAY_ITEMS = [
     (
         "ठंडाई",
         "15 बादाम, 10 काजू, 10 पिस्ता, 1 बड़ा चम्मच मगज, 1 बड़ा चम्मच सौंफ, 1 बड़ा चम्मच खसखस, अच्छी तरह धोया हुआ एक चुटकी खस, 1 छोटा चम्मच काली मिर्च और 5-6 छोटी इलायची को 2 घंटे गुनगुने पानी में भिगो दें। फिर थोड़ा दूध डालकर मिक्सी में बारीक पीस लें। 3-4 गिलास ठंडे दूध में स्वादानुसार मिश्री मिलाएँ, फिर इसमें पिसा हुआ ठंडाई मसाला, 1 चम्मच गुलकंद, थोड़ा केसर और भीगा हुआ गोंद कतीरा डालकर अच्छी तरह मिला दें।",
@@ -612,13 +612,113 @@ DRINK_OF_THE_DAY_ITEMS = [
     ),
     ("पेठे का जूस", None),
 ]
-DRINK_OF_THE_DAY_FALLBACK_NOTE = "यदि आज का पेय उपलब्ध न हो, तो सत्तू का शर्बत दिया जा सकता है।"
+GRISHM_DRINK_OF_THE_DAY_FALLBACK_NOTE = "यदि आज का पेय उपलब्ध न हो, तो सत्तू का शर्बत दिया जा सकता है।"
 
-VARSHA_COMMON_REQUIRED_SIDES = [
-    "आचार",
-    "मिश्री-सौंफ़",
-    "छाछ त्रिकटु के साथ",
+MORU_KALI_UPMA_ITEM = "मोरू कली उपमा (https://www.youtube.com/watch?v=xWue2xhKIuY)"
+MORU_KALI_UPMA_RECIPE_LINES = [
+    "*मोरू कली उपमा सामग्री:*",
+    "• 4 कप छाछ (मोर)",
+    "• 1 कप चावल का आटा",
+    "• नमक स्वादानुसार",
+    "• 2 बड़े चम्मच तिल का तेल",
+    "• ¼ छोटा चम्मच हींग",
+    "• 1 छोटा चम्मच राई (सरसों के दाने)",
+    "• 3 छोटे चम्मच धुली उड़द दाल",
+    "• 4-5 सूखी लाल मिर्च",
+    "• 10-15 करी पत्ता",
+    "*मोरू कली उपमा विधि (Method):*",
+    "1. *घोल तैयार करें:* एक कटोरे में चावल का आटा लें। इसमें 1 कप छाछ डालकर अच्छी तरह मिलाएँ। धीरे-धीरे बाकी बची हुई 3 कप छाछ भी मिलाएँ ताकि एक चिकना और गांठ-मुक्त घोल तैयार हो जाए। अंत में स्वादानुसार नमक डालें और मिलाएँ।",
+    "2. *तड़का लगाएँ:* एक कड़ाही में तिल का तेल गरम करें। इसमें हींग और राई डालें। जब राई चटकने लगे, तो धुली उड़द दाल डालें और सुनहरा होने तक भूनें।",
+    "3. *मसाले भूनें:* अब इसमें सूखी लाल मिर्च और करी पत्ता डालकर अच्छी तरह मिलाएँ।",
+    "4. *पकाएँ:* तैयार किया हुआ छाछ-चावल का मिश्रण कड़ाही में डालें। इसे लगातार चलाते हुए मध्यम आंच पर पकाएँ, जब तक कि मिश्रण गाढ़ा न हो जाए और कड़ाही के किनारों को न छोड़ने लगे।",
+    "5. *परोसें:* ऊपर से थोड़ा और तेल डालकर अच्छी तरह मिलाएँ, प्लेट में निकालें और गरमा-गरम परोसें।",
 ]
+
+VARSHA_ALLOWED_FATS = ["घी", "तिल का तेल", "सरसों का तेल"]
+VARSHA_GOOD_SPICES = ["हींग", "जीरा", "कड़ीपत्ता"]
+VARSHA_RECOMMENDED_SIDES = [
+    "भुना चना",
+    "खट्टा अचार",
+    "काला नमक",
+    "पंचकोल चूर्ण (स्वाद के लिए)",
+    "भुना मूंग दाल पापड़ (तला हुआ नहीं)",
+    "तिल की चटनी",
+    "नींबू का अचार",
+    "आंवला का अचार",
+]
+VARSHA_AFTER_MEAL_ITEMS = ["सौंफ", "अजवाइन", "लौंग", "पान"]
+VARSHA_EAT_MORE_ITEMS = [
+    "खांड",
+    "सेंधा नमक",
+    "सौंठ",
+    "काली मिर्च",
+    "हल्दी",
+    "हींग",
+    "अजवाइन",
+    "जीरा",
+    "सौंफ",
+    "अचार",
+]
+VARSHA_LOW_USE_ITEMS = [
+    "लहसुन",
+    "गन्ना",
+    "काजू-पिस्ता",
+    "छेना",
+    "पुदीना",
+    "लौंग",
+    "पपीता",
+    "आम",
+    "लौकी",
+    "करेला",
+    "छाछ",
+]
+VARSHA_COARSE_GRAIN_ROTI_TOKENS = ("बाजरा", "ज्वार", "रागी", "मोटे अनाज", "झंगोरा")
+VARSHA_CURD_TOKENS = ("दही", "रायता")
+VARSHA_CHAACH_TOKENS = ("छाछ", "मट्ठा", "मट्ठे")
+VARSHA_MORNING_DAIRY_TOKENS = VARSHA_CURD_TOKENS + VARSHA_CHAACH_TOKENS
+VARSHA_LOW_USE_TOKENS = ("लहसुन", "गन्ना", "काजू", "पिस्ता", "छेना", "पुदीना", "लौंग", "पपीता", "आम", "लौकी", "करेला", "छाछ", "मट्ठा")
+
+BHAADON_EARLY_MORNING_ITEMS = ["गुनगुना पानी", "च्यवनप्राश"]
+BHAADON_MUST_HAVE_ITEMS = [
+    "हरड़ का मुरब्बा",
+    "त्रिफला चूर्ण",
+    "हरड़ का चूर्ण",
+    "गिलोय का काढ़ा",
+    "दशमूल काढ़ा",
+    "आंवला जूस",
+    "त्रिकटु (छाछ में)",
+]
+BHAADON_FRUITS = ["जामुन", "नाशपाती", "आलूबुखारा", "आड़ू", "अनार", "मौसमी"]
+BHAADON_POST_DINNER_MILK = "दूध + आधा चम्मच हल्दी + आधा चम्मच घी + एक चुटकी काली मिर्च"
+
+LUNAR_MONTH_AVOID_RULES = {
+    "चैत्र": "गुड़ नहीं",
+    "वैशाख": "तेल नहीं",
+    "आषाढ़": "बेल नहीं",
+    "श्रावण": "दूध और हरी पत्तेदार साग नहीं",
+    "भाद्रपद": "दही नहीं",
+    "आश्विन": "पका करेला नहीं",
+    "कार्तिक": "छाछ नहीं",
+    "मार्गशीर्ष": "जीरा नहीं",
+    "पौष": "धनिया नहीं",
+    "माघ": "मिश्री नहीं",
+    "फाल्गुन": "चना नहीं",
+}
+
+LUNAR_MONTH_ITEM_BANNED_KEYWORDS = {
+    "चैत्र": ("गुड़",),
+    "वैशाख": ("तेल",),
+    "ज्येष्ठ": (),
+    "आषाढ़": ("बेल",),
+    "श्रावण": ("दूध", "पालक", "चौलाई", "बथुआ", "सरसों का साग", "मेथी के पत्ते", "मेथी की भाजी", "साग"),
+    "भाद्रपद": ("दही", "रायता"),
+    "आश्विन": ("पका करेला", "पका हुआ करेला", "पके करेले"),
+    "कार्तिक": ("छाछ", "मट्ठा", "मट्ठे"),
+    "मार्गशीर्ष": ("जीरा",),
+    "पौष": ("धनिया",),
+    "माघ": ("मिश्री",),
+    "फाल्गुन": ("चना", "चने", "छोला", "छोले"),
+}
 
 NEW_YEAR_KANJI_NOTE = (
     "कृपया काली गाजर मँगवा लें और कांजी डाल लें। बनाने की विधि इस प्रकार है: "
@@ -638,7 +738,34 @@ DEFAULT_LIGHT_FALLBACK_ITEMS = [
 VARSHA_BANNED_KEYWORDS = [
     "प्याज",
     "प्याज़",
+    "साबूदाना",
+    "छोले",
+    "छोला",
+    "बासी",
+    "पराठा",
+    "परांठा",
+    "पूरी",
+    "पूड़ी",
+    "तला हुआ",
+    "तली हुई",
+    "तले हुए",
+    "चॉकलेट",
+    "चोक्लेट",
+    "मैदा",
+    "राजमा",
+    "सफ़ेद चना",
+    "सफेद चना",
+    "काबुली चना",
+    "मजीदा कढ़ी",
+    "majjida karhi",
+]
+
+VARSHA_MEAL_ONLY_BANNED_KEYWORDS = [
     "दही",
+    "रायता",
+    "छाछ",
+    "मट्ठा",
+    "मट्ठे",
 ]
 
 SHARAD_COMMON_REQUIRED_SIDES = [
@@ -1339,7 +1466,7 @@ def should_item_trigger_curd_raita_note(item: str) -> bool:
 
 
 def is_curd_repeat_restricted_ritu(ritu_key: str) -> bool:
-    return normalize_ritu_key(ritu_key) not in {"hemant", "shishir"}
+    return normalize_ritu_key(ritu_key) in {"vasant", "grishm", "sharad"}
 
 
 def get_yearly_used_curd_items(
@@ -2269,6 +2396,45 @@ def select_monthly_fruit(
     return FruitSelection(fruit=selected_fruit, available=True)
 
 
+def get_lunar_month_item_banned_keywords(maah_hi: str) -> list[str]:
+    month_name = normalize_lunar_month_name(maah_hi)
+    if month_name is None:
+        return []
+    return list(LUNAR_MONTH_ITEM_BANNED_KEYWORDS.get(month_name, ()))
+
+
+def is_blocked_by_lunar_month_rule(item: str, maah_hi: str) -> bool:
+    return is_blocked_item(item, get_lunar_month_item_banned_keywords(maah_hi))
+
+
+def select_fruit_for_day_context(
+    history: list[dict[str, Any]],
+    target_date: date,
+    monthly_fruit_map: dict[int, list[str]],
+    priority_rules: dict[str, dict[str, Any]],
+    ritu_key: str,
+    maah_hi: str,
+    weather_info: WeatherInfo | None = None,
+) -> FruitSelection:
+    month_name = normalize_lunar_month_name(maah_hi)
+    if normalize_ritu_key(ritu_key) == "varsha" and month_name == "भाद्रपद":
+        approved_fruits = BHAADON_FRUITS[:]
+        active_priority_rules: dict[str, dict[str, Any]] = {}
+    else:
+        approved_fruits = get_monthly_fruit_list(monthly_fruit_map, target_date)
+        active_priority_rules = priority_rules
+
+    banned_keywords = get_lunar_month_item_banned_keywords(maah_hi)
+    approved_fruits = [fruit for fruit in approved_fruits if not is_blocked_item(fruit, banned_keywords)]
+    return select_monthly_fruit(
+        history,
+        target_date,
+        {target_date.month: approved_fruits},
+        active_priority_rules,
+        weather_info=weather_info,
+    )
+
+
 def format_today_fruit_line(fruit_selection: FruitSelection, ritu_key: str) -> str:
     if fruit_selection.available and fruit_selection.fruit is not None:
         line = f"*आज का फल:* {fruit_selection.fruit}"
@@ -2279,8 +2445,10 @@ def format_today_fruit_line(fruit_selection: FruitSelection, ritu_key: str) -> s
 
 
 def select_drink_of_the_day(target_date: date) -> tuple[str, str | None]:
-    index = int(hashlib.sha256(target_date.isoformat().encode("utf-8")).hexdigest(), 16) % len(DRINK_OF_THE_DAY_ITEMS)
-    return DRINK_OF_THE_DAY_ITEMS[index]
+    index = int(hashlib.sha256(target_date.isoformat().encode("utf-8")).hexdigest(), 16) % len(
+        GRISHM_DRINK_OF_THE_DAY_ITEMS
+    )
+    return GRISHM_DRINK_OF_THE_DAY_ITEMS[index]
 
 
 def format_drink_of_the_day_line(target_date: date) -> str:
@@ -2288,7 +2456,19 @@ def format_drink_of_the_day_line(target_date: date) -> str:
     line = f"*आज का पेय:* {drink_name}"
     if recipe:
         line += f" — {recipe}"
-    return f"{line}\r\n*पेय विकल्प:* {DRINK_OF_THE_DAY_FALLBACK_NOTE}"
+    return f"{line}\r\n*पेय विकल्प:* {GRISHM_DRINK_OF_THE_DAY_FALLBACK_NOTE}"
+
+
+def format_ritu_drink_of_the_day_line(target_date: date, ritu_key: str) -> str | None:
+    if normalize_ritu_key(ritu_key) != "grishm":
+        return None
+    return format_drink_of_the_day_line(target_date)
+
+
+def append_ritu_drink_of_the_day_line(lines: list[str], target_date: date, ritu_key: str) -> None:
+    drink_line = format_ritu_drink_of_the_day_line(target_date, ritu_key)
+    if drink_line:
+        lines.append(drink_line)
 
 
 PARWAL_BHUJIYA_DAL_SUGGESTION = "साथ में सादी मूंग दाल"
@@ -2298,6 +2478,17 @@ def format_meal_display(item: str) -> str:
     if "परवल की भुजिया" in item and "दाल" not in item:
         return f"{item}, {PARWAL_BHUJIYA_DAL_SUGGESTION}"
     return item
+
+
+def build_meal_recipe_lines(item: str) -> list[str]:
+    if item == MORU_KALI_UPMA_ITEM:
+        return MORU_KALI_UPMA_RECIPE_LINES[:]
+    return []
+
+
+def append_meal_recipe_lines(lines: list[str], *meal_items: str | None) -> None:
+    for item in dedupe_preserve_order(item for item in meal_items if item is not None):
+        lines.extend(build_meal_recipe_lines(item))
 
 
 def normalize_navishti_food_key(item: str) -> str:
@@ -3168,6 +3359,11 @@ def extract_grishm_roti_grain_option(item: str, ritu_key: str) -> str | None:
 
 def get_ritu_roti_grain_preference_weight(item: str, ritu_key: str) -> int:
     normalized_ritu_key = normalize_ritu_key(ritu_key)
+    if normalized_ritu_key == "varsha":
+        normalized_item = item.casefold()
+        if any(token in normalized_item for token in VARSHA_LOW_USE_TOKENS):
+            return 2
+        return 10
     if normalized_ritu_key == "vasant":
         grain_option = extract_vasant_roti_grain_option(item, ritu_key)
         if grain_option is not None:
@@ -4166,6 +4362,134 @@ def write_output_text(path: Path, output_text: str) -> None:
     path.write_text(output_text.replace("\r\n", "\n") + "\n", encoding="utf-8")
 
 
+def is_varsha_coarse_grain_roti_without_ghee(item: str) -> bool:
+    normalized = item.casefold()
+    return (
+        "रोटी" in normalized
+        and any(token in normalized for token in VARSHA_COARSE_GRAIN_ROTI_TOKENS)
+        and "घी" not in normalized
+    )
+
+
+def apply_varsha_static_menu_rules(
+    items: list[str],
+    category: str,
+    maah_hi: str,
+) -> list[str]:
+    if category not in {"breakfast", "meal"}:
+        raise ValueError("category must be 'breakfast' or 'meal'")
+
+    blocked_keywords = VARSHA_BANNED_KEYWORDS[:]
+    if category == "meal":
+        blocked_keywords.extend(VARSHA_MEAL_ONLY_BANNED_KEYWORDS)
+    if category == "breakfast" and normalize_lunar_month_name(maah_hi) == "भाद्रपद":
+        blocked_keywords.extend(VARSHA_CURD_TOKENS)
+
+    allowed_items: list[str] = []
+    for item in items:
+        rule_text = "\n".join([item, *build_meal_recipe_lines(item)])
+        if is_blocked_item(rule_text, blocked_keywords):
+            continue
+        if is_varsha_coarse_grain_roti_without_ghee(item):
+            continue
+        allowed_items.append(item)
+    return allowed_items
+
+
+def apply_lunar_month_menu_rules(items: list[str], maah_hi: str) -> list[str]:
+    blocked_keywords = get_lunar_month_item_banned_keywords(maah_hi)
+    return [item for item in items if not is_blocked_item(item, blocked_keywords)]
+
+
+def item_contains_varsha_morning_dairy(item: str) -> bool:
+    normalized = item.casefold()
+    return any(token in normalized for token in VARSHA_MORNING_DAIRY_TOKENS)
+
+
+def previous_day_had_varsha_morning_dairy(history: list[dict[str, Any]], target_date: date) -> bool:
+    previous_row = get_history_row(history, (target_date - timedelta(days=1)).isoformat())
+    if previous_row is None:
+        return False
+    return any(
+        item_contains_varsha_morning_dairy(value)
+        for field_name in ("breakfast", "meal", "second_meal")
+        for value in get_history_values_for_field(previous_row, field_name)
+    )
+
+
+def apply_varsha_morning_dairy_frequency_rule(
+    pool: list[str],
+    history: list[dict[str, Any]],
+    target_date: date,
+    ritu_key: str,
+) -> tuple[list[str], bool]:
+    if normalize_ritu_key(ritu_key) != "varsha" or not previous_day_had_varsha_morning_dairy(history, target_date):
+        return pool[:], False
+    filtered = [item for item in pool if not item_contains_varsha_morning_dairy(item)]
+    return filtered, filtered != pool
+
+
+def build_varsha_guidance_lines(maah_hi: str, selected_items: list[str]) -> list[str]:
+    _ = selected_items
+    month_name = normalize_lunar_month_name(maah_hi)
+    if month_name == "श्रावण":
+        leafy_green_rule = "*सावन साग नियम:* हरी पत्तेदार साग बिल्कुल नहीं।"
+    else:
+        leafy_green_rule = "*हरी पत्तेदार सब्ज़ी:* यथासंभव न लें; लेनी हो तो उबालकर, निचोड़कर, फिर तेल या घी में भूनें।"
+    lines = [
+        "*वर्षा आवश्यक:* पिछला भोजन पचने और वास्तविक भूख लगने पर ही खाएँ; स्निग्धता रखें, पर तला हुआ नहीं।",
+        "*वर्षा ऋतु का रस:* खट्टा / नमकीन।",
+        "*वर्षा अधिक उपयोग:* " + " / ".join(VARSHA_EAT_MORE_ITEMS),
+        "*वर्षा कम उपयोग:* " + " / ".join(VARSHA_LOW_USE_ITEMS),
+        "*वर्षा उपयोगी मसाले:* " + " / ".join(VARSHA_GOOD_SPICES),
+        "*वर्षा तेल/स्निग्ध:* " + " / ".join(VARSHA_ALLOWED_FATS),
+        "*वर्षा आटा प्राथमिकता:* पुराना गेहूँ सबसे अच्छा—पराठा या पूरी नहीं; उसके बाद पुराना जौ/जौं। मोटे अनाज की रोटी नहीं; अत्यावश्यक हो तो घी के साथ।",
+        "*वर्षा चावल नियम:* पुराना चावल लें; पुराना न मिले तो पहले भूनें। कुकर में नहीं—खुले बर्तन में पकाकर मांड निकालें।",
+        "*वर्षा जल:* भस्म जल / उबला जल / फिटकरी से साफ़ किया हुआ जल; बासी जल नहीं।",
+    ]
+
+    if month_name == "श्रावण":
+        lines.extend(
+            [
+                "*सावन दुग्ध नियम:* दूध नहीं। दही केवल सुबह और रोज़ नहीं; रात में नहीं।",
+                "*सावन छाछ नियम:* पतली छाछ केवल सुबह और रोज़ नहीं; सौंठ / काली मिर्च / पिप्पली / त्रिकटु के साथ।",
+            ]
+        )
+    elif month_name == "भाद्रपद":
+        lines.extend(
+            [
+                "*भादों दही नियम:* दही बिल्कुल नहीं।",
+                "*भादों छाछ नियम:* केवल सीमित, पतली और सुबह; रोज़ नहीं; त्रिकटु के साथ।",
+                "*भादों प्रातः:* " + " / ".join(BHAADON_EARLY_MORNING_ITEMS),
+                "*भादों आवश्यक सूची:* " + " / ".join(BHAADON_MUST_HAVE_ITEMS),
+                "*भादों फल:* " + " / ".join(BHAADON_FRUITS),
+                "*भादों भोजन के बाद रात में:* " + BHAADON_POST_DINNER_MILK,
+            ]
+        )
+    else:
+        lines.append("*वर्षा दही/छाछ नियम:* माह-विशेष नियम देखें; केवल सुबह, रोज़ नहीं और रात में नहीं।")
+
+    lines.extend(
+        [
+            "*वर्षा उपयोगी साथ:* " + " / ".join(VARSHA_RECOMMENDED_SIDES),
+            "*भोजन के बाद सीमित विकल्प:* " + " / ".join(VARSHA_AFTER_MEAL_ITEMS),
+            leafy_green_rule,
+            "*वर्षा पूर्ण परहेज़:* स्ट्रीट फूड / बाहर से खाना मँगाना / तला हुआ / बासी / साबूदाना / छोले / ठंडा भोजन / चॉकलेट / चीनी से बनी मिठाई / मैदा / राजमा / सफ़ेद चना / प्याज़। मीठा बनाना हो तो चीनी की जगह खांड लें।",
+        ]
+    )
+    return lines
+
+
+def build_lunar_month_avoidance_line(maah_hi: str) -> str | None:
+    month_name = normalize_lunar_month_name(maah_hi)
+    if month_name is None:
+        return None
+    rule = LUNAR_MONTH_AVOID_RULES.get(month_name)
+    if not rule:
+        return None
+    return f"*माह-विशेष परहेज़ ({month_name}):* {rule}"
+
+
 def get_disallowed_keywords(ritu_key: str) -> list[str]:
     if ritu_key == "varsha":
         return VARSHA_BANNED_KEYWORDS
@@ -4386,6 +4710,23 @@ def build_day_context(
         light_fallback_items=light_fallback_items,
         missing_data_notes=missing_data_notes,
     )
+    if ritu_key == "varsha":
+        breakfast_items = apply_varsha_static_menu_rules(
+            breakfast_items,
+            "breakfast",
+            panchang_info.maah_hi,
+        )
+        meal_items = apply_varsha_static_menu_rules(
+            meal_items,
+            "meal",
+            panchang_info.maah_hi,
+        )
+    breakfast_items = apply_lunar_month_menu_rules(breakfast_items, panchang_info.maah_hi)
+    meal_items = apply_lunar_month_menu_rules(meal_items, panchang_info.maah_hi)
+    if not breakfast_items:
+        breakfast_items = apply_lunar_month_menu_rules(light_fallback_items, panchang_info.maah_hi)
+    if not meal_items:
+        meal_items = apply_lunar_month_menu_rules(light_fallback_items, panchang_info.maah_hi)
     breakfast_items, _ = apply_grishm_roti_atta_rule(breakfast_items, target_date, ritu_key)
     meal_items, _ = apply_grishm_roti_atta_rule(meal_items, target_date, ritu_key)
 
@@ -4596,17 +4937,19 @@ def main() -> int:
     meal_item_override = current_day.meal_item_override
     second_meal_item_override = current_day.second_meal_item_override
     vasant_day_ten = is_vasant_day_ten(target_date, ritu_key)
-    fruit_selection = select_monthly_fruit(
+    fruit_selection = select_fruit_for_day_context(
         history,
         target_date,
         monthly_fruit_map,
         fruit_priority_rules,
+        ritu_key,
+        panchang_info.maah_hi,
         weather_info=weather_info,
     )
     fruit_item_override = resolve_item_date_override(target_date, config, "fruit_item_date_overrides")
     if fruit_item_override and not (
         weather_info is not None and weather_info.is_rainy and is_kharbuja_fruit(fruit_item_override)
-    ):
+    ) and not is_blocked_by_lunar_month_rule(fruit_item_override, panchang_info.maah_hi):
         fruit_selection = FruitSelection(fruit=fruit_item_override, available=True)
 
     if festival_info.suppress_regular_menu:
@@ -4627,9 +4970,12 @@ def main() -> int:
             if special_menu_note_line:
                 lines.append(special_menu_note_line)
         lines.append(format_today_fruit_line(fruit_selection, ritu_key))
-        lines.append(format_drink_of_the_day_line(target_date))
+        append_ritu_drink_of_the_day_line(lines, target_date, ritu_key)
         if ekadashi.is_ekadashi and ekadashi.name_hi:
             lines.append(f"*एकादशी:* {ekadashi.name_hi}")
+        monthly_avoidance_line = build_lunar_month_avoidance_line(panchang_info.maah_hi)
+        if monthly_avoidance_line:
+            lines.append(monthly_avoidance_line)
         if vasant_day_ten:
             append_vasant_neem_ghee_lines(lines)
         if target_date.month == 1 and target_date.day == 1:
@@ -4719,6 +5065,14 @@ def main() -> int:
         )
         if yearly_curd_breakfast_rule_applied:
             missing_data_notes.append("[वार्षिक दही नियम] दही/रायता वाला नाश्ता इस वर्ष दोबारा नहीं दोहराया गया")
+        breakfast_choice_items, varsha_dairy_frequency_rule_applied = apply_varsha_morning_dairy_frequency_rule(
+            breakfast_choice_items,
+            history,
+            target_date,
+            ritu_key,
+        )
+        if varsha_dairy_frequency_rule_applied:
+            missing_data_notes.append("[वर्षा सुबह दुग्ध नियम] दही/छाछ वाला नाश्ता लगातार दूसरे दिन नहीं रखा गया")
         breakfast_choice_items, moong_dal_chilla_repeat_rule_applied = apply_moong_dal_chilla_repeat_rule(
             breakfast_choice_items,
             history,
@@ -5587,7 +5941,7 @@ def main() -> int:
         lines.append(f"*अवधि विवरण:* {shringdhara_info.reason_hi}")
         lines.append(f"*आज का हल्का सेवन:* {selected_observance_item}")
         lines.append(format_today_fruit_line(fruit_selection, ritu_key))
-        lines.append(format_drink_of_the_day_line(target_date))
+        append_ritu_drink_of_the_day_line(lines, target_date, ritu_key)
         lines.append("*शृंगधारा स्मरण:* " + SHRINGDHARA_DAILY_REMINDER)
         lines.append("*परंपरागत हल्का विकल्प:* " + SHRINGDHARA_LIGHT_NOTE)
     else:
@@ -5618,6 +5972,7 @@ def main() -> int:
             lines.append(f"*आज का भोजन 2:* {selected_second_meal_display}")
         else:
             lines.append(f"*आज का भोजन:* {selected_meal_display}")
+        append_meal_recipe_lines(lines, selected_meal, selected_second_meal)
         roti_atta_note = build_roti_atta_note(target_date, selected_breakfast, selected_meal, selected_second_meal)
         if roti_atta_note:
             lines.append(roti_atta_note)
@@ -5625,7 +5980,7 @@ def main() -> int:
         if curd_raita_note:
             lines.append(curd_raita_note)
         lines.append(format_today_fruit_line(fruit_selection, ritu_key))
-        lines.append(format_drink_of_the_day_line(target_date))
+        append_ritu_drink_of_the_day_line(lines, target_date, ritu_key)
         if requires_mangore_prep(selected_breakfast, selected_meal, selected_second_meal or ""):
             lines.append("*फॉलोवर महोदय हेतु रात की तैयारी:* " + MANGORE_PREP_NOTE)
         if next_day_requires_rice_prep and next_day_breakfast_lock:
@@ -5644,9 +5999,10 @@ def main() -> int:
             lines.append("*ग्रीष्म नाश्ता अनिवार्य साथ:* " + " / ".join(GRISHM_BREAKFAST_REQUIRED_SIDES))
             lines.append("*ग्रीष्म भोजन अनिवार्य साथ:* " + " / ".join(GRISHM_MEAL_REQUIRED_SIDES))
         if ritu_key == "varsha":
-            lines.append("*वर्षा नाश्ता अनिवार्य साथ:* " + " / ".join(VARSHA_COMMON_REQUIRED_SIDES))
-            lines.append("*वर्षा भोजन अनिवार्य साथ:* " + " / ".join(VARSHA_COMMON_REQUIRED_SIDES))
-            lines.append("*वर्षा वर्जित:* प्याज और दही पूर्णतः मना है")
+            varsha_selected_items = [selected_breakfast, selected_meal]
+            if selected_second_meal:
+                varsha_selected_items.append(selected_second_meal)
+            lines.extend(build_varsha_guidance_lines(panchang_info.maah_hi, varsha_selected_items))
         if ritu_key == "sharad":
             lines.append("*शरद अनिवार्य साथ:* " + " / ".join(SHARAD_COMMON_REQUIRED_SIDES))
             if any(token in (selected_breakfast + " " + selected_meal) for token in ["चावल", "राइस"]):
@@ -5659,6 +6015,10 @@ def main() -> int:
         if ritu_key == "hemant":
             lines.append("*हेमंत पूर्णतया निषिद्ध:* मैदा, डिब्बा बंद, मोठ, दोबारा गर्म की हुई दाल/सब्ज़ी, जीरा, इमली, सॉस, अचार, कड़वा, कसैला, रिफाइंड, पनीर, एनर्जी ड्रिंक, प्याज़, दुबारा गर्म किया पानी")
             lines.append("*हेमंत जल नियम:* हमेशा गुनगुना, पीतल या तांबे में")
+
+    monthly_avoidance_line = build_lunar_month_avoidance_line(panchang_info.maah_hi)
+    if monthly_avoidance_line:
+        lines.append(monthly_avoidance_line)
 
     if ritu_key == "vasant":
         vasant_prohibited_findings = collect_vasant_prohibited_warnings(lines)

@@ -2,8 +2,11 @@ name: Daily Food Menu
 
 on:
   schedule:
-    # 13:30 Asia/Kolkata.
-    - cron: "0 8 * * *"
+    # Primary run plus two fallbacks, all well before the 15:10 Asia/Kolkata Shortcut.
+    # GitHub scheduled workflows can start hours late, so a single near-send-time run is unsafe.
+    - cron: "17 0 * * *" # 05:47 Asia/Kolkata
+    - cron: "47 3 * * *" # 09:17 Asia/Kolkata
+    - cron: "17 6 * * *" # 11:47 Asia/Kolkata
   workflow_dispatch:
 
 permissions:
