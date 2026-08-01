@@ -1399,8 +1399,15 @@
     "date": "2026-08-01",
     "breakfast": "Sweet Dalia (मीठा दलिया)",
     "meal": "उबले मंगोड़े की रस्सेदार सब्ज़ी और गेहूं रोटी",
+    "fruit": "आड़ू",
+    "ritu_key": "varsha"
+  },
+  {
+    "date": "2026-08-02",
+    "breakfast": "बेसन का चिल्ला",
+    "meal": "रोटी और आम अदा दिया भाजा मूँग दाल (Aam Ada Diya Bhaaja Moong Dal)",
     "ritu_key": "varsha",
-    "fruit": "आड़ू"
+    "fruit": "नाशपाती"
   },
   {
     "date": "2026-11-10",
