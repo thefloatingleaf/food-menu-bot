@@ -1483,8 +1483,15 @@
     "date": "2026-08-13",
     "breakfast": "उपमा, नारियल की चटनी, मूंगफली की चटनी, सांभर",
     "meal": "अरहर की दाल और गेहूं रोटी",
+    "fruit": "मौसमी",
+    "ritu_key": "varsha"
+  },
+  {
+    "date": "2026-08-14",
+    "breakfast": "नमक अजवाइन रोटी",
+    "meal": "रागी मुद्दे (https://www.youtube.com/watch?v=epIQqNQvP2I) और साथ में धुली मूंग की दाल",
     "ritu_key": "varsha",
-    "fruit": "मौसमी"
+    "fruit": "जामुन"
   },
   {
     "date": "2026-11-10",
