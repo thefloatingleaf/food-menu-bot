@@ -1497,8 +1497,15 @@
     "date": "2026-08-15",
     "breakfast": "पोहा",
     "meal": "रोटी और दाल की कलेजी (Dal ki Kaleji)",
+    "fruit": "अनार",
+    "ritu_key": "varsha"
+  },
+  {
+    "date": "2026-08-16",
+    "breakfast": "मूँग की दाल का चीला",
+    "meal": "करोंदा और गेहूँ की रोटी",
     "ritu_key": "varsha",
-    "fruit": "अनार"
+    "fruit": "आलूबुखारा"
   },
   {
     "date": "2026-11-10",
