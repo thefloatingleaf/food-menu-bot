@@ -1581,8 +1581,15 @@
     "date": "2026-08-27",
     "breakfast": "पोहा",
     "meal": "अरहर की दाल और गेहूं रोटी",
+    "fruit": "नाशपाती",
+    "ritu_key": "varsha"
+  },
+  {
+    "date": "2026-08-28",
+    "breakfast": "सूजी की इडली, सांबर, नारियल और मूंगफली की चटनी की साथ",
+    "meal": "बीसी बेले भात (https://www.youtube.com/watch?v=v2A7o8xz85Q)",
     "ritu_key": "varsha",
-    "fruit": "नाशपाती"
+    "fruit": "अनार"
   },
   {
     "date": "2026-11-10",
