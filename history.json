@@ -1595,8 +1595,15 @@
     "date": "2026-08-29",
     "breakfast": "Salty Dalia (नमकीन दलिया)",
     "meal": "बीसी बेले भात (https://www.youtube.com/watch?v=v2A7o8xz85Q)",
+    "fruit": "नाशपाती",
+    "ritu_key": "varsha"
+  },
+  {
+    "date": "2026-08-30",
+    "breakfast": "उपमा, नारियल की चटनी, मूंगफली की चटनी, सांभर",
+    "meal": "मूँग दाल की बड़ियाँ, जौ की रोटी",
     "ritu_key": "varsha",
-    "fruit": "नाशपाती"
+    "fruit": "अनार"
   },
   {
     "date": "2026-11-10",
