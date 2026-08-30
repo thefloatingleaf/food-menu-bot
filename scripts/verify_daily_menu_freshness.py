@@ -10,11 +10,32 @@ if str(REPO_ROOT) not in sys.path:
 import generate_menu
 
 
+def verify_panchang_target_date(expected_target_date, timezone_name: str, panchang_data) -> None:
+    lookup = generate_menu.lookup_panchang_entry_for_date(
+        expected_target_date,
+        timezone_name,
+        panchang_data,
+    )
+    if lookup.status != "ok" or lookup.row is None:
+        raise ValueError(
+            "authoritative Panchang data is missing for target date "
+            f"{expected_target_date.isoformat()}: {lookup.detail_hi}"
+        )
+
+
 def main() -> int:
     config = generate_menu.load_json(generate_menu.CONFIG_FILE) if generate_menu.CONFIG_FILE.exists() else {}
     timezone_name = str(config.get("timezone", "Asia/Kolkata"))
     runtime_today = generate_menu.resolve_runtime_today(timezone_name)
     expected_target_date = runtime_today + timedelta(days=1)
+
+    if not generate_menu.PANCHANG_FILE.exists():
+        raise SystemExit(f"missing Panchang source file: {generate_menu.PANCHANG_FILE}")
+    try:
+        panchang_data = generate_menu.load_json(generate_menu.PANCHANG_FILE)
+        verify_panchang_target_date(expected_target_date, timezone_name, panchang_data)
+    except (OSError, ValueError) as exc:
+        raise SystemExit(str(exc)) from exc
 
     if not generate_menu.OUTPUT_FILE.exists():
         raise SystemExit(f"missing output file: {generate_menu.OUTPUT_FILE}")
