@@ -882,6 +882,9 @@ export function AssessmentApp({
                   <div className="stack">
                     <h2 className="section-title">Instructions</h2>
                     <div className="status-card">
+                      <p className="muted">यह प्रश्नावली सामान्य आयुर्वेदिक मार्गदर्शन के लिए है, चिकित्सकीय निदान नहीं। दैनिक साझा मेनू इस परिणाम से स्वतः व्यक्तिगत नहीं होता; रोग, गर्भावस्था, एलर्जी या उपचार की स्थिति में योग्य आयुर्वेद चिकित्सक की सलाह लें।</p>
+                    </div>
+                    <div className="status-card">
                       {instructionLines.length > 0 ? (
                         <ul className="instruction-list muted">
                           {instructionLines.map((line) => (

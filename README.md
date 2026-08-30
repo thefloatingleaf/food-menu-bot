@@ -114,6 +114,8 @@ python3 -m unittest discover -s tests
 
 This repo maintains a shared household purchase ledger used by the standalone Household Inventory app. It is not attached to the VPK app.
 
+The daily food menu is likewise a shared seasonal menu and is not automatically personalized from VPK assessment results. VPK output is general guidance rather than a medical diagnosis; individual disease, pregnancy, allergy, medication, age, and digestive capacity require qualified clinical advice.
+
 ### Storage files
 
 - `data/household_purchases/purchase_ledger.json`
@@ -401,10 +403,11 @@ The generator also applies a recurring override for any festival day that is bot
 
 ## Lunar-month avoidance behavior
 
-Every regular or festival output includes the applicable month-specific avoidance reminder. Explicit matching food items are removed from breakfast, meal, and fruit selection where the rule can be enforced from the item text.
+Every regular or festival output includes the applicable food-related month-specific avoidance reminder. Explicit matching food items are removed from breakfast, meal, and fruit selection where the rule can be enforced from the item text. Hard filters also apply to known expanded recipe text, and neither fallback selection nor date-specific food overrides may reintroduce a prohibited item.
 
 - चैत्र: गुड़
 - वैशाख: तेल
+- ज्येष्ठ: रास्ता / यात्रा नहीं (hardwired policy; not rendered in the shared food-only menu)
 - आषाढ़: बेल
 - श्रावण/सावन: दूध and leafy साग
 - भाद्रपद/भादों: दही
@@ -415,7 +418,7 @@ Every regular or festival output includes the applicable month-specific avoidanc
 - माघ: मिश्री
 - फाल्गुन: चना
 
-The ज्येष्ठ travel restriction is intentionally excluded because it is not a food rule.
+The Jyesth travel restriction is retained as an internal hardwired policy rule. It is not rendered in the shared menu because public output is food-only.
 
 ## Monthly fruit behavior
 
