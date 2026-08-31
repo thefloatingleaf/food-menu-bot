@@ -38,6 +38,7 @@ MENU_HEMANT_FILE = BASE_DIR / "menu_hemant.json"
 EKADASHI_FILE = BASE_DIR / "ekadashi_2026_27.json"
 PANCHANG_FILE = BASE_DIR / "panchang_2026_27.json"
 FESTIVALS_FILE = BASE_DIR / "festivals_2026_27.json"
+PERSONAL_OCCASIONS_FILE = BASE_DIR / "personal_occasions_2026_27.json"
 CONFIG_FILE = BASE_DIR / "config.json"
 HISTORY_FILE = BASE_DIR / "history.json"
 PUBLISHED_ARCHIVE_FILE = BASE_DIR / "published_menu_archive.json"
@@ -90,6 +91,13 @@ class FestivalInfo:
     suppress_regular_menu: bool = False
     special_menu_note_hi: str | None = None
     special_menu_lines_hi: list[str] | None = None
+
+
+@dataclass
+class PersonalOccasionInfo:
+    title_hi: str
+    special_meal_hi: str | None = None
+    deferred_to: str | None = None
 
 
 @dataclass
@@ -1002,22 +1010,6 @@ LUNAR_MONTH_SEQUENCE = [
     "फाल्गुन",
 ]
 
-AMANTA_MONTH_DATE_RANGES = [
-    (date(2026, 3, 19), date(2026, 4, 16), "चैत्र"),
-    (date(2026, 4, 17), date(2026, 5, 15), "वैशाख"),
-    (date(2026, 5, 16), date(2026, 6, 14), "ज्येष्ठ"),
-    (date(2026, 6, 15), date(2026, 7, 13), "आषाढ़"),
-    (date(2026, 7, 14), date(2026, 8, 12), "श्रावण"),
-    (date(2026, 8, 13), date(2026, 9, 10), "भाद्रपद"),
-    (date(2026, 9, 11), date(2026, 10, 9), "आश्विन"),
-    (date(2026, 10, 10), date(2026, 11, 7), "कार्तिक"),
-    (date(2026, 11, 8), date(2026, 12, 6), "मार्गशीर्ष"),
-    (date(2026, 12, 7), date(2027, 1, 4), "पौष"),
-    (date(2027, 1, 5), date(2027, 2, 3), "माघ"),
-    (date(2027, 2, 4), date(2027, 3, 4), "फाल्गुन"),
-]
-
-
 def infer_ritu_hi_from_date(target_date: datetime.date) -> str:
     month_day = (target_date.month, target_date.day)
     # Traditional seasonal windows (approx.) used as fallback when panchang date entry is missing.
@@ -1127,16 +1119,9 @@ def shift_lunar_month_name(maah_hi: str, offset: int) -> str:
 
 def convert_lunar_month_to_amanta(maah_hi: str, paksha_hint: str | None) -> str:
     paksha = normalize_paksha_name(paksha_hint)
-    if paksha == "शुक्ल":
-        return shift_lunar_month_name(maah_hi, 1)
+    if paksha == "कृष्ण":
+        return shift_lunar_month_name(maah_hi, -1)
     return shift_lunar_month_name(maah_hi, 0)
-
-
-def resolve_explicit_amanta_month(target_date: date) -> str | None:
-    for start_date, end_date, maah_hi in AMANTA_MONTH_DATE_RANGES:
-        if start_date <= target_date <= end_date:
-            return maah_hi
-    return None
 
 
 def normalize_paksha_name(paksha_hi: str | None) -> str | None:
@@ -2028,11 +2013,7 @@ def resolve_panchang_info(
             panchang_row.get("maah_hi", ekadashi.lunar_month_hi or GREGORIAN_MONTH_HI[target_date.month])
         ).strip()
         if lunar_month_system == "amanta":
-            explicit_amanta_month = resolve_explicit_amanta_month(target_date)
-            if explicit_amanta_month is not None:
-                maah_hi = explicit_amanta_month
-            else:
-                maah_hi = convert_lunar_month_to_amanta(maah_hi, panchang_row.get("paksha_hi"))
+            maah_hi = convert_lunar_month_to_amanta(maah_hi, panchang_row.get("paksha_hi"))
         tithi_hi = str(panchang_row.get("tithi_hi", "अज्ञात")).strip() or "अज्ञात"
         if ekadashi.is_ekadashi:
             tithi_hi = "एकादशी"
@@ -2203,6 +2184,61 @@ def format_special_menu_note_line(festival_info: FestivalInfo) -> str | None:
     if not festival_info.special_menu_note_hi:
         return None
     return "*विशेष पारंपरिक सेवन/भोग:* " + festival_info.special_menu_note_hi
+
+
+def resolve_personal_occasion_info(
+    target_date: str,
+    personal_occasions_data: Any,
+    ekadashi: EkadashiInfo,
+) -> PersonalOccasionInfo | None:
+    row = get_festival_entry_for_date(target_date, personal_occasions_data)
+    if not row:
+        return None
+
+    title_hi = str(row.get("title_hi", "प्रियजन का विशेष दिन")).strip() or "प्रियजन का विशेष दिन"
+    special_meal_raw = row.get("special_meal_hi")
+    special_meal_hi = (
+        str(special_meal_raw).strip()
+        if isinstance(special_meal_raw, str) and str(special_meal_raw).strip()
+        else None
+    )
+    deferred_to_raw = row.get("deferred_to")
+    deferred_to = (
+        str(deferred_to_raw).strip()
+        if isinstance(deferred_to_raw, str) and str(deferred_to_raw).strip()
+        else None
+    )
+
+    if ekadashi.is_ekadashi and special_meal_hi and "सूजी" in special_meal_hi:
+        if deferred_to is None:
+            raise ValueError(
+                f"Personal occasion {target_date} includes grain-based suji on Ekadashi without deferred_to"
+            )
+        special_meal_hi = None
+
+    return PersonalOccasionInfo(
+        title_hi=title_hi,
+        special_meal_hi=special_meal_hi,
+        deferred_to=deferred_to if special_meal_hi is None else None,
+    )
+
+
+def format_personal_occasion_lines(info: PersonalOccasionInfo | None, ekadashi: EkadashiInfo) -> list[str]:
+    if info is None:
+        return []
+
+    lines = [f"*विशेष पारिवारिक अवसर:* {info.title_hi}"]
+    if info.special_meal_hi:
+        lines.append(f"*विशेष भोजन सुझाव:* {info.special_meal_hi}")
+    elif info.deferred_to:
+        deferred_display = date.fromisoformat(info.deferred_to).strftime("%d-%b-%Y")
+        ekadashi_name = ekadashi.name_hi or "एकादशी"
+        lines.append(
+            "*विशेष भोजन स्थगन:* "
+            f"आज {ekadashi_name} के कारण अनाजयुक्त सूजी का हलवा नहीं; "
+            f"यह विशेष भोजन {deferred_display} को रखा जाए।"
+        )
+    return lines
 
 
 def is_navratri_festival(festival_info: FestivalInfo) -> bool:
@@ -4945,6 +4981,9 @@ def main() -> int:
     else:
         panchang_source_error_note = "[अनुपलब्ध] पंचांग फ़ाइल उपलब्ध नहीं"
     festivals_data = load_json(FESTIVALS_FILE) if FESTIVALS_FILE.exists() else {}
+    personal_occasions_data = (
+        load_json(PERSONAL_OCCASIONS_FILE) if PERSONAL_OCCASIONS_FILE.exists() else {}
+    )
     history = normalize_history(load_json(HISTORY_FILE))
     published_archive_entries = (
         normalize_archive_history(load_json(PUBLISHED_ARCHIVE_FILE)) if PUBLISHED_ARCHIVE_FILE.exists() else []
@@ -5058,6 +5097,11 @@ def main() -> int:
     weather_info = current_day.weather_info
     weather_rules = current_day.weather_rules
     ekadashi = current_day.ekadashi
+    personal_occasion_info = resolve_personal_occasion_info(
+        target_date_str,
+        personal_occasions_data,
+        ekadashi,
+    )
     breakfast_item_override = current_day.breakfast_item_override
     meal_item_override = current_day.meal_item_override
     second_meal_item_override = current_day.second_meal_item_override
@@ -5092,6 +5136,7 @@ def main() -> int:
         festival_line = format_festival_line(festival_info)
         if festival_line:
             lines.append(festival_line)
+        lines.extend(format_personal_occasion_lines(personal_occasion_info, ekadashi))
         if filtered_special_lines:
             lines.extend(filtered_special_lines)
         else:
@@ -6120,6 +6165,7 @@ def main() -> int:
     festival_line = format_festival_line(festival_info)
     if festival_line:
         lines.append(festival_line)
+    lines.extend(format_personal_occasion_lines(personal_occasion_info, ekadashi))
     if shringdhara_info.active:
         lines.append("*विशेष अवधि:* शृंगधारा (यमराज की दाड़)")
         lines.append(f"*अवधि विवरण:* {shringdhara_info.reason_hi}")

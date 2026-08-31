@@ -1,9 +1,83 @@
 import unittest
 from unittest.mock import patch
-from datetime import date
+from datetime import date, timedelta
 
 import generate_menu
 import generate_navishti_menu
+
+
+class LudhianaCalendarDataTests(unittest.TestCase):
+    def test_purnimanta_to_amanta_month_conversion_uses_paksha_direction(self) -> None:
+        self.assertEqual(generate_menu.convert_lunar_month_to_amanta("चैत्र", "शुक्ल पक्ष"), "चैत्र")
+        self.assertEqual(generate_menu.convert_lunar_month_to_amanta("चैत्र", "कृष्ण पक्ष"), "फाल्गुन")
+
+    def test_panchang_has_contiguous_one_year_ludhiana_coverage(self) -> None:
+        data = generate_menu.load_json(generate_menu.PANCHANG_FILE)
+        entries = data["entries"]
+        dates = [date.fromisoformat(row["date"]) for row in entries]
+
+        self.assertEqual(data["meta"]["geoname_id"], 1264728)
+        self.assertEqual(len(dates), 365)
+        self.assertEqual(dates[0], date(2026, 9, 1))
+        self.assertEqual(dates[-1], date(2027, 8, 31))
+        self.assertTrue(all(later - earlier == timedelta(days=1) for earlier, later in zip(dates, dates[1:])))
+
+    def test_aja_ekadashi_anchor_and_one_year_list(self) -> None:
+        data = generate_menu.load_json(generate_menu.EKADASHI_FILE)
+        entries = data["ekadashi_list"]
+
+        self.assertEqual(data["meta"]["geoname_id"], 1264728)
+        self.assertEqual(entries[0]["date"], "2026-09-07")
+        self.assertEqual(entries[0]["name_hi"], "अजा एकादशी")
+        self.assertEqual(entries[-1]["date"], "2027-08-28")
+        self.assertEqual(len(entries), 25)
+
+    def test_major_festival_dates_are_ludhiana_specific(self) -> None:
+        data = generate_menu.load_json(generate_menu.FESTIVALS_FILE)
+        by_date = {row["date"]: row["hindu_hi"] for row in data["entries"]}
+
+        self.assertIn("दशहरा", by_date["2026-10-20"])
+        self.assertIn("दीपावली", by_date["2026-11-08"])
+        self.assertIn("होली", by_date["2027-03-22"])
+        self.assertIn("रक्षाबंधन", by_date["2027-08-17"])
+        self.assertIn("श्रीकृष्ण जन्माष्टमी", by_date["2027-08-25"])
+
+    def test_personal_dates_are_unique_and_include_suji_except_deferred_ekadashi(self) -> None:
+        data = generate_menu.load_json(generate_menu.PERSONAL_OCCASIONS_FILE)
+        entries = data["entries"]
+        dates = [row["date"] for row in entries]
+
+        self.assertEqual(len(entries), 18)
+        self.assertEqual(len(dates), len(set(dates)))
+        self.assertEqual(dates.count("2026-10-02"), 1)
+        for row in entries:
+            self.assertIn("सूजी का हलवा", row["special_meal_hi"])
+
+    def test_kamada_ekadashi_defers_suji_halwa_to_april_18(self) -> None:
+        data = generate_menu.load_json(generate_menu.PERSONAL_OCCASIONS_FILE)
+        ekadashi = generate_menu.EkadashiInfo(True, "कामदा एकादशी", "चैत्र")
+
+        info = generate_menu.resolve_personal_occasion_info("2027-04-17", data, ekadashi)
+        lines = generate_menu.format_personal_occasion_lines(info, ekadashi)
+
+        self.assertIsNotNone(info)
+        self.assertIsNone(info.special_meal_hi)
+        self.assertEqual(info.deferred_to, "2027-04-18")
+        self.assertNotIn("*विशेष भोजन सुझाव:*", "\n".join(lines))
+        self.assertIn("18-Apr-2027", "\n".join(lines))
+
+    def test_important_april_10_meal_is_marked_and_uses_khand_not_jaggery(self) -> None:
+        data = generate_menu.load_json(generate_menu.PERSONAL_OCCASIONS_FILE)
+        info = generate_menu.resolve_personal_occasion_info(
+            "2027-04-10",
+            data,
+            generate_menu.EkadashiInfo(False, None, None),
+        )
+
+        self.assertIsNotNone(info)
+        self.assertIn("अत्यंत महत्वपूर्ण", info.title_hi)
+        self.assertIn("खांड से बना सूजी का हलवा", info.special_meal_hi)
+        self.assertNotIn("गुड़", info.special_meal_hi.split(";")[0])
 
 
 class ConsecutiveDayRepeatRuleTests(unittest.TestCase):

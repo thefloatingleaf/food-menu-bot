@@ -1,1539 +1,24 @@
 {
   "meta": {
-    "source_file": "/Users/gg/Downloads/panchang_lucknow_2026-02-23_to_2027-03-15.csv",
-    "location": "Lucknow, India",
-    "coverage_start": "2026-02-23",
-    "coverage_end": "2027-03-15",
-    "generated_by": "codex_csv_import"
+    "source_url_template": "https://www.drikpanchang.com/panchang/month-panchang.html?date=01/MM/YYYY&geoname-id=1264728",
+    "location": "Ludhiana, Punjab, India",
+    "geoname_id": 1264728,
+    "latitude": "30° 54′ 43″ N",
+    "longitude": "75° 51′ 13″ E",
+    "timezone": "Asia/Kolkata",
+    "coverage_start": "2026-09-01",
+    "coverage_end": "2027-08-31",
+    "calendar_basis": "Purnimanta lunar month; tithi and paksha at local sunrise",
+    "generated_by": "Codex structured import from Drik Panchang monthly grids"
   },
   "entries": [
-    {
-      "date": "2026-02-23",
-      "ritu_hi": "शिशिर",
-      "maah_hi": "माघ",
-      "tithi_hi": "षष्ठी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-02-24",
-      "ritu_hi": "शिशिर",
-      "maah_hi": "माघ",
-      "tithi_hi": "सप्तमी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-02-25",
-      "ritu_hi": "शिशिर",
-      "maah_hi": "माघ",
-      "tithi_hi": "नवमी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-02-26",
-      "ritu_hi": "शिशिर",
-      "maah_hi": "माघ",
-      "tithi_hi": "दशमी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-02-27",
-      "ritu_hi": "शिशिर",
-      "maah_hi": "माघ",
-      "tithi_hi": "एकादशी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-02-28",
-      "ritu_hi": "शिशिर",
-      "maah_hi": "माघ",
-      "tithi_hi": "द्वादशी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-03-01",
-      "ritu_hi": "शिशिर",
-      "maah_hi": "माघ",
-      "tithi_hi": "त्रयोदशी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-03-02",
-      "ritu_hi": "शिशिर",
-      "maah_hi": "माघ",
-      "tithi_hi": "चतुर्दशी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-03-03",
-      "ritu_hi": "शिशिर",
-      "maah_hi": "माघ",
-      "tithi_hi": "पूर्णिमा",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-03-04",
-      "ritu_hi": "शिशिर",
-      "maah_hi": "फाल्गुन",
-      "tithi_hi": "प्रतिपदा",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-03-05",
-      "ritu_hi": "शिशिर",
-      "maah_hi": "फाल्गुन",
-      "tithi_hi": "द्वितीया",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-03-06",
-      "ritu_hi": "शिशिर",
-      "maah_hi": "फाल्गुन",
-      "tithi_hi": "तृतीया",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-03-07",
-      "ritu_hi": "शिशिर",
-      "maah_hi": "फाल्गुन",
-      "tithi_hi": "चतुर्थी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-03-08",
-      "ritu_hi": "शिशिर",
-      "maah_hi": "फाल्गुन",
-      "tithi_hi": "पंचमी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-03-09",
-      "ritu_hi": "शिशिर",
-      "maah_hi": "फाल्गुन",
-      "tithi_hi": "षष्ठी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-03-10",
-      "ritu_hi": "शिशिर",
-      "maah_hi": "फाल्गुन",
-      "tithi_hi": "सप्तमी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-03-11",
-      "ritu_hi": "शिशिर",
-      "maah_hi": "फाल्गुन",
-      "tithi_hi": "अष्टमी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-03-12",
-      "ritu_hi": "शिशिर",
-      "maah_hi": "फाल्गुन",
-      "tithi_hi": "नवमी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-03-13",
-      "ritu_hi": "शिशिर",
-      "maah_hi": "फाल्गुन",
-      "tithi_hi": "नवमी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-03-14",
-      "ritu_hi": "शिशिर",
-      "maah_hi": "फाल्गुन",
-      "tithi_hi": "दशमी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-03-15",
-      "ritu_hi": "शिशिर",
-      "maah_hi": "फाल्गुन",
-      "tithi_hi": "एकादशी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-03-16",
-      "ritu_hi": "शिशिर",
-      "maah_hi": "फाल्गुन",
-      "tithi_hi": "द्वादशी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-03-17",
-      "ritu_hi": "शिशिर",
-      "maah_hi": "फाल्गुन",
-      "tithi_hi": "त्रयोदशी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-03-18",
-      "ritu_hi": "शिशिर",
-      "maah_hi": "फाल्गुन",
-      "tithi_hi": "चतुर्दशी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-03-19",
-      "ritu_hi": "शिशिर",
-      "maah_hi": "फाल्गुन",
-      "tithi_hi": "अमावस्या",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-03-20",
-      "ritu_hi": "शिशिर",
-      "maah_hi": "फाल्गुन",
-      "tithi_hi": "द्वितीया",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-03-21",
-      "ritu_hi": "शिशिर",
-      "maah_hi": "फाल्गुन",
-      "tithi_hi": "तृतीया",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-03-22",
-      "ritu_hi": "शिशिर",
-      "maah_hi": "फाल्गुन",
-      "tithi_hi": "चतुर्थी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-03-23",
-      "ritu_hi": "शिशिर",
-      "maah_hi": "फाल्गुन",
-      "tithi_hi": "पंचमी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-03-24",
-      "ritu_hi": "शिशिर",
-      "maah_hi": "फाल्गुन",
-      "tithi_hi": "षष्ठी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-03-25",
-      "ritu_hi": "शिशिर",
-      "maah_hi": "फाल्गुन",
-      "tithi_hi": "सप्तमी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-03-26",
-      "ritu_hi": "शिशिर",
-      "maah_hi": "फाल्गुन",
-      "tithi_hi": "अष्टमी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-03-27",
-      "ritu_hi": "शिशिर",
-      "maah_hi": "फाल्गुन",
-      "tithi_hi": "नवमी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-03-28",
-      "ritu_hi": "शिशिर",
-      "maah_hi": "फाल्गुन",
-      "tithi_hi": "दशमी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-03-29",
-      "ritu_hi": "शिशिर",
-      "maah_hi": "फाल्गुन",
-      "tithi_hi": "एकादशी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-03-30",
-      "ritu_hi": "शिशिर",
-      "maah_hi": "फाल्गुन",
-      "tithi_hi": "द्वादशी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-03-31",
-      "ritu_hi": "शिशिर",
-      "maah_hi": "फाल्गुन",
-      "tithi_hi": "त्रयोदशी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-04-01",
-      "ritu_hi": "शिशिर",
-      "maah_hi": "फाल्गुन",
-      "tithi_hi": "चतुर्दशी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-04-02",
-      "ritu_hi": "शिशिर",
-      "maah_hi": "फाल्गुन",
-      "tithi_hi": "पूर्णिमा",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-04-03",
-      "ritu_hi": "वसंत",
-      "maah_hi": "चैत्र",
-      "tithi_hi": "प्रतिपदा",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-04-04",
-      "ritu_hi": "वसंत",
-      "maah_hi": "चैत्र",
-      "tithi_hi": "द्वितीया",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-04-05",
-      "ritu_hi": "वसंत",
-      "maah_hi": "चैत्र",
-      "tithi_hi": "तृतीया",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-04-06",
-      "ritu_hi": "वसंत",
-      "maah_hi": "चैत्र",
-      "tithi_hi": "चतुर्थी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-04-07",
-      "ritu_hi": "वसंत",
-      "maah_hi": "चैत्र",
-      "tithi_hi": "पंचमी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-04-08",
-      "ritu_hi": "वसंत",
-      "maah_hi": "चैत्र",
-      "tithi_hi": "षष्ठी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-04-09",
-      "ritu_hi": "वसंत",
-      "maah_hi": "चैत्र",
-      "tithi_hi": "सप्तमी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-04-10",
-      "ritu_hi": "वसंत",
-      "maah_hi": "चैत्र",
-      "tithi_hi": "अष्टमी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-04-11",
-      "ritu_hi": "वसंत",
-      "maah_hi": "चैत्र",
-      "tithi_hi": "नवमी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-04-12",
-      "ritu_hi": "वसंत",
-      "maah_hi": "चैत्र",
-      "tithi_hi": "दशमी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-04-13",
-      "ritu_hi": "वसंत",
-      "maah_hi": "चैत्र",
-      "tithi_hi": "एकादशी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-04-14",
-      "ritu_hi": "वसंत",
-      "maah_hi": "चैत्र",
-      "tithi_hi": "द्वादशी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-04-15",
-      "ritu_hi": "वसंत",
-      "maah_hi": "चैत्र",
-      "tithi_hi": "त्रयोदशी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-04-16",
-      "ritu_hi": "वसंत",
-      "maah_hi": "चैत्र",
-      "tithi_hi": "चतुर्दशी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-04-17",
-      "ritu_hi": "वसंत",
-      "maah_hi": "चैत्र",
-      "tithi_hi": "अमावस्या",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-04-18",
-      "ritu_hi": "वसंत",
-      "maah_hi": "चैत्र",
-      "tithi_hi": "प्रतिपदा",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-04-19",
-      "ritu_hi": "वसंत",
-      "maah_hi": "चैत्र",
-      "tithi_hi": "द्वितीया",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-04-20",
-      "ritu_hi": "वसंत",
-      "maah_hi": "चैत्र",
-      "tithi_hi": "तृतीया",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-04-21",
-      "ritu_hi": "वसंत",
-      "maah_hi": "चैत्र",
-      "tithi_hi": "पंचमी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-04-22",
-      "ritu_hi": "वसंत",
-      "maah_hi": "चैत्र",
-      "tithi_hi": "षष्ठी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-04-23",
-      "ritu_hi": "वसंत",
-      "maah_hi": "चैत्र",
-      "tithi_hi": "सप्तमी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-04-24",
-      "ritu_hi": "वसंत",
-      "maah_hi": "चैत्र",
-      "tithi_hi": "अष्टमी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-04-25",
-      "ritu_hi": "वसंत",
-      "maah_hi": "चैत्र",
-      "tithi_hi": "नवमी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-04-26",
-      "ritu_hi": "वसंत",
-      "maah_hi": "चैत्र",
-      "tithi_hi": "दशमी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-04-27",
-      "ritu_hi": "वसंत",
-      "maah_hi": "चैत्र",
-      "tithi_hi": "एकादशी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-04-28",
-      "ritu_hi": "वसंत",
-      "maah_hi": "चैत्र",
-      "tithi_hi": "द्वादशी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-04-29",
-      "ritu_hi": "वसंत",
-      "maah_hi": "चैत्र",
-      "tithi_hi": "त्रयोदशी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-04-30",
-      "ritu_hi": "वसंत",
-      "maah_hi": "चैत्र",
-      "tithi_hi": "पूर्णिमा",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-05-01",
-      "ritu_hi": "वसंत",
-      "maah_hi": "वैशाख",
-      "tithi_hi": "प्रतिपदा",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-05-02",
-      "ritu_hi": "वसंत",
-      "maah_hi": "वैशाख",
-      "tithi_hi": "द्वितीया",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-05-03",
-      "ritu_hi": "वसंत",
-      "maah_hi": "वैशाख",
-      "tithi_hi": "तृतीया",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-05-04",
-      "ritu_hi": "वसंत",
-      "maah_hi": "वैशाख",
-      "tithi_hi": "चतुर्थी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-05-05",
-      "ritu_hi": "वसंत",
-      "maah_hi": "वैशाख",
-      "tithi_hi": "चतुर्थी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-05-06",
-      "ritu_hi": "वसंत",
-      "maah_hi": "वैशाख",
-      "tithi_hi": "पंचमी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-05-07",
-      "ritu_hi": "वसंत",
-      "maah_hi": "वैशाख",
-      "tithi_hi": "षष्ठी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-05-08",
-      "ritu_hi": "वसंत",
-      "maah_hi": "वैशाख",
-      "tithi_hi": "सप्तमी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-05-09",
-      "ritu_hi": "वसंत",
-      "maah_hi": "वैशाख",
-      "tithi_hi": "अष्टमी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-05-10",
-      "ritu_hi": "वसंत",
-      "maah_hi": "वैशाख",
-      "tithi_hi": "नवमी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-05-11",
-      "ritu_hi": "वसंत",
-      "maah_hi": "वैशाख",
-      "tithi_hi": "दशमी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-05-12",
-      "ritu_hi": "वसंत",
-      "maah_hi": "वैशाख",
-      "tithi_hi": "एकादशी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-05-13",
-      "ritu_hi": "वसंत",
-      "maah_hi": "वैशाख",
-      "tithi_hi": "द्वादशी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-05-14",
-      "ritu_hi": "वसंत",
-      "maah_hi": "वैशाख",
-      "tithi_hi": "त्रयोदशी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-05-15",
-      "ritu_hi": "वसंत",
-      "maah_hi": "वैशाख",
-      "tithi_hi": "अमावस्या",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-05-16",
-      "ritu_hi": "वसंत",
-      "maah_hi": "वैशाख",
-      "tithi_hi": "प्रतिपदा",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-05-17",
-      "ritu_hi": "वसंत",
-      "maah_hi": "वैशाख",
-      "tithi_hi": "द्वितीया",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-05-18",
-      "ritu_hi": "वसंत",
-      "maah_hi": "वैशाख",
-      "tithi_hi": "तृतीया",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-05-19",
-      "ritu_hi": "वसंत",
-      "maah_hi": "वैशाख",
-      "tithi_hi": "चतुर्थी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-05-20",
-      "ritu_hi": "वसंत",
-      "maah_hi": "वैशाख",
-      "tithi_hi": "पंचमी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-05-21",
-      "ritu_hi": "वसंत",
-      "maah_hi": "वैशाख",
-      "tithi_hi": "षष्ठी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-05-22",
-      "ritu_hi": "वसंत",
-      "maah_hi": "वैशाख",
-      "tithi_hi": "अष्टमी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-05-23",
-      "ritu_hi": "वसंत",
-      "maah_hi": "वैशाख",
-      "tithi_hi": "नवमी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-05-24",
-      "ritu_hi": "वसंत",
-      "maah_hi": "वैशाख",
-      "tithi_hi": "दशमी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-05-25",
-      "ritu_hi": "वसंत",
-      "maah_hi": "वैशाख",
-      "tithi_hi": "एकादशी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-05-26",
-      "ritu_hi": "वसंत",
-      "maah_hi": "वैशाख",
-      "tithi_hi": "एकादशी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-05-27",
-      "ritu_hi": "वसंत",
-      "maah_hi": "वैशाख",
-      "tithi_hi": "द्वादशी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-05-28",
-      "ritu_hi": "वसंत",
-      "maah_hi": "वैशाख",
-      "tithi_hi": "त्रयोदशी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-05-29",
-      "ritu_hi": "वसंत",
-      "maah_hi": "वैशाख",
-      "tithi_hi": "चतुर्दशी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-05-30",
-      "ritu_hi": "वसंत",
-      "maah_hi": "वैशाख",
-      "tithi_hi": "पूर्णिमा",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-05-31",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "ज्येष्ठ",
-      "tithi_hi": "प्रतिपदा",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-06-01",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "ज्येष्ठ",
-      "tithi_hi": "द्वितीया",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-06-02",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "ज्येष्ठ",
-      "tithi_hi": "तृतीया",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-06-03",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "ज्येष्ठ",
-      "tithi_hi": "चतुर्थी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-06-04",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "ज्येष्ठ",
-      "tithi_hi": "पंचमी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-06-05",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "ज्येष्ठ",
-      "tithi_hi": "षष्ठी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-06-06",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "ज्येष्ठ",
-      "tithi_hi": "सप्तमी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-06-07",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "ज्येष्ठ",
-      "tithi_hi": "अष्टमी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-06-08",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "ज्येष्ठ",
-      "tithi_hi": "नवमी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-06-09",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "ज्येष्ठ",
-      "tithi_hi": "दशमी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-06-10",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "ज्येष्ठ",
-      "tithi_hi": "एकादशी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-06-11",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "ज्येष्ठ",
-      "tithi_hi": "द्वादशी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-06-12",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "ज्येष्ठ",
-      "tithi_hi": "त्रयोदशी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-06-13",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "ज्येष्ठ",
-      "tithi_hi": "चतुर्दशी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-06-14",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "ज्येष्ठ",
-      "tithi_hi": "अमावस्या",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-06-15",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "ज्येष्ठ",
-      "tithi_hi": "द्वितीया",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-06-16",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "ज्येष्ठ",
-      "tithi_hi": "तृतीया",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-06-17",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "ज्येष्ठ",
-      "tithi_hi": "चतुर्थी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-06-18",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "ज्येष्ठ",
-      "tithi_hi": "पंचमी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-06-19",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "ज्येष्ठ",
-      "tithi_hi": "षष्ठी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-06-20",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "ज्येष्ठ",
-      "tithi_hi": "सप्तमी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-06-21",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "ज्येष्ठ",
-      "tithi_hi": "अष्टमी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-06-22",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "ज्येष्ठ",
-      "tithi_hi": "नवमी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-06-23",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "ज्येष्ठ",
-      "tithi_hi": "दशमी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-06-24",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "ज्येष्ठ",
-      "tithi_hi": "एकादशी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-06-25",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "ज्येष्ठ",
-      "tithi_hi": "द्वादशी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-06-26",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "ज्येष्ठ",
-      "tithi_hi": "त्रयोदशी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-06-27",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "ज्येष्ठ",
-      "tithi_hi": "चतुर्दशी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-06-28",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "ज्येष्ठ",
-      "tithi_hi": "पूर्णिमा",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-06-29",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "ज्येष्ठ",
-      "tithi_hi": "पूर्णिमा",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-06-30",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "आषाढ़",
-      "tithi_hi": "प्रतिपदा",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-07-01",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "आषाढ़",
-      "tithi_hi": "द्वितीया",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-07-02",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "आषाढ़",
-      "tithi_hi": "तृतीया",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-07-03",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "आषाढ़",
-      "tithi_hi": "चतुर्थी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-07-04",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "आषाढ़",
-      "tithi_hi": "पंचमी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-07-05",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "आषाढ़",
-      "tithi_hi": "षष्ठी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-07-06",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "आषाढ़",
-      "tithi_hi": "सप्तमी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-07-07",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "आषाढ़",
-      "tithi_hi": "अष्टमी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-07-08",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "आषाढ़",
-      "tithi_hi": "नवमी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-07-09",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "आषाढ़",
-      "tithi_hi": "दशमी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-07-10",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "आषाढ़",
-      "tithi_hi": "एकादशी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-07-11",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "आषाढ़",
-      "tithi_hi": "त्रयोदशी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-07-12",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "आषाढ़",
-      "tithi_hi": "चतुर्दशी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-07-13",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "आषाढ़",
-      "tithi_hi": "अमावस्या",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-07-14",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "आषाढ़",
-      "tithi_hi": "प्रतिपदा",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-07-15",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "आषाढ़",
-      "tithi_hi": "द्वितीया",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-07-16",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "आषाढ़",
-      "tithi_hi": "तृतीया",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-07-17",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "आषाढ़",
-      "tithi_hi": "पंचमी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-07-18",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "आषाढ़",
-      "tithi_hi": "षष्ठी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-07-19",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "आषाढ़",
-      "tithi_hi": "सप्तमी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-07-20",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "आषाढ़",
-      "tithi_hi": "अष्टमी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-07-21",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "आषाढ़",
-      "tithi_hi": "नवमी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-07-22",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "आषाढ़",
-      "tithi_hi": "नवमी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-07-23",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "आषाढ़",
-      "tithi_hi": "दशमी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-07-24",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "आषाढ़",
-      "tithi_hi": "एकादशी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-07-25",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "आषाढ़",
-      "tithi_hi": "द्वादशी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-07-26",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "आषाढ़",
-      "tithi_hi": "त्रयोदशी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-07-27",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "आषाढ़",
-      "tithi_hi": "चतुर्दशी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-07-28",
-      "ritu_hi": "ग्रीष्म",
-      "maah_hi": "आषाढ़",
-      "tithi_hi": "पूर्णिमा",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-07-29",
-      "ritu_hi": "वर्षा",
-      "maah_hi": "श्रावण",
-      "tithi_hi": "प्रतिपदा",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-07-30",
-      "ritu_hi": "वर्षा",
-      "maah_hi": "श्रावण",
-      "tithi_hi": "द्वितीया",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-07-31",
-      "ritu_hi": "वर्षा",
-      "maah_hi": "श्रावण",
-      "tithi_hi": "द्वितीया",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-08-01",
-      "ritu_hi": "वर्षा",
-      "maah_hi": "श्रावण",
-      "tithi_hi": "तृतीया",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-08-02",
-      "ritu_hi": "वर्षा",
-      "maah_hi": "श्रावण",
-      "tithi_hi": "चतुर्थी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-08-03",
-      "ritu_hi": "वर्षा",
-      "maah_hi": "श्रावण",
-      "tithi_hi": "पंचमी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-08-04",
-      "ritu_hi": "वर्षा",
-      "maah_hi": "श्रावण",
-      "tithi_hi": "षष्ठी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-08-05",
-      "ritu_hi": "वर्षा",
-      "maah_hi": "श्रावण",
-      "tithi_hi": "सप्तमी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-08-06",
-      "ritu_hi": "वर्षा",
-      "maah_hi": "श्रावण",
-      "tithi_hi": "अष्टमी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-08-07",
-      "ritu_hi": "वर्षा",
-      "maah_hi": "श्रावण",
-      "tithi_hi": "नवमी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-08-08",
-      "ritu_hi": "वर्षा",
-      "maah_hi": "श्रावण",
-      "tithi_hi": "दशमी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-08-09",
-      "ritu_hi": "वर्षा",
-      "maah_hi": "श्रावण",
-      "tithi_hi": "एकादशी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-08-10",
-      "ritu_hi": "वर्षा",
-      "maah_hi": "श्रावण",
-      "tithi_hi": "द्वादशी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-08-11",
-      "ritu_hi": "वर्षा",
-      "maah_hi": "श्रावण",
-      "tithi_hi": "चतुर्दशी",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-08-12",
-      "ritu_hi": "वर्षा",
-      "maah_hi": "श्रावण",
-      "tithi_hi": "अमावस्या",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-08-13",
-      "ritu_hi": "वर्षा",
-      "maah_hi": "श्रावण",
-      "tithi_hi": "प्रतिपदा",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-08-14",
-      "ritu_hi": "वर्षा",
-      "maah_hi": "श्रावण",
-      "tithi_hi": "द्वितीया",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-08-15",
-      "ritu_hi": "वर्षा",
-      "maah_hi": "श्रावण",
-      "tithi_hi": "तृतीया",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-08-16",
-      "ritu_hi": "वर्षा",
-      "maah_hi": "श्रावण",
-      "tithi_hi": "चतुर्थी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-08-17",
-      "ritu_hi": "वर्षा",
-      "maah_hi": "श्रावण",
-      "tithi_hi": "पंचमी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-08-18",
-      "ritu_hi": "वर्षा",
-      "maah_hi": "श्रावण",
-      "tithi_hi": "षष्ठी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-08-19",
-      "ritu_hi": "वर्षा",
-      "maah_hi": "श्रावण",
-      "tithi_hi": "सप्तमी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-08-20",
-      "ritu_hi": "वर्षा",
-      "maah_hi": "श्रावण",
-      "tithi_hi": "अष्टमी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-08-21",
-      "ritu_hi": "वर्षा",
-      "maah_hi": "श्रावण",
-      "tithi_hi": "नवमी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-08-22",
-      "ritu_hi": "वर्षा",
-      "maah_hi": "श्रावण",
-      "tithi_hi": "दशमी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-08-23",
-      "ritu_hi": "वर्षा",
-      "maah_hi": "श्रावण",
-      "tithi_hi": "एकादशी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-08-24",
-      "ritu_hi": "वर्षा",
-      "maah_hi": "श्रावण",
-      "tithi_hi": "द्वादशी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-08-25",
-      "ritu_hi": "वर्षा",
-      "maah_hi": "श्रावण",
-      "tithi_hi": "द्वादशी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-08-26",
-      "ritu_hi": "वर्षा",
-      "maah_hi": "श्रावण",
-      "tithi_hi": "त्रयोदशी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-08-27",
-      "ritu_hi": "वर्षा",
-      "maah_hi": "श्रावण",
-      "tithi_hi": "चतुर्दशी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-08-28",
-      "ritu_hi": "वर्षा",
-      "maah_hi": "श्रावण",
-      "tithi_hi": "पूर्णिमा",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-08-29",
-      "ritu_hi": "वर्षा",
-      "maah_hi": "भाद्रपद",
-      "tithi_hi": "प्रतिपदा",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-08-30",
-      "ritu_hi": "वर्षा",
-      "maah_hi": "भाद्रपद",
-      "tithi_hi": "द्वितीया",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
-    {
-      "date": "2026-08-31",
-      "ritu_hi": "वर्षा",
-      "maah_hi": "भाद्रपद",
-      "tithi_hi": "तृतीया",
-      "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
-    },
     {
       "date": "2026-09-01",
       "ritu_hi": "वर्षा",
       "maah_hi": "भाद्रपद",
       "tithi_hi": "चतुर्थी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-09-02",
@@ -1541,7 +26,7 @@
       "maah_hi": "भाद्रपद",
       "tithi_hi": "पंचमी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-09-03",
@@ -1549,7 +34,7 @@
       "maah_hi": "भाद्रपद",
       "tithi_hi": "सप्तमी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-09-04",
@@ -1557,7 +42,7 @@
       "maah_hi": "भाद्रपद",
       "tithi_hi": "अष्टमी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-09-05",
@@ -1565,7 +50,7 @@
       "maah_hi": "भाद्रपद",
       "tithi_hi": "नवमी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-09-06",
@@ -1573,7 +58,7 @@
       "maah_hi": "भाद्रपद",
       "tithi_hi": "दशमी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-09-07",
@@ -1581,7 +66,7 @@
       "maah_hi": "भाद्रपद",
       "tithi_hi": "एकादशी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-09-08",
@@ -1589,7 +74,7 @@
       "maah_hi": "भाद्रपद",
       "tithi_hi": "द्वादशी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-09-09",
@@ -1597,7 +82,7 @@
       "maah_hi": "भाद्रपद",
       "tithi_hi": "त्रयोदशी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-09-10",
@@ -1605,7 +90,7 @@
       "maah_hi": "भाद्रपद",
       "tithi_hi": "चतुर्दशी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-09-11",
@@ -1613,7 +98,7 @@
       "maah_hi": "भाद्रपद",
       "tithi_hi": "अमावस्या",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-09-12",
@@ -1621,7 +106,7 @@
       "maah_hi": "भाद्रपद",
       "tithi_hi": "प्रतिपदा",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-09-13",
@@ -1629,7 +114,7 @@
       "maah_hi": "भाद्रपद",
       "tithi_hi": "द्वितीया",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-09-14",
@@ -1637,7 +122,7 @@
       "maah_hi": "भाद्रपद",
       "tithi_hi": "तृतीया",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-09-15",
@@ -1645,7 +130,7 @@
       "maah_hi": "भाद्रपद",
       "tithi_hi": "चतुर्थी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-09-16",
@@ -1653,7 +138,7 @@
       "maah_hi": "भाद्रपद",
       "tithi_hi": "पंचमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-09-17",
@@ -1661,7 +146,7 @@
       "maah_hi": "भाद्रपद",
       "tithi_hi": "षष्ठी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-09-18",
@@ -1669,7 +154,7 @@
       "maah_hi": "भाद्रपद",
       "tithi_hi": "सप्तमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-09-19",
@@ -1677,7 +162,7 @@
       "maah_hi": "भाद्रपद",
       "tithi_hi": "अष्टमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-09-20",
@@ -1685,7 +170,7 @@
       "maah_hi": "भाद्रपद",
       "tithi_hi": "नवमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-09-21",
@@ -1693,7 +178,7 @@
       "maah_hi": "भाद्रपद",
       "tithi_hi": "दशमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-09-22",
@@ -1701,7 +186,7 @@
       "maah_hi": "भाद्रपद",
       "tithi_hi": "एकादशी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-09-23",
@@ -1709,7 +194,7 @@
       "maah_hi": "भाद्रपद",
       "tithi_hi": "द्वादशी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-09-24",
@@ -1717,7 +202,7 @@
       "maah_hi": "भाद्रपद",
       "tithi_hi": "त्रयोदशी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-09-25",
@@ -1725,7 +210,7 @@
       "maah_hi": "भाद्रपद",
       "tithi_hi": "चतुर्दशी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-09-26",
@@ -1733,7 +218,7 @@
       "maah_hi": "भाद्रपद",
       "tithi_hi": "पूर्णिमा",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-09-27",
@@ -1741,7 +226,7 @@
       "maah_hi": "आश्विन",
       "tithi_hi": "प्रतिपदा",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-09-28",
@@ -1749,7 +234,7 @@
       "maah_hi": "आश्विन",
       "tithi_hi": "द्वितीया",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-09-29",
@@ -1757,7 +242,7 @@
       "maah_hi": "आश्विन",
       "tithi_hi": "तृतीया",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-09-30",
@@ -1765,7 +250,7 @@
       "maah_hi": "आश्विन",
       "tithi_hi": "चतुर्थी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-10-01",
@@ -1773,7 +258,7 @@
       "maah_hi": "आश्विन",
       "tithi_hi": "पंचमी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-10-02",
@@ -1781,7 +266,7 @@
       "maah_hi": "आश्विन",
       "tithi_hi": "षष्ठी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-10-03",
@@ -1789,7 +274,7 @@
       "maah_hi": "आश्विन",
       "tithi_hi": "सप्तमी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-10-04",
@@ -1797,7 +282,7 @@
       "maah_hi": "आश्विन",
       "tithi_hi": "नवमी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-10-05",
@@ -1805,7 +290,7 @@
       "maah_hi": "आश्विन",
       "tithi_hi": "दशमी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-10-06",
@@ -1813,7 +298,7 @@
       "maah_hi": "आश्विन",
       "tithi_hi": "एकादशी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-10-07",
@@ -1821,7 +306,7 @@
       "maah_hi": "आश्विन",
       "tithi_hi": "द्वादशी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-10-08",
@@ -1829,7 +314,7 @@
       "maah_hi": "आश्विन",
       "tithi_hi": "त्रयोदशी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-10-09",
@@ -1837,7 +322,7 @@
       "maah_hi": "आश्विन",
       "tithi_hi": "चतुर्दशी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-10-10",
@@ -1845,7 +330,7 @@
       "maah_hi": "आश्विन",
       "tithi_hi": "अमावस्या",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-10-11",
@@ -1853,7 +338,7 @@
       "maah_hi": "आश्विन",
       "tithi_hi": "प्रतिपदा",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-10-12",
@@ -1861,7 +346,7 @@
       "maah_hi": "आश्विन",
       "tithi_hi": "द्वितीया",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-10-13",
@@ -1869,7 +354,7 @@
       "maah_hi": "आश्विन",
       "tithi_hi": "तृतीया",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-10-14",
@@ -1877,7 +362,7 @@
       "maah_hi": "आश्विन",
       "tithi_hi": "चतुर्थी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-10-15",
@@ -1885,7 +370,7 @@
       "maah_hi": "आश्विन",
       "tithi_hi": "पंचमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-10-16",
@@ -1893,7 +378,7 @@
       "maah_hi": "आश्विन",
       "tithi_hi": "षष्ठी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-10-17",
@@ -1901,7 +386,7 @@
       "maah_hi": "आश्विन",
       "tithi_hi": "सप्तमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-10-18",
@@ -1909,7 +394,7 @@
       "maah_hi": "आश्विन",
       "tithi_hi": "सप्तमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-10-19",
@@ -1917,7 +402,7 @@
       "maah_hi": "आश्विन",
       "tithi_hi": "अष्टमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-10-20",
@@ -1925,7 +410,7 @@
       "maah_hi": "आश्विन",
       "tithi_hi": "नवमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-10-21",
@@ -1933,7 +418,7 @@
       "maah_hi": "आश्विन",
       "tithi_hi": "दशमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-10-22",
@@ -1941,7 +426,7 @@
       "maah_hi": "आश्विन",
       "tithi_hi": "एकादशी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-10-23",
@@ -1949,7 +434,7 @@
       "maah_hi": "आश्विन",
       "tithi_hi": "द्वादशी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-10-24",
@@ -1957,7 +442,7 @@
       "maah_hi": "आश्विन",
       "tithi_hi": "त्रयोदशी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-10-25",
@@ -1965,7 +450,7 @@
       "maah_hi": "आश्विन",
       "tithi_hi": "चतुर्दशी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-10-26",
@@ -1973,7 +458,7 @@
       "maah_hi": "आश्विन",
       "tithi_hi": "पूर्णिमा",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-10-27",
@@ -1981,7 +466,7 @@
       "maah_hi": "कार्तिक",
       "tithi_hi": "प्रतिपदा",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-10-28",
@@ -1989,7 +474,7 @@
       "maah_hi": "कार्तिक",
       "tithi_hi": "तृतीया",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-10-29",
@@ -1997,7 +482,7 @@
       "maah_hi": "कार्तिक",
       "tithi_hi": "चतुर्थी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-10-30",
@@ -2005,7 +490,7 @@
       "maah_hi": "कार्तिक",
       "tithi_hi": "पंचमी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-10-31",
@@ -2013,7 +498,7 @@
       "maah_hi": "कार्तिक",
       "tithi_hi": "षष्ठी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-11-01",
@@ -2021,7 +506,7 @@
       "maah_hi": "कार्तिक",
       "tithi_hi": "सप्तमी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-11-02",
@@ -2029,7 +514,7 @@
       "maah_hi": "कार्तिक",
       "tithi_hi": "अष्टमी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-11-03",
@@ -2037,7 +522,7 @@
       "maah_hi": "कार्तिक",
       "tithi_hi": "नवमी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-11-04",
@@ -2045,7 +530,7 @@
       "maah_hi": "कार्तिक",
       "tithi_hi": "दशमी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-11-05",
@@ -2053,7 +538,7 @@
       "maah_hi": "कार्तिक",
       "tithi_hi": "एकादशी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-11-06",
@@ -2061,7 +546,7 @@
       "maah_hi": "कार्तिक",
       "tithi_hi": "द्वादशी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-11-07",
@@ -2069,7 +554,7 @@
       "maah_hi": "कार्तिक",
       "tithi_hi": "त्रयोदशी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-11-08",
@@ -2077,7 +562,7 @@
       "maah_hi": "कार्तिक",
       "tithi_hi": "चतुर्दशी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-11-09",
@@ -2085,7 +570,7 @@
       "maah_hi": "कार्तिक",
       "tithi_hi": "अमावस्या",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-11-10",
@@ -2093,7 +578,7 @@
       "maah_hi": "कार्तिक",
       "tithi_hi": "प्रतिपदा",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-11-11",
@@ -2101,7 +586,7 @@
       "maah_hi": "कार्तिक",
       "tithi_hi": "द्वितीया",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-11-12",
@@ -2109,7 +594,7 @@
       "maah_hi": "कार्तिक",
       "tithi_hi": "तृतीया",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-11-13",
@@ -2117,7 +602,7 @@
       "maah_hi": "कार्तिक",
       "tithi_hi": "चतुर्थी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-11-14",
@@ -2125,7 +610,7 @@
       "maah_hi": "कार्तिक",
       "tithi_hi": "पंचमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-11-15",
@@ -2133,7 +618,7 @@
       "maah_hi": "कार्तिक",
       "tithi_hi": "षष्ठी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-11-16",
@@ -2141,7 +626,7 @@
       "maah_hi": "कार्तिक",
       "tithi_hi": "सप्तमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-11-17",
@@ -2149,7 +634,7 @@
       "maah_hi": "कार्तिक",
       "tithi_hi": "अष्टमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-11-18",
@@ -2157,7 +642,7 @@
       "maah_hi": "कार्तिक",
       "tithi_hi": "नवमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-11-19",
@@ -2165,7 +650,7 @@
       "maah_hi": "कार्तिक",
       "tithi_hi": "नवमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-11-20",
@@ -2173,15 +658,15 @@
       "maah_hi": "कार्तिक",
       "tithi_hi": "दशमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-11-21",
       "ritu_hi": "शरद",
       "maah_hi": "कार्तिक",
-      "tithi_hi": "एकादशी",
+      "tithi_hi": "द्वादशी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-11-22",
@@ -2189,7 +674,7 @@
       "maah_hi": "कार्तिक",
       "tithi_hi": "त्रयोदशी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-11-23",
@@ -2197,7 +682,7 @@
       "maah_hi": "कार्तिक",
       "tithi_hi": "चतुर्दशी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-11-24",
@@ -2205,7 +690,7 @@
       "maah_hi": "कार्तिक",
       "tithi_hi": "पूर्णिमा",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-11-25",
@@ -2213,7 +698,7 @@
       "maah_hi": "मार्गशीर्ष",
       "tithi_hi": "प्रतिपदा",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-11-26",
@@ -2221,7 +706,7 @@
       "maah_hi": "मार्गशीर्ष",
       "tithi_hi": "द्वितीया",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-11-27",
@@ -2229,15 +714,15 @@
       "maah_hi": "मार्गशीर्ष",
       "tithi_hi": "तृतीया",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-11-28",
       "ritu_hi": "हेमंत",
       "maah_hi": "मार्गशीर्ष",
-      "tithi_hi": "चतुर्थी",
+      "tithi_hi": "पंचमी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-11-29",
@@ -2245,7 +730,7 @@
       "maah_hi": "मार्गशीर्ष",
       "tithi_hi": "षष्ठी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-11-30",
@@ -2253,7 +738,7 @@
       "maah_hi": "मार्गशीर्ष",
       "tithi_hi": "सप्तमी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-12-01",
@@ -2261,7 +746,7 @@
       "maah_hi": "मार्गशीर्ष",
       "tithi_hi": "अष्टमी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-12-02",
@@ -2269,7 +754,7 @@
       "maah_hi": "मार्गशीर्ष",
       "tithi_hi": "नवमी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-12-03",
@@ -2277,7 +762,7 @@
       "maah_hi": "मार्गशीर्ष",
       "tithi_hi": "दशमी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-12-04",
@@ -2285,7 +770,7 @@
       "maah_hi": "मार्गशीर्ष",
       "tithi_hi": "एकादशी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-12-05",
@@ -2293,7 +778,7 @@
       "maah_hi": "मार्गशीर्ष",
       "tithi_hi": "द्वादशी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-12-06",
@@ -2301,7 +786,7 @@
       "maah_hi": "मार्गशीर्ष",
       "tithi_hi": "त्रयोदशी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-12-07",
@@ -2309,7 +794,7 @@
       "maah_hi": "मार्गशीर्ष",
       "tithi_hi": "चतुर्दशी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-12-08",
@@ -2317,7 +802,7 @@
       "maah_hi": "मार्गशीर्ष",
       "tithi_hi": "अमावस्या",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-12-09",
@@ -2325,7 +810,7 @@
       "maah_hi": "मार्गशीर्ष",
       "tithi_hi": "प्रतिपदा",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-12-10",
@@ -2333,7 +818,7 @@
       "maah_hi": "मार्गशीर्ष",
       "tithi_hi": "प्रतिपदा",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-12-11",
@@ -2341,7 +826,7 @@
       "maah_hi": "मार्गशीर्ष",
       "tithi_hi": "द्वितीया",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-12-12",
@@ -2349,7 +834,7 @@
       "maah_hi": "मार्गशीर्ष",
       "tithi_hi": "तृतीया",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-12-13",
@@ -2357,7 +842,7 @@
       "maah_hi": "मार्गशीर्ष",
       "tithi_hi": "चतुर्थी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-12-14",
@@ -2365,7 +850,7 @@
       "maah_hi": "मार्गशीर्ष",
       "tithi_hi": "पंचमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-12-15",
@@ -2373,7 +858,7 @@
       "maah_hi": "मार्गशीर्ष",
       "tithi_hi": "षष्ठी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-12-16",
@@ -2381,7 +866,7 @@
       "maah_hi": "मार्गशीर्ष",
       "tithi_hi": "सप्तमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-12-17",
@@ -2389,7 +874,7 @@
       "maah_hi": "मार्गशीर्ष",
       "tithi_hi": "अष्टमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-12-18",
@@ -2397,7 +882,7 @@
       "maah_hi": "मार्गशीर्ष",
       "tithi_hi": "नवमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-12-19",
@@ -2405,7 +890,7 @@
       "maah_hi": "मार्गशीर्ष",
       "tithi_hi": "दशमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-12-20",
@@ -2413,7 +898,7 @@
       "maah_hi": "मार्गशीर्ष",
       "tithi_hi": "एकादशी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-12-21",
@@ -2421,7 +906,7 @@
       "maah_hi": "मार्गशीर्ष",
       "tithi_hi": "द्वादशी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-12-22",
@@ -2429,7 +914,7 @@
       "maah_hi": "मार्गशीर्ष",
       "tithi_hi": "त्रयोदशी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-12-23",
@@ -2437,71 +922,71 @@
       "maah_hi": "मार्गशीर्ष",
       "tithi_hi": "चतुर्दशी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-12-24",
       "ritu_hi": "हेमंत",
       "maah_hi": "मार्गशीर्ष",
-      "tithi_hi": "पूर्णिमा",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "tithi_hi": "प्रतिपदा",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-12-25",
       "ritu_hi": "हेमंत",
-      "maah_hi": "पौष",
+      "maah_hi": "मार्गशीर्ष",
       "tithi_hi": "द्वितीया",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-12-26",
       "ritu_hi": "हेमंत",
-      "maah_hi": "पौष",
+      "maah_hi": "मार्गशीर्ष",
       "tithi_hi": "तृतीया",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-12-27",
       "ritu_hi": "हेमंत",
-      "maah_hi": "पौष",
+      "maah_hi": "मार्गशीर्ष",
       "tithi_hi": "चतुर्थी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-12-28",
       "ritu_hi": "हेमंत",
-      "maah_hi": "पौष",
+      "maah_hi": "मार्गशीर्ष",
       "tithi_hi": "पंचमी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-12-29",
       "ritu_hi": "हेमंत",
-      "maah_hi": "पौष",
+      "maah_hi": "मार्गशीर्ष",
       "tithi_hi": "षष्ठी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-12-30",
       "ritu_hi": "हेमंत",
-      "maah_hi": "पौष",
+      "maah_hi": "मार्गशीर्ष",
       "tithi_hi": "सप्तमी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2026-12-31",
       "ritu_hi": "हेमंत",
-      "maah_hi": "पौष",
+      "maah_hi": "मार्गशीर्ष",
       "tithi_hi": "अष्टमी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-01-01",
@@ -2509,7 +994,7 @@
       "maah_hi": "पौष",
       "tithi_hi": "नवमी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-01-02",
@@ -2517,7 +1002,7 @@
       "maah_hi": "पौष",
       "tithi_hi": "दशमी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-01-03",
@@ -2525,7 +1010,7 @@
       "maah_hi": "पौष",
       "tithi_hi": "एकादशी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-01-04",
@@ -2533,7 +1018,7 @@
       "maah_hi": "पौष",
       "tithi_hi": "द्वादशी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-01-05",
@@ -2541,7 +1026,7 @@
       "maah_hi": "पौष",
       "tithi_hi": "त्रयोदशी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-01-06",
@@ -2549,7 +1034,7 @@
       "maah_hi": "पौष",
       "tithi_hi": "चतुर्दशी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-01-07",
@@ -2557,7 +1042,7 @@
       "maah_hi": "पौष",
       "tithi_hi": "अमावस्या",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-01-08",
@@ -2565,7 +1050,7 @@
       "maah_hi": "पौष",
       "tithi_hi": "प्रतिपदा",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-01-09",
@@ -2573,15 +1058,15 @@
       "maah_hi": "पौष",
       "tithi_hi": "द्वितीया",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-01-10",
       "ritu_hi": "हेमंत",
       "maah_hi": "पौष",
-      "tithi_hi": "द्वितीया",
+      "tithi_hi": "तृतीया",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-01-11",
@@ -2589,7 +1074,7 @@
       "maah_hi": "पौष",
       "tithi_hi": "तृतीया",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-01-12",
@@ -2597,7 +1082,7 @@
       "maah_hi": "पौष",
       "tithi_hi": "चतुर्थी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-01-13",
@@ -2605,7 +1090,7 @@
       "maah_hi": "पौष",
       "tithi_hi": "पंचमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-01-14",
@@ -2613,7 +1098,7 @@
       "maah_hi": "पौष",
       "tithi_hi": "षष्ठी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-01-15",
@@ -2621,7 +1106,7 @@
       "maah_hi": "पौष",
       "tithi_hi": "सप्तमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-01-16",
@@ -2629,7 +1114,7 @@
       "maah_hi": "पौष",
       "tithi_hi": "अष्टमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-01-17",
@@ -2637,7 +1122,7 @@
       "maah_hi": "पौष",
       "tithi_hi": "नवमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-01-18",
@@ -2645,7 +1130,7 @@
       "maah_hi": "पौष",
       "tithi_hi": "दशमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-01-19",
@@ -2653,7 +1138,7 @@
       "maah_hi": "पौष",
       "tithi_hi": "एकादशी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-01-20",
@@ -2661,7 +1146,7 @@
       "maah_hi": "पौष",
       "tithi_hi": "त्रयोदशी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-01-21",
@@ -2669,7 +1154,7 @@
       "maah_hi": "पौष",
       "tithi_hi": "चतुर्दशी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-01-22",
@@ -2677,7 +1162,7 @@
       "maah_hi": "पौष",
       "tithi_hi": "पूर्णिमा",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-01-23",
@@ -2685,7 +1170,7 @@
       "maah_hi": "माघ",
       "tithi_hi": "प्रतिपदा",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-01-24",
@@ -2693,7 +1178,7 @@
       "maah_hi": "माघ",
       "tithi_hi": "द्वितीया",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-01-25",
@@ -2701,7 +1186,7 @@
       "maah_hi": "माघ",
       "tithi_hi": "तृतीया",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-01-26",
@@ -2709,7 +1194,7 @@
       "maah_hi": "माघ",
       "tithi_hi": "पंचमी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-01-27",
@@ -2717,7 +1202,7 @@
       "maah_hi": "माघ",
       "tithi_hi": "षष्ठी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-01-28",
@@ -2725,7 +1210,7 @@
       "maah_hi": "माघ",
       "tithi_hi": "सप्तमी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-01-29",
@@ -2733,7 +1218,7 @@
       "maah_hi": "माघ",
       "tithi_hi": "अष्टमी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-01-30",
@@ -2741,7 +1226,7 @@
       "maah_hi": "माघ",
       "tithi_hi": "नवमी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-01-31",
@@ -2749,7 +1234,7 @@
       "maah_hi": "माघ",
       "tithi_hi": "दशमी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-02-01",
@@ -2757,7 +1242,7 @@
       "maah_hi": "माघ",
       "tithi_hi": "दशमी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-02-02",
@@ -2765,7 +1250,7 @@
       "maah_hi": "माघ",
       "tithi_hi": "एकादशी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-02-03",
@@ -2773,7 +1258,7 @@
       "maah_hi": "माघ",
       "tithi_hi": "द्वादशी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-02-04",
@@ -2781,7 +1266,7 @@
       "maah_hi": "माघ",
       "tithi_hi": "त्रयोदशी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-02-05",
@@ -2789,7 +1274,7 @@
       "maah_hi": "माघ",
       "tithi_hi": "चतुर्दशी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-02-06",
@@ -2797,7 +1282,7 @@
       "maah_hi": "माघ",
       "tithi_hi": "अमावस्या",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-02-07",
@@ -2805,7 +1290,7 @@
       "maah_hi": "माघ",
       "tithi_hi": "प्रतिपदा",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-02-08",
@@ -2813,7 +1298,7 @@
       "maah_hi": "माघ",
       "tithi_hi": "द्वितीया",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-02-09",
@@ -2821,7 +1306,7 @@
       "maah_hi": "माघ",
       "tithi_hi": "तृतीया",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-02-10",
@@ -2829,7 +1314,7 @@
       "maah_hi": "माघ",
       "tithi_hi": "चतुर्थी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-02-11",
@@ -2837,7 +1322,7 @@
       "maah_hi": "माघ",
       "tithi_hi": "पंचमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-02-12",
@@ -2845,7 +1330,7 @@
       "maah_hi": "माघ",
       "tithi_hi": "षष्ठी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-02-13",
@@ -2853,7 +1338,7 @@
       "maah_hi": "माघ",
       "tithi_hi": "सप्तमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-02-14",
@@ -2861,7 +1346,7 @@
       "maah_hi": "माघ",
       "tithi_hi": "अष्टमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-02-15",
@@ -2869,7 +1354,7 @@
       "maah_hi": "माघ",
       "tithi_hi": "नवमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-02-16",
@@ -2877,7 +1362,7 @@
       "maah_hi": "माघ",
       "tithi_hi": "दशमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-02-17",
@@ -2885,7 +1370,7 @@
       "maah_hi": "माघ",
       "tithi_hi": "एकादशी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-02-18",
@@ -2893,7 +1378,7 @@
       "maah_hi": "माघ",
       "tithi_hi": "द्वादशी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-02-19",
@@ -2901,7 +1386,7 @@
       "maah_hi": "माघ",
       "tithi_hi": "त्रयोदशी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-02-20",
@@ -2909,71 +1394,71 @@
       "maah_hi": "माघ",
       "tithi_hi": "चतुर्दशी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-02-21",
       "ritu_hi": "शिशिर",
-      "maah_hi": "फाल्गुन",
+      "maah_hi": "माघ",
       "tithi_hi": "प्रतिपदा",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-02-22",
       "ritu_hi": "शिशिर",
-      "maah_hi": "फाल्गुन",
+      "maah_hi": "माघ",
       "tithi_hi": "द्वितीया",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-02-23",
       "ritu_hi": "शिशिर",
-      "maah_hi": "फाल्गुन",
+      "maah_hi": "माघ",
       "tithi_hi": "तृतीया",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-02-24",
       "ritu_hi": "शिशिर",
-      "maah_hi": "फाल्गुन",
+      "maah_hi": "माघ",
       "tithi_hi": "चतुर्थी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-02-25",
       "ritu_hi": "शिशिर",
-      "maah_hi": "फाल्गुन",
+      "maah_hi": "माघ",
       "tithi_hi": "पंचमी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-02-26",
       "ritu_hi": "शिशिर",
-      "maah_hi": "फाल्गुन",
+      "maah_hi": "माघ",
       "tithi_hi": "षष्ठी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-02-27",
       "ritu_hi": "शिशिर",
-      "maah_hi": "फाल्गुन",
+      "maah_hi": "माघ",
       "tithi_hi": "सप्तमी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-02-28",
       "ritu_hi": "शिशिर",
-      "maah_hi": "फाल्गुन",
+      "maah_hi": "माघ",
       "tithi_hi": "अष्टमी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-03-01",
@@ -2981,7 +1466,7 @@
       "maah_hi": "फाल्गुन",
       "tithi_hi": "नवमी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-03-02",
@@ -2989,7 +1474,7 @@
       "maah_hi": "फाल्गुन",
       "tithi_hi": "दशमी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-03-03",
@@ -2997,7 +1482,7 @@
       "maah_hi": "फाल्गुन",
       "tithi_hi": "एकादशी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-03-04",
@@ -3005,7 +1490,7 @@
       "maah_hi": "फाल्गुन",
       "tithi_hi": "एकादशी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-03-05",
@@ -3013,7 +1498,7 @@
       "maah_hi": "फाल्गुन",
       "tithi_hi": "द्वादशी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-03-06",
@@ -3021,7 +1506,7 @@
       "maah_hi": "फाल्गुन",
       "tithi_hi": "त्रयोदशी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-03-07",
@@ -3029,7 +1514,7 @@
       "maah_hi": "फाल्गुन",
       "tithi_hi": "चतुर्दशी",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-03-08",
@@ -3037,7 +1522,7 @@
       "maah_hi": "फाल्गुन",
       "tithi_hi": "अमावस्या",
       "paksha_hi": "कृष्ण पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-03-09",
@@ -3045,7 +1530,7 @@
       "maah_hi": "फाल्गुन",
       "tithi_hi": "प्रतिपदा",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-03-10",
@@ -3053,7 +1538,7 @@
       "maah_hi": "फाल्गुन",
       "tithi_hi": "द्वितीया",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-03-11",
@@ -3061,7 +1546,7 @@
       "maah_hi": "फाल्गुन",
       "tithi_hi": "तृतीया",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-03-12",
@@ -3069,7 +1554,7 @@
       "maah_hi": "फाल्गुन",
       "tithi_hi": "चतुर्थी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-03-13",
@@ -3077,7 +1562,7 @@
       "maah_hi": "फाल्गुन",
       "tithi_hi": "पंचमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-03-14",
@@ -3085,7 +1570,7 @@
       "maah_hi": "फाल्गुन",
       "tithi_hi": "षष्ठी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-03-15",
@@ -3093,7 +1578,183 @@
       "maah_hi": "फाल्गुन",
       "tithi_hi": "सप्तमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "CSV(panchang_lucknow_2026-02-23_to_2027-03-15)"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-03-16",
+      "ritu_hi": "शिशिर",
+      "maah_hi": "फाल्गुन",
+      "tithi_hi": "अष्टमी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-03-17",
+      "ritu_hi": "शिशिर",
+      "maah_hi": "फाल्गुन",
+      "tithi_hi": "नवमी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-03-18",
+      "ritu_hi": "शिशिर",
+      "maah_hi": "फाल्गुन",
+      "tithi_hi": "एकादशी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-03-19",
+      "ritu_hi": "शिशिर",
+      "maah_hi": "फाल्गुन",
+      "tithi_hi": "द्वादशी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-03-20",
+      "ritu_hi": "शिशिर",
+      "maah_hi": "फाल्गुन",
+      "tithi_hi": "त्रयोदशी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-03-21",
+      "ritu_hi": "शिशिर",
+      "maah_hi": "फाल्गुन",
+      "tithi_hi": "चतुर्दशी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-03-22",
+      "ritu_hi": "शिशिर",
+      "maah_hi": "फाल्गुन",
+      "tithi_hi": "पूर्णिमा",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-03-23",
+      "ritu_hi": "वसंत",
+      "maah_hi": "चैत्र",
+      "tithi_hi": "प्रतिपदा",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-03-24",
+      "ritu_hi": "वसंत",
+      "maah_hi": "चैत्र",
+      "tithi_hi": "द्वितीया",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-03-25",
+      "ritu_hi": "वसंत",
+      "maah_hi": "चैत्र",
+      "tithi_hi": "तृतीया",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-03-26",
+      "ritu_hi": "वसंत",
+      "maah_hi": "चैत्र",
+      "tithi_hi": "चतुर्थी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-03-27",
+      "ritu_hi": "वसंत",
+      "maah_hi": "चैत्र",
+      "tithi_hi": "पंचमी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-03-28",
+      "ritu_hi": "वसंत",
+      "maah_hi": "चैत्र",
+      "tithi_hi": "षष्ठी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-03-29",
+      "ritu_hi": "वसंत",
+      "maah_hi": "चैत्र",
+      "tithi_hi": "सप्तमी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-03-30",
+      "ritu_hi": "वसंत",
+      "maah_hi": "चैत्र",
+      "tithi_hi": "अष्टमी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-03-31",
+      "ritu_hi": "वसंत",
+      "maah_hi": "चैत्र",
+      "tithi_hi": "नवमी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-04-01",
+      "ritu_hi": "वसंत",
+      "maah_hi": "चैत्र",
+      "tithi_hi": "दशमी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-04-02",
+      "ritu_hi": "वसंत",
+      "maah_hi": "चैत्र",
+      "tithi_hi": "एकादशी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-04-03",
+      "ritu_hi": "वसंत",
+      "maah_hi": "चैत्र",
+      "tithi_hi": "द्वादशी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-04-04",
+      "ritu_hi": "वसंत",
+      "maah_hi": "चैत्र",
+      "tithi_hi": "त्रयोदशी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-04-05",
+      "ritu_hi": "वसंत",
+      "maah_hi": "चैत्र",
+      "tithi_hi": "चतुर्दशी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-04-06",
+      "ritu_hi": "वसंत",
+      "maah_hi": "चैत्र",
+      "tithi_hi": "अमावस्या",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-04-07",
@@ -3101,7 +1762,7 @@
       "maah_hi": "चैत्र",
       "tithi_hi": "प्रतिपदा",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "User-provided Chaitra Navratri 2027 range"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-04-08",
@@ -3109,7 +1770,7 @@
       "maah_hi": "चैत्र",
       "tithi_hi": "द्वितीया",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "User-provided Chaitra Navratri 2027 range"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-04-09",
@@ -3117,7 +1778,7 @@
       "maah_hi": "चैत्र",
       "tithi_hi": "तृतीया",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "User-provided Chaitra Navratri 2027 range"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-04-10",
@@ -3125,7 +1786,7 @@
       "maah_hi": "चैत्र",
       "tithi_hi": "चतुर्थी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "User-provided Chaitra Navratri 2027 range"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-04-11",
@@ -3133,7 +1794,7 @@
       "maah_hi": "चैत्र",
       "tithi_hi": "पंचमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "User-provided Chaitra Navratri 2027 range"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-04-12",
@@ -3141,7 +1802,7 @@
       "maah_hi": "चैत्र",
       "tithi_hi": "षष्ठी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "User-provided Chaitra Navratri 2027 range"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-04-13",
@@ -3149,7 +1810,7 @@
       "maah_hi": "चैत्र",
       "tithi_hi": "सप्तमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "User-provided Chaitra Navratri 2027 range"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-04-14",
@@ -3157,7 +1818,7 @@
       "maah_hi": "चैत्र",
       "tithi_hi": "अष्टमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "User-provided Chaitra Navratri 2027 range"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
       "date": "2027-04-15",
@@ -3165,239 +1826,1111 @@
       "maah_hi": "चैत्र",
       "tithi_hi": "नवमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "User-provided Chaitra Navratri 2027 range"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
-      "date": "2027-09-30",
-      "ritu_hi": "शरद",
-      "maah_hi": "आश्विन",
-      "tithi_hi": "प्रतिपदा",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "User-provided Sharad Navratri 2027 range"
-    },
-    {
-      "date": "2027-10-01",
-      "ritu_hi": "शरद",
-      "maah_hi": "आश्विन",
-      "tithi_hi": "द्वितीया",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "User-provided Sharad Navratri 2027 range"
-    },
-    {
-      "date": "2027-10-02",
-      "ritu_hi": "शरद",
-      "maah_hi": "आश्विन",
-      "tithi_hi": "तृतीया",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "User-provided Sharad Navratri 2027 range"
-    },
-    {
-      "date": "2027-10-03",
-      "ritu_hi": "शरद",
-      "maah_hi": "आश्विन",
-      "tithi_hi": "चतुर्थी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "User-provided Sharad Navratri 2027 range"
-    },
-    {
-      "date": "2027-10-04",
-      "ritu_hi": "शरद",
-      "maah_hi": "आश्विन",
-      "tithi_hi": "पंचमी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "User-provided Sharad Navratri 2027 range"
-    },
-    {
-      "date": "2027-10-05",
-      "ritu_hi": "शरद",
-      "maah_hi": "आश्विन",
-      "tithi_hi": "षष्ठी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "User-provided Sharad Navratri 2027 range"
-    },
-    {
-      "date": "2027-10-06",
-      "ritu_hi": "शरद",
-      "maah_hi": "आश्विन",
-      "tithi_hi": "सप्तमी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "User-provided Sharad Navratri 2027 range"
-    },
-    {
-      "date": "2027-10-07",
-      "ritu_hi": "शरद",
-      "maah_hi": "आश्विन",
-      "tithi_hi": "अष्टमी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "User-provided Sharad Navratri 2027 range"
-    },
-    {
-      "date": "2027-10-08",
-      "ritu_hi": "शरद",
-      "maah_hi": "आश्विन",
-      "tithi_hi": "नवमी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "User-provided Sharad Navratri 2027 range"
-    },
-    {
-      "date": "2027-10-09",
-      "ritu_hi": "शरद",
-      "maah_hi": "आश्विन",
+      "date": "2027-04-16",
+      "ritu_hi": "वसंत",
+      "maah_hi": "चैत्र",
       "tithi_hi": "दशमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "User-provided Sharad Navratri 2027 range"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
-      "date": "2028-03-27",
+      "date": "2027-04-17",
       "ritu_hi": "वसंत",
       "maah_hi": "चैत्र",
+      "tithi_hi": "एकादशी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-04-18",
+      "ritu_hi": "वसंत",
+      "maah_hi": "चैत्र",
+      "tithi_hi": "द्वादशी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-04-19",
+      "ritu_hi": "वसंत",
+      "maah_hi": "चैत्र",
+      "tithi_hi": "त्रयोदशी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-04-20",
+      "ritu_hi": "वसंत",
+      "maah_hi": "चैत्र",
+      "tithi_hi": "पूर्णिमा",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-04-21",
+      "ritu_hi": "वसंत",
+      "maah_hi": "वैशाख",
+      "tithi_hi": "प्रतिपदा",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-04-22",
+      "ritu_hi": "वसंत",
+      "maah_hi": "वैशाख",
+      "tithi_hi": "द्वितीया",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-04-23",
+      "ritu_hi": "वसंत",
+      "maah_hi": "वैशाख",
+      "tithi_hi": "तृतीया",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-04-24",
+      "ritu_hi": "वसंत",
+      "maah_hi": "वैशाख",
+      "tithi_hi": "चतुर्थी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-04-25",
+      "ritu_hi": "वसंत",
+      "maah_hi": "वैशाख",
+      "tithi_hi": "पंचमी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-04-26",
+      "ritu_hi": "वसंत",
+      "maah_hi": "वैशाख",
+      "tithi_hi": "पंचमी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-04-27",
+      "ritu_hi": "वसंत",
+      "maah_hi": "वैशाख",
+      "tithi_hi": "षष्ठी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-04-28",
+      "ritu_hi": "वसंत",
+      "maah_hi": "वैशाख",
+      "tithi_hi": "सप्तमी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-04-29",
+      "ritu_hi": "वसंत",
+      "maah_hi": "वैशाख",
+      "tithi_hi": "अष्टमी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-04-30",
+      "ritu_hi": "वसंत",
+      "maah_hi": "वैशाख",
+      "tithi_hi": "नवमी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-05-01",
+      "ritu_hi": "वसंत",
+      "maah_hi": "वैशाख",
+      "tithi_hi": "दशमी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-05-02",
+      "ritu_hi": "वसंत",
+      "maah_hi": "वैशाख",
+      "tithi_hi": "एकादशी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-05-03",
+      "ritu_hi": "वसंत",
+      "maah_hi": "वैशाख",
+      "tithi_hi": "द्वादशी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-05-04",
+      "ritu_hi": "वसंत",
+      "maah_hi": "वैशाख",
+      "tithi_hi": "त्रयोदशी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-05-05",
+      "ritu_hi": "वसंत",
+      "maah_hi": "वैशाख",
+      "tithi_hi": "चतुर्दशी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-05-06",
+      "ritu_hi": "वसंत",
+      "maah_hi": "वैशाख",
+      "tithi_hi": "अमावस्या",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-05-07",
+      "ritu_hi": "वसंत",
+      "maah_hi": "वैशाख",
       "tithi_hi": "प्रतिपदा",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "User-provided Chaitra Navratri 2028 range"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
-      "date": "2028-03-28",
+      "date": "2027-05-08",
       "ritu_hi": "वसंत",
-      "maah_hi": "चैत्र",
+      "maah_hi": "वैशाख",
       "tithi_hi": "द्वितीया",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "User-provided Chaitra Navratri 2028 range"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
-      "date": "2028-03-29",
+      "date": "2027-05-09",
       "ritu_hi": "वसंत",
-      "maah_hi": "चैत्र",
+      "maah_hi": "वैशाख",
       "tithi_hi": "तृतीया",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "User-provided Chaitra Navratri 2028 range"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
-      "date": "2028-03-30",
+      "date": "2027-05-10",
       "ritu_hi": "वसंत",
-      "maah_hi": "चैत्र",
+      "maah_hi": "वैशाख",
       "tithi_hi": "चतुर्थी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "User-provided Chaitra Navratri 2028 range"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
-      "date": "2028-03-31",
+      "date": "2027-05-11",
       "ritu_hi": "वसंत",
-      "maah_hi": "चैत्र",
-      "tithi_hi": "पंचमी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "User-provided Chaitra Navratri 2028 range"
-    },
-    {
-      "date": "2028-04-01",
-      "ritu_hi": "वसंत",
-      "maah_hi": "चैत्र",
+      "maah_hi": "वैशाख",
       "tithi_hi": "षष्ठी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "User-provided Chaitra Navratri 2028 range"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
-      "date": "2028-04-02",
+      "date": "2027-05-12",
       "ritu_hi": "वसंत",
-      "maah_hi": "चैत्र",
+      "maah_hi": "वैशाख",
       "tithi_hi": "सप्तमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "User-provided Chaitra Navratri 2028 range"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
-      "date": "2028-04-03",
+      "date": "2027-05-13",
       "ritu_hi": "वसंत",
-      "maah_hi": "चैत्र",
+      "maah_hi": "वैशाख",
       "tithi_hi": "अष्टमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "User-provided Chaitra Navratri 2028 range"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
-      "date": "2028-04-04",
+      "date": "2027-05-14",
       "ritu_hi": "वसंत",
-      "maah_hi": "चैत्र",
+      "maah_hi": "वैशाख",
       "tithi_hi": "नवमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "User-provided Chaitra Navratri 2028 range"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     },
     {
-      "date": "2028-09-19",
-      "ritu_hi": "शरद",
-      "maah_hi": "आश्विन",
-      "tithi_hi": "प्रतिपदा",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "User-provided Sharad Navratri 2028 range"
-    },
-    {
-      "date": "2028-09-20",
-      "ritu_hi": "शरद",
-      "maah_hi": "आश्विन",
-      "tithi_hi": "द्वितीया",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "User-provided Sharad Navratri 2028 range"
-    },
-    {
-      "date": "2028-09-21",
-      "ritu_hi": "शरद",
-      "maah_hi": "आश्विन",
-      "tithi_hi": "तृतीया",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "User-provided Sharad Navratri 2028 range"
-    },
-    {
-      "date": "2028-09-22",
-      "ritu_hi": "शरद",
-      "maah_hi": "आश्विन",
-      "tithi_hi": "चतुर्थी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "User-provided Sharad Navratri 2028 range"
-    },
-    {
-      "date": "2028-09-23",
-      "ritu_hi": "शरद",
-      "maah_hi": "आश्विन",
-      "tithi_hi": "पंचमी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "User-provided Sharad Navratri 2028 range"
-    },
-    {
-      "date": "2028-09-24",
-      "ritu_hi": "शरद",
-      "maah_hi": "आश्विन",
-      "tithi_hi": "षष्ठी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "User-provided Sharad Navratri 2028 range"
-    },
-    {
-      "date": "2028-09-25",
-      "ritu_hi": "शरद",
-      "maah_hi": "आश्विन",
-      "tithi_hi": "सप्तमी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "User-provided Sharad Navratri 2028 range"
-    },
-    {
-      "date": "2028-09-26",
-      "ritu_hi": "शरद",
-      "maah_hi": "आश्विन",
-      "tithi_hi": "अष्टमी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "User-provided Sharad Navratri 2028 range"
-    },
-    {
-      "date": "2028-09-27",
-      "ritu_hi": "शरद",
-      "maah_hi": "आश्विन",
-      "tithi_hi": "नवमी",
-      "paksha_hi": "शुक्ल पक्ष",
-      "source": "User-provided Sharad Navratri 2028 range"
-    },
-    {
-      "date": "2028-09-28",
-      "ritu_hi": "शरद",
-      "maah_hi": "आश्विन",
+      "date": "2027-05-15",
+      "ritu_hi": "वसंत",
+      "maah_hi": "वैशाख",
       "tithi_hi": "दशमी",
       "paksha_hi": "शुक्ल पक्ष",
-      "source": "User-provided Sharad Navratri 2028 range"
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-05-16",
+      "ritu_hi": "वसंत",
+      "maah_hi": "वैशाख",
+      "tithi_hi": "एकादशी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-05-17",
+      "ritu_hi": "वसंत",
+      "maah_hi": "वैशाख",
+      "tithi_hi": "द्वादशी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-05-18",
+      "ritu_hi": "वसंत",
+      "maah_hi": "वैशाख",
+      "tithi_hi": "त्रयोदशी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-05-19",
+      "ritu_hi": "वसंत",
+      "maah_hi": "वैशाख",
+      "tithi_hi": "चतुर्दशी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-05-20",
+      "ritu_hi": "वसंत",
+      "maah_hi": "वैशाख",
+      "tithi_hi": "पूर्णिमा",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-05-21",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "ज्येष्ठ",
+      "tithi_hi": "प्रतिपदा",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-05-22",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "ज्येष्ठ",
+      "tithi_hi": "द्वितीया",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-05-23",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "ज्येष्ठ",
+      "tithi_hi": "तृतीया",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-05-24",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "ज्येष्ठ",
+      "tithi_hi": "चतुर्थी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-05-25",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "ज्येष्ठ",
+      "tithi_hi": "पंचमी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-05-26",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "ज्येष्ठ",
+      "tithi_hi": "षष्ठी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-05-27",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "ज्येष्ठ",
+      "tithi_hi": "सप्तमी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-05-28",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "ज्येष्ठ",
+      "tithi_hi": "सप्तमी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-05-29",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "ज्येष्ठ",
+      "tithi_hi": "अष्टमी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-05-30",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "ज्येष्ठ",
+      "tithi_hi": "नवमी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-05-31",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "ज्येष्ठ",
+      "tithi_hi": "दशमी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-06-01",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "ज्येष्ठ",
+      "tithi_hi": "एकादशी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-06-02",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "ज्येष्ठ",
+      "tithi_hi": "द्वादशी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-06-03",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "ज्येष्ठ",
+      "tithi_hi": "त्रयोदशी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-06-04",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "ज्येष्ठ",
+      "tithi_hi": "अमावस्या",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-06-05",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "ज्येष्ठ",
+      "tithi_hi": "प्रतिपदा",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-06-06",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "ज्येष्ठ",
+      "tithi_hi": "द्वितीया",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-06-07",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "ज्येष्ठ",
+      "tithi_hi": "तृतीया",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-06-08",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "ज्येष्ठ",
+      "tithi_hi": "चतुर्थी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-06-09",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "ज्येष्ठ",
+      "tithi_hi": "पंचमी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-06-10",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "ज्येष्ठ",
+      "tithi_hi": "षष्ठी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-06-11",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "ज्येष्ठ",
+      "tithi_hi": "अष्टमी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-06-12",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "ज्येष्ठ",
+      "tithi_hi": "नवमी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-06-13",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "ज्येष्ठ",
+      "tithi_hi": "दशमी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-06-14",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "ज्येष्ठ",
+      "tithi_hi": "एकादशी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-06-15",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "ज्येष्ठ",
+      "tithi_hi": "द्वादशी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-06-16",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "ज्येष्ठ",
+      "tithi_hi": "त्रयोदशी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-06-17",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "ज्येष्ठ",
+      "tithi_hi": "चतुर्दशी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-06-18",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "ज्येष्ठ",
+      "tithi_hi": "पूर्णिमा",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-06-19",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "आषाढ़",
+      "tithi_hi": "पूर्णिमा",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-06-20",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "आषाढ़",
+      "tithi_hi": "प्रतिपदा",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-06-21",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "आषाढ़",
+      "tithi_hi": "द्वितीया",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-06-22",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "आषाढ़",
+      "tithi_hi": "तृतीया",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-06-23",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "आषाढ़",
+      "tithi_hi": "चतुर्थी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-06-24",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "आषाढ़",
+      "tithi_hi": "पंचमी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-06-25",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "आषाढ़",
+      "tithi_hi": "षष्ठी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-06-26",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "आषाढ़",
+      "tithi_hi": "सप्तमी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-06-27",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "आषाढ़",
+      "tithi_hi": "अष्टमी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-06-28",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "आषाढ़",
+      "tithi_hi": "नवमी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-06-29",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "आषाढ़",
+      "tithi_hi": "दशमी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-06-30",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "आषाढ़",
+      "tithi_hi": "एकादशी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-07-01",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "आषाढ़",
+      "tithi_hi": "द्वादशी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-07-02",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "आषाढ़",
+      "tithi_hi": "त्रयोदशी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-07-03",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "आषाढ़",
+      "tithi_hi": "चतुर्दशी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-07-04",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "आषाढ़",
+      "tithi_hi": "अमावस्या",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-07-05",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "आषाढ़",
+      "tithi_hi": "द्वितीया",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-07-06",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "आषाढ़",
+      "tithi_hi": "तृतीया",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-07-07",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "आषाढ़",
+      "tithi_hi": "चतुर्थी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-07-08",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "आषाढ़",
+      "tithi_hi": "पंचमी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-07-09",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "आषाढ़",
+      "tithi_hi": "षष्ठी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-07-10",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "आषाढ़",
+      "tithi_hi": "सप्तमी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-07-11",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "आषाढ़",
+      "tithi_hi": "अष्टमी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-07-12",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "आषाढ़",
+      "tithi_hi": "नवमी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-07-13",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "आषाढ़",
+      "tithi_hi": "दशमी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-07-14",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "आषाढ़",
+      "tithi_hi": "एकादशी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-07-15",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "आषाढ़",
+      "tithi_hi": "द्वादशी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-07-16",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "आषाढ़",
+      "tithi_hi": "त्रयोदशी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-07-17",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "आषाढ़",
+      "tithi_hi": "चतुर्दशी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-07-18",
+      "ritu_hi": "ग्रीष्म",
+      "maah_hi": "आषाढ़",
+      "tithi_hi": "पूर्णिमा",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-07-19",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "श्रावण",
+      "tithi_hi": "प्रतिपदा",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-07-20",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "श्रावण",
+      "tithi_hi": "द्वितीया",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-07-21",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "श्रावण",
+      "tithi_hi": "तृतीया",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-07-22",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "श्रावण",
+      "tithi_hi": "चतुर्थी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-07-23",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "श्रावण",
+      "tithi_hi": "चतुर्थी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-07-24",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "श्रावण",
+      "tithi_hi": "पंचमी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-07-25",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "श्रावण",
+      "tithi_hi": "षष्ठी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-07-26",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "श्रावण",
+      "tithi_hi": "सप्तमी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-07-27",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "श्रावण",
+      "tithi_hi": "अष्टमी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-07-28",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "श्रावण",
+      "tithi_hi": "नवमी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-07-29",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "श्रावण",
+      "tithi_hi": "दशमी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-07-30",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "श्रावण",
+      "tithi_hi": "द्वादशी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-07-31",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "श्रावण",
+      "tithi_hi": "त्रयोदशी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-08-01",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "श्रावण",
+      "tithi_hi": "चतुर्दशी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-08-02",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "श्रावण",
+      "tithi_hi": "अमावस्या",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-08-03",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "श्रावण",
+      "tithi_hi": "प्रतिपदा",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-08-04",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "श्रावण",
+      "tithi_hi": "द्वितीया",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-08-05",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "श्रावण",
+      "tithi_hi": "चतुर्थी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-08-06",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "श्रावण",
+      "tithi_hi": "पंचमी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-08-07",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "श्रावण",
+      "tithi_hi": "षष्ठी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-08-08",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "श्रावण",
+      "tithi_hi": "सप्तमी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-08-09",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "श्रावण",
+      "tithi_hi": "अष्टमी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-08-10",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "श्रावण",
+      "tithi_hi": "नवमी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-08-11",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "श्रावण",
+      "tithi_hi": "दशमी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-08-12",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "श्रावण",
+      "tithi_hi": "एकादशी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-08-13",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "श्रावण",
+      "tithi_hi": "द्वादशी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-08-14",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "श्रावण",
+      "tithi_hi": "त्रयोदशी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-08-15",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "श्रावण",
+      "tithi_hi": "त्रयोदशी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-08-16",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "श्रावण",
+      "tithi_hi": "चतुर्दशी",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-08-17",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "श्रावण",
+      "tithi_hi": "पूर्णिमा",
+      "paksha_hi": "शुक्ल पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-08-18",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "भाद्रपद",
+      "tithi_hi": "प्रतिपदा",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-08-19",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "भाद्रपद",
+      "tithi_hi": "द्वितीया",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-08-20",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "भाद्रपद",
+      "tithi_hi": "तृतीया",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-08-21",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "भाद्रपद",
+      "tithi_hi": "चतुर्थी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-08-22",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "भाद्रपद",
+      "tithi_hi": "पंचमी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-08-23",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "भाद्रपद",
+      "tithi_hi": "षष्ठी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-08-24",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "भाद्रपद",
+      "tithi_hi": "सप्तमी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-08-25",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "भाद्रपद",
+      "tithi_hi": "अष्टमी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-08-26",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "भाद्रपद",
+      "tithi_hi": "नवमी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-08-27",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "भाद्रपद",
+      "tithi_hi": "दशमी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-08-28",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "भाद्रपद",
+      "tithi_hi": "एकादशी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-08-29",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "भाद्रपद",
+      "tithi_hi": "द्वादशी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-08-30",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "भाद्रपद",
+      "tithi_hi": "त्रयोदशी",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
+    },
+    {
+      "date": "2027-08-31",
+      "ritu_hi": "वर्षा",
+      "maah_hi": "भाद्रपद",
+      "tithi_hi": "अमावस्या",
+      "paksha_hi": "कृष्ण पक्ष",
+      "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
     }
   ]
 }

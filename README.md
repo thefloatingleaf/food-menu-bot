@@ -195,6 +195,8 @@ python3 generate_menu.py --bootstrap-weather-tags
 - `*माह:* <value>`
 - `*तिथि (पंचांग):* <value>`
 - `*पर्व/त्योहार:* <festival names>` (only when present on that date)
+- `*विशेष पारिवारिक अवसर:* <occasion>` and `*विशेष भोजन सुझाव:* <meal including सूजी का हलवा>` (only on configured personal dates)
+- `*विशेष भोजन स्थगन:* ...` (when a personal celebration falls on Ekadashi and its grain-based meal moves to the configured next date)
 - `*नियमित मेनू:* आज पर्व/विशेष पालन के कारण नियमित नाश्ता और भोजन मेनू नहीं दिया जाएगा।` (only on festival no-menu dates)
 - `*विशेष अष्टमी मेनू:* ...` plus its numbered preparation lines (only when a festival row or recurring rule supplies `special_menu_lines_hi`)
 - `*विशेष पारंपरिक सेवन/भोग:* <festival special note>` (only on festival no-menu dates)
@@ -225,6 +227,7 @@ python3 generate_menu.py --bootstrap-weather-tags
 - `ekadashi_2026_27.json`
 - `panchang_2026_27.json`
 - `festivals_2026_27.json`
+- `personal_occasions_2026_27.json`
 - `menu_weather_tags.json`
 - `manual_weather_override.json`
 - `fruit_months.json`
@@ -258,6 +261,12 @@ Notes:
 
 ## Festivals data format (Hindu + Sikh)
 
+The active calendar from `01-Sep-2026` through `31-Aug-2027` uses Ludhiana, Punjab
+(`geoname-id 1264728`, `Asia/Kolkata`) as its location basis. Daily tithi/paksha
+comes from the local-sunrise monthly Panchang grids. Smarta Ekadashi dates and
+festival dates come from the corresponding Ludhiana yearly calendars. Source URLs
+and the exact coverage range are stored in each calendar file's `meta` object.
+
 ```json
 {
   "entries": [
@@ -290,6 +299,14 @@ These ranges still suppress the regular menu even if a festival row is missing o
 If a festival row includes `special_menu_lines_hi`, those lines replace the generic `*नियमित मेनू:*` / `*विशेष पारंपरिक सेवन/भोग:*` block for that date.
 
 The generator also applies a recurring override for any festival day that is both `नवरात्रि` and पंचांग `अष्टमी`: it outputs the fixed Ashtami menu (काले चने, छोले, तरी वाले आलू, पूरी, कद्दू, and सूजी हलवा instructions) and suppresses all regular seasonal menu selection for that day.
+
+## Personal occasion meals
+
+`personal_occasions_2026_27.json` contains the deduplicated family dates and a
+date-specific seasonal meal suggestion. Every configured celebration includes
+`सूजी का हलवा`, normally sweetened with `खांड`. Ekadashi remains the stricter rule:
+the `17-Apr-2027` Kamada Ekadashi entry suppresses the grain-based halwa and defers
+the combined special meal to `18-Apr-2027`.
 
 ## Weather flow (free)
 
