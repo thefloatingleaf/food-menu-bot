@@ -94,6 +94,63 @@ class LudhianaCalendarDataTests(unittest.TestCase):
         self.assertNotIn("गुड़", info.special_meal_hi.split(";")[0])
 
 
+class AnnualMenuBalanceTests(unittest.TestCase):
+    def test_namak_ajwain_roti_variants_share_one_annual_key(self) -> None:
+        self.assertEqual(
+            generate_menu.canonical_annual_dish_key("नमक अजवाइन की रोटी"),
+            generate_menu.canonical_annual_dish_key("नमक अजवाइन रोटी"),
+        )
+
+    def test_annual_count_counts_a_dish_once_per_day_across_meal_slots(self) -> None:
+        history = [
+            {
+                "date": "2026-08-30",
+                "breakfast": "नमक अजवाइन की रोटी",
+                "meal": "नमक अजवाइन रोटी",
+            }
+        ]
+
+        counts = generate_menu.get_rolling_annual_dish_counts(history, date(2026, 9, 1))
+
+        self.assertEqual(counts["नमक अजवाइन रोटी"], 1)
+
+    def test_annual_limit_blocks_tenth_repeat_but_never_blocks_pazhaya_sadam(self) -> None:
+        counts = {
+            "नमक अजवाइन रोटी": generate_menu.ANNUAL_DISH_REPEAT_LIMIT,
+            "पझैया सादम": 99,
+        }
+        items = ["नमक अजवाइन की रोटी", "पझैया सादम", "मूंग दाल की हल्की खिचड़ी"]
+
+        filtered = generate_menu.apply_annual_dish_limit(items, counts)
+
+        self.assertNotIn("नमक अजवाइन की रोटी", filtered)
+        self.assertIn("पझैया सादम", filtered)
+        self.assertIn("मूंग दाल की हल्की खिचड़ी", filtered)
+
+    def test_grain_extraction_does_not_confuse_sambhar_with_samak(self) -> None:
+        self.assertEqual(generate_menu.extract_annual_grain_families("सांभर और सब्ज़ी"), set())
+        self.assertEqual(
+            generate_menu.extract_annual_grain_families("सामक चावल, मूँग दाल और सांभर"),
+            {"झंगोरा", "चावल"},
+        )
+
+    def test_grain_balance_keeps_unclassified_and_least_used_grain_options(self) -> None:
+        items = [
+            "ज्वार की रोटी और तोरई",
+            "कुटकी और मूँग दाल की खिचड़ी",
+            "मूँग दाल का चीला",
+            "पझैया सादम",
+        ]
+        counts = {"ज्वार": 20, "कुटकी": 2, "चावल": 30}
+
+        filtered = generate_menu.apply_annual_grain_balance(items, counts)
+
+        self.assertEqual(
+            filtered,
+            ["कुटकी और मूँग दाल की खिचड़ी", "मूँग दाल का चीला", "पझैया सादम"],
+        )
+
+
 class ConsecutiveDayRepeatRuleTests(unittest.TestCase):
     def test_meal_repeat_families_handle_variant_forms(self) -> None:
         item = "जो की रोटी और करेला–भिंडी मिश्रित सब्ज़ी"

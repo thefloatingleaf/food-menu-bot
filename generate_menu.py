@@ -917,6 +917,8 @@ VARIETY_CYCLE_RESET_NOTE = (
     "[विविधता चक्र] इस ऋतु और श्रेणी के सभी उपयुक्त विकल्प पहले ही उपयोग हो चुके थे, इसलिए चक्र रीसेट किया गया"
 )
 MIN_VARIETY_HISTORY_DAYS = 400
+ANNUAL_DISH_REPEAT_LIMIT = 10
+ANNUAL_DISH_REPEAT_WINDOW_DAYS = 365
 REPEAT_FAMILY_BOUNDARY_CLASS = r"\u0900-\u097Fa-zA-Z"
 
 
@@ -2989,6 +2991,131 @@ def can_apply_overnight_breakfast_on_run_date(target_date: date, generation_date
 
 def is_pazhaya_sadam_item(item: str) -> bool:
     return WEEKLY_PAZHAYA_SADAM_SHORT_LABEL in format_overnight_breakfast_label(item)
+
+
+def canonical_annual_dish_key(item: str) -> str:
+    normalized = normalize_repeat_family_text(normalize_item_key(item))
+    if is_pazhaya_sadam_item(item):
+        return "पझैया सादम"
+    if "नमक" in normalized and "अजवाइन" in normalized and "रोटी" in normalized:
+        return "नमक अजवाइन रोटी"
+    if normalized in {"पोहा", "पोहे"}:
+        return "पोहा"
+    return normalized
+
+
+def get_rolling_annual_dish_counts(
+    history: list[dict[str, Any]],
+    target_date: date,
+    window_days: int = ANNUAL_DISH_REPEAT_WINDOW_DAYS,
+) -> dict[str, int]:
+    earliest = target_date - timedelta(days=window_days)
+    counts: dict[str, int] = {}
+    for row in history:
+        try:
+            row_date = datetime.strptime(row["date"], "%Y-%m-%d").date()
+        except (ValueError, KeyError):
+            continue
+        if not (earliest <= row_date < target_date):
+            continue
+
+        keys_for_day: set[str] = set()
+        breakfast = row.get("breakfast")
+        if isinstance(breakfast, str) and breakfast.strip():
+            keys_for_day.add(canonical_annual_dish_key(breakfast))
+        for meal in get_history_values_for_field(row, "meal"):
+            keys_for_day.add(canonical_annual_dish_key(meal))
+        for key in keys_for_day:
+            counts[key] = counts.get(key, 0) + 1
+    return counts
+
+
+def is_blocked_by_annual_dish_limit(item: str, annual_dish_counts: dict[str, int]) -> bool:
+    if is_pazhaya_sadam_item(item):
+        return False
+    return annual_dish_counts.get(canonical_annual_dish_key(item), 0) >= ANNUAL_DISH_REPEAT_LIMIT
+
+
+def apply_annual_dish_limit(items: list[str], annual_dish_counts: dict[str, int]) -> list[str]:
+    return [item for item in items if not is_blocked_by_annual_dish_limit(item, annual_dish_counts)]
+
+
+def extract_annual_grain_families(item: str) -> set[str]:
+    text = normalize_repeat_family_text(item)
+    families: set[str] = set()
+    token_groups = {
+        "ज्वार": ("ज्वार", "sorghum"),
+        "बाजरा": ("बाजर", "pearl millet"),
+        "रागी": ("रागी", "मंडुआ", "finger millet"),
+        "कंगनी": ("कंगनी", "foxtail millet"),
+        "कुटकी": ("कुटकी", "little millet"),
+        "कोदो": ("कोदो",),
+        "झंगोरा": ("झंगोरा", "सामक", "सांवा", "साँवा", "barnyard millet"),
+        "चीना": ("चीना", "proso millet"),
+        "ब्राउनटॉप": ("ब्राउनटॉप", "browntop"),
+        "राजगिरा": ("राजगिरा", "amaranth grain", "amaranth seed"),
+        "कुट्टू": ("कुट्टू", "buckwheat"),
+        "जौ": ("जौ", "barley"),
+        "मक्का": ("मक्क", "कॉर्न", "corn"),
+    }
+    for family, tokens in token_groups.items():
+        if any(token in text for token in tokens):
+            families.add(family)
+
+    if any(token in text for token in ("चावल", "भात", "rice", "पोहा", "पोहे")):
+        families.add("चावल")
+    if not families and any(token in text for token in ("इडली", "डोसा", "दोसा", "उत्तपम")):
+        families.add("चावल")
+    if any(token in text for token in ("गेहूँ", "गेहूं", "गेहू", "wheat", "सूजी", "उपमा", "उप्पिट्टु", "दलिया")):
+        families.add("गेहूँ")
+    if "रोटी" in text and not families:
+        families.add("गेहूँ")
+    return families
+
+
+def get_rolling_annual_grain_counts(
+    history: list[dict[str, Any]],
+    target_date: date,
+    window_days: int = ANNUAL_DISH_REPEAT_WINDOW_DAYS,
+) -> dict[str, int]:
+    earliest = target_date - timedelta(days=window_days)
+    counts: dict[str, int] = {}
+    for row in history:
+        try:
+            row_date = datetime.strptime(row["date"], "%Y-%m-%d").date()
+        except (ValueError, KeyError):
+            continue
+        if not (earliest <= row_date < target_date):
+            continue
+
+        families_for_day: set[str] = set()
+        breakfast = row.get("breakfast")
+        if isinstance(breakfast, str) and breakfast.strip():
+            families_for_day.update(extract_annual_grain_families(breakfast))
+        for meal in get_history_values_for_field(row, "meal"):
+            families_for_day.update(extract_annual_grain_families(meal))
+        for family in families_for_day:
+            counts[family] = counts.get(family, 0) + 1
+    return counts
+
+
+def apply_annual_grain_balance(items: list[str], annual_grain_counts: dict[str, int]) -> list[str]:
+    item_families = {item: extract_annual_grain_families(item) for item in items}
+    represented = set().union(*(families for families in item_families.values())) if item_families else set()
+    if len(represented) <= 1:
+        return items[:]
+
+    minimum_count = min(annual_grain_counts.get(family, 0) for family in represented)
+    least_used = {
+        family for family in represented if annual_grain_counts.get(family, 0) == minimum_count
+    }
+    return [
+        item
+        for item in items
+        if is_pazhaya_sadam_item(item)
+        or not item_families[item]
+        or bool(item_families[item] & least_used)
+    ]
 
 
 def is_fermented_rice_breakfast_item(item: str) -> bool:
@@ -5211,6 +5338,21 @@ def main() -> int:
     meal_items, _ = apply_weekly_main_meal_rice_limit(meal_items, history, target_date)
     meal_choice_items, _ = apply_weekly_main_meal_rice_limit(meal_choice_items, history, target_date)
 
+    annual_dish_counts = get_rolling_annual_dish_counts(history, target_date)
+    annual_grain_counts = get_rolling_annual_grain_counts(history, target_date)
+
+    breakfast_items = apply_annual_dish_limit(breakfast_items, annual_dish_counts)
+    meal_items = apply_annual_dish_limit(meal_items, annual_dish_counts)
+    meal_choice_items = apply_annual_dish_limit(meal_choice_items, annual_dish_counts)
+    light_fallback_items = apply_annual_dish_limit(light_fallback_items, annual_dish_counts)
+
+    breakfast_items = apply_annual_grain_balance(breakfast_items, annual_grain_counts)
+    meal_choice_items = apply_annual_grain_balance(meal_choice_items, annual_grain_counts)
+    light_fallback_items = apply_annual_grain_balance(light_fallback_items, annual_grain_counts)
+
+    if not breakfast_items or not meal_choice_items:
+        raise RuntimeError("Annual dish limit exhausted all eligible menu choices")
+
     warning_items: set[str] = set()
     meal_item_weight_getter = lambda item: get_ritu_roti_grain_preference_weight(item, ritu_key)
 
@@ -6000,8 +6142,9 @@ def main() -> int:
                 and is_heavy_item(selected_breakfast, weather_tags, heavy_light_classification)
                 and is_heavy_item(selected_meal, weather_tags, heavy_light_classification)
             ):
+                forced_light_items = light_fallback_items or breakfast_choice_items
                 forced_light = choose_item(
-                    items=light_fallback_items,
+                    items=forced_light_items,
                     ekadashi=ekadashi,
                     cycle_block_set=breakfast_cycle_block_set,
                     recent_block_set=set(),
@@ -6017,7 +6160,7 @@ def main() -> int:
                     warn_bucket=warning_items,
                     constraint_notes=missing_data_notes,
                     prefer_lighter=True,
-                    light_fallback_items=light_fallback_items,
+                    light_fallback_items=forced_light_items,
                     max_lightness_score=0,
                     heavy_light_classification=heavy_light_classification,
                 )
