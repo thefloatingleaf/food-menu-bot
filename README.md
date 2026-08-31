@@ -316,6 +316,7 @@ The generator also applies a recurring override for any festival day that is bot
    - `चने और जौ (Barley) की रोटी (मिस्सी रोटी)`
 4. In eligible `वसंत` roti meals, grain preference is weighted so `जौ` is suggested most, then `ज्वार`, then `रागी` and `मिस्सी रोटी`, while `गेहूँ` is the least recommended option.
 5. In eligible `ग्रीष्म` roti meals, grain preference is weighted so `ज्वार` is suggested most, then `जौ`, then `झंगोरा`, while `पुराना गेहूँ` remains the least recommended option.
+   - `कुटकी` and `कोदो` are each available as a separate, softly cooked मूँग-दाल खिचड़ी meal. They rotate as individual principal grains and are not combined into a broad multigrain mix.
 6. For `30-Apr-2026` through `05-May-2026`, if a वसंत meal uses `रोटी`, the grain is restricted temporarily to `रागी (Finger Millet) (केवल पुराना)` only.
 7. From `09-May-2026` through `14-May-2026`, `चने के सत्तू की रोटी` is excluded.
 8. From `10-May-2026` through `20-Jun-2026`, if a selected breakfast or भोजन contains `रोटी`, it is restricted to the date-specific atta schedule in `generate_menu.py`. On `19-Jun-2026` the rule prefers `जौ` and falls back to `ज्वार` only if no `जौ` roti option is available; on `20-Jun-2026` it prefers `ज्वार` and falls back to `रागी` on the same basis. The rendered output also adds `*आज का आटा:* ...` whenever such a scheduled-date menu includes roti.

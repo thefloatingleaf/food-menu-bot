@@ -129,6 +129,19 @@ class VarietyCycleRuleTests(unittest.TestCase):
         self.assertEqual(len(matches), 1)
         self.assertIn("https://www.youtube.com/watch?v=nVPcf8hjks4", matches[0])
 
+    def test_grishm_menu_adds_kutki_and_kodo_as_separate_soft_meals(self) -> None:
+        meal_items = generate_menu.validate_menu_list(
+            generate_menu.load_json(generate_menu.MENU_GRISHM_FILE),
+            "menu_grishm.json",
+        )
+        kutki_items = [item for item in meal_items if "कुटकी" in item]
+        kodo_items = [item for item in meal_items if "कोदो" in item]
+
+        self.assertEqual(kutki_items, ["कुटकी और धुली मूँग दाल की नरम खिचड़ी, तोरई की सब्ज़ी"])
+        self.assertEqual(kodo_items, ["कोदो और धुली मूँग दाल की नरम खिचड़ी, लौकी की सब्ज़ी"])
+        self.assertNotIn("कुटकी", kodo_items[0])
+        self.assertNotIn("कोदो", kutki_items[0])
+
     def test_normalize_history_preserves_fruit(self) -> None:
         normalized = generate_menu.normalize_history(
             [
