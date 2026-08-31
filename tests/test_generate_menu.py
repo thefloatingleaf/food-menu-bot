@@ -275,6 +275,35 @@ class VarietyCycleRuleTests(unittest.TestCase):
                 ]
             )
 
+    def test_guest_menu_prefers_seasonal_entries_but_keeps_guest_exceptions(self) -> None:
+        guest_menu = generate_menu.load_json(generate_menu.GUEST_MENU_FILE)
+        config = generate_menu.load_json(generate_menu.CONFIG_FILE)
+
+        ranked = generate_menu.prioritize_guest_menu_entries(
+            guest_menu,
+            {"dosa", "corn_vegetable"},
+            config["guest_menu_policy"],
+        )
+
+        self.assertEqual(
+            [entry["id"] for entry in ranked],
+            ["dosa", "corn_vegetable", "daal_baati", "kathal_biryani"],
+        )
+
+    def test_guest_menu_can_enforce_season_only_when_exceptions_are_disabled(self) -> None:
+        guest_menu = generate_menu.load_json(generate_menu.GUEST_MENU_FILE)
+
+        ranked = generate_menu.prioritize_guest_menu_entries(
+            guest_menu,
+            {"dosa"},
+            {
+                "prefer_season_compatible": True,
+                "allow_seasonal_exceptions": False,
+            },
+        )
+
+        self.assertEqual([entry["id"] for entry in ranked], ["dosa"])
+
     def test_grishm_jhangora_upma_includes_recipe_link(self) -> None:
         breakfast_items = generate_menu.validate_menu_list(
             generate_menu.load_json(generate_menu.BREAKFAST_GRISHM_FILE),

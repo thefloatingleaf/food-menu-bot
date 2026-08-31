@@ -4597,6 +4597,31 @@ def validate_guest_menu_entries(menu: Any, file_label: str = "guest_menu.json") 
     return entries
 
 
+def prioritize_guest_menu_entries(
+    menu: Any,
+    season_compatible_ids: set[str],
+    policy: Any,
+) -> list[dict[str, Any]]:
+    entries = validate_guest_menu_entries(menu)
+    if not isinstance(policy, dict):
+        raise ValueError("guest_menu_policy must be an object")
+
+    prefer_season_compatible = policy.get("prefer_season_compatible", True)
+    allow_seasonal_exceptions = policy.get("allow_seasonal_exceptions", True)
+    if not isinstance(prefer_season_compatible, bool):
+        raise ValueError("guest_menu_policy.prefer_season_compatible must be boolean")
+    if not isinstance(allow_seasonal_exceptions, bool):
+        raise ValueError("guest_menu_policy.allow_seasonal_exceptions must be boolean")
+
+    compatible = [entry for entry in entries if entry["id"] in season_compatible_ids]
+    exceptions = [entry for entry in entries if entry["id"] not in season_compatible_ids]
+    if not allow_seasonal_exceptions:
+        return compatible
+    if prefer_season_compatible:
+        return compatible + exceptions
+    return entries
+
+
 def dedupe_preserve_order(items: list[str]) -> list[str]:
     seen: set[str] = set()
     out: list[str] = []

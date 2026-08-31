@@ -233,7 +233,7 @@ python3 generate_menu.py --bootstrap-weather-tags
 - `fruit_months.json`
 - `guest_menu.json` (dormant Guest Menu entries: dish, home-follower responsibilities, and specific instructions)
 - `lunar_calendar_2026_2027.json` (reference calendar: lunar months, sankranti, amavasya, purnima, ekadashi, partial daily tables)
-- `config.json`
+- `config.json` (includes `guest_menu_policy` for season-first ordering and guest-specific seasonal exceptions)
 
 ## Date-specific menu overrides
 
@@ -461,8 +461,10 @@ The Jyesth travel restriction is retained as an internal hardwired policy rule. 
 
 1. Guest Menu is a dormant data list in `guest_menu.json`; it is not rendered in the daily menu until explicitly activated.
 2. Each entry stores a stable `id`, Hindi dish name, optional English dish name, Hindi responsibility lines, and optional Hindi specific instructions.
-3. Current entries include `दाल बाटी` and `कटहल बिरयानी`.
-4. For `कटहल बिरयानी`, सोबरन is recorded as the cook, and Ruby's praise is preserved as a guest-menu note.
+3. When invoked, season-compatible dishes are listed first. Other guest dishes remain available as explicit seasonal exceptions because guest experience may take priority.
+4. Current entries are `दाल बाटी`, `कटहल बिरयानी`, `डोसा`, and `कॉर्न की सब्ज़ी`.
+5. For `कटहल बिरयानी`, सोबरन is recorded as the cook, and Ruby's praise is preserved as a guest-menu note.
+6. `prioritize_guest_menu_entries(...)` applies the policy without inventing seasonal classifications: the caller supplies the IDs judged compatible with the active season.
 
 ## Consecutive-day repeat rule
 
