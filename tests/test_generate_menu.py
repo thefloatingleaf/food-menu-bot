@@ -233,6 +233,8 @@ class VarietyCycleRuleTests(unittest.TestCase):
         )
         daal_baati = next(entry for entry in guest_menu if entry["id"] == "daal_baati")
         kathal_biryani = next(entry for entry in guest_menu if entry["id"] == "kathal_biryani")
+        dosa = next(entry for entry in guest_menu if entry["id"] == "dosa")
+        corn_vegetable = next(entry for entry in guest_menu if entry["id"] == "corn_vegetable")
 
         self.assertEqual(daal_baati["dish_hi"], "दाल बाटी")
         self.assertIn("अनिल जी बाटी और सत्तू मसाला अच्छा बनाते हैं।", daal_baati["responsibilities_hi"])
@@ -244,6 +246,15 @@ class VarietyCycleRuleTests(unittest.TestCase):
             "रूबी के अनुसार, उन्होंने इतनी अच्छी बिरयानी कभी नहीं खाई, चाहे वेज हो या नॉन-वेज।",
             kathal_biryani["specific_instructions_hi"],
         )
+        self.assertEqual(dosa["dish_hi"], "डोसा")
+        self.assertIn("अनिल जी डोसा बहुत अच्छा बनाते हैं।", dosa["responsibilities_hi"])
+        self.assertIn("अतिथियों को परोसा जा सकता है।", dosa["specific_instructions_hi"])
+        self.assertEqual(corn_vegetable["dish_hi"], "कॉर्न की सब्ज़ी")
+        self.assertIn(
+            "जय शंकर जी कॉर्न की सब्ज़ी बहुत अच्छी बनाते हैं।",
+            corn_vegetable["responsibilities_hi"],
+        )
+        self.assertIn("अतिथियों को परोसा जा सकता है।", corn_vegetable["specific_instructions_hi"])
 
     def test_validate_guest_menu_entries_rejects_duplicate_ids(self) -> None:
         with self.assertRaisesRegex(ValueError, "duplicate id"):

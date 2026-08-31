@@ -20,5 +20,27 @@
     "specific_instructions_hi": [
       "रूबी के अनुसार, उन्होंने इतनी अच्छी बिरयानी कभी नहीं खाई, चाहे वेज हो या नॉन-वेज।"
     ]
+  },
+  {
+    "id": "dosa",
+    "dish_hi": "डोसा",
+    "dish_en": "Dosa",
+    "responsibilities_hi": [
+      "अनिल जी डोसा बहुत अच्छा बनाते हैं।"
+    ],
+    "specific_instructions_hi": [
+      "अतिथियों को परोसा जा सकता है।"
+    ]
+  },
+  {
+    "id": "corn_vegetable",
+    "dish_hi": "कॉर्न की सब्ज़ी",
+    "dish_en": "Corn Vegetable",
+    "responsibilities_hi": [
+      "जय शंकर जी कॉर्न की सब्ज़ी बहुत अच्छी बनाते हैं।"
+    ],
+    "specific_instructions_hi": [
+      "अतिथियों को परोसा जा सकता है।"
+    ]
   }
 ]
