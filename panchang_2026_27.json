@@ -9,7 +9,8 @@
     "coverage_start": "2026-09-01",
     "coverage_end": "2027-08-31",
     "calendar_basis": "Purnimanta lunar month; tithi and paksha at local sunrise",
-    "generated_by": "Codex structured import from Drik Panchang monthly grids"
+    "generated_by": "Codex structured import from Drik Panchang monthly grids",
+    "month_assignment": "Purnimanta month advances on the first Krishna-paksha sunrise after Shukla paksha"
   },
   "entries": [
     {
@@ -927,7 +928,7 @@
     {
       "date": "2026-12-24",
       "ritu_hi": "हेमंत",
-      "maah_hi": "मार्गशीर्ष",
+      "maah_hi": "पौष",
       "tithi_hi": "प्रतिपदा",
       "paksha_hi": "कृष्ण पक्ष",
       "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
@@ -935,7 +936,7 @@
     {
       "date": "2026-12-25",
       "ritu_hi": "हेमंत",
-      "maah_hi": "मार्गशीर्ष",
+      "maah_hi": "पौष",
       "tithi_hi": "द्वितीया",
       "paksha_hi": "कृष्ण पक्ष",
       "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
@@ -943,7 +944,7 @@
     {
       "date": "2026-12-26",
       "ritu_hi": "हेमंत",
-      "maah_hi": "मार्गशीर्ष",
+      "maah_hi": "पौष",
       "tithi_hi": "तृतीया",
       "paksha_hi": "कृष्ण पक्ष",
       "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
@@ -951,7 +952,7 @@
     {
       "date": "2026-12-27",
       "ritu_hi": "हेमंत",
-      "maah_hi": "मार्गशीर्ष",
+      "maah_hi": "पौष",
       "tithi_hi": "चतुर्थी",
       "paksha_hi": "कृष्ण पक्ष",
       "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
@@ -959,7 +960,7 @@
     {
       "date": "2026-12-28",
       "ritu_hi": "हेमंत",
-      "maah_hi": "मार्गशीर्ष",
+      "maah_hi": "पौष",
       "tithi_hi": "पंचमी",
       "paksha_hi": "कृष्ण पक्ष",
       "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
@@ -967,7 +968,7 @@
     {
       "date": "2026-12-29",
       "ritu_hi": "हेमंत",
-      "maah_hi": "मार्गशीर्ष",
+      "maah_hi": "पौष",
       "tithi_hi": "षष्ठी",
       "paksha_hi": "कृष्ण पक्ष",
       "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
@@ -975,7 +976,7 @@
     {
       "date": "2026-12-30",
       "ritu_hi": "हेमंत",
-      "maah_hi": "मार्गशीर्ष",
+      "maah_hi": "पौष",
       "tithi_hi": "सप्तमी",
       "paksha_hi": "कृष्ण पक्ष",
       "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
@@ -983,7 +984,7 @@
     {
       "date": "2026-12-31",
       "ritu_hi": "हेमंत",
-      "maah_hi": "मार्गशीर्ष",
+      "maah_hi": "पौष",
       "tithi_hi": "अष्टमी",
       "paksha_hi": "कृष्ण पक्ष",
       "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
@@ -1399,7 +1400,7 @@
     {
       "date": "2027-02-21",
       "ritu_hi": "शिशिर",
-      "maah_hi": "माघ",
+      "maah_hi": "फाल्गुन",
       "tithi_hi": "प्रतिपदा",
       "paksha_hi": "कृष्ण पक्ष",
       "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
@@ -1407,7 +1408,7 @@
     {
       "date": "2027-02-22",
       "ritu_hi": "शिशिर",
-      "maah_hi": "माघ",
+      "maah_hi": "फाल्गुन",
       "tithi_hi": "द्वितीया",
       "paksha_hi": "कृष्ण पक्ष",
       "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
@@ -1415,7 +1416,7 @@
     {
       "date": "2027-02-23",
       "ritu_hi": "शिशिर",
-      "maah_hi": "माघ",
+      "maah_hi": "फाल्गुन",
       "tithi_hi": "तृतीया",
       "paksha_hi": "कृष्ण पक्ष",
       "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
@@ -1423,7 +1424,7 @@
     {
       "date": "2027-02-24",
       "ritu_hi": "शिशिर",
-      "maah_hi": "माघ",
+      "maah_hi": "फाल्गुन",
       "tithi_hi": "चतुर्थी",
       "paksha_hi": "कृष्ण पक्ष",
       "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
@@ -1431,7 +1432,7 @@
     {
       "date": "2027-02-25",
       "ritu_hi": "शिशिर",
-      "maah_hi": "माघ",
+      "maah_hi": "फाल्गुन",
       "tithi_hi": "पंचमी",
       "paksha_hi": "कृष्ण पक्ष",
       "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
@@ -1439,7 +1440,7 @@
     {
       "date": "2027-02-26",
       "ritu_hi": "शिशिर",
-      "maah_hi": "माघ",
+      "maah_hi": "फाल्गुन",
       "tithi_hi": "षष्ठी",
       "paksha_hi": "कृष्ण पक्ष",
       "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
@@ -1447,7 +1448,7 @@
     {
       "date": "2027-02-27",
       "ritu_hi": "शिशिर",
-      "maah_hi": "माघ",
+      "maah_hi": "फाल्गुन",
       "tithi_hi": "सप्तमी",
       "paksha_hi": "कृष्ण पक्ष",
       "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
@@ -1455,7 +1456,7 @@
     {
       "date": "2027-02-28",
       "ritu_hi": "शिशिर",
-      "maah_hi": "माघ",
+      "maah_hi": "फाल्गुन",
       "tithi_hi": "अष्टमी",
       "paksha_hi": "कृष्ण पक्ष",
       "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"
@@ -2343,7 +2344,7 @@
     {
       "date": "2027-06-19",
       "ritu_hi": "ग्रीष्म",
-      "maah_hi": "आषाढ़",
+      "maah_hi": "ज्येष्ठ",
       "tithi_hi": "पूर्णिमा",
       "paksha_hi": "शुक्ल पक्ष",
       "source": "Drik Panchang monthly grid (Ludhiana, geoname-id 1264728)"

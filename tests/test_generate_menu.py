@@ -22,6 +22,20 @@ class LudhianaCalendarDataTests(unittest.TestCase):
         self.assertEqual(dates[-1], date(2027, 8, 31))
         self.assertTrue(all(later - earlier == timedelta(days=1) for earlier, later in zip(dates, dates[1:])))
 
+    def test_purnimanta_month_advances_at_shukla_to_krishna_transition(self) -> None:
+        entries = generate_menu.load_json(generate_menu.PANCHANG_FILE)["entries"]
+
+        for earlier, later in zip(entries, entries[1:]):
+            paksha_changed_to_krishna = (
+                earlier["paksha_hi"] == "शुक्ल पक्ष" and later["paksha_hi"] == "कृष्ण पक्ष"
+            )
+            month_changed = earlier["maah_hi"] != later["maah_hi"]
+            self.assertEqual(
+                month_changed,
+                paksha_changed_to_krishna,
+                f"Unexpected Purnimanta month boundary on {later['date']}",
+            )
+
     def test_aja_ekadashi_anchor_and_one_year_list(self) -> None:
         data = generate_menu.load_json(generate_menu.EKADASHI_FILE)
         entries = data["ekadashi_list"]
