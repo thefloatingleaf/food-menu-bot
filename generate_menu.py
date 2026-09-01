@@ -2629,7 +2629,12 @@ def format_meal_display(item: str) -> str:
 def build_meal_recipe_lines(item: str) -> list[str]:
     if item == MORU_KALI_UPMA_ITEM:
         return MORU_KALI_UPMA_RECIPE_LINES[:]
-    for recipe in load_south_indian_recipe_entries():
+    recipes_by_specificity = sorted(
+        load_south_indian_recipe_entries(),
+        key=lambda recipe: max(len(term) for term in recipe["match_terms_hi"]),
+        reverse=True,
+    )
+    for recipe in recipes_by_specificity:
         if any(term in item for term in recipe["match_terms_hi"]):
             dish_hi = recipe["dish_hi"]
             lines = [

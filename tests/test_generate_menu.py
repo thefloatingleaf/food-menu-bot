@@ -973,6 +973,32 @@ class VarietyCycleRuleTests(unittest.TestCase):
         self.assertEqual(len(recipes), 24)
         self.assertEqual(len({recipe["id"] for recipe in recipes}), 24)
 
+    def test_every_structured_recipe_youtube_link_is_rendered_in_message_lines(self) -> None:
+        recipes = generate_menu.validate_south_indian_recipe_entries(
+            generate_menu.load_json(generate_menu.SOUTH_INDIAN_RECIPES_FILE)
+        )
+
+        for recipe in recipes:
+            with self.subTest(recipe=recipe["id"]):
+                message_lines = [f"*आज का भोजन:* {recipe['dish_hi']}"]
+                generate_menu.append_meal_recipe_lines(message_lines, recipe["match_terms_hi"][0])
+                self.assertIn(recipe["youtube_url"], "\n".join(message_lines))
+
+        moru_message_lines = [f"*आज का भोजन:* {generate_menu.MORU_KALI_UPMA_ITEM}"]
+        generate_menu.append_meal_recipe_lines(moru_message_lines, generate_menu.MORU_KALI_UPMA_ITEM)
+        self.assertIn("https://www.youtube.com/watch?v=xWue2xhKIuY", "\n".join(moru_message_lines))
+
+    def test_all_inline_recipe_links_remain_in_selected_item_message(self) -> None:
+        linked_breakfast = next(
+            item
+            for item in generate_menu.load_json(generate_menu.BREAKFAST_SHISHIR_FILE)
+            if "पकौड़े बनाने की विधि" in item
+        )
+        message = f"*सुबह का नाश्ता:* {linked_breakfast}"
+
+        self.assertIn("https://www.youtube.com/watch?v=nZzSfUi_isg", message)
+        self.assertIn("https://www.youtube.com/watch?v=-xsL-HVbBOY&feature=shared", message)
+
     def test_varsha_completely_excludes_majjida_kadhi_rice(self) -> None:
         meal_items = generate_menu.validate_menu_list(
             generate_menu.load_json(generate_menu.MENU_VARSHA_FILE),

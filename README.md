@@ -462,8 +462,9 @@ The Jyesth travel restriction is retained as an internal hardwired policy rule. 
 
 1. Active South Indian Varsha dishes keep short Hindi labels in the seasonal menu files; their recipes live separately in `south_indian_recipes.json`.
 2. When one of these dishes is selected for breakfast or a meal, the output includes traditional ingredients, total time, simple numbered steps, and a Hindi YouTube recipe link.
-3. Expanded recipe text is included in the existing seasonal and lunar-month ingredient checks, so a recipe cannot reintroduce a prohibited ingredient unnoticed.
-4. Tests require complete recipe rendering for every currently configured South Indian Varsha dish.
+3. Every recipe or YouTube URL attached to the selected dish is printed in the outbound menu message itself. If an item has multiple recipe links, all of them are retained.
+4. Expanded recipe text is included in the existing seasonal and lunar-month ingredient checks, so a recipe cannot reintroduce a prohibited ingredient unnoticed.
+5. Tests require complete recipe and link rendering for every currently configured South Indian Varsha dish.
 
 ## Guest Menu behavior
 
