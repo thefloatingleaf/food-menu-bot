@@ -232,6 +232,7 @@ python3 generate_menu.py --bootstrap-weather-tags
 - `manual_weather_override.json`
 - `fruit_months.json`
 - `guest_menu.json` (dormant Guest Menu entries: dish, home-follower responsibilities, and specific instructions)
+- `south_indian_recipes.json` (traditional Hindi ingredients, total time, simple steps, and Hindi YouTube link for active South Indian Varsha dishes)
 - `lunar_calendar_2026_2027.json` (reference calendar: lunar months, sankranti, amavasya, purnima, ekadashi, partial daily tables)
 - `config.json` (includes `guest_menu_policy` for season-first ordering and guest-specific seasonal exceptions)
 
@@ -456,6 +457,13 @@ The Jyesth travel restriction is retained as an internal hardwired policy rule. 
 2. The drink is selected deterministically by date from `ठंडाई`, `सत्तू का शर्बत`, `खर्जुरादी मंथ`, `बेल शर्बत`, `रागी कांजी`, and `पेठे का जूस`.
 3. Drinks with supplied recipes render the full preparation text in the same line.
 4. Every drink line is followed by `*पेय विकल्प:* यदि आज का पेय उपलब्ध न हो, तो सत्तू का शर्बत दिया जा सकता है।`
+
+## South Indian recipe behavior
+
+1. Active South Indian Varsha dishes keep short Hindi labels in the seasonal menu files; their recipes live separately in `south_indian_recipes.json`.
+2. When one of these dishes is selected for breakfast or a meal, the output includes traditional ingredients, total time, simple numbered steps, and a Hindi YouTube recipe link.
+3. Expanded recipe text is included in the existing seasonal and lunar-month ingredient checks, so a recipe cannot reintroduce a prohibited ingredient unnoticed.
+4. Tests require complete recipe rendering for every currently configured South Indian Varsha dish.
 
 ## Guest Menu behavior
 

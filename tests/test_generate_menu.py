@@ -917,6 +917,62 @@ class VarietyCycleRuleTests(unittest.TestCase):
         generate_menu.append_meal_recipe_lines(output_lines, generate_menu.MORU_KALI_UPMA_ITEM)
         self.assertEqual(output_lines[1:], recipe_lines)
 
+    def test_all_active_varsha_south_indian_dishes_have_complete_recipes(self) -> None:
+        required_items = [
+            "सूजी की इडली, सांबर, नारियल और मूंगफली की चटनी की साथ",
+            "रागी डोसा, सांभर, नारियल और मूंगफली की चटनी की साथ",
+            "पेसरट्टु (मूँग का दोसा)",
+            "उपमा, नारियल की चटनी, मूंगफली की चटनी, सांभर",
+            "सादा उप्पिट्टु",
+            "वेण पोंगल (चावल और मूँग दाल में काली मिर्च, जीरा, हींग और घी)",
+            "सादा अक्की रोटी घी के साथ",
+            "चावल-उड़द दोसा, गरम सांभर और नारियल की चटनी",
+            "रागी मुद्दे और साथ में धुली मूंग की दाल",
+            "नींबू चावल",
+            "बीसी बेले भात",
+            "परिप्पू करी",
+            "पुलियोदरै / पुलिहोरा / इमली चावल",
+            generate_menu.MORU_KALI_UPMA_ITEM,
+            "मिलगु रसम और पुराना चावल",
+            "जीरा-मिलगु रसम और पुराना चावल",
+            "मैसूर रसम और पुराना चावल",
+            "पारंपरिक सांभर और पुराना चावल",
+            "वथा कुझम्बु और पुराना चावल",
+            "कद्दू-परवल कूटू और पुराना चावल",
+            "तोरी पोरियल, मूँग दाल और पुराना चावल",
+            "हुली और पुराना चावल",
+            "टमाटर पप्पू और पुराना चावल",
+            "पायथम पेझुक्कु (मूंग दाल) और चावल",
+            "दही चावल ज्यादा करी पत्ता व सौंफ के साथ",
+        ]
+
+        for item in required_items:
+            with self.subTest(item=item):
+                recipe_lines = generate_menu.build_meal_recipe_lines(item)
+                self.assertTrue(any("सामग्री" in line for line in recipe_lines))
+                self.assertTrue(any(line.startswith("*कुल समय:*") for line in recipe_lines))
+                self.assertTrue(any("विधि" in line for line in recipe_lines))
+                self.assertTrue(any("https://www.youtube.com/" in line for line in recipe_lines))
+
+    def test_parippu_curry_renders_traditional_recipe_and_hindi_video(self) -> None:
+        recipe_lines = generate_menu.build_meal_recipe_lines("परिप्पू करी")
+
+        self.assertIn("*कुल समय:* 30 मिनट", recipe_lines)
+        self.assertTrue(any("पीली मूँग दाल" in line for line in recipe_lines))
+        self.assertTrue(any("नारियल, जीरा और हरी मिर्च" in line for line in recipe_lines))
+        self.assertIn(
+            "*हिंदी वीडियो विधि:* https://www.youtube.com/watch?v=jezvvnkrIFk",
+            recipe_lines,
+        )
+
+    def test_south_indian_recipe_registry_validates(self) -> None:
+        recipes = generate_menu.validate_south_indian_recipe_entries(
+            generate_menu.load_json(generate_menu.SOUTH_INDIAN_RECIPES_FILE)
+        )
+
+        self.assertEqual(len(recipes), 24)
+        self.assertEqual(len({recipe["id"] for recipe in recipes}), 24)
+
     def test_varsha_completely_excludes_majjida_kadhi_rice(self) -> None:
         meal_items = generate_menu.validate_menu_list(
             generate_menu.load_json(generate_menu.MENU_VARSHA_FILE),

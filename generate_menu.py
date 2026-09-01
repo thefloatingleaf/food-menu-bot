@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import argparse
 import csv
+from functools import lru_cache
 import hashlib
 import json
 import os
@@ -49,6 +50,7 @@ MANUAL_WEATHER_FILE = BASE_DIR / "manual_weather_override.json"
 HEAVY_LIGHT_CLASSIFICATION_FILE = BASE_DIR / "heavy_light_classification_food_items_revised_paratha_rule.csv"
 FRUIT_MONTHS_FILE = BASE_DIR / "fruit_months.json"
 GUEST_MENU_FILE = BASE_DIR / "guest_menu.json"
+SOUTH_INDIAN_RECIPES_FILE = BASE_DIR / "south_indian_recipes.json"
 MENU_GENERATOR_NOW_DATE_ENV = "MENU_GENERATOR_NOW_DATE"
 OUTPUT_DATE_HEADER_RE = re.compile(r"^\*(\d{2})-([A-Za-z]{3})-(\d{4}) तिथि के लिए भोजन:\*$")
 NAVISHTI_OUTPUT_DATE_HEADER_RE = re.compile(
@@ -634,12 +636,14 @@ MORU_KALI_UPMA_RECIPE_LINES = [
     "• 3 छोटे चम्मच धुली उड़द दाल",
     "• 4-5 सूखी लाल मिर्च",
     "• 10-15 करी पत्ता",
+    "*कुल समय:* 30 मिनट",
     "*मोरू कली उपमा विधि:*",
     "1. *घोल तैयार करें:* एक कटोरे में चावल का आटा लें। इसमें 1 कप छाछ डालकर अच्छी तरह मिलाएँ। धीरे-धीरे बाकी बची हुई 3 कप छाछ भी मिलाएँ ताकि एक चिकना और गांठ-मुक्त घोल तैयार हो जाए। अंत में स्वादानुसार नमक डालें और मिलाएँ।",
     "2. *तड़का लगाएँ:* एक कड़ाही में तिल का तेल गरम करें। इसमें हींग और राई डालें। जब राई चटकने लगे, तो धुली उड़द दाल डालें और सुनहरा होने तक भूनें।",
     "3. *मसाले भूनें:* अब इसमें सूखी लाल मिर्च और करी पत्ता डालकर अच्छी तरह मिलाएँ।",
     "4. *पकाएँ:* तैयार किया हुआ छाछ-चावल का मिश्रण कड़ाही में डालें। इसे लगातार चलाते हुए मध्यम आंच पर पकाएँ, जब तक कि मिश्रण गाढ़ा न हो जाए और कड़ाही के किनारों को न छोड़ने लगे।",
     "5. *परोसें:* ऊपर से थोड़ा और तेल डालकर अच्छी तरह मिलाएँ, प्लेट में निकालें और गरमा-गरम परोसें।",
+    "*हिंदी वीडियो विधि:* https://www.youtube.com/watch?v=xWue2xhKIuY",
 ]
 
 VARSHA_ALLOWED_FATS = ["घी", "तिल का तेल", "सरसों का तेल"]
@@ -2625,6 +2629,17 @@ def format_meal_display(item: str) -> str:
 def build_meal_recipe_lines(item: str) -> list[str]:
     if item == MORU_KALI_UPMA_ITEM:
         return MORU_KALI_UPMA_RECIPE_LINES[:]
+    for recipe in load_south_indian_recipe_entries():
+        if any(term in item for term in recipe["match_terms_hi"]):
+            dish_hi = recipe["dish_hi"]
+            lines = [
+                f"*{dish_hi} की सामग्री:* " + " / ".join(recipe["ingredients_hi"]),
+                f"*कुल समय:* {recipe['total_time_hi']}",
+                f"*{dish_hi} की विधि:*",
+            ]
+            lines.extend(f"{index}. {step}" for index, step in enumerate(recipe["steps_hi"], start=1))
+            lines.append(f"*हिंदी वीडियो विधि:* {recipe['youtube_url']}")
+            return lines
     return []
 
 
@@ -4558,6 +4573,54 @@ def validate_menu_list(menu: Any, file_label: str) -> list[str]:
     return menu
 
 
+def validate_south_indian_recipe_entries(
+    recipes: Any,
+    file_label: str = "south_indian_recipes.json",
+) -> list[dict[str, Any]]:
+    if not isinstance(recipes, list) or not recipes:
+        raise ValueError(f"{file_label} must be a non-empty JSON array")
+
+    required_list_fields = ("match_terms_hi", "ingredients_hi", "steps_hi")
+    normalized: list[dict[str, Any]] = []
+    seen_ids: set[str] = set()
+    for index, value in enumerate(recipes):
+        if not isinstance(value, dict):
+            raise ValueError(f"{file_label}[{index}] must be an object")
+        recipe_id = str(value.get("id", "")).strip()
+        dish_hi = str(value.get("dish_hi", "")).strip()
+        total_time_hi = str(value.get("total_time_hi", "")).strip()
+        youtube_url = str(value.get("youtube_url", "")).strip()
+        if not recipe_id or recipe_id in seen_ids:
+            raise ValueError(f"{file_label}[{index}].id must be present and unique")
+        if not dish_hi or not total_time_hi:
+            raise ValueError(f"{file_label}[{index}] requires dish_hi and total_time_hi")
+        if not youtube_url.startswith("https://www.youtube.com/"):
+            raise ValueError(f"{file_label}[{index}].youtube_url must be a YouTube URL")
+
+        normalized_entry = dict(value)
+        normalized_entry["id"] = recipe_id
+        normalized_entry["dish_hi"] = dish_hi
+        normalized_entry["total_time_hi"] = total_time_hi
+        normalized_entry["youtube_url"] = youtube_url
+        for field in required_list_fields:
+            field_value = value.get(field)
+            if not isinstance(field_value, list) or not field_value:
+                raise ValueError(f"{file_label}[{index}].{field} must be a non-empty array")
+            cleaned = [str(item).strip() for item in field_value if str(item).strip()]
+            if len(cleaned) != len(field_value):
+                raise ValueError(f"{file_label}[{index}].{field} cannot contain blank items")
+            normalized_entry[field] = cleaned
+        normalized.append(normalized_entry)
+        seen_ids.add(recipe_id)
+    return normalized
+
+
+@lru_cache(maxsize=1)
+def load_south_indian_recipe_entries() -> tuple[dict[str, Any], ...]:
+    entries = validate_south_indian_recipe_entries(load_json(SOUTH_INDIAN_RECIPES_FILE))
+    return tuple(entries)
+
+
 def validate_guest_menu_entries(menu: Any, file_label: str = "guest_menu.json") -> list[dict[str, Any]]:
     if not isinstance(menu, list):
         raise ValueError(f"{file_label} must be a JSON array")
@@ -6363,6 +6426,7 @@ def main() -> int:
             pakhala_serving_note = build_pakhala_serving_note(selected_breakfast)
             if pakhala_serving_note:
                 lines.append(pakhala_serving_note)
+        append_meal_recipe_lines(lines, selected_breakfast)
         selected_meal_display = format_meal_display(selected_meal)
         selected_second_meal_display = format_meal_display(selected_second_meal) if selected_second_meal is not None else None
         if selected_second_meal is not None:
