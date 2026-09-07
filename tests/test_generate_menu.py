@@ -152,6 +152,37 @@ class AnnualMenuBalanceTests(unittest.TestCase):
 
 
 class ConsecutiveDayRepeatRuleTests(unittest.TestCase):
+    def test_exact_previous_day_meal_is_removed_before_grain_balance(self) -> None:
+        repeated = "मूँग दाल की बड़ियाँ, जौ की रोटी"
+        pool = [repeated, "परिप्पू करी", "मूँग दाल खिचड़ी"]
+
+        filtered, fell_back = generate_menu.apply_consecutive_exact_item_rule(pool, {repeated})
+        balanced = generate_menu.apply_annual_grain_balance(
+            filtered,
+            {"जौ": 39, "रागी": 42, "गेहूँ": 99, "चावल": 105},
+        )
+
+        self.assertEqual(filtered, ["परिप्पू करी", "मूँग दाल खिचड़ी"])
+        self.assertEqual(balanced, ["परिप्पू करी", "मूँग दाल खिचड़ी"])
+        self.assertFalse(fell_back)
+
+    def test_exact_previous_day_rule_uses_normalized_item_text(self) -> None:
+        filtered, fell_back = generate_menu.apply_consecutive_exact_item_rule(
+            ["मूँग दाल की बड़ियाँ, जौ की रोटी", "परिप्पू करी"],
+            {"  मूँग दाल की बड़ियाँ,   जौ की रोटी  "},
+        )
+
+        self.assertEqual(filtered, ["परिप्पू करी"])
+        self.assertFalse(fell_back)
+
+    def test_exact_previous_day_rule_falls_back_only_when_no_alternative_exists(self) -> None:
+        repeated = "मूँग दाल की बड़ियाँ, जौ की रोटी"
+
+        filtered, fell_back = generate_menu.apply_consecutive_exact_item_rule([repeated], {repeated})
+
+        self.assertEqual(filtered, [repeated])
+        self.assertTrue(fell_back)
+
     def test_meal_repeat_families_handle_variant_forms(self) -> None:
         item = "जो की रोटी और करेला–भिंडी मिश्रित सब्ज़ी"
         self.assertEqual(generate_menu.extract_meal_repeat_families(item), {"करेला", "भिंडी"})

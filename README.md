@@ -478,12 +478,13 @@ The Jyesth travel restriction is retained as an internal hardwired policy rule. 
 ## Consecutive-day repeat rule
 
 1. The generator looks at yesterday's `breakfast` and `meal` together from `history.json`.
-2. It blocks only key repeats:
+2. An exact breakfast or meal used yesterday is removed before annual grain balancing, so a narrowed grain pool cannot immediately reintroduce the same dish.
+3. It also blocks key family repeats:
    - breakfast main items such as `पोहा`, `उपमा`, `चीला`, `डोसा`, `इडली`, or the key breakfast filling/base such as `आलू`, `मूंग`, `मेथी`
    - main sabzi-style meal items such as `करेला`, `लौकी`, `परवल`, `भिंडी`
-3. Common bases and support ingredients such as `चावल`, `रोटी`, `दाल`, spices, and everyday cooking ingredients are not used for this rule by themselves.
-4. Example: if today contains `करेला`, tomorrow avoids `करेला`, `भरवां करेला`, or mixed items like `करेला-भिंडी`.
-5. If the seasonal pool becomes too small after this rule, the script falls back to the best available menu and adds a `*डेटा अलर्ट:*` note instead of failing.
+4. Common bases and support ingredients such as `चावल`, `रोटी`, `दाल`, spices, and everyday cooking ingredients are not used for the family rule by themselves.
+5. Example: if today contains `करेला`, tomorrow avoids `करेला`, `भरवां करेला`, or mixed items like `करेला-भिंडी`.
+6. Only when no eligible exact alternative exists may the script fall back and add a `*डेटा अलर्ट:*` note instead of failing.
 
 ## Seasonal variety cycle rule
 

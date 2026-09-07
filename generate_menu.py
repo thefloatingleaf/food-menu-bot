@@ -2916,6 +2916,24 @@ def get_previous_day_repeat_families(history: list[dict[str, Any]], target_date:
     return get_row_repeat_families(row)
 
 
+def get_previous_day_items(history: list[dict[str, Any]], target_date: date, field: str) -> set[str]:
+    row = get_history_row(history, (target_date - timedelta(days=1)).isoformat())
+    if row is None:
+        return set()
+    return get_history_values_for_field(row, field)
+
+
+def apply_consecutive_exact_item_rule(pool: list[str], previous_day_items: set[str]) -> tuple[list[str], bool]:
+    if not previous_day_items:
+        return pool[:], False
+
+    blocked_keys = {normalize_item_key(item) for item in previous_day_items}
+    filtered = [item for item in pool if normalize_item_key(item) not in blocked_keys]
+    if filtered:
+        return filtered, False
+    return pool[:], True
+
+
 def get_recent_breakfast_family_block_families(
     history: list[dict[str, Any]],
     target_date: date,
@@ -5404,6 +5422,8 @@ def main() -> int:
     vasant_dal_cycle_used_options = get_vasant_dal_cycle_used_options(history, target_date, ritu_key)
     vasant_roti_grain_cycle_used_options = get_vasant_roti_grain_cycle_used_options(history, target_date, ritu_key)
     previous_day_breakfast_lock = get_previous_day_breakfast_lock(history, target_date)
+    previous_day_breakfast_items = get_previous_day_items(history, target_date, "breakfast")
+    previous_day_meal_items = get_previous_day_items(history, target_date, "meal")
     previous_day_repeat_families = get_previous_day_repeat_families(history, target_date)
     breakfast_recent_family_block_families = get_recent_breakfast_family_block_families(
         history, target_date, repeat_window_days
@@ -5430,6 +5450,28 @@ def main() -> int:
     meal_choice_items, _ = exclude_kadhi_items_on_rainy_day(meal_choice_items, weather_info)
     meal_items, _ = apply_weekly_main_meal_rice_limit(meal_items, history, target_date)
     meal_choice_items, _ = apply_weekly_main_meal_rice_limit(meal_choice_items, history, target_date)
+
+    breakfast_items, breakfast_exact_repeat_fallback = apply_consecutive_exact_item_rule(
+        breakfast_items, previous_day_breakfast_items
+    )
+    meal_items, meal_exact_repeat_fallback = apply_consecutive_exact_item_rule(
+        meal_items, previous_day_meal_items
+    )
+    meal_choice_items, meal_choice_exact_repeat_fallback = apply_consecutive_exact_item_rule(
+        meal_choice_items, previous_day_meal_items
+    )
+    light_fallback_items, light_exact_repeat_fallback = apply_consecutive_exact_item_rule(
+        light_fallback_items, previous_day_breakfast_items
+    )
+    if any(
+        (
+            breakfast_exact_repeat_fallback,
+            meal_exact_repeat_fallback,
+            meal_choice_exact_repeat_fallback,
+            light_exact_repeat_fallback,
+        )
+    ) and CONSECUTIVE_DAY_REPEAT_NOTE not in missing_data_notes:
+        missing_data_notes.append(CONSECUTIVE_DAY_REPEAT_NOTE)
 
     annual_dish_counts = get_rolling_annual_dish_counts(history, target_date)
     annual_grain_counts = get_rolling_annual_grain_counts(history, target_date)
