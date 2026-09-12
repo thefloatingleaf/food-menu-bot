@@ -2094,6 +2094,29 @@ def resolve_item_date_override(target_date: date, config: dict[str, Any], config
     return None
 
 
+def resolve_temporary_meal_cadence_category(target_date: date, config: dict[str, Any]) -> str | None:
+    raw_rule = config.get("temporary_meal_cadence")
+    if raw_rule is None:
+        return None
+    if not isinstance(raw_rule, dict):
+        raise ValueError("temporary_meal_cadence must be an object")
+
+    try:
+        start_date = date.fromisoformat(str(raw_rule["start"]))
+        end_date = date.fromisoformat(str(raw_rule["end"]))
+    except (KeyError, ValueError) as exc:
+        raise ValueError("temporary_meal_cadence requires valid start and end dates") from exc
+    if end_date < start_date:
+        raise ValueError("temporary_meal_cadence.end cannot be before start")
+
+    pattern = raw_rule.get("pattern")
+    if not isinstance(pattern, list) or not pattern or any(value not in {"vegetable", "dal"} for value in pattern):
+        raise ValueError("temporary_meal_cadence.pattern must contain only vegetable or dal")
+    if not (start_date <= target_date <= end_date):
+        return None
+    return pattern[(target_date - start_date).days % len(pattern)]
+
+
 def parse_boolish(value: Any) -> bool:
     if isinstance(value, bool):
         return value
@@ -3154,6 +3177,40 @@ def apply_annual_grain_balance(items: list[str], annual_grain_counts: dict[str, 
         or not item_families[item]
         or bool(item_families[item] & least_used)
     ]
+
+
+TEMPORARY_DAL_MEAL_MARKERS = (
+    "दाल",
+    "परिप्पू",
+    "पप्पू",
+    "खिचड़ी",
+    "बड़ियाँ",
+    "मंगोड़े",
+    "सांभर",
+    "रसम",
+    "कूटू",
+    "हुली",
+    "बीसी बेले",
+)
+
+
+def is_dal_focused_meal(item: str) -> bool:
+    normalized = normalize_repeat_family_text(item)
+    return any(marker in normalized for marker in TEMPORARY_DAL_MEAL_MARKERS)
+
+
+def is_vegetable_focused_meal(item: str) -> bool:
+    return bool(extract_meal_repeat_families(item)) and not is_dal_focused_meal(item)
+
+
+def apply_temporary_meal_cadence(items: list[str], category: str | None) -> list[str]:
+    if category is None:
+        return items[:]
+    if category == "vegetable":
+        return [item for item in items if is_vegetable_focused_meal(item)]
+    if category == "dal":
+        return [item for item in items if is_dal_focused_meal(item)]
+    raise ValueError(f"Unsupported temporary meal cadence category: {category}")
 
 
 def is_fermented_rice_breakfast_item(item: str) -> bool:
@@ -4785,6 +4842,19 @@ def apply_lunar_month_menu_rules(items: list[str], maah_hi: str) -> list[str]:
     return [item for item in items if not is_blocked_by_lunar_month_rule(item, maah_hi)]
 
 
+def get_ludhiana_september_produce_banned_keywords(target_date: date) -> list[str]:
+    if target_date.month == 9:
+        return ["पालक"]
+    return []
+
+
+def apply_ludhiana_september_produce_rules(items: list[str], target_date: date) -> list[str]:
+    blocked_keywords = get_ludhiana_september_produce_banned_keywords(target_date)
+    if not blocked_keywords:
+        return items[:]
+    return [item for item in items if not is_blocked_item(item, blocked_keywords)]
+
+
 def item_contains_varsha_morning_curd(item: str) -> bool:
     normalized = item.casefold()
     return any(token in normalized for token in VARSHA_MORNING_CURD_TOKENS)
@@ -5121,10 +5191,18 @@ def build_day_context(
         )
     breakfast_items = apply_lunar_month_menu_rules(breakfast_items, panchang_info.maah_hi)
     meal_items = apply_lunar_month_menu_rules(meal_items, panchang_info.maah_hi)
+    breakfast_items = apply_ludhiana_september_produce_rules(breakfast_items, target_date)
+    meal_items = apply_ludhiana_september_produce_rules(meal_items, target_date)
     if not breakfast_items:
-        breakfast_items = apply_lunar_month_menu_rules(light_fallback_items, panchang_info.maah_hi)
+        breakfast_items = apply_ludhiana_september_produce_rules(
+            apply_lunar_month_menu_rules(light_fallback_items, panchang_info.maah_hi),
+            target_date,
+        )
     if not meal_items:
-        meal_items = apply_lunar_month_menu_rules(light_fallback_items, panchang_info.maah_hi)
+        meal_items = apply_ludhiana_september_produce_rules(
+            apply_lunar_month_menu_rules(light_fallback_items, panchang_info.maah_hi),
+            target_date,
+        )
     breakfast_items, _ = apply_grishm_roti_atta_rule(breakfast_items, target_date, ritu_key)
     meal_items, _ = apply_grishm_roti_atta_rule(meal_items, target_date, ritu_key)
 
@@ -5142,7 +5220,10 @@ def build_day_context(
         ritu_key=ritu_key,
         breakfast_items=breakfast_items,
         meal_items=meal_items,
-        disallowed_keywords=get_disallowed_keywords(ritu_key, panchang_info.maah_hi),
+        disallowed_keywords=(
+            get_disallowed_keywords(ritu_key, panchang_info.maah_hi)
+            + get_ludhiana_september_produce_banned_keywords(target_date)
+        ),
         weather_info=weather_info,
         weather_rules=weather_rules,
         breakfast_item_override=breakfast_item_override,
@@ -5448,6 +5529,17 @@ def main() -> int:
     light_fallback_items, _ = apply_date_specific_roti_atta_rule(light_fallback_items, target_date)
     meal_items, _ = exclude_kadhi_items_on_rainy_day(meal_items, weather_info)
     meal_choice_items, _ = exclude_kadhi_items_on_rainy_day(meal_choice_items, weather_info)
+    temporary_meal_category = resolve_temporary_meal_cadence_category(target_date, config)
+    if temporary_meal_category is not None:
+        cadence_meal_items = apply_temporary_meal_cadence(meal_items, temporary_meal_category)
+        cadence_choice_items = apply_temporary_meal_cadence(meal_choice_items, temporary_meal_category)
+        if not cadence_meal_items or not cadence_choice_items:
+            raise RuntimeError(
+                "Temporary meal cadence has no eligible "
+                f"{temporary_meal_category} choices for {target_date_str}"
+            )
+        meal_items = cadence_meal_items
+        meal_choice_items = cadence_choice_items
     meal_items, _ = apply_weekly_main_meal_rice_limit(meal_items, history, target_date)
     meal_choice_items, _ = apply_weekly_main_meal_rice_limit(meal_choice_items, history, target_date)
 

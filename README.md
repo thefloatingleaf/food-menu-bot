@@ -260,6 +260,17 @@ Notes:
 - `fruit_item_date_overrides` pins the exact `आज का फल` text for that date.
 - Meal overrides still validate against the active seasonal menu list, and the dual-meal rice guard still prevents both meals from containing rice on the same day.
 
+## Temporary meal cadence
+
+From `08-Sep-2026` through `17-Sep-2026`, `config.json` applies a main-meal
+pattern of two vegetable-focused days followed by one dal-focused day. Vegetable
+days exclude dal-based dishes. The temporary rule expires automatically on
+`18-Sep-2026`, when the normal seasonal rotation resumes.
+
+For Ludhiana's local seasonal-produce preference, palak is excluded throughout
+September, including when the transition engine starts drawing from the Sharad
+menu. It becomes eligible again from October.
+
 ## Festivals data format (Hindu + Sikh)
 
 The active calendar from `01-Sep-2026` through `31-Aug-2027` uses Ludhiana, Punjab

@@ -256,6 +256,55 @@ class ConsecutiveDayRepeatRuleTests(unittest.TestCase):
         self.assertTrue(fell_back)
 
 
+class TemporaryMealCadenceTests(unittest.TestCase):
+    def test_september_ten_day_window_uses_two_vegetable_days_then_one_dal_day(self) -> None:
+        config = generate_menu.load_json(generate_menu.CONFIG_FILE)
+        expected = {
+            date(2026, 9, 8): "vegetable",
+            date(2026, 9, 9): "vegetable",
+            date(2026, 9, 10): "dal",
+            date(2026, 9, 11): "vegetable",
+            date(2026, 9, 12): "vegetable",
+            date(2026, 9, 13): "dal",
+            date(2026, 9, 14): "vegetable",
+            date(2026, 9, 15): "vegetable",
+            date(2026, 9, 16): "dal",
+            date(2026, 9, 17): "vegetable",
+        }
+
+        for target_date, category in expected.items():
+            with self.subTest(target_date=target_date):
+                self.assertEqual(
+                    generate_menu.resolve_temporary_meal_cadence_category(target_date, config),
+                    category,
+                )
+
+        self.assertIsNone(generate_menu.resolve_temporary_meal_cadence_category(date(2026, 9, 7), config))
+        self.assertIsNone(generate_menu.resolve_temporary_meal_cadence_category(date(2026, 9, 18), config))
+
+    def test_vegetable_days_exclude_dal_based_meals(self) -> None:
+        meals = generate_menu.load_json(generate_menu.MENU_VARSHA_FILE)
+
+        vegetables = generate_menu.apply_temporary_meal_cadence(meals, "vegetable")
+
+        self.assertGreaterEqual(len(vegetables), 4)
+        self.assertTrue(all(generate_menu.is_vegetable_focused_meal(item) for item in vegetables))
+        self.assertTrue(all(not generate_menu.is_dal_focused_meal(item) for item in vegetables))
+        self.assertIn("भिंडी की सब्ज़ी, गेहूँ की रोटी", vegetables)
+        self.assertNotIn("मूँग दाल की बड़ियाँ, जौ की रोटी", vegetables)
+        self.assertNotIn("कद्दू-परवल कूटू और पुराना चावल", vegetables)
+
+    def test_dal_days_include_only_dal_focused_meals(self) -> None:
+        meals = generate_menu.load_json(generate_menu.MENU_VARSHA_FILE)
+
+        dal_meals = generate_menu.apply_temporary_meal_cadence(meals, "dal")
+
+        self.assertTrue(dal_meals)
+        self.assertTrue(all(generate_menu.is_dal_focused_meal(item) for item in dal_meals))
+        self.assertIn("मूँग दाल की बड़ियाँ, जौ की रोटी", dal_meals)
+        self.assertNotIn("भिंडी की सब्ज़ी, गेहूँ की रोटी", dal_meals)
+
+
 class VarietyCycleRuleTests(unittest.TestCase):
     def test_guest_menu_file_validates_and_contains_known_guest_dishes(self) -> None:
         guest_menu = generate_menu.validate_guest_menu_entries(
@@ -1340,6 +1389,22 @@ class VarshaRituRuleTests(unittest.TestCase):
         self.assertEqual(
             generate_menu.apply_lunar_month_menu_rules(items, "श्रावण"),
             ["मेथी दाने की सब्ज़ी", "पोहा"],
+        )
+
+    def test_ludhiana_september_rule_blocks_early_palak(self) -> None:
+        items = [
+            "मूंग चना दाल मिक्स और पालक मिला के दाल और जौं की रोटी",
+            "पालक का साग और गेहूँ की रोटी",
+            "भिंडी और गेहूँ की रोटी",
+        ]
+
+        self.assertEqual(
+            generate_menu.apply_ludhiana_september_produce_rules(items, date(2026, 9, 12)),
+            ["भिंडी और गेहूँ की रोटी"],
+        )
+        self.assertEqual(
+            generate_menu.apply_ludhiana_september_produce_rules(items, date(2026, 10, 1)),
+            items,
         )
 
     def test_hardwired_monthly_food_prohibitions_cover_all_supplied_food_rules(self) -> None:
