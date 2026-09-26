@@ -7,9 +7,100 @@ import generate_navishti_menu
 
 
 class LudhianaCalendarDataTests(unittest.TestCase):
+    def test_food_system_is_configured_for_purnimanta_months(self) -> None:
+        config = generate_menu.load_json(generate_menu.CONFIG_FILE)
+
+        self.assertEqual(config["lunar_month_system"], "purnimanta")
+
     def test_purnimanta_to_amanta_month_conversion_uses_paksha_direction(self) -> None:
         self.assertEqual(generate_menu.convert_lunar_month_to_amanta("चैत्र", "शुक्ल पक्ष"), "चैत्र")
         self.assertEqual(generate_menu.convert_lunar_month_to_amanta("चैत्र", "कृष्ण पक्ष"), "फाल्गुन")
+
+    def test_purnimanta_sharad_and_hemant_boundaries_follow_ludhiana_panchang(self) -> None:
+        panchang = generate_menu.load_json(generate_menu.PANCHANG_FILE)
+
+        varsha_start, sharad_start = generate_menu.resolve_panchang_ritu_boundary_dates(
+            date(2026, 9, 20),
+            "varsha",
+            panchang,
+            "Asia/Kolkata",
+            "purnimanta",
+        )
+        resolved_sharad_start, hemant_start = generate_menu.resolve_panchang_ritu_boundary_dates(
+            date(2026, 9, 27),
+            "sharad",
+            panchang,
+            "Asia/Kolkata",
+            "purnimanta",
+        )
+
+        self.assertIsNone(varsha_start)
+        self.assertEqual(sharad_start, date(2026, 9, 27))
+        self.assertEqual(resolved_sharad_start, date(2026, 9, 27))
+        self.assertEqual(hemant_start, date(2026, 11, 25))
+
+    def test_purnimanta_transition_windows_use_actual_lunar_boundaries(self) -> None:
+        thresholds = {"hot_min_c": 35.0, "cold_max_c": 18.0}
+
+        sharad_pre = generate_menu.resolve_transition_plan(
+            date(2026, 9, 20),
+            "varsha",
+            None,
+            thresholds,
+            7,
+            8,
+            next_start_override=date(2026, 9, 27),
+        )
+        sharad_post_last_day = generate_menu.resolve_transition_plan(
+            date(2026, 10, 4),
+            "sharad",
+            None,
+            thresholds,
+            7,
+            8,
+            current_start_override=date(2026, 9, 27),
+            next_start_override=date(2026, 11, 25),
+        )
+        after_sharad_transition = generate_menu.resolve_transition_plan(
+            date(2026, 10, 5),
+            "sharad",
+            None,
+            thresholds,
+            7,
+            8,
+            current_start_override=date(2026, 9, 27),
+            next_start_override=date(2026, 11, 25),
+        )
+        hemant_pre = generate_menu.resolve_transition_plan(
+            date(2026, 11, 18),
+            "sharad",
+            None,
+            thresholds,
+            7,
+            8,
+            current_start_override=date(2026, 9, 27),
+            next_start_override=date(2026, 11, 25),
+        )
+
+        self.assertTrue(sharad_pre.active)
+        self.assertTrue(sharad_post_last_day.active)
+        self.assertFalse(after_sharad_transition.active)
+        self.assertTrue(hemant_pre.active)
+
+    def test_purnimanta_ashwin_starts_on_september_27(self) -> None:
+        entries = generate_menu.load_json(generate_menu.PANCHANG_FILE)["entries"]
+        row = next(entry for entry in entries if entry["date"] == "2026-09-27")
+
+        info = generate_menu.resolve_panchang_info(
+            date(2026, 9, 27),
+            generate_menu.EkadashiInfo(False, None, None),
+            row,
+            "वर्षा",
+            "purnimanta",
+        )
+
+        self.assertEqual(info.maah_hi, "आश्विन")
+        self.assertEqual(generate_menu.resolve_ritu_key_from_lunar_month(info.maah_hi), "sharad")
 
     def test_panchang_has_contiguous_one_year_ludhiana_coverage(self) -> None:
         data = generate_menu.load_json(generate_menu.PANCHANG_FILE)
@@ -1436,6 +1527,21 @@ class VarshaRituRuleTests(unittest.TestCase):
                     [allowed_item],
                 )
 
+    def test_ashwin_blocks_generic_cooked_karela_menu_label(self) -> None:
+        items = ["करेला, जौं की रोटी, और मक्खन", "भिंडी और गेहूँ की रोटी"]
+
+        self.assertEqual(
+            generate_menu.apply_lunar_month_menu_rules(items, "आश्विन"),
+            ["भिंडी और गेहूँ की रोटी"],
+        )
+
+    def test_sharad_allows_chaach_in_ashwin_but_kartik_blocks_it(self) -> None:
+        item = "मसाला छाछ और रोटी"
+
+        self.assertNotIn(item, generate_menu.apply_lunar_month_menu_rules([item], "कार्तिक"))
+        self.assertNotIn("छाछ", generate_menu.get_disallowed_keywords("sharad", "आश्विन"))
+        self.assertIn("छाछ", generate_menu.get_disallowed_keywords("sharad", "कार्तिक"))
+
     def test_lunar_month_rule_checks_expanded_recipe_text(self) -> None:
         self.assertEqual(
             generate_menu.apply_lunar_month_menu_rules(
@@ -2332,7 +2438,7 @@ class AuditRegressionTests(unittest.TestCase):
         )
 
         self.assertEqual(vasant, ["पोहा"])
-        self.assertEqual(sharad, ["मूँग दाल और चावल"])
+        self.assertEqual(sharad, ["छाछ की सब्ज़ी", "मूँग दाल और चावल"])
 
     def test_lunar_month_filter_replaces_blocked_grishm_drink(self) -> None:
         bell_date = next(

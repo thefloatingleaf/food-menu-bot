@@ -729,7 +729,7 @@ LUNAR_MONTH_ITEM_BANNED_KEYWORDS = {
     "आषाढ़": ("बेल",),
     "श्रावण": ("दूध", "पालक", "चौलाई", "बथुआ", "सरसों का साग", "मेथी के पत्ते", "मेथी की भाजी", "साग"),
     "भाद्रपद": ("दही", "रायता"),
-    "आश्विन": ("पका करेला", "पका हुआ करेला", "पके करेले"),
+    "आश्विन": ("करेला", "करेले"),
     "कार्तिक": ("छाछ", "मट्ठा", "मट्ठे"),
     "मार्गशीर्ष": ("जीरा",),
     "पौष": ("धनिया",),
@@ -797,8 +797,6 @@ SHARAD_BANNED_KEYWORDS = [
     "गर्म मसाला",
     "दही",
     "रायता",
-    "छाछ",
-    "मट्ठा",
     "लस्सी",
     "कढ़ी",
     "जलेबी",
@@ -1130,6 +1128,19 @@ def convert_lunar_month_to_amanta(maah_hi: str, paksha_hint: str | None) -> str:
     return shift_lunar_month_name(maah_hi, 0)
 
 
+def resolve_lunar_month_for_system(
+    maah_hi: str,
+    paksha_hint: str | None,
+    lunar_month_system: str,
+) -> str:
+    system = lunar_month_system.strip().lower()
+    if system == "purnimanta":
+        return normalize_lunar_month_name(maah_hi) or maah_hi
+    if system == "amanta":
+        return convert_lunar_month_to_amanta(maah_hi, paksha_hint)
+    raise ValueError("lunar_month_system must be purnimanta or amanta")
+
+
 def normalize_paksha_name(paksha_hi: str | None) -> str | None:
     if not isinstance(paksha_hi, str):
         return None
@@ -1293,11 +1304,13 @@ def resolve_transition_plan(
     thresholds: dict[str, float],
     pre_transition_days: int,
     post_transition_days: int,
+    current_start_override: date | None = None,
+    next_start_override: date | None = None,
 ) -> TransitionPlan:
     active_current = current_key if current_key in SEASON_ORDER else "shishir"
-    next_start = next_season_start_date(active_current, target_date)
+    next_start = next_start_override or next_season_start_date(active_current, target_date)
     days_to_next = (next_start - target_date).days
-    current_start = current_season_start_date(active_current, target_date)
+    current_start = current_start_override or current_season_start_date(active_current, target_date)
     days_since_current_start = (target_date - current_start).days
 
     in_pre_window = 0 <= days_to_next <= max(pre_transition_days, 0)
@@ -1933,6 +1946,60 @@ def extract_panchang_rows(panchang_data: Any) -> tuple[list[dict[str, Any]], str
     return [], "रूट JSON dict/list नहीं है"
 
 
+def resolve_panchang_ritu_boundary_dates(
+    target_date: date,
+    current_key: str,
+    panchang_data: Any,
+    timezone_name: str,
+    lunar_month_system: str,
+) -> tuple[date | None, date | None]:
+    rows, shape_error = extract_panchang_rows(panchang_data)
+    if shape_error:
+        return None, None
+
+    dated_ritus: dict[date, str] = {}
+    for row in rows:
+        normalized_date = normalize_any_date_to_yyyy_mm_dd(row.get("date"), timezone_name)
+        if normalized_date is None:
+            continue
+        raw_month = row.get("maah_hi")
+        if not isinstance(raw_month, str) or not raw_month.strip():
+            continue
+        resolved_month = resolve_lunar_month_for_system(
+            raw_month,
+            row.get("paksha_hi") if isinstance(row.get("paksha_hi"), str) else None,
+            lunar_month_system,
+        )
+        ritu_key = resolve_ritu_key_from_lunar_month(resolved_month)
+        if ritu_key is not None:
+            dated_ritus[date.fromisoformat(normalized_date)] = ritu_key
+
+    boundaries: list[tuple[date, str, str]] = []
+    dated_items = sorted(dated_ritus.items())
+    for (earlier_date, earlier_key), (later_date, later_key) in zip(dated_items, dated_items[1:]):
+        if later_date - earlier_date != timedelta(days=1) or earlier_key == later_key:
+            continue
+        boundaries.append((later_date, earlier_key, later_key))
+
+    current_start = next(
+        (
+            boundary_date
+            for boundary_date, _previous_key, new_key in reversed(boundaries)
+            if boundary_date <= target_date and new_key == current_key
+        ),
+        None,
+    )
+    next_start = next(
+        (
+            boundary_date
+            for boundary_date, previous_key, _new_key in boundaries
+            if boundary_date > target_date and previous_key == current_key
+        ),
+        None,
+    )
+    return current_start, next_start
+
+
 def lookup_panchang_entry_for_date(
     target_date: datetime.date,
     timezone_name: str,
@@ -2018,8 +2085,7 @@ def resolve_panchang_info(
         maah_hi = str(
             panchang_row.get("maah_hi", ekadashi.lunar_month_hi or GREGORIAN_MONTH_HI[target_date.month])
         ).strip()
-        if lunar_month_system == "amanta":
-            maah_hi = convert_lunar_month_to_amanta(maah_hi, panchang_row.get("paksha_hi"))
+        maah_hi = resolve_lunar_month_for_system(maah_hi, panchang_row.get("paksha_hi"), lunar_month_system)
         tithi_hi = str(panchang_row.get("tithi_hi", "अज्ञात")).strip() or "अज्ञात"
         if ekadashi.is_ekadashi:
             tithi_hi = "एकादशी"
@@ -5128,6 +5194,13 @@ def build_day_context(
     legacy_transition_window_days = int(config.get("season_transition_window_days", 7))
     pre_transition_days = int(config.get("season_transition_pre_days", legacy_transition_window_days))
     post_transition_days = int(config.get("season_transition_post_days", 8))
+    panchang_current_start, panchang_next_start = resolve_panchang_ritu_boundary_dates(
+        target_date,
+        base_ritu_key,
+        panchang_data,
+        timezone_name,
+        lunar_month_system,
+    )
     transition_plan = resolve_transition_plan(
         target_date=target_date,
         current_key=base_ritu_key,
@@ -5135,6 +5208,8 @@ def build_day_context(
         thresholds=thresholds,
         pre_transition_days=pre_transition_days,
         post_transition_days=post_transition_days,
+        current_start_override=panchang_current_start,
+        next_start_override=panchang_next_start,
     )
     menu_override_ritu_key = resolve_ritu_override(target_date, config, "menu_ritu_date_overrides")
     if menu_override_ritu_key is not None:
@@ -5334,7 +5409,9 @@ def main() -> int:
     fallback_policy = config.get("empty_filtered_pool_policy", "fallback_full_menu")
     keywords = config.get("ekadashi_block_keywords", [])
     default_ritu = config.get("ritu_hi", "शिशिर")
-    lunar_month_system = str(config.get("lunar_month_system", "amanta")).strip().lower() or "amanta"
+    lunar_month_system = str(config.get("lunar_month_system", "purnimanta")).strip().lower() or "purnimanta"
+    if lunar_month_system not in {"purnimanta", "amanta"}:
+        raise ValueError("lunar_month_system must be purnimanta or amanta")
 
     if not isinstance(keywords, list) or not all(isinstance(k, str) for k in keywords):
         raise ValueError("ekadashi_block_keywords must be an array of strings")
@@ -6618,7 +6695,7 @@ def main() -> int:
                 lines.append("*शरद अनिवार्य साथ:* " + " / ".join(allowed_sharad_sides))
             if any(token in (selected_breakfast + " " + selected_meal) for token in ["चावल", "राइस"]):
                 lines.append("*शरद चावल नियम:* अगर चावल बन रहे हैं तो जीरा ज़रूर डालें")
-            lines.append("*शरद वर्जित:* दही, छाछ, कढ़ी, तला भोजन, इमली, लौंग, लहसुन, प्याज़, काली मिर्च और गर्म मसाले नहीं")
+            lines.append("*शरद वर्जित:* दही, कढ़ी, तला भोजन, इमली, लौंग, लहसुन, प्याज़, काली मिर्च और गर्म मसाले नहीं")
             lines.append("*शरद अधिक उपयोग:* नारियल / खीर / पुदीना")
             lines.append("*शरद कम उपयोग:* छोले, टिंडा, करेला, टमाटर, आलू, अरबी, सरसों, पपीता, सौंफ़, हरी मिर्च, लाल मिर्च, अदरक, सौंठ, सरसों का तेल और शहद")
             lines.append("*शरद जल नियम:* चाँदी के ग्लास या मटके का जल दें")

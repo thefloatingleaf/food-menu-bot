@@ -279,6 +279,13 @@ comes from the local-sunrise monthly Panchang grids. Smarta Ekadashi dates and
 festival dates come from the corresponding Ludhiana yearly calendars. Source URLs
 and the exact coverage range are stored in each calendar file's `meta` object.
 
+The complete food system uses the North Indian `purnimanta` lunar-month convention.
+Month prohibitions, fruit pools, season selection, overrides, and rendered guidance
+all use that resolved month. Seasonal transition windows are anchored to actual
+Purnimanta ऋतु boundaries in the Ludhiana Panchang, with seven days before and
+eight days from the new ऋतु's first day. For 2026, Sharad begins on `27-Sep-2026`
+and Hemant begins on `25-Nov-2026`.
+
 ```json
 {
   "entries": [
@@ -394,9 +401,9 @@ the combined special meal to `18-Apr-2027`.
    - avoid: chocolate, sugar-made sweets, maida, rajma, white chana, onion, and stale water. Sweet dishes must use खांड rather than sugar.
    - water: भस्म जल, boiled water, or water cleaned with फिटकरी.
 22. दही, छाछ, and milk follow month-specific rules:
-   - सावन: no milk. Curd and thin छाछ are morning-only, not daily, and never at night; छाछ uses सौंठ / काली मिर्च / पिप्पली / त्रिकटु.
-   - भादों: no curd. Limited thin छाछ is allowed only in the morning, not daily, with त्रिकटु.
-   - the generator prevents both curd and छाछ breakfasts on consecutive days and blocks them from the main meal.
+   - सावन: no milk; छाछ-based food remains permitted.
+   - भादों: no curd; छाछ-based food remains permitted.
+   - कार्तिक: छाछ/mattha-based food is completely blocked. This is the only lunar month with that prohibition.
 23. वर्षा hard filtering blocks प्याज/प्याज़, साबूदाना, छोले, बासी food, पराठा, पूरी, explicitly fried items, chocolate, maida, rajma, white chana, and `चावल और मजीदा कढ़ी`. It also blocks coarse-grain roti unless the item explicitly includes घी.
 24. भादों-specific behavior is:
    - early morning: गुनगुना पानी and च्यवनप्राश.
@@ -417,7 +424,7 @@ the combined special meal to `18-Apr-2027`.
    - `breakfast_sharad.json`
    - `menu_sharad.json`
 11. For शरद days, output also includes:
-   - `*शरद अनिवार्य साथ:* सौंफ-मिश्री की मिश्रण / छाछ त्रिकटु के साथ`
+   - `*शरद अनिवार्य साथ:* सौंफ-मिश्री की मिश्रण`
    - `*शरद चावल नियम:* अगर चावल बन रहे हैं तो जीरा ज़रूर डालें` (only when selected items contain चावल)
    - `*शरद वर्जित:* इमली, लौंग, लहसुन, प्याज़, काली मिर्च और गर्म मसाले नहीं`
    - `*शरद अधिक उपयोग:* नारियल / खीर / पुदीना`
