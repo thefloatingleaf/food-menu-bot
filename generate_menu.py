@@ -479,7 +479,7 @@ NAVISHTI_GRISHM_WEEKLY_PLAN = {
 NAVISHTI_OLD_SHARED_MEAL_SLOT_NOTE = "सभी के लिए बन रहे इसी भोजन से तड़का लगाने से पहले निकालें"
 
 OVERNIGHT_BREAKFAST_ITEMS = {
-    "पझैया सादम (Pazhaya Sadam): बचे हुए चावल लें या फिर 1 कटोरी कच्चे चावल अच्छी तरह धोकर सादा चावल पकाएँ। चावल पक जाने के बाद उन्हें मिट्टी या स्टील के बर्तन में निकालकर पूरी तरह ठंडा होने दें। ठंडा होने पर उसमें छाछ डालें ताकि चावल पूरी तरह पानी में डूब जाएँ। बर्तन ढककर इसे कमरे के तापमान पर पूरी रात (लगभग 10–12 घंटे) रहने दें। सुबह चावल और उसका पानी हल्का खट्टा हो जाएगा। उसी पानी सहित चावल को हाथ से हल्का मसल दें। इसमें ½ छोटी चम्मच नमक मिलाएँ। 4–5 छोटी कच्ची प्याज छीलकर डालें, 1–2 हरी मिर्च हल्की कुचलकर डालें। अब 2–3 बड़े चम्मच दही या लगभग ½ कटोरी पतली छाछ मिलाकर अच्छी तरह मिला दें। इसे ठंडा ही खाएँ। साथ में साधारण अचार रखें।",
+    "पझैया सादम (Pazhaya Sadam): बचे हुए चावल लें या फिर 1 कटोरी कच्चे चावल अच्छी तरह धोकर सादा चावल पकाएँ। चावल पक जाने के बाद उन्हें मिट्टी या स्टील के बर्तन में निकालकर पूरी तरह ठंडा होने दें। ठंडा होने पर उसमें छाछ डालें ताकि चावल पूरी तरह पानी में डूब जाएँ। बर्तन ढककर इसे कमरे के तापमान पर पूरी रात (लगभग 10–12 घंटे) रहने दें। सुबह चावल और उसका पानी हल्का खट्टा हो जाएगा। उसी पानी सहित चावल को हाथ से हल्का मसल दें। इसमें ½ छोटी चम्मच नमक मिलाएँ। 4–5 छोटी कच्ची प्याज छीलकर डालें, 1–2 हरी मिर्च हल्की कुचलकर डालें। अब आवश्यकतानुसार थोड़ी पतली छाछ मिलाकर अच्छी तरह मिला दें। इसे ठंडा ही खाएँ। साथ में साधारण अचार रखें।",
     "पखाला भात (Pakhala Bhata): रात में 1 कटोरी कच्चे चावल धोकर सादा चावल पकाएँ। पकने के बाद चावल को मिट्टी या स्टील के बर्तन में निकालकर ठंडा होने दें। ठंडा होने पर उसमें 2–3 कटोरी पानी और 2 बड़े चम्मच दही डालें। बर्तन ढककर इसे कमरे के तापमान पर पूरी रात (लगभग 10–12 घंटे) रहने दें ताकि हल्का किण्वन हो जाए। सुबह इसमें ½ छोटी चम्मच नमक मिलाएँ। अब कढ़ाही में 1 छोटी चम्मच सरसों का तेल गरम करें। इसमें ½ छोटी चम्मच सरसों के दाने डालें। दाने चटकने पर 1 कटी हरी मिर्च और 4–5 करी पत्ते डालें। यह तड़का चावल पर डाल दें। ऊपर से ½ छोटी चम्मच भुना जीरा पाउडर डालें और हल्का मिला दें। इसे ठंडा परोसें। साथ में आलू भुजा, साग भुजा, उड़द की बड़ी या साधारण अचार रखें।",
 }
 OVERNIGHT_RICE_PREP_NOTE = (
@@ -601,10 +601,15 @@ DATE_SPECIFIC_CHANA_SATTU_EXCLUSION_WINDOWS = [
     (date(2026, 5, 9), date(2026, 5, 14)),
 ]
 RICE_ITEM_TOKENS = ("चावल", "राइस", "भात")
-CURD_ITEM_TOKENS = ("दही", "रायता")
-CURD_RAITA_NOTE_HI = "*दही रूप:* केवल लौकी/खीरे का रायता"
-CURD_RAITA_NOTE_EXCLUDED_ITEMS = ("दही चावल ज्यादा करी पत्ता व सौंफ के साथ",)
-SPECIFIC_RAITA_PATTERN = re.compile(r"[\w\u0900-\u097F/-]+(?:\s+[\w\u0900-\u097F/-]+){0,4}\s+क[ािे]\s+रायता")
+CURD_ITEM_TOKENS = ("दही", "रायता", "लस्सी", "curd", "yogurt")
+CURD_PROHIBITED_RITU_KEYS = frozenset({"vasant", "grishm", "sharad"})
+CURD_ALLOWED_RITU_KEYS = frozenset({"hemant", "shishir", "varsha"})
+CURD_PROHIBITED_RULE_LINE_HI = (
+    "*ऋतु दही नियम:* दही/रायता/लस्सी पूर्णतः निषिद्ध। दही उष्ण प्रकृति का है और कफ बढ़ाता है।"
+)
+CURD_ALLOWED_RULE_LINE_HI = (
+    "*ऋतु दही नियम:* दही/रायता/लस्सी अनुमत है। दही उष्ण प्रकृति का है और कफ बढ़ाता है।"
+)
 GRISHM_DRINK_OF_THE_DAY_ITEMS = [
     (
         "ठंडाई",
@@ -684,9 +689,7 @@ VARSHA_LOW_USE_ITEMS = [
     "करेला",
 ]
 VARSHA_COARSE_GRAIN_ROTI_TOKENS = ("बाजरा", "ज्वार", "रागी", "मोटे अनाज", "झंगोरा")
-VARSHA_CURD_TOKENS = ("दही", "रायता")
 VARSHA_CHAACH_TOKENS = ("छाछ", "मट्ठा", "मट्ठे")
-VARSHA_MORNING_CURD_TOKENS = VARSHA_CURD_TOKENS
 VARSHA_LOW_USE_TOKENS = ("लहसुन", "गन्ना", "काजू", "पिस्ता", "छेना", "पुदीना", "लौंग", "पपीता", "आम", "लौकी", "करेला")
 
 BHAADON_EARLY_MORNING_ITEMS = ["गुनगुना पानी", "च्यवनप्राश"]
@@ -708,7 +711,6 @@ LUNAR_MONTH_AVOID_RULES = {
     "ज्येष्ठ": "रास्ता / यात्रा नहीं",
     "आषाढ़": "बेल नहीं",
     "श्रावण": "दूध और हरी पत्तेदार साग नहीं",
-    "भाद्रपद": "दही नहीं",
     "आश्विन": "पका करेला नहीं",
     "कार्तिक": "छाछ नहीं",
     "मार्गशीर्ष": "जीरा नहीं",
@@ -728,7 +730,7 @@ LUNAR_MONTH_ITEM_BANNED_KEYWORDS = {
     "ज्येष्ठ": (),
     "आषाढ़": ("बेल",),
     "श्रावण": ("दूध", "पालक", "चौलाई", "बथुआ", "सरसों का साग", "मेथी के पत्ते", "मेथी की भाजी", "साग"),
-    "भाद्रपद": ("दही", "रायता"),
+    "भाद्रपद": (),
     "आश्विन": ("करेला", "करेले"),
     "कार्तिक": ("छाछ", "मट्ठा", "मट्ठे"),
     "मार्गशीर्ष": ("जीरा",),
@@ -775,11 +777,6 @@ VARSHA_BANNED_KEYWORDS = [
     "काबुली चना",
     "मजीदा कढ़ी",
     "majjida karhi",
-]
-
-VARSHA_MEAL_ONLY_BANNED_KEYWORDS = [
-    "दही",
-    "रायता",
 ]
 
 SHARAD_COMMON_REQUIRED_SIDES = [
@@ -1537,88 +1534,21 @@ def item_contains_curd(item: str) -> bool:
     return any(token in normalized for token in CURD_ITEM_TOKENS)
 
 
-def item_mentions_specific_raita(item: str) -> bool:
-    normalized = re.sub(r"\s+", " ", item).strip().lower()
-    if "रायता" not in normalized:
-        return False
-    return bool(SPECIFIC_RAITA_PATTERN.search(normalized))
+def is_curd_prohibited_ritu(ritu_key: str) -> bool:
+    return normalize_ritu_key(ritu_key) in CURD_PROHIBITED_RITU_KEYS
 
 
-def should_item_trigger_curd_raita_note(item: str) -> bool:
-    if not item_contains_curd(item):
-        return False
-    if is_fermented_rice_breakfast_item(item):
-        return False
-    if any(excluded in item for excluded in CURD_RAITA_NOTE_EXCLUDED_ITEMS):
-        return False
-    return not item_mentions_specific_raita(item)
+def get_ritu_curd_banned_keywords(ritu_key: str) -> list[str]:
+    return list(CURD_ITEM_TOKENS) if is_curd_prohibited_ritu(ritu_key) else []
 
 
-def is_curd_repeat_restricted_ritu(ritu_key: str) -> bool:
-    return normalize_ritu_key(ritu_key) in {"vasant", "grishm", "sharad"}
-
-
-def get_yearly_used_curd_items(
-    archive_entries: list[dict[str, Any]],
-    target_date: date,
-) -> set[str]:
-    used: set[str] = set()
-    for row in archive_entries:
-        try:
-            row_date = datetime.strptime(str(row.get("date", "")).strip(), "%Y-%m-%d").date()
-        except ValueError:
-            continue
-        if row_date.year != target_date.year or row_date >= target_date:
-            continue
-        row_ritu_key = row.get("ritu_key")
-        if not isinstance(row_ritu_key, str) or not is_curd_repeat_restricted_ritu(row_ritu_key):
-            continue
-        for field_name in ("breakfast", "meal", "second_meal"):
-            field_value = row.get(field_name)
-            if isinstance(field_value, str) and item_contains_curd(field_value):
-                used.add(normalize_item_key(field_value))
-    return used
-
-
-def apply_yearly_curd_repeat_rule(
-    pool: list[str],
-    yearly_used_curd_items: set[str],
-    ritu_key: str,
-) -> tuple[list[str], bool]:
-    if not is_curd_repeat_restricted_ritu(ritu_key):
-        return pool[:], False
-    filtered = [
-        item
-        for item in pool
-        if not item_contains_curd(item) or normalize_item_key(item) not in yearly_used_curd_items
-    ]
-    if not filtered:
-        return pool[:], False
-    return filtered, filtered != pool
-
-
-def build_curd_raita_note(
-    ritu_key: str,
-    selected_breakfast: str,
-    selected_meal: str,
-    selected_second_meal: str | None,
-) -> str | None:
-    if normalize_ritu_key(ritu_key) not in {"vasant", "grishm"}:
-        return None
-    selected_items = [selected_breakfast, selected_meal]
-    if selected_second_meal:
-        selected_items.append(selected_second_meal)
-    if any(should_item_trigger_curd_raita_note(item) for item in selected_items):
-        return CURD_RAITA_NOTE_HI
-    return None
-
-
-def is_blocked_by_yearly_curd_rule(item: str, yearly_used_curd_items: set[str], ritu_key: str) -> bool:
-    if not is_curd_repeat_restricted_ritu(ritu_key):
-        return False
-    if not item_contains_curd(item):
-        return False
-    return normalize_item_key(item) in yearly_used_curd_items
+def build_curd_rule_line(ritu_key: str) -> str:
+    normalized_ritu = normalize_ritu_key(ritu_key)
+    if normalized_ritu in CURD_PROHIBITED_RITU_KEYS:
+        return CURD_PROHIBITED_RULE_LINE_HI
+    if normalized_ritu in CURD_ALLOWED_RITU_KEYS:
+        return CURD_ALLOWED_RULE_LINE_HI
+    raise ValueError(f"Unsupported ritu for curd rule: {ritu_key}")
 
 
 def resolve_available_override_item(override_item: str | None, available_items: list[str]) -> str | None:
@@ -4888,10 +4818,6 @@ def apply_varsha_static_menu_rules(
         raise ValueError("category must be 'breakfast' or 'meal'")
 
     blocked_keywords = VARSHA_BANNED_KEYWORDS[:]
-    if category == "meal":
-        blocked_keywords.extend(VARSHA_MEAL_ONLY_BANNED_KEYWORDS)
-    if category == "breakfast" and normalize_lunar_month_name(maah_hi) == "भाद्रपद":
-        blocked_keywords.extend(VARSHA_CURD_TOKENS)
 
     allowed_items: list[str] = []
     for item in items:
@@ -4921,34 +4847,6 @@ def apply_ludhiana_september_produce_rules(items: list[str], target_date: date) 
     return [item for item in items if not is_blocked_item(item, blocked_keywords)]
 
 
-def item_contains_varsha_morning_curd(item: str) -> bool:
-    normalized = item.casefold()
-    return any(token in normalized for token in VARSHA_MORNING_CURD_TOKENS)
-
-
-def previous_day_had_varsha_morning_curd(history: list[dict[str, Any]], target_date: date) -> bool:
-    previous_row = get_history_row(history, (target_date - timedelta(days=1)).isoformat())
-    if previous_row is None:
-        return False
-    return any(
-        item_contains_varsha_morning_curd(value)
-        for field_name in ("breakfast", "meal", "second_meal")
-        for value in get_history_values_for_field(previous_row, field_name)
-    )
-
-
-def apply_varsha_morning_curd_frequency_rule(
-    pool: list[str],
-    history: list[dict[str, Any]],
-    target_date: date,
-    ritu_key: str,
-) -> tuple[list[str], bool]:
-    if normalize_ritu_key(ritu_key) != "varsha" or not previous_day_had_varsha_morning_curd(history, target_date):
-        return pool[:], False
-    filtered = [item for item in pool if not item_contains_varsha_morning_curd(item)]
-    return filtered, filtered != pool
-
-
 def build_varsha_guidance_lines(maah_hi: str, selected_items: list[str]) -> list[str]:
     _ = selected_items
     month_name = normalize_lunar_month_name(maah_hi)
@@ -4971,14 +4869,14 @@ def build_varsha_guidance_lines(maah_hi: str, selected_items: list[str]) -> list
     if month_name == "श्रावण":
         lines.extend(
             [
-                "*सावन दुग्ध नियम:* दूध नहीं। दही केवल सुबह और रोज़ नहीं; रात में नहीं।",
+                "*सावन दुग्ध नियम:* दूध नहीं। वर्षा ऋतु के अनुसार दही अनुमत है।",
                 "*सावन छाछ नियम:* छाछ-आधारित भोजन अनुमत है।",
             ]
         )
     elif month_name == "भाद्रपद":
         lines.extend(
             [
-                "*भादों दही नियम:* दही बिल्कुल नहीं।",
+                "*भादों दही नियम:* वर्षा ऋतु के अनुसार दही अनुमत है।",
                 "*भादों छाछ नियम:* छाछ-आधारित भोजन अनुमत है।",
                 "*भादों प्रातः:* " + " / ".join(BHAADON_EARLY_MORNING_ITEMS),
                 "*भादों आवश्यक सूची:* " + " / ".join(BHAADON_MUST_HAVE_ITEMS),
@@ -5029,6 +4927,7 @@ def get_disallowed_keywords(ritu_key: str, maah_hi: str | None = None) -> list[s
         keywords.extend(VASANT_BANNED_KEYWORDS)
     elif ritu_key == "grishm":
         keywords.extend(GRISHM_BANNED_KEYWORDS)
+    keywords.extend(get_ritu_curd_banned_keywords(ritu_key))
     if maah_hi is not None:
         keywords.extend(get_lunar_month_item_banned_keywords(maah_hi))
     return dedupe_preserve_order(keywords)
@@ -5379,9 +5278,6 @@ def main() -> int:
         load_json(PERSONAL_OCCASIONS_FILE) if PERSONAL_OCCASIONS_FILE.exists() else {}
     )
     history = normalize_history(load_json(HISTORY_FILE))
-    published_archive_entries = (
-        normalize_archive_history(load_json(PUBLISHED_ARCHIVE_FILE)) if PUBLISHED_ARCHIVE_FILE.exists() else []
-    )
     missing_data_notes: list[str] = []
 
     all_items = (
@@ -5420,8 +5316,6 @@ def main() -> int:
     target_date_str = target_date.strftime("%Y-%m-%d")
     target_date_display_str = target_date.strftime("%d-%b-%Y")
     generation_date = resolve_runtime_today(timezone_name)
-    yearly_used_curd_items = get_yearly_used_curd_items(published_archive_entries, target_date)
-
     weather_enabled = bool(config.get("weather_enabled", True))
     thresholds = parse_weather_thresholds(config)
     light_fallback_items_raw = config.get("light_fallback_items", DEFAULT_LIGHT_FALLBACK_ITEMS)
@@ -5521,7 +5415,7 @@ def main() -> int:
         filtered_special_lines = [
             line
             for line in (festival_info.special_menu_lines_hi or [])
-            if not is_blocked_by_lunar_month_rule(line, panchang_info.maah_hi)
+            if not is_blocked_item(line, disallowed_keywords)
         ]
         lines = [
             f"*{target_date_display_str} तिथि के लिए भोजन:*",
@@ -5532,18 +5426,21 @@ def main() -> int:
         festival_line = format_festival_line(festival_info)
         if festival_line:
             lines.append(festival_line)
-        lines.extend(format_personal_occasion_lines(personal_occasion_info, ekadashi))
+        lines.extend(
+            line
+            for line in format_personal_occasion_lines(personal_occasion_info, ekadashi)
+            if not is_blocked_item(line, disallowed_keywords)
+        )
         if filtered_special_lines:
             lines.extend(filtered_special_lines)
         else:
             lines.append("*नियमित मेनू:* आज पर्व/विशेष पालन के कारण नियमित नाश्ता और भोजन मेनू नहीं दिया जाएगा।")
             special_menu_note_line = format_special_menu_note_line(festival_info)
-            if special_menu_note_line and not is_blocked_by_lunar_month_rule(
-                special_menu_note_line, panchang_info.maah_hi
-            ):
+            if special_menu_note_line and not is_blocked_item(special_menu_note_line, disallowed_keywords):
                 lines.append(special_menu_note_line)
         lines.append(format_today_fruit_line(fruit_selection, ritu_key))
         append_ritu_drink_of_the_day_line(lines, target_date, ritu_key, panchang_info.maah_hi)
+        lines.append(build_curd_rule_line(ritu_key))
         if ekadashi.is_ekadashi and ekadashi.name_hi:
             lines.append(f"*एकादशी:* {ekadashi.name_hi}")
         monthly_avoidance_line = build_lunar_month_avoidance_line(panchang_info.maah_hi)
@@ -5693,21 +5590,6 @@ def main() -> int:
     else:
         breakfast_fixed = False
         breakfast_choice_items = exclude_overnight_breakfasts(breakfast_items)
-        breakfast_choice_items, yearly_curd_breakfast_rule_applied = apply_yearly_curd_repeat_rule(
-            breakfast_choice_items,
-            yearly_used_curd_items,
-            ritu_key,
-        )
-        if yearly_curd_breakfast_rule_applied:
-            missing_data_notes.append("[वार्षिक दही नियम] दही/रायता वाला नाश्ता इस वर्ष दोबारा नहीं दोहराया गया")
-        breakfast_choice_items, varsha_curd_frequency_rule_applied = apply_varsha_morning_curd_frequency_rule(
-            breakfast_choice_items,
-            history,
-            target_date,
-            ritu_key,
-        )
-        if varsha_curd_frequency_rule_applied:
-            missing_data_notes.append("[वर्षा सुबह दही नियम] दही वाला नाश्ता लगातार दूसरे दिन नहीं रखा गया")
         breakfast_choice_items, moong_dal_chilla_repeat_rule_applied = apply_moong_dal_chilla_repeat_rule(
             breakfast_choice_items,
             history,
@@ -5715,7 +5597,10 @@ def main() -> int:
         )
         if moong_dal_chilla_repeat_rule_applied:
             missing_data_notes.append(MOONG_DAL_CHILLA_REPEAT_NOTE)
-        weekly_pazhaya_sadam_item = find_pazhaya_sadam_item(breakfast_items)
+        eligible_breakfast_items = apply_hard_filters(
+            breakfast_items, ekadashi, keywords, disallowed_keywords
+        )
+        weekly_pazhaya_sadam_item = find_pazhaya_sadam_item(eligible_breakfast_items)
         required_window_pazhaya_sadam_due = (
             weekly_pazhaya_sadam_item is not None
             and should_force_required_window_pazhaya_sadam(history, target_date)
@@ -5765,7 +5650,6 @@ def main() -> int:
                     and not lock_conflicts
                     and not lock_blocked_by_ekadashi
                     and not lock_blocked_by_rules
-                    and not is_blocked_by_yearly_curd_rule(previous_day_breakfast_lock, yearly_used_curd_items, ritu_key)
                     and not is_blocked_by_moong_dal_chilla_repeat_rule(
                         previous_day_breakfast_lock,
                         history,
@@ -5790,10 +5674,6 @@ def main() -> int:
                         missing_data_notes.append(
                             "[ऋतु/माह परहेज़] पिछली रात से लॉक किया गया नाश्ता लागू नहीं किया गया: "
                             + previous_day_breakfast_lock
-                        )
-                    elif is_blocked_by_yearly_curd_rule(previous_day_breakfast_lock, yearly_used_curd_items, ritu_key):
-                        missing_data_notes.append(
-                            "[वार्षिक दही नियम] पिछली रात से लॉक किया गया दही/रायता वाला नाश्ता इस वर्ष फिर नहीं दोहराया गया"
                         )
                     elif is_blocked_by_moong_dal_chilla_repeat_rule(
                         previous_day_breakfast_lock,
@@ -5887,33 +5767,8 @@ def main() -> int:
                     "[डेटा चेतावनी] आज का निर्धारित overnight नाश्ता लागू किया गया है, "
                     "लेकिन पिछली रात की चावल तैयारी history में नहीं मिली"
                 )
-                if is_blocked_by_yearly_curd_rule(breakfast_item_override, yearly_used_curd_items, ritu_key):
-                    missing_data_notes.append(
-                        "[वार्षिक दही नियम] निर्धारित दही/रायता वाला नाश्ता override इस वर्ष फिर लागू नहीं किया गया"
-                    )
-                    selected_breakfast = choose_item(
-                        items=breakfast_choice_items,
-                        ekadashi=ekadashi,
-                        cycle_block_set=breakfast_cycle_block_set,
-                        recent_block_set=breakfast_recent,
-                        consecutive_day_block_families=previous_day_repeat_families,
-                        recent_family_block_families=breakfast_recent_family_block_families,
-                        family_extractor=extract_breakfast_repeat_families,
-                        keywords=keywords,
-                        disallowed_keywords=disallowed_keywords,
-                        fallback_policy=fallback_policy,
-                        seed_key=f"{target_date_str}:breakfast",
-                        weather_rules=weather_rules,
-                        weather_tags=weather_tags,
-                        warn_bucket=warning_items,
-                        constraint_notes=missing_data_notes,
-                        prefer_lighter=transition_plan.prefer_lighter,
-                        light_fallback_items=light_fallback_items,
-                        heavy_light_classification=heavy_light_classification,
-                    )
-                else:
-                    selected_breakfast = breakfast_item_override
-                    breakfast_fixed = True
+                selected_breakfast = breakfast_item_override
+                breakfast_fixed = True
             elif breakfast_item_override in breakfast_items:
                 override_conflicts = get_item_repeat_family_conflicts(
                     breakfast_item_override,
@@ -5946,30 +5801,6 @@ def main() -> int:
                     missing_data_notes.append(
                         "[नियम] निर्धारित नाश्ता override लगातार-दिन नियम से टकराया: "
                         + " / ".join(override_conflicts)
-                    )
-                    selected_breakfast = choose_item(
-                        items=breakfast_choice_items,
-                        ekadashi=ekadashi,
-                        cycle_block_set=breakfast_cycle_block_set,
-                        recent_block_set=breakfast_recent,
-                        consecutive_day_block_families=previous_day_repeat_families,
-                        recent_family_block_families=breakfast_recent_family_block_families,
-                        family_extractor=extract_breakfast_repeat_families,
-                        keywords=keywords,
-                        disallowed_keywords=disallowed_keywords,
-                        fallback_policy=fallback_policy,
-                        seed_key=f"{target_date_str}:breakfast",
-                        weather_rules=weather_rules,
-                        weather_tags=weather_tags,
-                        warn_bucket=warning_items,
-                        constraint_notes=missing_data_notes,
-                        prefer_lighter=transition_plan.prefer_lighter,
-                        light_fallback_items=light_fallback_items,
-                        heavy_light_classification=heavy_light_classification,
-                    )
-                elif is_blocked_by_yearly_curd_rule(breakfast_item_override, yearly_used_curd_items, ritu_key):
-                    missing_data_notes.append(
-                        "[वार्षिक दही नियम] निर्धारित दही/रायता वाला नाश्ता override इस वर्ष फिर लागू नहीं किया गया"
                     )
                     selected_breakfast = choose_item(
                         items=breakfast_choice_items,
@@ -6131,14 +5962,6 @@ def main() -> int:
         meal_override_items = exclude_meals_incompatible_with_breakfast(selected_breakfast, meal_items)
         meal_choice_items, _ = apply_weekly_main_meal_rice_limit(meal_choice_items, history, target_date)
         meal_override_items, _ = apply_weekly_main_meal_rice_limit(meal_override_items, history, target_date)
-        meal_choice_items, yearly_curd_meal_rule_applied = apply_yearly_curd_repeat_rule(
-            meal_choice_items,
-            yearly_used_curd_items,
-            ritu_key,
-        )
-        if yearly_curd_meal_rule_applied:
-            missing_data_notes.append("[वार्षिक दही नियम] दही/रायता वाला भोजन इस वर्ष दोबारा नहीं दोहराया गया")
-        meal_override_items, _ = apply_yearly_curd_repeat_rule(meal_override_items, yearly_used_curd_items, ritu_key)
         rice_support_meal_candidates = exclude_meals_incompatible_with_breakfast(
             selected_breakfast,
             apply_hard_filters([item for item in meal_items if is_rice_item(item)], ekadashi, keywords, disallowed_keywords),
@@ -6171,7 +5994,16 @@ def main() -> int:
                     selected_breakfast_repeat_families,
                     extract_breakfast_repeat_families,
                 )
-                if is_overnight_breakfast(next_day_override) and is_blocked_by_ekadashi_rule(
+                next_day_override_blocked_by_rules = is_blocked_item(
+                    "\n".join([next_day_override, *build_meal_recipe_lines(next_day_override)]),
+                    next_day.disallowed_keywords,
+                )
+                if is_overnight_breakfast(next_day_override) and next_day_override_blocked_by_rules:
+                    missing_data_notes.append(
+                        "[ऋतु/माह परहेज] अगले दिन का overnight नाश्ता override लागू नहीं किया गया: "
+                        + next_day_override
+                    )
+                elif is_overnight_breakfast(next_day_override) and is_blocked_by_ekadashi_rule(
                     next_day_override, next_day.ekadashi, keywords
                 ):
                     missing_data_notes.append(EKADASHI_BLOCKED_ITEM_NOTE)
@@ -6612,7 +6444,11 @@ def main() -> int:
     festival_line = format_festival_line(festival_info)
     if festival_line:
         lines.append(festival_line)
-    lines.extend(format_personal_occasion_lines(personal_occasion_info, ekadashi))
+    lines.extend(
+        line
+        for line in format_personal_occasion_lines(personal_occasion_info, ekadashi)
+        if not is_blocked_item(line, disallowed_keywords)
+    )
     if shringdhara_info.active:
         lines.append("*विशेष अवधि:* शृंगधारा (यमराज की दाड़)")
         lines.append(f"*अवधि विवरण:* {shringdhara_info.reason_hi}")
@@ -6654,9 +6490,6 @@ def main() -> int:
         roti_atta_note = build_roti_atta_note(target_date, selected_breakfast, selected_meal, selected_second_meal)
         if roti_atta_note:
             lines.append(roti_atta_note)
-        curd_raita_note = build_curd_raita_note(ritu_key, selected_breakfast, selected_meal, selected_second_meal)
-        if curd_raita_note:
-            lines.append(curd_raita_note)
         lines.append(format_today_fruit_line(fruit_selection, ritu_key))
         append_ritu_drink_of_the_day_line(lines, target_date, ritu_key, panchang_info.maah_hi)
         if requires_mangore_prep(selected_breakfast, selected_meal, selected_second_meal or ""):
@@ -6714,6 +6547,8 @@ def main() -> int:
             lines.append(VASANT_PROHIBITED_SECTION_TITLE)
             for item in vasant_prohibited_findings:
                 lines.append(f"- {item}")
+
+    lines.append(build_curd_rule_line(ritu_key))
 
     if target_date.month == 1 and target_date.day == 1:
         lines.append("*वार्षिक स्मरण (1 जनवरी):* " + NEW_YEAR_KANJI_NOTE)

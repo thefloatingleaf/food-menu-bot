@@ -249,8 +249,8 @@ Each entry uses:
 
 ```json
 {
-  "date": "2026-04-09",
-  "item": "सूजी की इडली"
+  "date": "2026-04-10",
+  "item": "दाल वाली रोटी (मूंग)"
 }
 ```
 
@@ -362,8 +362,8 @@ the combined special meal to `18-Apr-2027`.
    - `अरहर`
    - `चने-लौकी की दाल`
 10. In eligible वसंत dal meals, `मसूर`, `अरहर`, and `चने-लौकी की दाल` follow strict rotation across meals; `मूँग` is exempt and may still appear before that strict dal cycle is complete.
-11. In `वसंत` and `ग्रीष्म`, whenever a selected breakfast or भोजन contains `दही`/`रायता`, output adds the short note `*दही रूप:* केवल लौकी/खीरे का रायता` only as a fallback. If the selected item already names a specific raita such as `लौकी का रायता`, that extra note is skipped for that item path. The note is also skipped for `पझैया सादम`, `पखाला भात`, and `दही चावल ज्यादा करी पत्ता व सौंफ के साथ`.
-12. Outside `हेमंत` and `शिशिर`, any exact breakfast or भोजन item that needs `दही`/`रायता` is blocked from repeating again within the same calendar year, using `published_menu_archive.json` as the annual memory.
+11. The curd rule is strict and season-wide: `वसंत`, `ग्रीष्म`, and `शरद` completely prohibit `दही`, `रायता`, `लस्सी`, and recipes containing curd; `हेमंत`, `शिशिर`, and `वर्षा` allow them. The rendered menu records the household reason that curd is hot in nature and increases Kapha.
+12. This prohibition is enforced against menu labels, expanded recipe text, date overrides, overnight locks, fallback pools, next-day planning, and festival special-menu lines. It does not convert the separate `छाछ`/`मट्ठा` rule into a curd prohibition.
 - Annual repetition cap: across breakfast and भोजन together, no dish family may appear on more than 10 days in a rolling 365-day window. Minor naming variants such as `नमक अजवाइन की रोटी` and `नमक अजवाइन रोटी` share the same count. `पझैया सादम` is the sole exception and retains its existing weekly scheduling rules.
 - Annual grain balance: balancing is applied only inside the active ऋतु's already-eligible menu pool. Among the grain families represented in that pool, options using the least-used family over the preceding 365 days are preferred; unclassified dishes and `पझैया सादम` remain available. This does not introduce an absent grain or move a grain into an unsuitable ऋतु.
 13. Across `वसंत` and `ग्रीष्म`, `पझैया सादम` is enforced as an overnight breakfast at least once in every 7-day window when the menu is generated in time for night-before preparation. If the menu is generated on the same morning, the generator records a timing note instead of forcing an impossible overnight prep.
@@ -400,9 +400,10 @@ the combined special meal to `18-Apr-2027`.
    - use less: लहसुन, गन्ना, काजू-पिस्ता, छेना, पुदीना, लौंग, पपीता, आम, लौकी, करेला, and छाछ. Low-use meal items receive a lower selection weight rather than a hard ban.
    - avoid: chocolate, sugar-made sweets, maida, rajma, white chana, onion, and stale water. Sweet dishes must use खांड rather than sugar.
    - water: भस्म जल, boiled water, or water cleaned with फिटकरी.
-22. दही, छाछ, and milk follow month-specific rules:
+22. दही, छाछ, and milk follow the season/month precedence rules:
+   - वर्षा: curd is permitted in both सावन and भादों.
    - सावन: no milk; छाछ-based food remains permitted.
-   - भादों: no curd; छाछ-based food remains permitted.
+   - भादों: छाछ-based food remains permitted.
    - कार्तिक: छाछ/mattha-based food is completely blocked. This is the only lunar month with that prohibition.
 23. वर्षा hard filtering blocks प्याज/प्याज़, साबूदाना, छोले, बासी food, पराठा, पूरी, explicitly fried items, chocolate, maida, rajma, white chana, and `चावल और मजीदा कढ़ी`. It also blocks coarse-grain roti unless the item explicitly includes घी.
 24. भादों-specific behavior is:
@@ -416,7 +417,7 @@ the combined special meal to `18-Apr-2027`.
    - ऋतु रस is खट्टा / नमकीन;
    - roasted chana, sour pickle, black salt, Panchkol churna, roasted मूंग papad, sesame chutney, and lemon/amla pickles as useful accompaniments;
    - fennel, ajwain, clove, and paan are limited post-meal options because clove is also in the low-use group;
-   - milk, curd, and छाछ follow the सावन/भादों rules above; there is no general year-round milk permission in this section;
+   - milk and छाछ follow the सावन/भादों rules above, while curd follows the six-season rule; there is no general year-round milk permission in this section;
    - सावन completely excludes leafy साग; outside सावन during वर्षा, leafy vegetables should be avoided where possible and otherwise boiled, squeezed, then sauteed in oil or ghee;
    - no street food, ordered food, fried/stale/cold food, sabudana, chhole, chocolate, sugar-made sweets, maida, rajma, white chana, or onion.
 26. Public menu output is food-only. Lifestyle, body-care, travel, fasting, and treatment instructions—including अभ्यंगम, उबटन, इत्र, बस्ती चिकित्सा, cold-air/day-sleep advice, and the ज्येष्ठ travel rule—are never rendered in a shared menu.
@@ -428,7 +429,7 @@ the combined special meal to `18-Apr-2027`.
    - `*शरद चावल नियम:* अगर चावल बन रहे हैं तो जीरा ज़रूर डालें` (only when selected items contain चावल)
    - `*शरद वर्जित:* इमली, लौंग, लहसुन, प्याज़, काली मिर्च और गर्म मसाले नहीं`
    - `*शरद अधिक उपयोग:* नारियल / खीर / पुदीना`
-   - `*शरद कम उपयोग:* छोले, टिंडा, करेला, टमाटर, आलू, अरबी, सरसों, पपीता, सौंफ़, हरी मिर्च, लाल मिर्च, अदरक, सौंठ, सरसों का तेल, कढ़ी, दही, लस्सी, शहद`
+   - `*शरद कम उपयोग:* छोले, टिंडा, करेला, टमाटर, आलू, अरबी, सरसों, पपीता, सौंफ़, हरी मिर्च, लाल मिर्च, अदरक, सौंठ, सरसों का तेल, कढ़ी, शहद`; curd/raita/lassi are fully prohibited rather than low-use.
    - `*शरद जल नियम:* चाँदी के ग्लास या मटके का जल दें`
    - `*शरद रस:* मीठा / कसैला / कड़वा`
 12. शरद days enforce hard filtering for `इमली`, `लौंग`, `लहसुन`, `प्याज`, `प्याज़`, `काली मिर्च`, `गरम मसाला`, `गर्म मसाला`.
@@ -449,7 +450,7 @@ Every regular or festival output includes the applicable food-related month-spec
 - ज्येष्ठ: रास्ता / यात्रा नहीं (hardwired policy; not rendered in the shared food-only menu)
 - आषाढ़: बेल
 - श्रावण/सावन: दूध and leafy साग
-- भाद्रपद/भादों: दही
+- भाद्रपद/भादों: no separate curd prohibition; the वर्षा season rule allows it
 - आश्विन/क्वार: ripe करेला
 - कार्तिक: छाछ
 - मार्गशीर्ष/अगहन: जीरा

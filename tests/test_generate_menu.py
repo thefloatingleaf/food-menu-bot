@@ -1356,7 +1356,7 @@ class VarshaRituRuleTests(unittest.TestCase):
             ["दही के साथ नमक अजवाइन रोटी", "रागी की रोटी घी के साथ"],
         )
 
-    def test_static_meal_rules_block_curd_but_allow_chaach_outside_kartik(self) -> None:
+    def test_static_meal_rules_allow_curd_and_chaach_in_varsha(self) -> None:
         items = [
             "दही चावल",
             "छाछ की सब्ज़ी और चावल",
@@ -1365,7 +1365,7 @@ class VarshaRituRuleTests(unittest.TestCase):
 
         self.assertEqual(
             generate_menu.apply_varsha_static_menu_rules(items, "meal", "श्रावण"),
-            ["छाछ की सब्ज़ी और चावल", "भिंडी और पुराना गेहूँ की रोटी"],
+            items,
         )
 
     def test_varsha_south_indian_monsoon_options_are_available_in_hindi(self) -> None:
@@ -1413,33 +1413,17 @@ class VarshaRituRuleTests(unittest.TestCase):
             expected_meals,
         )
 
-    def test_bhaadon_blocks_curd_but_allows_chaach(self) -> None:
+    def test_bhaadon_allows_curd_and_chaach_as_varsha_foods(self) -> None:
         items = ["पतली छाछ और रोटी", "दही और रोटी", "पोहा"]
 
         self.assertEqual(
             generate_menu.apply_varsha_static_menu_rules(items, "breakfast", "भाद्रपद"),
-            ["पतली छाछ और रोटी", "पोहा"],
+            items,
         )
 
-    def test_varsha_curd_does_not_repeat_but_chaach_remains_available(self) -> None:
-        history = [
-            {
-                "date": "2026-08-01",
-                "breakfast": "दही और रोटी",
-                "meal": "भिंडी और रोटी",
-                "ritu_key": "varsha",
-            }
-        ]
-
-        filtered, applied = generate_menu.apply_varsha_morning_curd_frequency_rule(
-            ["दही और रोटी", "पतली छाछ और रोटी", "पोहा"],
-            history,
-            date(2026, 8, 2),
-            "varsha",
-        )
-
-        self.assertEqual(filtered, ["पतली छाछ और रोटी", "पोहा"])
-        self.assertTrue(applied)
+    def test_varsha_has_no_season_level_curd_prohibition(self) -> None:
+        self.assertNotIn("दही", generate_menu.get_disallowed_keywords("varsha", "भाद्रपद"))
+        self.assertNotIn("रायता", generate_menu.get_disallowed_keywords("varsha", "श्रावण"))
 
     def test_varsha_guidance_distinguishes_sawan_and_bhaadon(self) -> None:
         sawan_lines = generate_menu.build_varsha_guidance_lines(
@@ -1449,7 +1433,7 @@ class VarshaRituRuleTests(unittest.TestCase):
         bhaadon_lines = generate_menu.build_varsha_guidance_lines("भाद्रपद", ["पोहा", "मूँग दाल खिचड़ी"])
 
         self.assertTrue(any("सावन छाछ नियम" in line and "अनुमत" in line for line in sawan_lines))
-        self.assertTrue(any("भादों दही नियम" in line and "बिल्कुल नहीं" in line for line in bhaadon_lines))
+        self.assertTrue(any("भादों दही नियम" in line and "अनुमत" in line for line in bhaadon_lines))
         self.assertTrue(any("भादों छाछ नियम" in line and "अनुमत" in line for line in bhaadon_lines))
         self.assertTrue(any("गुनगुना पानी" in line and "च्यवनप्राश" in line for line in bhaadon_lines))
         self.assertTrue(any("हरड़ का मुरब्बा" in line and "दशमूल काढ़ा" in line for line in bhaadon_lines))
@@ -1504,7 +1488,6 @@ class VarshaRituRuleTests(unittest.TestCase):
             "वैशाख": ("तिल के तेल में बनी सब्ज़ी", "पोहा"),
             "आषाढ़": ("बेल", "पोहा"),
             "श्रावण": ("सरसों का साग", "पोहा"),
-            "भाद्रपद": ("दही और रोटी", "पोहा"),
             "आश्विन": ("पका करेला", "पोहा"),
             "कार्तिक": ("पतली छाछ और रोटी", "पोहा"),
             "मार्गशीर्ष": ("जीरा चावल", "सौंफ चावल"),
@@ -1515,7 +1498,7 @@ class VarshaRituRuleTests(unittest.TestCase):
 
         self.assertEqual(
             set(generate_menu.LUNAR_MONTH_AVOID_RULES),
-            set(generate_menu.LUNAR_MONTH_SEQUENCE),
+            set(generate_menu.LUNAR_MONTH_SEQUENCE) - {"भाद्रपद"},
         )
         for month, (blocked_item, allowed_item) in cases.items():
             with self.subTest(month=month):
@@ -1577,7 +1560,6 @@ class VarshaRituRuleTests(unittest.TestCase):
             "वैशाख": "तेल",
             "आषाढ़": "बेल",
             "श्रावण": "दूध",
-            "भाद्रपद": "दही",
             "आश्विन": "करेला",
             "कार्तिक": "छाछ",
             "मार्गशीर्ष": "जीरा",
@@ -1590,6 +1572,7 @@ class VarshaRituRuleTests(unittest.TestCase):
             with self.subTest(month=month):
                 self.assertIn(token, generate_menu.build_lunar_month_avoidance_line(month))
 
+        self.assertIsNone(generate_menu.build_lunar_month_avoidance_line("भाद्रपद"))
         self.assertIsNone(generate_menu.build_lunar_month_avoidance_line("ज्येष्ठ"))
         self.assertTrue(generate_menu.is_travel_prohibited_by_lunar_month("ज्येष्ठ"))
         self.assertIn(
@@ -2183,123 +2166,73 @@ class PakhalaServingNoteTests(unittest.TestCase):
 
 
 class CurdRuleTests(unittest.TestCase):
-    def test_build_curd_raita_note_returns_short_hindi_note_for_vasant(self) -> None:
+    def test_curd_is_prohibited_in_vasant_grishm_and_sharad(self) -> None:
+        for ritu_key in ("vasant", "grishm", "sharad"):
+            with self.subTest(ritu_key=ritu_key):
+                keywords = generate_menu.get_disallowed_keywords(ritu_key)
+                self.assertIn("दही", keywords)
+                self.assertIn("रायता", keywords)
+                self.assertIn("लस्सी", keywords)
+
+    def test_curd_is_allowed_in_hemant_shishir_and_varsha(self) -> None:
+        for ritu_key in ("hemant", "shishir", "varsha"):
+            with self.subTest(ritu_key=ritu_key):
+                keywords = generate_menu.get_disallowed_keywords(ritu_key)
+                self.assertNotIn("दही", keywords)
+                self.assertNotIn("रायता", keywords)
+                self.assertNotIn("लस्सी", keywords)
+
+    def test_curd_rule_checks_expanded_recipe_text(self) -> None:
+        filtered = generate_menu.apply_hard_filters(
+            ["सूजी की इडली", "पोहा"],
+            generate_menu.EkadashiInfo(False, None, None),
+            [],
+            generate_menu.get_disallowed_keywords("grishm"),
+        )
+        self.assertEqual(filtered, ["पोहा"])
+
+    def test_dahi_rice_is_allowed_in_varsha_but_blocked_in_sharad(self) -> None:
+        item = "दही चावल ज्यादा करी पत्ता व सौंफ के साथ"
+        ekadashi = generate_menu.EkadashiInfo(False, None, None)
+
         self.assertEqual(
-            generate_menu.build_curd_raita_note(
-                "vasant",
-                "मूंग दाल दहीवाले फरे (भाप में पकाएं)",
-                "मूंग दाल और चावल",
-                None,
+            generate_menu.apply_hard_filters(
+                [item], ekadashi, [], generate_menu.get_disallowed_keywords("varsha")
             ),
-            "*दही रूप:* केवल लौकी/खीरे का रायता",
+            [item],
         )
-
-    def test_build_curd_raita_note_skips_when_specific_raita_is_already_named(self) -> None:
-        self.assertIsNone(
-            generate_menu.build_curd_raita_note(
-                "grishm",
-                "उपमा",
-                "ज्वार की रोटी, लौकी की सब्ज़ी, मसूर दाल, लौकी का रायता",
-                None,
-            )
-        )
-
-    def test_build_curd_raita_note_still_applies_when_other_curd_item_is_unspecified(self) -> None:
         self.assertEqual(
-            generate_menu.build_curd_raita_note(
-                "grishm",
-                "मूंग दाल दहीवाले फरे (भाप में पकाएं)",
-                "ज्वार की रोटी, लौकी की सब्ज़ी, मसूर दाल, लौकी का रायता",
-                None,
+            generate_menu.apply_hard_filters(
+                [item], ekadashi, [], generate_menu.get_disallowed_keywords("sharad")
             ),
-            "*दही रूप:* केवल लौकी/खीरे का रायता",
+            [],
         )
 
-    def test_build_curd_raita_note_skips_pakhala_breakfast(self) -> None:
-        self.assertIsNone(
-            generate_menu.build_curd_raita_note(
-                "grishm",
-                "पखाला भात (Pakhala Bhata): रात में 1 कटोरी कच्चे चावल धोकर सादा चावल पकाएँ। 2 बड़े चम्मच दही डालें।",
-                "मूंग दाल और चावल",
-                None,
-            )
-        )
+    def test_curd_rule_line_records_reason_and_thermal_nature(self) -> None:
+        prohibited = generate_menu.build_curd_rule_line("sharad")
+        allowed = generate_menu.build_curd_rule_line("varsha")
 
-    def test_build_curd_raita_note_skips_pazhaya_sadam_breakfast(self) -> None:
-        self.assertIsNone(
-            generate_menu.build_curd_raita_note(
-                "grishm",
-                "पझैया सादम (Pazhaya Sadam): अब 2–3 बड़े चम्मच दही या लगभग ½ कटोरी पतली छाछ मिलाएँ।",
-                "मूंग दाल और चावल",
-                None,
-            )
-        )
+        self.assertIn("पूर्णतः निषिद्ध", prohibited)
+        self.assertIn("अनुमत", allowed)
+        for line in (prohibited, allowed):
+            self.assertIn("उष्ण प्रकृति", line)
+            self.assertIn("कफ बढ़ाता", line)
 
-    def test_build_curd_raita_note_skips_special_dahi_chawal_meal(self) -> None:
-        self.assertIsNone(
-            generate_menu.build_curd_raita_note(
-                "grishm",
-                "रागी चीला",
-                "दही चावल ज्यादा करी पत्ता व सौंफ के साथ",
-                None,
-            )
+    def test_grishm_source_pool_contains_no_curd_or_raita(self) -> None:
+        items = generate_menu.load_json(generate_menu.BREAKFAST_GRISHM_FILE) + generate_menu.load_json(
+            generate_menu.MENU_GRISHM_FILE
         )
+        for item in items:
+            with self.subTest(item=item):
+                expanded = "\n".join([item, *generate_menu.build_meal_recipe_lines(item)])
+                self.assertFalse(generate_menu.item_contains_curd(expanded))
 
-    def test_build_curd_raita_note_skips_non_vasant_grishm_ritu(self) -> None:
-        self.assertIsNone(
-            generate_menu.build_curd_raita_note(
-                "shishir",
-                "उपमा",
-                "धुली उड़द दाल - गेहूँ रोटी और चकुंदर का रायता",
-                None,
-            )
-        )
+    def test_grishm_pazhaya_sadam_remains_chaach_only(self) -> None:
+        items = generate_menu.load_json(generate_menu.BREAKFAST_GRISHM_FILE)
+        pazhaya = next(item for item in items if "पझैया सादम" in item)
 
-    def test_get_yearly_used_curd_items_ignores_hemant_shishir_entries(self) -> None:
-        archive = [
-            {
-                "date": "2026-01-15",
-                "breakfast": "उपमा",
-                "meal": "धुली उड़द दाल - गेहूँ रोटी और चकुंदर का रायता",
-                "ritu_key": "shishir",
-            },
-            {
-                "date": "2026-05-15",
-                "breakfast": "मूंग दाल दहीवाले फरे (भाप में पकाएं)",
-                "meal": "मूंग दाल और चावल",
-                "ritu_key": "vasant",
-            },
-        ]
-        used = generate_menu.get_yearly_used_curd_items(archive, date(2026, 6, 1))
-        self.assertIn(
-            generate_menu.normalize_item_key("मूंग दाल दहीवाले फरे (भाप में पकाएं)"),
-            used,
-        )
-        self.assertNotIn(
-            generate_menu.normalize_item_key("धुली उड़द दाल - गेहूँ रोटी और चकुंदर का रायता"),
-            used,
-        )
-
-    def test_apply_yearly_curd_repeat_rule_blocks_repeated_curd_item_outside_winter(self) -> None:
-        filtered, applied = generate_menu.apply_yearly_curd_repeat_rule(
-            [
-                "मूंग दाल दहीवाले फरे (भाप में पकाएं)",
-                "उपमा",
-            ],
-            {generate_menu.normalize_item_key("मूंग दाल दहीवाले फरे (भाप में पकाएं)")},
-            "vasant",
-        )
-        self.assertEqual(filtered, ["उपमा"])
-        self.assertTrue(applied)
-
-    def test_apply_yearly_curd_repeat_rule_does_not_block_winter(self) -> None:
-        filtered, applied = generate_menu.apply_yearly_curd_repeat_rule(
-            ["धुली उड़द दाल - गेहूँ रोटी और चकुंदर का रायता"],
-            {generate_menu.normalize_item_key("धुली उड़द दाल - गेहूँ रोटी और चकुंदर का रायता")},
-            "shishir",
-        )
-        self.assertEqual(filtered, ["धुली उड़द दाल - गेहूँ रोटी और चकुंदर का रायता"])
-        self.assertFalse(applied)
+        self.assertIn("छाछ", pazhaya)
+        self.assertNotIn("दही", pazhaya)
 
 
 class DateSpecificRotiAttaRuleTests(unittest.TestCase):
