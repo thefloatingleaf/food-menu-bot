@@ -7,7 +7,6 @@ import json
 import os
 import random
 import re
-import ssl
 import sys
 import time
 from dataclasses import dataclass, replace
@@ -3893,21 +3892,12 @@ def fetch_url_text(
     *,
     timeout: int,
     retries: int,
-    allow_insecure_ssl: bool,
 ) -> str | None:
     for attempt in range(retries + 1):
         try:
             with urlopen(request_or_url, timeout=timeout) as response:
                 return response.read().decode("utf-8", errors="ignore")
-        except URLError as exc:
-            if allow_insecure_ssl and "CERTIFICATE_VERIFY_FAILED" in str(exc):
-                try:
-                    insecure_ctx = ssl._create_unverified_context()
-                    with urlopen(request_or_url, timeout=timeout, context=insecure_ctx) as response:
-                        return response.read().decode("utf-8", errors="ignore")
-                except (URLError, TimeoutError, UnicodeDecodeError):
-                    pass
-        except (TimeoutError, UnicodeDecodeError):
+        except (URLError, TimeoutError, UnicodeDecodeError):
             pass
 
         if attempt < retries:
@@ -3997,7 +3987,7 @@ def fetch_imd_city_weather(target_date: str, config: dict[str, Any], thresholds:
         },
     )
 
-    html = fetch_url_text(request, timeout=15, retries=2, allow_insecure_ssl=True)
+    html = fetch_url_text(request, timeout=15, retries=2)
     if not html:
         return None
 
@@ -4094,7 +4084,7 @@ def fetch_open_meteo_weather(target_date: str, config: dict[str, Any], threshold
             "Accept-Language": "en-US,en;q=0.9",
         },
     )
-    payload_text = fetch_url_text(request, timeout=12, retries=2, allow_insecure_ssl=True)
+    payload_text = fetch_url_text(request, timeout=12, retries=2)
     if not payload_text:
         return None
     try:
